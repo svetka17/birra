@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -45,12 +46,12 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
   ToggleButton /*tb05, tb1, tb15, tb2, tb25, tb3,*/tbnKol, tbTara;
   TextView tvSum, tvKol, tvDKol, tvIdPgr, tvNamePgr;//, tvCombo;
   EditText etNal, etSkidka;
-  ListView lvCombo;
+  ListView lvCombo, lvComboD;
   LinearLayout Dview; 
   //LinearLayout llbut;
   TableLayout llbut;
   TableRow row;
-  TableRow.LayoutParams params;
+  //TableRow.LayoutParams params;
   
   LinearLayout lltara;
   //HorizontalScrollView lltara;
@@ -65,7 +66,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
   Dialog dialogg;
 //упаковываем данные в понятную для адаптера структуру
   ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-  MySimpleAdapter sAdapter;
+  MySimpleAdapter sAdapter, sAdapterD;
   void tara(byte ii){
 	  Btara=ii;
 	  for (int i=0; i<CountTara; i++) 
@@ -172,7 +173,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
     tvIdPgr.setTag(-1);
     
       
-    Cursor cTara = MainActivity.db.getRawData ("select T._id as _id, T.name as name, T.price as price, T.tara as tara, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id where T.ok=1 and S.kol>0 ",null);
+    Cursor cTara = MainActivity.db.getRawData ("select T._id as _id, T.name as name, T.price as price, T.tara as tara, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id where T.ok=1 and S.kol>0 order by T.tara",null);
     byte ib=0, il=0;
     if (cTara.moveToFirst()) { 
     	 
@@ -231,10 +232,12 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
 			 buttonView.setBackground(getResources().getDrawable(R.drawable.edittext_style));
 			 tara((byte)-2); 
 			 	//btnK = buttonView.getId();
-			    //showDialog(1);
+			    showDialog(1);
 			     }
 			else
-				{buttonView.setTextColor(clrNoCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittexth_style));tvKol.setText("");strKol="";}
+				{buttonView.setTextColor(clrNoCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
+				tvKol.setText("");strKol="";
+				}
 		}
 	} );
     
@@ -250,8 +253,8 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
 	} );
  
    lvCombo = (ListView) findViewById(R.id.lvCombo);
-   String[] from = { "name", "kol","price", "tara", "summa", "button"};
-   int[] to = { R.id.comboName, R.id.comboKol,R.id.comboPrice, R.id.comboTara, R.id.comboSumma, R.id.comboX };
+   String[] from = { "name", "kol","price", "tara","itog", "summa", "button"};
+   int[] to = { R.id.comboName, R.id.comboKol,R.id.comboPrice, R.id.comboTara,R.id.comboItog, R.id.comboSumma, R.id.comboX };
         // создаем адаптер
         sAdapter = new MySimpleAdapter(this, data, R.layout.combo_item, from, to);
         // определяем список и присваиваем ему адаптер
@@ -557,8 +560,14 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
 		   	  
    		   m.put("name", but.get(Btovar).tmc_name);
    		   m.put("price", but.get(Btovar).price);
-   		   if (Btara!=-2) {m.put("kol", but.get(Btara).val+" "+but.get(Btovar).ted); m.put("summa", but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));} else
-   		{m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted); m.put("summa", but.get(Btovar).price*((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/));}
+   		   if (Btara!=-2) 
+   		   {m.put("kol", but.get(Btara).val+" "+but.get(Btovar).ted); 
+   		   m.put("summa", but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
+   		   m.put("itog", but.get(Btara).val+" * "+but.get(Btovar).price+" = ");} 
+   		   else
+   		   {m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted); 
+   		   m.put("summa", but.get(Btovar).price*((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/));
+   		m.put("itog", but.get(Btara).val+" * "+but.get(Btovar).price+" = ");}
    		      m.put("tara", "СВОЯ ТАРА");
    		      data.add(m);
    		      sAdapter.notifyDataSetChanged();
@@ -577,12 +586,14 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
    	 m.put("price", but.get(Btovar).price);
    	 if (Btara!=-2) {m.put("kol", but.get(Btara).val+" "+but.get(Btovar).ted);
 		      m.put("tara", " + ТАРА "+but.get(Btara).tmc_name);
-		      m.put("summa", (but.get(Btovar).price*(but.get(Btara).val/*/0.5*/)+but.get(Btara).price));}
+		      m.put("summa", (but.get(Btovar).price*(but.get(Btara).val/*/0.5*/)+but.get(Btara).price));
+		      m.put("itog", but.get(Btara).val+" * "+but.get(Btovar).price+" + "+but.get(Btara).price+" = ");}
    	 else
    	{m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted);
-    m.put("tara", " + ПАКЕТ ");
+    m.put("tara", /*" + ПАКЕТ "*/"");
     m.put("summa", (but.get(Btovar).price*
-    		((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)+0));}
+    		((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)+0));
+    m.put("itog", but.get(Btara).val+" * "+but.get(Btovar).price+" = ");}
 		      data.add(m);
 		      
    		
@@ -704,7 +715,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
    	for (int i=0; i<data.size(); i++) 
    	{sChek=sChek+"\n"+data.get(i).get("name").toString()+" "+data.get(i).get("kol").toString()+" "+data.get(i).get("price").toString()+" "+data.get(i).get("tara").toString(); }	
    	
-   	//showMessage("ЧЕК № "+cou+" НА СУММУ:"+tvSum.getText().toString()+"\n"+sChek, (byte)1);
+   	showMessage("ЧЕК № "+cou+" НА СУММУ:"+tvSum.getText().toString()+"\n"+sChek, (byte)1);
    		
    	data.clear();
    	sAdapter.notifyDataSetChanged();
@@ -825,7 +836,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
      ///////////////dialog 2 - number
      if (id == 2) {
          AlertDialog.Builder adb = new AlertDialog.Builder(this);
-         adb.setTitle("Введите сумму наличных");
+         adb.setTitle("ПРОВЕРЬТЕ ЧЕК ПЕРЕД ЗАКРЫТИЕМ");
          //adb.setMessage("Message");
          strDialog="";
          Dview = (LinearLayout) getLayoutInflater().inflate(R.layout.chek, null);
@@ -837,8 +848,23 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
          //strDialog="";
       	tvDKol.setText(strDialog);
       	etNal = (EditText) Dview.findViewById(R.id.etCheckNal);
+      	etNal.clearFocus();
+      	//etNal.setImeOptions(EditorInfo.IME_NULL);
       	etSkidka = (EditText) Dview.findViewById(R.id.etCheckSkidka);
-      	
+      	etSkidka.clearFocus();
+      	//getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
+      	/*
+      	InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+      	imm.hideSoftInputFromWindow(etNal.getWindowToken(),
+      			InputMethodManager.HIDE_NOT_ALWAYS);*/
+      	lvComboD = (ListView) Dview.findViewById(R.id.lvComboDia);
+        /*String[] from = { "name", "kol","price", "tara","itog", "summa","button"};
+        int[] to = { R.id.comboName, R.id.comboKol,R.id.comboPrice, R.id.comboTara, R.id.comboItog, R.id.comboSumma, R.id.comboX };
+             // создаем адаптер
+             sAdapterD = new MySimpleAdapter(this, data, R.layout.combo_item, from, to);
+             // определяем список и присваиваем ему адаптер
+             sAdapterD.setViewBinder(new MyViewBinder());*/
+             lvComboD.setAdapter(sAdapter);
          /*bt0 = (Button) Dview.findViewById(R.id.btn000);
          bt1 = (Button) Dview.findViewById(R.id.btn111);
          bt2 = (Button) Dview.findViewById(R.id.btn222);
@@ -912,7 +938,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
             	 //tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
              }
          })
-         .setPositiveButton("ГОТОВО", new DialogInterface.OnClickListener() {
+         .setPositiveButton("ЗАКРЫТЬ ЧЕК", new DialogInterface.OnClickListener() {
              public void onClick(DialogInterface dialog, int id) {
           	  // Log.d("MyLog", "Dismiss");
             	 getCheckDialog(); 
