@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/tvIdPrixod_"
+        android:layout_width="0dp"
+        android:layout_weight="0"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:visibility="invisible"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tvNnomPrixod_"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:text="name"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+    
+    <TextView
+        android:id="@+id/tvNamePrixod_"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:text="name"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/tvIdPostPrixod_"
+        android:layout_width="0dp"
+        android:layout_weight="0"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:visibility="invisible"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+    <TextView
+        android:id="@+id/tvNamePostPrixod_"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:text="name"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+    <TextView
+        android:id="@+id/tvKolPrixod_"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:text="name"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+    <TextView
+        android:id="@+id/tvEdPrixod_"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:text="name"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+          <TextView
+        android:id="@+id/tvPricePrixod_"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:text="name"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+    <TextView
+        android:id="@+id/tvDataInsPrixod_"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:text="dat"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:background="@drawable/edittext_style"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnUpdPrixodHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical|fill_horizontal"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="ИЗМЕНИТЬ" />
+
+        <Button
+            android:id="@+id/btnDelPrixodHist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="УДАЛИТЬ" />
+    </LinearLayout>
+
+</LinearLayout>

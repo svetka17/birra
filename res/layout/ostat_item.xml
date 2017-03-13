@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvId_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="0.5"/>
+
+    <TextView
+        android:id="@+id/tvNameTmc_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    
+    <TextView
+        android:id="@+id/tvNamePgr_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    
+    <TextView
+        android:id="@+id/tvNamePost_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvKol_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvTed_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvPrice_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvDataIns_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        style="@style/_m1"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnUpdOstat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB20"
+            android:text="ИЗМЕНИТЬ" />
+
+        <Button
+            android:id="@+id/btnDelOstat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB20"
+            android:text="ОБНУЛИТЬ" />
+    </LinearLayout>
+
+</TableRow>

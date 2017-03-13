@@ -1,0 +1,111 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    
+    <style name="ET_wm1_n" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">1</item> 
+        <item name="android:cursorVisible">true</item>
+        <item name="android:textSize">35sp</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:ems">10</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+    </style>
+    
+    <style name="ET_wm1_t" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">1</item> 
+        <item name="android:cursorVisible">true</item>
+        <item name="android:textSize">35sp</item>
+        <item name="android:inputType">textCapCharacters</item>
+        <item name="android:ems">100</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+    </style>
+    <style name="ET_wm0_n" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">0</item> 
+        <item name="android:cursorVisible">true</item>
+        <item name="android:textSize">35sp</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:ems">10</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+    </style>
+    
+    <style name="ET_wm0_t" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">0</item> 
+        <item name="android:cursorVisible">true</item>
+        <item name="android:textSize">35sp</item>
+        <item name="android:inputType">textCapCharacters</item>
+        <item name="android:ems">100</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+    </style>
+    <style name="TV_wm0_t" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">0</item> 
+        <item name="android:textSize">35sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+    </style>
+    <style name="TV_wm1_t" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">1</item> 
+        <item name="android:textSize">35sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+    </style>
+    
+    <style name="wm1" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">1</item>
+    </style>
+    
+    <style name="mw1" parent="AppBaseTheme">
+        <item name="android:layout_width">match_parent</item> 
+        <item name="android:layout_height">wrap_content</item> 
+        <item name="android:layout_weight">1</item>
+    </style>
+    
+    <style name="wm0" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">0</item>
+    </style>
+    
+    <style name="mw0" parent="AppBaseTheme">
+        <item name="android:layout_width">match_parent</item> 
+        <item name="android:layout_height">wrap_content</item> 
+        <item name="android:layout_weight">0</item>
+    </style>
+
+</resources>

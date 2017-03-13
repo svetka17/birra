@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal" >
+  
+ 		<TextView
+ 		    android:id="@+id/tv_Id_PgrOborotka"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:visibility="invisible"
+ 		    android:layout_weight="0" />
+                
+                <Spinner
+                    android:id="@+id/sp_Pgr_Oborotka"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0" />
+         <TextView
+ 		    android:text="    ДАТА C  "
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:editable="false"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data_Oborotka"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:editable="true"
+ 		    android:focusableInTouchMode="true"
+ 		    android:layout_weight="0" />
+<!--           
+		<TextView
+ 		    android:text="    ЧЕКИ  "
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:editable="false"
+ 		    android:layout_weight="0" />
+		<TextView
+ 		    android:id="@+id/tv_Id_KlientRasHist"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:visibility="invisible"
+ 		    android:layout_weight="0" />
+                
+                <Spinner
+                    android:id="@+id/sp_Klient_RasHist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0" />
+-->
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/llHOborotka"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+ 		<TextView
+ 		    android:id="@+id/tvHObor1"
+ 		    android:layout_width="10px"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="№ ТОВАРА"/>
+ 		
+ 		<TextView
+ 		    android:id="@+id/tvHObor2"
+ 		    android:layout_width="10px"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="НАИМЕНОВАНИЕ"/>
+ 		<TextView
+ 		    android:id="@+id/tvHObor3"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="ЕД.ИЗМ"/>
+<TextView
+ 		    android:id="@+id/tvHObor4"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="КОЛ НАЧ"/>
+<TextView
+ 		    android:id="@+id/tvHObor5"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="СУММА НАЧ"/>
+<TextView
+ 		    android:id="@+id/tvHObor6"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="ЦЕНА НАЧ"/>
+<TextView
+ 		    android:id="@+id/tvHObor7"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="КОЛ ПРИХОД"/>
+<TextView
+ 		    android:id="@+id/tvHObor8"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="СУММА ПРИХОД"/>
+<TextView
+ 		    android:id="@+id/tvHObor9"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="ЦЕНА ПРИХОД"/>
+<TextView
+ 		    android:id="@+id/tvHObor10"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="КОЛ РАСХОД"/>
+<TextView
+ 		    android:id="@+id/tvHObor11"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="СУММА РАСХОД"/>
+<TextView
+ 		    android:id="@+id/tvHObor12"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="ЦЕНА РАСХОД"/>
+<TextView
+ 		    android:id="@+id/tvHObor13"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="КОЛ КОН"/>
+<TextView
+ 		    android:id="@+id/tvHObor14"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="СУММА КОН"/>
+<TextView
+ 		    android:id="@+id/tvHObor15"
+ 		    android:layout_width="10dp"
+ 		    android:layout_height="match_parent"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="ЦЕНА"/>
+</LinearLayout>
+
+    <ListView
+        android:id="@+id/lvOborotka"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal" >
+  
+        <Button
+            android:id="@+id/btnAddOborotka"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="ЭКСПОРТ В EXCEL" />
+
+        <Button
+            android:id="@+id/btnExitOborotka"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>

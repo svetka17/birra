@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvNnomPrixod_"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+    
+    <TextView
+        android:id="@+id/tvNamePrixod_"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+
+
+    <TextView
+        android:id="@+id/tvNamePostPrixod_"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tvKolPrixod_"
+        style="@style/lv_i"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/tvEdPrixod_"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+
+          <TextView
+              android:id="@+id/tvPricePrixod_"
+              style="@style/lv_i"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tvDataInsPrixod_"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+<!--      
+    <TextView
+        android:id="@+id/tvIdPostPrixod_"
+        android:visibility="invisible"
+        android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="0" />
+    <TextView
+        android:id="@+id/tvIdPrixod_"
+        android:visibility="invisible"
+        android:layout_width="0dp"
+    	android:layout_height="match_parent"
+    	android:layout_weight="0"
+        />
+-->
+    <LinearLayout
+        style="@style/_m1"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnUpdPrixodHist"
+            style="@style/B"
+            android:textAppearance="@style/textB20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ИЗМЕНИТЬ" />
+
+        <Button
+            android:id="@+id/btnDelPrixodHist"
+            style="@style/B"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="УДАЛИТЬ"
+            android:textAppearance="@style/textB20" />
+
+    </LinearLayout>
+
+</TableRow>

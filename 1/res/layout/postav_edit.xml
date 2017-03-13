@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+            	<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+				<TextView
+				    android:id="@+id/tvEditIdPostav"
+				    android:layout_width="wrap_content"
+				    android:layout_height="match_parent"
+				    android:layout_weight="0" />
+				
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="НАИМЕНОВАНИЕ  " />
+                
+                <TextView
+                    android:id="@+id/tvEditNamePostav"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="ВВЕДИТЕ НОВОЕ НАИМЕНОВАНИЕ ПОСТАВЩИКА"
+                    android:inputType="textCapCharacters" />
+                
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+				
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="АДРЕС  " />
+                
+                <TextView
+                    android:id="@+id/tvEditAdresPostav"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="ВВЕДИТЕ АДРЕС"
+                    android:inputType="textCapCharacters" />
+                
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+				
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="ТЕЛЕФОН  " />
+                
+                <TextView
+                    android:id="@+id/tvEditTelPostav"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="ВВЕДИТЕ ТЕЛЕФОН"
+                    android:inputType="textCapCharacters" />
+                
+            </LinearLayout>
+<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+				
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="ПРИМЕЧАНИЕ  " />
+                
+                <TextView
+                    android:id="@+id/tvEditPrimPostav"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:editable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="ВВЕДИТЕ ПРИМЕЧАНИЕ"
+                    android:inputType="textCapCharacters" />
+                
+            </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0" >
+
+        <Button
+            android:id="@+id/btnEditOkPostav"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="ГОТОВО" />
+
+        <Button
+            android:id="@+id/btnEditExitPostav"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="НАЗАД" />
+
+    </LinearLayout>
+
+</LinearLayout>

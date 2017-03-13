@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+            	<LinearLayout
+                    style="@style/mw1"
+                android:orientation="horizontal" >
+
+				<TextView
+				    android:id="@+id/tvEditIdPostav"
+				    android:layout_width="wrap_content"
+				    android:layout_height="match_parent"
+				    android:layout_weight="0" />
+				
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    style="@style/TV_h"
+            		android:textAppearance="@style/textB25"
+                    android:text="НАИМЕНОВАНИЕ" />
+                
+                <EditText
+                    android:id="@+id/tvEditNamePostav"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/ET_t"
+                    android:textAppearance="@style/textI30"
+                    android:hint="ВВЕДИТЕ НОВОЕ НАИМЕНОВАНИЕ ПОСТАВЩИКА" >
+                    <requestFocus />
+                </EditText>
+                
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/mw1"
+                android:orientation="horizontal" >
+				
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    style="@style/TV_h"
+            		android:textAppearance="@style/textB25"
+                    android:text="АДРЕС" />
+                
+                <EditText
+                    android:id="@+id/tvEditAdresPostav"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/ET_t"
+                    android:textAppearance="@style/textI30"
+                    android:hint="ВВЕДИТЕ АДРЕС">
+                    <requestFocus />
+                </EditText>
+                
+            </LinearLayout>
+            <LinearLayout
+                style="@style/mw1"
+                android:orientation="horizontal" >
+				
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    style="@style/TV_h"
+            		android:textAppearance="@style/textB25"
+                    android:text="ТЕЛЕФОН" />
+                
+                <EditText
+                    android:id="@+id/tvEditTelPostav"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/ET_t"
+                    android:textAppearance="@style/textI30"
+                    android:hint="ВВЕДИТЕ ТЕЛЕФОН" >
+                    <requestFocus />
+                </EditText>
+                
+            </LinearLayout>
+			<LinearLayout
+                    style="@style/mw1"
+                android:orientation="horizontal" >
+				
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    style="@style/TV_h"
+            		android:textAppearance="@style/textB25"
+                    android:text="ПРИМЕЧАНИЕ" />
+                
+                <EditText
+                    android:id="@+id/tvEditPrimPostav"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/ET_t"
+                    android:textAppearance="@style/textI30"
+                    android:hint="ВВЕДИТЕ ПРИМЕЧАНИЕ">
+                    <requestFocus />
+                </EditText>
+                
+            </LinearLayout>
+    <LinearLayout
+                    style="@style/mw0">
+
+        <Button
+            android:id="@+id/btnEditOkPostav"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+            android:text="ГОТОВО" />
+
+        <Button
+            android:id="@+id/btnEditExitPostav"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+            android:text="НАЗАД" />
+
+    </LinearLayout>
+
+</LinearLayout>

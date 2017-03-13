@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+
+ 		<TextView
+ 		    android:id="@+id/tv_Id_PgrPriHist"
+ 		    android:layout_width="0dp"
+    		android:layout_height="match_parent"
+    		android:layout_weight="0"
+ 		    android:visibility="invisible" />
+                
+                <Spinner
+                    android:id="@+id/sp_Pgr_PriHist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0" />
+         <TextView
+ 		    android:text="ДАТА"
+ 		    style="@style/TV_h"
+            android:textAppearance="@style/textB30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"/>
+         
+         <EditText
+ 		    android:id="@+id/tv_Data_PtiHist"
+ 		    style="@style/ET_t"
+            android:textAppearance="@style/textI30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:layout_weight="0" >
+ 		    <requestFocus />
+          </EditText>
+
+    </LinearLayout>
+<TableRow  style="@style/mw0">
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="№ ТОВАРА"/>
+ 		
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="НАИМЕНОВАНИЕ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ПОСТАВЩИК"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="КОЛ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ЕД.ИЗМ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ЦЕНА"/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ДАТА"/>
+<TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+
+</TableRow>
+    <ListView
+        android:id="@+id/lvPrixodHist"
+        style="@style/mm1" />
+
+    <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnAddPrixodHist"
+            style="@style/B"
+            android:textAppearance="@style/textB30"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ДОБАВИТЬ НОВЫЙ" />
+
+        <Button
+            android:id="@+id/btnExitPrixodHist"
+            style="@style/B"
+            android:textAppearance="@style/textB30"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>

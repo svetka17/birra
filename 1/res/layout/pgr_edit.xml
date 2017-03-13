@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/etEditIdSpr"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+<!--  
+    <EditText
+        android:id="@+id/tvEditNamePgrSpr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="100"
+        android:hint="ВВЕДИТЕ НАЗВАНИЕ НОВОГО ТИПА"
+        android:inputType="textCapCharacters"
+        android:maxLength="100" >
+
+        <requestFocus />
+    </EditText>
+-->
+    <TextView
+        android:id="@+id/tvEditNamePgrSpr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="100"
+        android:layout_weight="1"
+        android:hint="ВВЕДИТЕ НАЗВАНИЕ НОВОЙ КАТЕГОРИИ ТОВАРА"
+        android:focusableInTouchMode="true"
+        android:inputType="textCapCharacters"
+        android:maxLength="100" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:layout_weight="0"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnOkSpr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="ГОТОВО" />
+
+        <Button
+            android:id="@+id/btnExitSpr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="ВЕРНУТЬСЯ НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>

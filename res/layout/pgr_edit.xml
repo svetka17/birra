@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/etEditIdSpr"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/tvEditNamePgrSpr"
+        style="@style/ET_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:singleLine="true"
+        android:hint="ВВЕДИТЕ НАЗВАНИЕ НОВОЙ КАТЕГОРИИ ТОВАРА"
+        android:textAppearance="@style/textI30" >
+
+         <requestFocus />
+    </EditText>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:layout_weight="0"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnOkSpr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+            android:text="ГОТОВО" />
+
+        <Button
+            android:id="@+id/btnExitSpr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+            android:text="ВЕРНУТЬСЯ НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>

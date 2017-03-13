@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal" >
+  
+ 		<TextView
+ 		    android:id="@+id/tv_Id_PgrOborotka"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:visibility="invisible"
+ 		    android:layout_weight="0" />
+                
+                <Spinner
+                    android:id="@+id/sp_Pgr_Oborotka"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0" />
+         <TextView
+ 		    android:text="ДАТА C"
+ 		    style="@style/TV_h"
+            android:textAppearance="@style/textB30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:layout_weight="0" />
+         <EditText
+ 		    android:id="@+id/tv_Data_Oborotka"
+ 		    style="@style/ET_t"
+            android:textAppearance="@style/textI30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:layout_weight="0" >
+ 		    <requestFocus />
+                </EditText>
+<!--           
+		<TextView
+ 		    android:text="    ЧЕКИ  "
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:editable="false"
+ 		    android:layout_weight="0" />
+		<TextView
+ 		    android:id="@+id/tv_Id_KlientRasHist"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:visibility="invisible"
+ 		    android:layout_weight="0" />
+                
+                <Spinner
+                    android:id="@+id/sp_Klient_RasHist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0" />
+-->
+    </LinearLayout>
+    
+<TableRow  style="@style/mw0">
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="№ ТОВАРА"/>
+ 		
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="НАИМЕНОВАНИЕ"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="ЕД.ИЗМ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="КОЛ НАЧ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="СУММА НАЧ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="ЦЕНА НАЧ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="КОЛ ПРИХОД"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="СУММА ПРИХОД"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="ЦЕНА ПРИХОД"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="КОЛ РАСХОД"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="СУММА РАСХОД"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="ЦЕНА РАСХОД"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="КОЛ КОН"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="СУММА КОН"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="ЦЕНА"/>
+<TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+</TableRow>
+
+    <ListView
+        android:id="@+id/lvOborotka"
+        style="@style/mm1" />
+
+    <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+  
+        <Button
+            android:id="@+id/btnAddOborotka"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB30"
+            android:text="ЭКСПОРТ В EXCEL" />
+
+        <Button
+            android:id="@+id/btnExitOborotka"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB30"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>

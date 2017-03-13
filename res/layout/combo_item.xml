@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+<LinearLayout
+    style="@style/mw1"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/comboName"
+        style="@style/lv_i"
+        android:layout_weight="2"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/comboKol"
+        style="@style/lv_i"
+        android:layout_weight="1"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/comboPrice"
+        style="@style/lv_i"
+        android:layout_weight="1"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/comboTara"
+        style="@style/lv_i"
+        android:layout_weight="2"
+        android:text="TextView" />
+
+</LinearLayout>
+<LinearLayout
+    style="@style/mw1"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/comboSumma"
+        style="@style/wm1"
+        android:gravity="right|center_vertical"
+        android:textAppearance="@style/textB30"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/comboX"
+        style="@style/wm0"
+        android:gravity="center_horizontal|center_vertical"
+        android:textAppearance="@style/textB30"
+        android:text="X" />
+ </LinearLayout>   
+</LinearLayout>

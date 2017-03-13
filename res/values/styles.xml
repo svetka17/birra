@@ -1,0 +1,174 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    
+    <style name="ET_n" > 
+		<item name="android:cursorVisible">true</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:ems">10</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/edittext_style</item>
+<!--          <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item> 
+-->
+		<item name="android:paddingLeft">10dp</item>
+		<item name="android:paddingRight">10dp</item>
+    </style>
+    
+	<style name="ET_t"> 
+		<item name="android:cursorVisible">true</item>
+        <item name="android:inputType">textCapCharacters</item>
+        <item name="android:ems">100</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/edittext_style</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+	</style>
+	
+    <style name="TV_h"> <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/edittexth_style</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+     </style>
+    
+    <style name="TV_i"> 
+ 		<item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/edittext_style</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+    
+    <style name="B" > 
+		<item name="android:background">@drawable/edittexth_style</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+<!--  -->
+        <item name="android:paddingLeft">10dp</item>
+		<item name="android:paddingRight">10dp</item>
+		
+    </style>
+    
+        <style name="BB" > 
+		<item name="android:background">@drawable/edittexth_style</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+		
+    </style>
+    
+    <style name="textB35">
+        <item name="android:textSize">35sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="textI35">
+        <item name="android:textSize">35sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+    <style name="textI30">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+    <style name="textB30">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="textI25">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+    <style name="textB25">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="textI20">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+    <style name="textB20">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="wm1" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">1</item>
+    </style>
+    
+    <style name="mw1" parent="AppBaseTheme">
+        <item name="android:layout_width">match_parent</item> 
+        <item name="android:layout_height">wrap_content</item> 
+        <item name="android:layout_weight">1</item>
+    </style>
+    
+    <style name="wm0" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">0</item>
+    </style>
+    
+    <style name="mw0" parent="AppBaseTheme">
+        <item name="android:layout_width">match_parent</item> 
+        <item name="android:layout_height">wrap_content</item> 
+        <item name="android:layout_weight">0</item>
+    </style>
+    <style name="ww0" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">wrap_content</item> 
+        <item name="android:layout_weight">0</item>
+    </style>
+    <style name="ww1" parent="AppBaseTheme">
+        <item name="android:layout_width">wrap_content</item> 
+        <item name="android:layout_height">wrap_content</item> 
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="mm0" parent="AppBaseTheme">
+        <item name="android:layout_width">match_parent</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">0</item>
+    </style>
+    <style name="mm1" parent="AppBaseTheme">
+        <item name="android:layout_width">match_parent</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="_m1" parent="AppBaseTheme">
+        <item name="android:layout_width">0dp</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_weight">1</item>
+    </style>
+     
+    <style name="lv_i" parent="AppBaseTheme">
+        <item name="android:layout_width">0dp</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/edittext_style</item>
+        <item name="android:paddingLeft">10dp</item>
+		<item name="android:paddingRight">10dp</item>
+		<item name="android:textAppearance">@style/textI20</item>
+    </style>
+
+    <style name="lv_h" parent="AppBaseTheme">
+        <item name="android:layout_width">0dp</item> 
+        <item name="android:layout_height">match_parent</item> 
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:background">@drawable/edittexth_style</item>
+        <item name="android:paddingLeft">10dp</item>
+		<item name="android:paddingRight">10dp</item>
+		<item name="android:textAppearance">@style/textB20</item>
+    </style>
+
+</resources>

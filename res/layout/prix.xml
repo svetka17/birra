@@ -1,0 +1,58 @@
+<TableLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:stretchColumns="*"
+android:background="#abb3b2"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent">
+<TableRow
+    android:background="#39743e"
+    android:padding="5dp">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Дата"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Время"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+</TableRow>
+<TableRow android:padding="5dp">
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Сегодня"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Текущее время"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</TableRow>
+<TableRow android:padding="5dp">
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="08.11.2015"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="12:00"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</TableRow>
+<TableRow android:padding="5dp">
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="09.11.2015"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="20:50"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</TableRow>
+</TableLayout>

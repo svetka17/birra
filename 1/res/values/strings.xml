@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ПИВНОЙ МАГАЗИН</string>
+    <string name="delete_record">удалить запись</string>
+    <string name="new_record">новая запись</string>
+    <string name="update_record">изменить запись</string>
+    <string name="action_settings">настройки</string>
+    <string name="yes">ДА</string>
+    <string name="no">НЕТ</string>
+    <string name="maybe">НЕ ЗНАЮ</string>
+    <string name="message">сообщение</string>
+
+</resources>

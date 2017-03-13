@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/mw1"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            style="@style/wm1"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                style="@style/mw1"
+                android:orientation="horizontal" >
+                
+                <TextView
+                    android:id="@+id/etEditIdProd"
+                    style="@style/TV_wm0_t"
+                    android:layout_weight="0" />
+
+                <CheckBox
+                    android:id="@+id/cbEditVisProd"
+                    style="@style/wm0"
+                    android:checked="true"
+                    android:editable="true"
+                    android:text="ДЛЯ ПРОДАЖИ СЕГОДНЯ" />
+                <CheckBox
+                    android:id="@+id/cbEditOkProd"
+                    style="@style/wm0"
+                    android:checked="false"
+                    android:editable="true"
+                    android:text=" ТАРА" />
+
+                <TextView
+                    style="@style/TV_wm0_t"
+                    android:text="ОБЪЕМ" />
+
+                <EditText
+                    android:id="@+id/etEditTaraProd"
+                    android:hint="ВВЕДИТЕ ЗНАЧЕНИЕ ОБЪЕМА"
+                    style="@style/ET_wm1_n" >
+				<requestFocus />
+                </EditText>
+                
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/mw1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/TV_wm0_t"
+                    android:text="НАИМЕНОВАНИЕ НА ЭКРАНЕ" />
+                
+                <EditText
+                    android:id="@+id/tvEditNameProd"
+                    style="@style/ET_wm1_t"
+                    android:hint="ВВЕДИТЕ НАИМЕНОВАНИЕ НОВОГО ТОВАРА" >
+                <requestFocus />
+                </EditText>
+                
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/mw1">
+
+                <TextView
+                    style="@style/TV_wm0_t"
+                    android:text="ТИП (ПОДГРУППА)" />
+
+               <TextView
+                   android:id="@+id/etEditIdPgrProd"
+                   style="@style/wm0"
+                   android:visibility="invisible" />
+                
+                <Spinner
+                    android:id="@+id/spEditPgr_Prod"
+                    style="@style/TV_wm1_t"/>
+
+            </LinearLayout>
+            <LinearLayout
+                style="@style/mw1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/TV_wm0_t"
+                    android:text="ЦЕНА" />
+
+            <EditText
+                android:id="@+id/tvEditPriceProd"
+                style="@style/ET_wm1_n">
+                <requestFocus />
+                </EditText>
+            
+            </LinearLayout>
+            <LinearLayout
+                style="@style/mw1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/TV_wm0_t"
+                    android:text="ДАТА" />
+
+            <TextView
+                android:id="@+id/tvEditDatInsProd"
+                style="@style/TV_wm1_t"
+                android:inputType="date" />
+                
+            </LinearLayout>
+        </LinearLayout>
+
+        
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/mw0" >
+
+        <Button
+            android:id="@+id/btnOkEditProd"
+            style="@style/wm1"
+            android:text="ГОТОВО" />
+
+        <Button
+            android:id="@+id/btnExitEditProd"
+            style="@style/wm1"
+            android:text="НАЗАД" />
+
+    </LinearLayout>
+
+</LinearLayout>

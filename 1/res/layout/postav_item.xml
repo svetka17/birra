@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/tvIdPostav"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:text="id"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvNamePostav"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:text="name"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/tvAdresPostav"
+            android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+            android:text="name"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/tvTelefPostav"
+                    android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+                    android:text="name"
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/tvPrimPostav"
+                            android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+                            android:text="name"
+                            android:textSize="18sp"
+                            android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/tvDataInsPostav"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/edittext_style"
+        android:gravity="center_vertical"
+        android:text="dat"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:background="@drawable/edittext_style"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnUpdPostav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical|fill_horizontal"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="ИЗМЕНИТЬ" />
+
+        <Button
+            android:id="@+id/btnDelPostav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="УДАЛИТЬ" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<!--   
+    <TextView
+        android:id="@+id/tv_Id_OstatR_oborotka"
+        android:layout_width="0dp"
+        android:layout_weight="0"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
+    <TextView
+        android:id="@+id/tv_Id_OstatP_oborotka"
+        android:layout_width="0dp"
+        android:layout_weight="0"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
+-->
+    <TextView
+        android:id="@+id/tv_Nnom_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+    
+    <TextView
+        android:id="@+id/tv_Name_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tv_Ted_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+
+    <TextView
+        android:id="@+id/tv_Kol_Nach_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5"/>
+    <TextView
+        android:id="@+id/tv_Sum_Nach_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5"/>   
+            <TextView
+        android:id="@+id/tv_Price_Nach_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" /> 
+        <TextView
+        android:id="@+id/tv_Kol_Pri_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+    <TextView
+        android:id="@+id/tv_Sum_Pri_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+    <TextView
+        android:id="@+id/tv_Price_Pri_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+        <TextView
+        android:id="@+id/tv_Kol_Ras_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+    <TextView
+        android:id="@+id/tv_Sum_Ras_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5"/>    
+        <TextView
+        android:id="@+id/tv_Price_Ras_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+       <TextView
+        android:id="@+id/tv_Kol_Kon_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+    <TextView
+        android:id="@+id/tv_Sum_Kon_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />   
+            <TextView
+        android:id="@+id/tv_Price_Kon_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />  
+
+    <LinearLayout
+        style="@style/_m1"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnUpdOborotka"
+            style="@style/B"
+            android:textAppearance="@style/textB20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ПОДРОБНЕЕ" />
+
+        <Button
+            android:id="@+id/btnDelOborotka"
+            style="@style/B"
+            android:textAppearance="@style/textB20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ДВИЖЕНИЕ" />
+    </LinearLayout>
+
+</TableRow>

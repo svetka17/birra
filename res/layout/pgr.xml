@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+<TableRow  style="@style/mw0">
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="№ ГРУППЫ"/>
+ 		
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="2"
+ 		    android:text="НАИМЕНОВАНИЕ"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ДАТА СОЗДАНИЯ"/>
+ 		<TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+
+</TableRow>
+<!--    
+ 		<TextView
+ 		    android:layout_width="0dp"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="1"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="№ ГРУППЫ" />
+
+ 		<TextView
+ 		    android:layout_width="0dp"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="1"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="НАИМЕНОВАНИЕ ГРУППЫ" />
+
+ 		<TextView
+ 		    android:layout_width="0dp"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="1"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="ДАТА СОЗДАНИЯ" />
+
+ 		<TextView
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0"
+ 		    android:background="@drawable/edittexth_style"
+ 		    android:gravity="center_vertical|center_horizontal"
+ 		    android:text="                " />
+-->
+
+    <ListView
+        android:id="@+id/lvPgr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+<!--
+<GridView
+        android:id="@+id/lvPgr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:numColumns="1"
+         >
+ 
+    </GridView>
+-->    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnAddPgr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="ДОБАВИТЬ НОВЫЙ" />
+
+        <Button
+            android:id="@+id/btnExitPgr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+                
+                <Spinner
+                    android:id="@+id/sp_Pgr_RasHist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0" />
+                <TextView
+ 		    android:id="@+id/tv_Id_PgrRasHist"
+ 		    android:layout_width="0dp"
+    		android:layout_height="match_parent"
+    		android:layout_weight="0"
+ 		    android:visibility="invisible" />
+
+         <TextView
+ 		    android:text="ДАТА ПРОДАЖИ"
+ 		    style="@style/TV_h"
+            android:textAppearance="@style/textB30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <EditText
+ 		    android:id="@+id/tv_Data_RasHist"
+ 		    style="@style/ET_t"
+            android:textAppearance="@style/textI30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0.2"/>
+		<TextView
+ 		    android:text="ЧЕКИ"
+ 		    style="@style/TV_h"
+            android:textAppearance="@style/textB30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+		<TextView
+ 		    android:id="@+id/tv_Id_KlientRasHist"
+ 		    android:layout_width="0dp"
+    		android:layout_height="match_parent"
+    		android:layout_weight="0"
+ 		    android:visibility="invisible" />
+                
+                <Spinner
+                    android:id="@+id/sp_Klient_RasHist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0" />
+
+    </LinearLayout>
+<TableRow  style="@style/mw0">
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="№ ТОВАРА"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="НАИМЕНОВАНИЕ"/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="КОЛ"/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ЦЕНА"/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ДАТА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ПРИМЕЧАНИЕ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="№ЧЕКА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="СУММА ЧЕКА"/>
+
+<TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+    </TableRow>
+    <ListView
+        android:id="@+id/lvRasxodHist"
+            style="@style/mm1" />
+
+    <LinearLayout
+            style="@style/mw0"
+        android:orientation="horizontal" >
+<!--  
+        <Button
+            android:id="@+id/btnAddPrixodHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="ДОБАВИТЬ НОВЫЙ" />
+-->
+        <Button
+            android:id="@+id/btnExitRasxodHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB30"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>

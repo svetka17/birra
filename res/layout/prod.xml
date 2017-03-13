@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/et_Id_PgrProd"
+            style="@style/ww0"
+            android:visibility="invisible" />
+
+        <Spinner
+            android:id="@+id/sp_Pgr_Prod"
+            style="@style/ww0" />
+
+        <CheckBox
+            android:id="@+id/cb_Vis_Prod"
+            style="@style/TV_h"
+            android:textAppearance="@style/textB20" 
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:editable="false"
+            android:text="СЕГОДНЯ ДЛЯ ПРОДАЖИ"/>
+
+        <CheckBox
+            android:id="@+id/cb_Ok_Prod"
+            style="@style/TV_h"
+            android:textAppearance="@style/textB20"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:editable="false"
+            android:text="ТАРА" />
+    </LinearLayout>
+    
+<TableRow  style="@style/mw0">
+
+        <TextView
+            style="@style/lv_h"
+            android:layout_weight="1"
+            android:text="№ ТОВАРА" />
+
+        <TextView
+            style="@style/lv_h"
+            android:layout_weight="1"
+            android:text="ПРОДАЕМ" />
+
+        <TextView
+            style="@style/lv_h"
+            android:layout_weight="2"
+            android:text="НАИМЕНОВАНИЕ"/>
+
+        <TextView
+            style="@style/lv_h"
+            android:layout_weight="1.5"
+            android:text="ГРУППА"/>
+
+        <TextView
+            style="@style/lv_h"
+            android:layout_weight="1"
+            android:text="ТАРА" />
+
+        <TextView
+            style="@style/lv_h"
+            android:layout_weight="1"
+            android:text="ОБЪЕМ ТАРЫ" />
+
+        <TextView
+            style="@style/lv_h"
+            android:layout_weight="1"
+            android:text="ЦЕНА ПРОДАЖИ"/>
+        <TextView
+            style="@style/lv_h"
+            android:layout_weight="1"
+            android:text="ЕД.ИЗМ"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+    </TableRow>
+<!--  
+    <LinearLayout
+        android:id="@+id/llHProd"
+        style="@style/mw0"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tvHIdProd"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/edittexth_style"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="№ ТОВАРА"
+            android:textAppearance="@style/textB20" />
+
+        <TextView
+            android:id="@+id/tvHVisProd"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/edittexth_style"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="ПРОДАЕМ"
+            android:textAppearance="@style/textB20" />
+
+        <TextView
+            android:id="@+id/tvHNameProd"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/edittexth_style"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="НАИМЕНОВАНИЕ"
+            android:textAppearance="@style/textB20" />
+
+        <TextView
+            android:id="@+id/tvHPgrProd"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/edittexth_style"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="ГРУППА"
+            android:textAppearance="@style/textB20" />
+
+        <TextView
+            android:id="@+id/tvHTaraProd"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/edittexth_style"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="ТАРА"
+            android:textAppearance="@style/textB20" />
+
+        <TextView
+            android:id="@+id/tvHTaraValProd"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/edittexth_style"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="ОБЪЕМ ТАРЫ"
+            android:textAppearance="@style/textB20" />
+
+        <TextView
+            android:id="@+id/tvHPriceProd"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/edittexth_style"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="ЦЕНА ПРОДАЖИ"
+            android:textAppearance="@style/textB20" />
+    </LinearLayout>
+-->
+    <ListView
+        android:id="@+id/lvProd_"
+        style="@style/mw1" />
+
+<!--
+    <GridView
+    android:id="@+id/lvProd_"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1"
+    android:numColumns="1"
+    android:columnWidth="600dp"
+    android:verticalSpacing="5dp"
+    android:horizontalSpacing="5dp"
+    android:stretchMode="spacingWidthUniform" />
+-->
+
+    <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnAddProd_"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+           	android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ДОБАВИТЬ НОВЫЙ"/>
+
+        <Button
+            android:id="@+id/btnGoPGR_"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ГРУППЫ ТОВАРОВ"/>
+
+        <Button
+            android:id="@+id/btnExitProd_"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="НАЗАД"/>
+    </LinearLayout>
+
+</LinearLayout>

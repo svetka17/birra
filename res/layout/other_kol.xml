@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_weight="0" >
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0"
+        android:columnCount="3"
+        android:orientation="horizontal"
+        android:rowCount="6" >
+<TextView
+        android:id="@+id/tvOtherKolD"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_columnSpan="3"
+        android:textStyle="bold" >
+    </TextView>
+        <Button
+            android:id="@+id/btnDDD"
+            android:text="&lt;--" />
+
+        <Button
+            android:id="@+id/btnXXX"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill"
+            android:text="C" />
+
+        <Button
+            android:id="@+id/btn777"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/btn888"
+            android:text="8" />
+
+        <Button
+            android:id="@+id/btn999"
+            android:text="9" />
+
+        <Button
+            android:id="@+id/btn444"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/btn555"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/btn666"
+            android:text="6" />
+
+        <Button
+            android:id="@+id/btn111"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/btn222"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/btn333"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/btn000"
+            android:text="0" />
+
+        <Button
+            android:id="@+id/btnComaCC"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill"
+            android:text="." />
+       
+    </GridLayout>
+    
+</ScrollView>
+</LinearLayout>

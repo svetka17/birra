@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/mw1"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            style="@style/mm1"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                style="@style/mw1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tvIdPri"
+                    style="@style/ww0"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/tvIdProdPri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    style="@style/TV_h"
+            		android:textAppearance="@style/textI30" />
+
+                <Spinner
+                    android:id="@+id/spProdPri"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:id="@+id/tvIdPostPri"
+                    style="@style/ww0"
+                    android:visibility="invisible" />
+
+                <Spinner
+                    android:id="@+id/spPostPri"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/mw1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/TV_h"
+            		android:textAppearance="@style/textB25"
+                	android:layout_width="wrap_content"
+                	android:layout_height="match_parent"
+                    android:text="КОЛИЧЕСТВО"/>
+
+                <EditText
+                    android:id="@+id/tvKolPri"
+                    style="@style/ET_n"
+            		android:textAppearance="@style/textI30"
+            		android:layout_weight="1"
+                	android:layout_width="match_parent"
+                	android:layout_height="match_parent"
+                	android:selectAllOnFocus="true"
+                    android:hint="ВВЕДИТЕ КОЛИЧЕСТВО">
+                    <requestFocus />
+                </EditText>
+
+                <TextView
+                    android:id="@+id/tvIdEdPri"
+                    style="@style/ww0"
+                    android:visibility="invisible" />
+
+                <TextView
+                     style="@style/TV_h"
+            		android:textAppearance="@style/textB30"
+                    android:id="@+id/spEdPri"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                     style="@style/TV_h"
+            		android:textAppearance="@style/textB25"
+                	android:layout_width="wrap_content"
+                	android:layout_height="match_parent"
+                    android:text="ЦЕНА ПОСТАВЩИКА" />
+
+                <EditText
+                    android:id="@+id/tvPricePri"
+                     style="@style/ET_n"
+            		android:textAppearance="@style/textI30"
+            		android:layout_weight="1"
+                	android:layout_width="match_parent"
+                	android:layout_height="match_parent"
+                    android:hint="ВВЕДИТЕ ЦЕНУ ЗАКУПКИ">
+                    <requestFocus />
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                 style="@style/mw1">
+
+                <TextView
+                    style="@style/TV_h"
+            		android:textAppearance="@style/textB25"
+                	android:layout_width="wrap_content"
+                	android:layout_height="match_parent"
+                    android:text="ПРИМЕЧАНИЕ  " />
+
+                <EditText
+                    android:id="@+id/tvPrimPri"
+                    style="@style/ET_t"
+            		android:textAppearance="@style/textI30"
+            		android:layout_weight="1"
+                	android:layout_width="wrap_content"
+                	android:layout_height="match_parent"
+                    android:hint="ВВЕДИТЕ ПРИМЕЧАНИЕ (не обязательное поле)">
+                    <requestFocus />
+                </EditText>
+                </LinearLayout>
+				<LinearLayout
+                 style="@style/mw1">
+                <TextView
+                    style="@style/TV_h"
+            		android:textAppearance="@style/textB25"
+                	android:layout_width="wrap_content"
+                	android:layout_height="match_parent"
+                    android:text="ДАТА ПОСТАВКИ" />
+
+                <EditText
+                    android:id="@+id/tvDatInsPri"
+                    style="@style/ET_t"
+            		android:textAppearance="@style/textI30"
+                	android:layout_width="wrap_content"
+                	android:layout_height="match_parent"
+                    android:hint="ВВЕДИТЕ ДАТУ (ИЛИ БУДЕТ ПОДСТАВЛЕНО СЕГОДНЯШНЕЕ ЧИСЛО)" >
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+        </LinearLayout>
+
+<!--
+     		<CalendarView
+        android:id="@+id/tvDatInsPri"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="onClick"
+        android:selectedWeekBackgroundColor="#ff0000"
+        android:weekNumberColor="#0000ff"
+        android:weekSeparatorLineColor="#00ff00" />
+-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/mw0">
+
+        <Button
+            android:id="@+id/btnSprProdPri"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+           	android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="СПРАВОЧНИК ТОВАРА" />
+
+        <Button
+            android:id="@+id/btnSprPostPri"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="СПРАВОЧНИК ПОСТАВЩИКОВ" />
+
+        <Button
+            android:id="@+id/btnHistPri"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ИСТОРИЯ" />
+
+        <Button
+            android:id="@+id/btnAddPri"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ГОТОВО" />
+
+        <Button
+            android:id="@+id/btnExitPri"
+            style="@style/B"
+            android:textAppearance="@style/textB35"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>
