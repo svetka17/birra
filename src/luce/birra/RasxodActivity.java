@@ -13,7 +13,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -39,13 +38,15 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
- 
-public class RasxodActivity extends FragmentActivity implements OnCheckedChangeListener{
-  Button /*btnExit,*/tbHist, tbXX, btnOk, btnBack, bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD,
-  b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, btCom, btClear, btD;
+import android.widget.SeekBar; 
+public class RasxodActivity extends FragmentActivity implements OnCheckedChangeListener,
+SeekBar.OnSeekBarChangeListener
+{
+  Button /*btnExit,*/tbHist, tbXX, btnOk, btnBack, bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
+  //b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, btCom, btClear, btD;
   ToggleButton /*tb05, tb1, tb15, tb2, tb25, tb3,*/tbnKol, tbTara;
   TextView tvSum, tvKol, tvDKol, tvIdPgr, tvNamePgr;//, tvCombo;
-  TextView etNal, etSkidka, tvDItogo, tvSdacha;
+  TextView etNal, etSkidka,tvNal, tvSkidka, tvDItogo, tvSdacha;
   ListView lvCombo, lvComboD;
   LinearLayout Dview; 
   //LinearLayout llbut;
@@ -53,7 +54,10 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
   TableRow row;
   //TableRow.LayoutParams params;
   
-  LinearLayout lltara;
+  LinearLayout lltara, llL, llR;
+  LinearLayout.LayoutParams llLP;
+  LinearLayout.LayoutParams llRP;
+  SeekBar sbar;
   //HorizontalScrollView lltara;
   int Bpost=0,btnK=0,clrCheck=Color.BLUE, clrNoCheck=Color.BLACK, tvDialogN=0;
   
@@ -152,6 +156,13 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
     llbut = (TableLayout) findViewById(R.id.llBut);
     llbut.setStretchAllColumns(true);
     llbut.setShrinkAllColumns(true);
+    
+    llL = (LinearLayout) findViewById(R.id.llL);
+    llR = (LinearLayout) findViewById(R.id.llR);
+    llLP = (LinearLayout.LayoutParams) llL.getLayoutParams();
+    llRP = (LinearLayout.LayoutParams) llR.getLayoutParams();
+    sbar = (SeekBar) findViewById(R.id.seekBar);
+    sbar.setOnSeekBarChangeListener(this);
     
     lltara = (LinearLayout) findViewById(R.id.llTara);
     tvNamePgr = (TextView) findViewById(R.id.tvNamePgrBack);
@@ -266,14 +277,14 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
     tvSum = (TextView) findViewById(R.id.tvSumSum);
     tvSum.setText("");
     
-    tbHist = (Button) findViewById(R.id.btnRasxodHistory);
+/*    tbHist = (Button) findViewById(R.id.btnRasxodHistory);
     tbHist.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	Intent intent = new Intent(RasxodActivity.this, RasxodHistActivity.class);
      	   	startActivity(intent);
         }
       });
-    
+*/    
     tbXX = (Button) findViewById(R.id.btnXRasxod_x);
     tbXX.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
@@ -292,7 +303,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
       });
     
     
-    b0 = (Button) findViewById(R.id.btn00);
+/*    b0 = (Button) findViewById(R.id.btn00);
     b1 = (Button) findViewById(R.id.btn11);
     b2 = (Button) findViewById(R.id.btn22);
     b3 = (Button) findViewById(R.id.btn33);
@@ -343,10 +354,10 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
   			Matcher matcher = pattern.matcher(strKol.concat(((Button) v).getText().toString()));
   			if (matcher.matches()) {strKol=strKol.concat(((Button) v).getText().toString()); tvKol.setText(strKol); 
   			//push btnKOl
-  			/*if (!tbnKol.isChecked())
-  			 {tbnKol.setTextColor(clrCheck); 
-  			 tbnKol.setBackground(getResources().getDrawable(R.drawable.edittext_style));
-  			 tara((byte)-2); }*/
+  			//if (!tbnKol.isChecked())
+  			// {tbnKol.setTextColor(clrCheck); 
+  			// tbnKol.setBackground(getResources().getDrawable(R.drawable.edittext_style));
+  			// tara((byte)-2); }
   			}
   			//else
   				if (StrToFloat(tvKol.getText().toString())==0)//(tvKol.getText().toString().equals("")||tvKol.getText().equals("0")||tvKol.getText().equals("0.")||tvKol.getText().equals(".")) 
@@ -364,7 +375,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
     b7.setOnClickListener(listenerKol);
     b8.setOnClickListener(listenerKol);
     b9.setOnClickListener(listenerKol);
-    
+*/    
   }
    
    void setPgr() {
@@ -465,7 +476,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
 		   
 	        do {
 	        	
-	        	if (ib%2==CountTara%2) {
+	        	if (ib%3==CountTara%3) {
 	        		row = new TableRow(this);
 	                //row.setGravity(Gravity.CENTER);
 	                //row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,1));
@@ -975,24 +986,14 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
          
         tvSdacha = (TextView) Dview.findViewById(R.id.tvCheckSdacha);
       	etNal = (TextView) Dview.findViewById(R.id.etCheckNal);
+      	tvNal = (TextView) Dview.findViewById(R.id.tvCheckNal);
       	//etNal.clearFocus();
-      	etNal.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-            	//showPic(v);
-            	tvDialogN=R.id.etCheckNal;
-            	showDialog(1);
-            }
-          });
+      	
       	
       	//etNal.setImeOptions(EditorInfo.IME_NULL);
       	etSkidka = (TextView) Dview.findViewById(R.id.etCheckSkidka);
-      	etSkidka.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-            	//showPic(v);
-            	tvDialogN=R.id.etCheckSkidka;
-            	showDialog(1);
-            }
-          });
+      	tvSkidka = (TextView) Dview.findViewById(R.id.tvCheckSkidka);
+      	
       	//etSkidka.clearFocus();
       	
       	//getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
@@ -1110,7 +1111,36 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
      super.onPrepareDialog(id, dialog);
      //Log.d("MyLog", "Prepare");
      if (id == 1) tvDKol.setText("");
-     if (id == 2) {etSkidka.setText(""); etNal.setText(""); tvDItogo.setText(tvSum.getText()); tvSdacha.setText(""); } 
+     if (id == 2) {etSkidka.setText(""); etNal.setText(""); tvDItogo.setText(tvSum.getText()); tvSdacha.setText(""); 
+     etNal.setOnClickListener(new OnClickListener() {
+         public void onClick(View v) {
+         	//showPic(v);
+         	tvDialogN=R.id.etCheckNal;
+         	showDialog(1);
+         }
+       });
+   	tvNal.setOnClickListener(new OnClickListener() {
+         public void onClick(View v) {
+         	//showPic(v);
+         	tvDialogN=R.id.etCheckNal;
+         	showDialog(1);
+         }
+       });
+   	etSkidka.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	//showPic(v);
+        	tvDialogN=R.id.etCheckSkidka;
+        	showDialog(1);
+        }
+      });
+  	tvSkidka.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	//showPic(v);
+        	tvDialogN=R.id.etCheckSkidka;
+        	showDialog(1);
+        }
+      });
+   	} 
      strDialog="";
      //tvDKol = (TextView) dialog.getWindow().findViewById(R.id.tvOtherKolD);
      /*bt0 = (Button) dialog.getWindow().findViewById(R.id.btn000);
@@ -1289,6 +1319,28 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
 	      return false;
 	    }
 	  }
+@Override
+public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+	// TODO Auto-generated method stub
+
+}
+
+@Override
+public void onStartTrackingTouch(SeekBar seekBar) {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void onStopTrackingTouch(SeekBar seekBar) {
+	//int leftValue = progress;
+	  //int rightValue = seekBar.getMax() - progress;
+	  // настраиваем вес
+	  llLP.weight = seekBar.getProgress();
+	  llRP.weight = seekBar.getMax()-seekBar.getProgress();
+	  llL.requestLayout();
+	
+}
  
 }
 

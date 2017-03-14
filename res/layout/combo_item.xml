@@ -33,21 +33,27 @@
         android:text="TextView" />
 
 </LinearLayout>
-<LinearLayout
+
+<LinearLayout
     style="@style/mw1"
+    android:layout_weight="0"
     android:orientation="horizontal" >
+
 <TextView
-        android:id="@+id/comboItog"
-        style="@style/wm0"
-        android:gravity="left|center_vertical"
-        android:textAppearance="@style/textI30"
-        android:text="TextView" />
+    android:id="@+id/comboItog"
+    style="@style/wm0"
+    android:layout_weight="1"
+    android:gravity="right|center_vertical"
+    android:text="TextView"
+    android:textAppearance="@style/textI20" />
+
     <TextView
         android:id="@+id/comboSumma"
         style="@style/wm1"
+        android:layout_weight="0"
         android:gravity="right|center_vertical"
-        android:textAppearance="@style/textB30"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAppearance="@style/textB30" />
 
     <Button
         android:id="@+id/comboX"

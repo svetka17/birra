@@ -15,9 +15,9 @@
         style="@style/ET_t"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:singleLine="true"
+        android:layout_weight="1"
         android:hint="ВВЕДИТЕ НАЗВАНИЕ НОВОЙ КАТЕГОРИИ ТОВАРА"
+        android:singleLine="true"
         android:textAppearance="@style/textI30" >
 
          <requestFocus />
@@ -33,21 +33,22 @@
 
         <Button
             android:id="@+id/btnOkSpr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB35"
-            android:text="ГОТОВО" />
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="ГОТОВО"
+            android:textAppearance="@style/textB35" />
 
         <Button
             android:id="@+id/btnExitSpr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB35"
-            android:text="ВЕРНУТЬСЯ НАЗАД" />
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="ВЕРНУТЬСЯ НАЗАД"
+            android:textAppearance="@style/textB35" />
+
     </LinearLayout>
 
 </LinearLayout>
