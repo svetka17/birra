@@ -55,18 +55,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="НАЛИЧНЫЕ"
+                    android:text="ИТОГО"
                     android:textAppearance="@style/textB20" />
 
-                <EditText
-                    android:id="@+id/etCheckNal"
-                    style="@style/ET_n"
-                    android:textAppearance="@style/textI20" 
+                <TextView
+                    android:id="@+id/etItogSummaD"
+                    style="@style/TV_i"
+                    android:textAppearance="@style/textB30" 
                     android:singleLine="true"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-				</EditText>
+                    android:layout_height="match_parent"/>
+				
                 <TextView
                     style="@style/TV_h"
                     android:layout_width="wrap_content"
@@ -75,15 +75,31 @@
                     android:text="СКИДКА"
                     android:textAppearance="@style/textB20" />
 
-                <EditText
+                <TextView
                     android:id="@+id/etCheckSkidka"
-                    style="@style/ET_n"
+                    style="@style/TV_i"
                     android:textAppearance="@style/textI20" 
                     android:singleLine="true"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-                 </EditText>
+                    android:layout_height="match_parent"/>
+                
+                <TextView
+                    style="@style/TV_h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="НАЛИЧНЫЕ"
+                    android:textAppearance="@style/textB20" />
+
+                <TextView
+                    android:id="@+id/etCheckNal"
+                    style="@style/TV_i"
+                    android:textAppearance="@style/textI20" 
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
                     <TextView
                     style="@style/TV_h"
             		android:textAppearance="@style/textB20"

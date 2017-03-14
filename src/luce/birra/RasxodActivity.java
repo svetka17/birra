@@ -1,5 +1,7 @@
 package luce.birra;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,11 +27,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -45,7 +45,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
   b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, btCom, btClear, btD;
   ToggleButton /*tb05, tb1, tb15, tb2, tb25, tb3,*/tbnKol, tbTara;
   TextView tvSum, tvKol, tvDKol, tvIdPgr, tvNamePgr;//, tvCombo;
-  EditText etNal, etSkidka;
+  TextView etNal, etSkidka, tvDItogo, tvSdacha;
   ListView lvCombo, lvComboD;
   LinearLayout Dview; 
   //LinearLayout llbut;
@@ -55,7 +55,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
   
   LinearLayout lltara;
   //HorizontalScrollView lltara;
-  int Bpost=0,btnK=0,clrCheck=Color.BLUE, clrNoCheck=Color.BLACK;
+  int Bpost=0,btnK=0,clrCheck=Color.BLUE, clrNoCheck=Color.BLACK, tvDialogN=0;
   
   byte Btara=-1, Btovar=-1, CountTara=0;
   float sumI=0, otherVal=0;
@@ -67,6 +67,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
 //упаковываем данные в понятную для адаптера структуру
   ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
   MySimpleAdapter sAdapter, sAdapterD;
+  
   void tara(byte ii){
 	  Btara=ii;
 	  for (int i=0; i<CountTara; i++) 
@@ -174,7 +175,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
     
       
     Cursor cTara = MainActivity.db.getRawData ("select T._id as _id, T.name as name, T.price as price, T.tara as tara, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id where T.ok=1 and S.kol>0 order by T.tara",null);
-    byte ib=0, il=0;
+    byte ib=0;//, il=0;
     if (cTara.moveToFirst()) { 
     	 
         do {
@@ -231,13 +232,13 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
 			 {buttonView.setTextColor(clrCheck); 
 			 buttonView.setBackground(getResources().getDrawable(R.drawable.edittext_style));
 			 tara((byte)-2); 
+			 tvDialogN=R.id.tvOtherKol_;
 			 	//btnK = buttonView.getId();
 			    showDialog(1);
 			     }
 			else
 				{buttonView.setTextColor(clrNoCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
-				tvKol.setText("");strKol="";
-				}
+				tvKol.setText("");strKol="";}
 		}
 	} );
     
@@ -323,14 +324,14 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
 	
 	btD.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	if (tvKol.getText().length()==0||tvKol.getText().equals("")||tvKol.getText().equals("0"))
+        	if (StrToFloat(tvKol.getText().toString())==0)//(tvKol.getText().length()==0||tvKol.getText().equals("")||tvKol.getText().equals("0"))
         		{tvKol.setText(""); strKol="";}
         	else
         	{tvKol.setText(tvKol.getText().subSequence(0, tvKol.getText().length()-1)); 
         	strKol=strKol.substring(0, strKol.length()-1);}
         	//tvKol.setText((tvKol.getText().length()==0||tvKol.getText().equals("")||tvKol.getText().equals("0"))?"":
         		//tvKol.getText().subSequence(0, tvKol.getText().length()-1) );
-        	if (tvKol.getText().toString().equals("")||tvKol.getText().equals("0")||tvKol.getText().equals("0.")||tvKol.getText().equals(".")) 
+        	if (StrToFloat(tvKol.getText().toString())==0)//(tvKol.getText().toString().equals("")||tvKol.getText().equals("0")||tvKol.getText().equals("0.")||tvKol.getText().equals(".")) 
 				{tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));tbnKol.setChecked(false);strKol="";Btara=-1; }
         }
       });
@@ -348,7 +349,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
   			 tara((byte)-2); }*/
   			}
   			//else
-  				if (tvKol.getText().toString().equals("")||tvKol.getText().equals("0")||tvKol.getText().equals("0.")||tvKol.getText().equals(".")) 
+  				if (StrToFloat(tvKol.getText().toString())==0)//(tvKol.getText().toString().equals("")||tvKol.getText().equals("0")||tvKol.getText().equals("0.")||tvKol.getText().equals(".")) 
   				{tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));tbnKol.setChecked(false);Btara=-1; }
     	  }
     	 };
@@ -566,8 +567,10 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
    		   m.put("itog", but.get(Btara).val+" * "+but.get(Btovar).price+" = ");} 
    		   else
    		   {m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted); 
-   		   m.put("summa", but.get(Btovar).price*((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/));
-   		m.put("itog", but.get(Btara).val+" * "+but.get(Btovar).price+" = ");}
+   		   m.put("summa", but.get(Btovar).price*StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+   				   );
+   		m.put("itog", StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
+   				+" * "+but.get(Btovar).price+" = ");}
    		      m.put("tara", "СВОЯ ТАРА");
    		      data.add(m);
    		      sAdapter.notifyDataSetChanged();
@@ -575,8 +578,10 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
    	{tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, but.get(Btara).val, but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "своя тара"));
    	sumI=sumI+but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/);}
    		   else
-   		{tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, ((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/) , but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "своя тара"));
-   	   	sumI=sumI+but.get(Btovar).price*((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/);}
+   		{tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/) 
+   				, but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "своя тара"));
+   	   	sumI=sumI+but.get(Btovar).price*StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+   	   			;}
    	}
    	else
    	{
@@ -591,9 +596,11 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
    	 else
    	{m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted);
     m.put("tara", /*" + ПАКЕТ "*/"");
-    m.put("summa", (but.get(Btovar).price*
-    		((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)+0));
-    m.put("itog", but.get(Btara).val+" * "+but.get(Btovar).price+" = ");}
+    m.put("summa", but.get(Btovar).price*
+    		StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+    		);
+    m.put("itog", StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
+    		+" * "+but.get(Btovar).price+" = ");}
 		      data.add(m);
 		      
    		
@@ -607,7 +614,8 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
 			      
 		    	   	{tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, (tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()),but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "пакет"));	
 		    	      // tranz.add(new tranDB((byte)(data.size()-1), Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "tara"));
-		    	       sumI=sumI+(but.get(Btovar).price*((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)+0);}
+		    	       sumI=sumI+(but.get(Btovar).price*StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+		    	    		   +0);}
    	}
    	
    	tvSum.setText(String.valueOf(sumI));
@@ -686,6 +694,8 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
    	//else
 	   if (data.size()!=0)
    	{long cou=MainActivity.db.addRecKLIENTcount("svetka", Float.parseFloat(tvSum.getText().toString()), "", MainActivity.getIntDataTime(), (byte)0);
+   	if (StrToFloat(etSkidka.getText().toString())!=0)
+   		MainActivity.db.addRecRASXOD(0, 0, (byte)0, -StrToFloat(etSkidka.getText().toString()), 0, (int)cou, "СКИДКА "+etSkidka.getText().toString()+"ГРН", MainActivity.getIntDataTime(), (byte)0);
    		
    	for (int i=0; i<tranz.size(); i++) {
    	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,
@@ -723,11 +733,126 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
    	}
    }
    
+  /* public void showPic(View v)
+   {
+
+        final Dialog d = new Dialog(RasxodActivity.this);
+        d.setTitle("NumberPicker");
+        d.setContentView(R.layout.pic_dialog);
+        Button b1 = (Button) d.findViewById(R.id.button1);
+        Button b2 = (Button) d.findViewById(R.id.button2);
+        final NumberPicker np = (NumberPicker) d.findViewById(R.id.numberPicker1);
+        np.setMaxValue(100);
+        np.setMinValue(0);
+        np.setWrapSelectorWheel(true);
+        //np.setOnValueChangedListener(this);
+        b1.setOnClickListener(new OnClickListener()
+        {
+         @Override
+         public void onClick(View v) {
+             tvKol.setText(String.valueOf(np.getValue()));
+             d.dismiss();
+          }    
+         });
+        b2.setOnClickListener(new OnClickListener()
+        {
+         @Override
+         public void onClick(View v) {
+             d.dismiss();
+          }    
+         });
+      d.show();
+   }*/
+   
+   void dialogNumCancel(int tvI) {
+	   switch (tvI) {
+	   case R.id.tvOtherKol_:
+		   tvKol.setText("");
+		   tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
+	     break;
+	   case R.id.etCheckNal:
+		   etNal.setText("");
+	     break;
+	   case R.id.etCheckSkidka:
+		   etSkidka.setText("");
+	     break;
+	   }
+   }
+   
+   String dialogNumTitle(int tvI) {
+	   switch (tvI) {
+	   case R.id.tvOtherKol_:
+		   return "Введите вес/колличество товара";
+	     
+	   case R.id.etCheckNal:
+		   return "Введите сумму наличных";
+	     
+	   case R.id.etCheckSkidka:
+		   return "Введите сумму скидки";
+	   default: return "";
+	   }
+   }
+   
+   float StrToFloat(String s) {
+	   Float total = Float.valueOf(0);
+  	 try
+  	 {
+  	     total = Float.valueOf(s);
+  	 }
+  	 catch(NumberFormatException ex)
+  	 {
+  	     DecimalFormat df = new DecimalFormat();
+  	     Number n = null;
+  	     try
+  	     {
+  	         n = df.parse(s);
+  	     } 
+  	     catch(ParseException ex2){ }
+  	     if(n != null)
+  	         total = n.floatValue();
+  	 }
+  	 return total;
+   }; 
+   
+   void dialogNumOK(int tvI) {
+	   switch (tvI) {
+	   case R.id.tvOtherKol_:
+		   if (StrToFloat(tvDKol.getText().toString())==0) //(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
+		   {
+        		 tvKol.setText("");
+            	 tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
+        	 } else
+        	 {tvKol.setText(tvDKol.getText());
+        	 if (Btovar!=-1) fixV();}
+	     break;
+	   case R.id.etCheckNal:
+		   if (StrToFloat(tvDKol.getText().toString())==0)//(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
+		   		{
+        		 etNal.setText("");
+        		 tvSdacha.setText("");
+        	 } else
+        	 {etNal.setText(tvDKol.getText());
+        	 tvSdacha.setText(String.valueOf (StrToFloat(etNal.getText().toString())-(StrToFloat(tvDItogo.getText().toString())-StrToFloat(etSkidka.getText().toString())) ) );
+        	 }
+	     break;
+	   case R.id.etCheckSkidka:
+		   if (StrToFloat(tvDKol.getText().toString())==0)//(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
+		   {
+      		 etSkidka.setText("");
+      	 } else
+      	 {etSkidka.setText(tvDKol.getText());
+      	 if (StrToFloat(etNal.getText().toString())!=0)
+      	 tvSdacha.setText(String.valueOf (StrToFloat(etNal.getText().toString())-(StrToFloat(tvDItogo.getText().toString())-StrToFloat(etSkidka.getText().toString())) ) );
+      	 }
+	     break;
+	   }
+   }
+   
    @Override
    protected Dialog onCreateDialog(int id) {
      if (id == 1) {
        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-       adb.setTitle("Введите вес/колличество товара");
+       adb.setTitle(dialogNumTitle(tvDialogN));
        //adb.setMessage("Message");
        strDialog="";
        Dview = (LinearLayout) getLayoutInflater().inflate(R.layout.other_kol, null);
@@ -806,20 +931,22 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
 
        adb.setNegativeButton("ОТМЕНА", new DialogInterface.OnClickListener() {
            public void onClick(DialogInterface dialog, int id) {
-        	  // Log.d("MyLog", "Cancel");
-          	 tvKol.setText("");
-          	 tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
+        	 // Log.d("MyLog", "Cancel");
+          	 //tvKol.setText("");
+          	 //tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
+        	   dialogNumCancel(tvDialogN);
            }
        })
        .setPositiveButton("ГОТОВО", new DialogInterface.OnClickListener() {
            public void onClick(DialogInterface dialog, int id) {
         	  // Log.d("MyLog", "Dismiss");
-          	 if (tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) {
+          	 /*if (tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) {
           		 tvKol.setText("");
               	 tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
           	 } else
           	 {tvKol.setText(tvDKol.getText());
-          	 if (Btovar!=-1) fixV();}
+          	 if (Btovar!=-1) fixV();}*/
+          	dialogNumOK(tvDialogN);
            }
        });
        dialogg = adb.create();
@@ -838,20 +965,36 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
          AlertDialog.Builder adb = new AlertDialog.Builder(this);
          adb.setTitle("ПРОВЕРЬТЕ ЧЕК ПЕРЕД ЗАКРЫТИЕМ");
          //adb.setMessage("Message");
-         strDialog="";
+         //strDialog="";
          Dview = (LinearLayout) getLayoutInflater().inflate(R.layout.chek, null);
          //Button bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
          // устанавливаем ее, как содержимое тела диалога
          adb.setView(Dview);
          // tvDKol - сдача
-         tvDKol = (TextView) Dview.findViewById(R.id.tvCheckSdacha);
-         //strDialog="";
-      	tvDKol.setText(strDialog);
-      	etNal = (EditText) Dview.findViewById(R.id.etCheckNal);
-      	etNal.clearFocus();
+        tvDItogo = (TextView) Dview.findViewById(R.id.etItogSummaD);
+         
+        tvSdacha = (TextView) Dview.findViewById(R.id.tvCheckSdacha);
+      	etNal = (TextView) Dview.findViewById(R.id.etCheckNal);
+      	//etNal.clearFocus();
+      	etNal.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	//showPic(v);
+            	tvDialogN=R.id.etCheckNal;
+            	showDialog(1);
+            }
+          });
+      	
       	//etNal.setImeOptions(EditorInfo.IME_NULL);
-      	etSkidka = (EditText) Dview.findViewById(R.id.etCheckSkidka);
-      	etSkidka.clearFocus();
+      	etSkidka = (TextView) Dview.findViewById(R.id.etCheckSkidka);
+      	etSkidka.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+            	//showPic(v);
+            	tvDialogN=R.id.etCheckSkidka;
+            	showDialog(1);
+            }
+          });
+      	//etSkidka.clearFocus();
+      	
       	//getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
       	/*
       	InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -941,6 +1084,7 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
          .setPositiveButton("ЗАКРЫТЬ ЧЕК", new DialogInterface.OnClickListener() {
              public void onClick(DialogInterface dialog, int id) {
           	  // Log.d("MyLog", "Dismiss");
+            		 
             	 getCheckDialog(); 
              }
          });
@@ -959,11 +1103,15 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
      return super.onCreateDialog(id);
    }
    
+ 
+   
    @Override
    protected void onPrepareDialog(int id, Dialog dialog) {
      super.onPrepareDialog(id, dialog);
      //Log.d("MyLog", "Prepare");
-     tvDKol.setText(""); strDialog="";
+     if (id == 1) tvDKol.setText("");
+     if (id == 2) {etSkidka.setText(""); etNal.setText(""); tvDItogo.setText(tvSum.getText()); tvSdacha.setText(""); } 
+     strDialog="";
      //tvDKol = (TextView) dialog.getWindow().findViewById(R.id.tvOtherKolD);
      /*bt0 = (Button) dialog.getWindow().findViewById(R.id.btn000);
      bt1 = (Button) dialog.getWindow().findViewById(R.id.btn111);
