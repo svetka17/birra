@@ -7,21 +7,23 @@
 
     <TextView
         android:id="@+id/tvOtherKolD"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_weight="1"
+        android:layout_weight="0"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:gravity="center_vertical|center_horizontal"
-        android:textSize="50sp"
         android:textStyle="bold" >
+
     </TextView>
 
 <ScrollView
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
+    android:layout_gravity="right"
     android:layout_weight="1" >
-
+<!--  
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -30,89 +32,140 @@
         android:columnCount="3"
         android:orientation="horizontal"
         android:rowCount="5" >
+-->
+<TableLayout
+    android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:orientation="horizontal" >        
+        <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
         <Button
             android:id="@+id/btnDDD"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
             android:text="&lt;--" />
 
         <Button
             android:id="@+id/btnXXX"
             style="@style/B"
-            android:textAppearance="@style/textB30"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
             android:text="C" />
-
+</TableRow>
+<TableRow
+    android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
         <Button
             android:id="@+id/btn777"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
             android:text="7" />
 
         <Button
             android:id="@+id/btn888"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
             android:text="8" />
 
         <Button
             android:id="@+id/btn999"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
             android:text="9" />
-
+</TableRow>
+<TableRow
+    android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
         <Button
             android:id="@+id/btn444"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
             android:text="4" />
 
         <Button
             android:id="@+id/btn555"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
             android:text="5" />
 
         <Button
             android:id="@+id/btn666"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
             android:text="6" />
-
+</TableRow>
+<TableRow
+    android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
         <Button
             android:id="@+id/btn111"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
             android:text="1" />
 
         <Button
             android:id="@+id/btn222"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
             android:text="2" />
 
         <Button
             android:id="@+id/btn333"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
             android:text="3" />
-
+</TableRow>
+<TableRow
+    android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
         <Button
             android:id="@+id/btn000"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
             android:text="0" />
 
         <Button
             android:id="@+id/btnComaCC"
             style="@style/B"
-            android:textAppearance="@style/textB30"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill"
+            android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
             android:text="." />
-       
+</TableRow>
+<!--         
     </GridLayout>
-    
+-->
+</TableLayout>    
 </ScrollView>
 </LinearLayout>

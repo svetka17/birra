@@ -22,23 +22,30 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.widget.SeekBar; 
 public class RasxodActivity extends FragmentActivity implements OnCheckedChangeListener,
 SeekBar.OnSeekBarChangeListener
 {
@@ -48,17 +55,24 @@ SeekBar.OnSeekBarChangeListener
   TextView tvSum, tvKol, tvDKol, tvIdPgr, tvNamePgr;//, tvCombo;
   TextView etNal, etSkidka,tvNal, tvSkidka, tvDItogo, tvSdacha;
   ListView lvCombo, lvComboD;
-  LinearLayout Dview; 
+  LinearLayout Dview;
+   
   //LinearLayout llbut;
+  ScrollView svBut;
+ // LinearLayout llr;
   TableLayout llbut;
   TableRow row;
+  //LinearLayout row;
   //TableRow.LayoutParams params;
   
-  LinearLayout lltara, llL, llR;
+  LinearLayout /*lltara,*/ llL, llR;
   LinearLayout.LayoutParams llLP;
   LinearLayout.LayoutParams llRP;
   SeekBar sbar;
-  //HorizontalScrollView lltara;
+  HorizontalScrollView hll_tara_button;
+  LinearLayout ll_tara_button;
+  LinearLayout lltarabutton;
+  //LinearLayout llR_;
   int Bpost=0,btnK=0,clrCheck=Color.BLUE, clrNoCheck=Color.BLACK, tvDialogN=0;
   
   byte Btara=-1, Btovar=-1, CountTara=0;
@@ -68,10 +82,12 @@ SeekBar.OnSeekBarChangeListener
   String regexp_numb = "\\-?\\d+(\\.\\d{0,})?";
   Map<String, Object> m;
   Dialog dialogg;
+  int display_h=0, display_w=0;
+  float scale=0;
 //упаковываем данные в понятную для адаптера структуру
   ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
   MySimpleAdapter sAdapter, sAdapterD;
-  
+  int count_but_tara=0, count_but=0, count_but_pgr=0;
   void tara(byte ii){
 	  Btara=ii;
 	  for (int i=0; i<CountTara; i++) 
@@ -150,21 +166,90 @@ SeekBar.OnSeekBarChangeListener
    //ArrayList<LinearLayout> ll = new ArrayList<LinearLayout>();
    Cursor c = MainActivity.db.getRawData ("select distinct T._id as _id, T.name as name from tmc_pgr T left join tmc as TM on T._id=TM.pgr left join ostat as O on O.id_tmc=TM._id where O.kol>0 and TM.vis=1 ",null); 
    
+   private float PxToDp(float px) {
+		return px
+				/ getApplicationContext().getResources().getDisplayMetrics().density;
+	}
+
+	private float DpToPx(float dp) {
+		return dp
+				* getApplicationContext().getResources().getDisplayMetrics().density;
+	}
+   
    public void onCreate(Bundle savedInstanceState) {
+
     super.onCreate(savedInstanceState);
     setContentView(R.layout.rasxod);
-    llbut = (TableLayout) findViewById(R.id.llBut);
+    //разрешение экрана
+    
+    Display display = getWindowManager().getDefaultDisplay();
+    DisplayMetrics metricsB = new DisplayMetrics();
+    display.getMetrics(metricsB);
+    display_h=metricsB.heightPixels; display_w=metricsB.widthPixels;
+    scale = getResources().getDisplayMetrics().density;
+
+    
+    //count tara button
+    Cursor get_count_but = MainActivity.db.getRawData ("select count(*) as c from tmc T left join ostat as O on O.id_tmc=T._id where O.kol>0 and T.ok=1 ",null);
+    if (get_count_but.moveToFirst()) { 
+        do {count_but_tara=get_count_but.getInt(get_count_but.getColumnIndex("c"));
+        } while (get_count_but.moveToNext());
+      }; 
+    	get_count_but.close();
+    //count button pgr
+    Cursor c_pgr = MainActivity.db.getRawData ("select count(distinct T._id) as c from tmc_pgr T left join tmc as TM on T._id=TM.pgr left join ostat as O on O.id_tmc=TM._id where O.kol>0 and TM.vis=1 ",null);
+ 	   //Cursor get_count_but_pgr = MainActivity.db.getRawData ("select count(*) as c from tmc T left join ostat as O on O.id_tmc=T._id where O.kol>0 and T.ok=1 ",null);
+ 	    if (c_pgr.moveToFirst()) { 
+ 	        do {count_but_pgr=c_pgr.getInt(get_count_but.getColumnIndex("c"));
+ 	        } while (c_pgr.moveToNext());
+ 	      }; 
+ 	      c_pgr.close();
+    	
+    	
+    	lltarabutton = (LinearLayout) findViewById(R.id.llbuttontara);
+    if (count_but_tara<8)
+    {  //showMessage("30SP = "+DpToPx(30)+"; W = "+((int)display_w/8)+"; W_DP = "+PxToDp(display_w/8)+"; W_PX = "+DpToPx(display_w/8)+"; S = "+scale+"; W = "+display_w+"; H = "+display_h, (byte)1);
+    	ll_tara_button = new LinearLayout(this);
+    	ll_tara_button.setOrientation(LinearLayout.HORIZONTAL);
+    	lltarabutton.addView(ll_tara_button,
+		//	new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT)
+    			new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT)
+    	);  
+    	}
+    else
+    {
+    	ll_tara_button = new LinearLayout(this);
+    	ll_tara_button.setOrientation(LinearLayout.HORIZONTAL);
+    	hll_tara_button = new HorizontalScrollView(this);
+    	hll_tara_button.setHorizontalScrollBarEnabled(true); //setScrollBarStyle(HorizontalScrollView. HORIZONTAL);
+    	lltarabutton.addView(hll_tara_button,
+			new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+    	hll_tara_button.addView(ll_tara_button,
+    			new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+    }
+    
+    ///////////////
+    /*llbut = (TableLayout) findViewById(R.id.llBut);
     llbut.setStretchAllColumns(true);
     llbut.setShrinkAllColumns(true);
+    */
+    llbut = new TableLayout(this);
+	//llbut.setOrientation(TableLayout.HORIZONTAL);
+	//llbut.setStretchAllColumns(true);
+    //llbut.setShrinkAllColumns(true);
     
+    svBut = new ScrollView(this);
+    //llR_ = (LinearLayout) findViewById(R.id.llR_);
     llL = (LinearLayout) findViewById(R.id.llL);
     llR = (LinearLayout) findViewById(R.id.llR);
+    //llr = (LinearLayout) findViewById(R.id.llR);
     llLP = (LinearLayout.LayoutParams) llL.getLayoutParams();
     llRP = (LinearLayout.LayoutParams) llR.getLayoutParams();
     sbar = (SeekBar) findViewById(R.id.seekBar);
     sbar.setOnSeekBarChangeListener(this);
     
-    lltara = (LinearLayout) findViewById(R.id.llTara);
+    //lltara = (LinearLayout) findViewById(R.id.llTara);
+    
     tvNamePgr = (TextView) findViewById(R.id.tvNamePgrBack);
     btnBack = (Button) findViewById(R.id.btnBackPgr_);
     btnBack.setTag(-1);
@@ -190,10 +275,10 @@ SeekBar.OnSeekBarChangeListener
     if (cTara.moveToFirst()) { 
     	 
         do {
-        	LinearLayout.LayoutParams PB = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        	LinearLayout.LayoutParams PB = new LinearLayout.LayoutParams(/*LinearLayout.LayoutParams.WRAP_CONTENT*/(int)display_w/8, LinearLayout.LayoutParams.MATCH_PARENT,1);
             PB.weight=1;
-            PB.leftMargin=10;
-            PB.rightMargin=10;
+            //PB.leftMargin=5;
+            //PB.rightMargin=5;
         	//but.add(new chB(byte indBT, int id_tmc, String tmc_name, float val, float ost, int post, float kol, float price, byte ed, String ted, ToggleButton tb))
         	but.add(new chB(
         			ib, 							//indBT
@@ -214,11 +299,22 @@ SeekBar.OnSeekBarChangeListener
         	but.get(ib).tb.setChecked(false);
         	but.get(ib).tb.setTag(ib);
         	but.get(ib).tb.setTextColor(clrNoCheck);
-        	but.get(ib).tb.setTextSize(50f);
+        	
+        	String regexp = "([\\.,-]+)";//"^([0-9]+)";//"-([а-яА-ЯёЁa-zA-Z0-9 \\.,-]+)$"
+			//String goodIp = v.getTag().toString();
+			Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
+
+			Matcher matcher = pattern.matcher(but.get(ib).tmc_name.toString());
+			int l = matcher.find()?matcher.group().length():0;
+        	
+        	float sT = (display_w/(8*scale*scale*(but.get(ib).tmc_name.toString().length()-l)))+scale*10-5;
+        			//(2*(display_w/8)/scale)/(scale*but.get(ib).tmc_name.toString().length()); 
+        			//((((display_w/8)/scale) / (but.get(ib).tmc_name.toString().length()))/scale)+10;
+        	but.get(ib).tb.setTextSize(sT);
         	but.get(ib).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
         	but.get(ib).tb.setTag(ib);
         	but.get(ib).tb.setOnCheckedChangeListener(this);
-        	lltara.addView(but.get(ib).tb,PB);
+        	/*lltara*/ll_tara_button.addView(but.get(ib).tb,PB);
         	/*GridLayout.LayoutParams params = (GridLayout.LayoutParams)but.get(ib).tb.getLayoutParams();
         	if (cTara.getString(cTara.getColumnIndex("name")).length()>5) {params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 2); params.setGravity(Gravity.FILL_HORIZONTAL); } 
         	else params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1); 
@@ -298,6 +394,8 @@ SeekBar.OnSeekBarChangeListener
     btnOk.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	//getCheck();
+        	tvDialogN=R.id.btnOkRasxod_ok;
+        	
         	showDialog(2);
         }
       });
@@ -376,11 +474,52 @@ SeekBar.OnSeekBarChangeListener
     b8.setOnClickListener(listenerKol);
     b9.setOnClickListener(listenerKol);
 */    
+   // showMessage("W = "+display_w+"; Н = "+display_h, (byte)1);
   }
    
    void setPgr() {
-	   //byte ib=CountTara;
 	   llbut.removeAllViewsInLayout();
+	   svBut.removeAllViewsInLayout();
+	   
+	   int l=1;
+	   if (c.moveToFirst()) { 
+		   
+	        do {	        	
+	        	String[] n = (c.getString(c.getColumnIndex("name"))).split(" ");
+	        	for (int i=0; i<n.length; i++ )
+	        		if (n[i].length()>l) l=n[i].length();
+	        } while (c.moveToNext());
+	        
+	      }
+	   float sText=((display_w)/(4*scale*scale*l))+scale*5;
+	   
+	    if (count_but_pgr<19)
+	    {  /* llbut = new TableLayout(this);
+	    	llbut.setOrientation(TableLayout.HORIZONTAL);*/
+	    	llR.removeView(llbut);
+	    	llR.removeView(svBut);	    	
+
+	    	llR.addView(llbut,
+				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1)); 
+	    	}
+	    else
+	    {
+	    	/*llbut = new TableLayout(this);
+	    	llbut.setOrientation(TableLayout.HORIZONTAL);*/
+	    	
+	    	llR.removeView(llbut);
+	    	llR.removeView(svBut);
+	    	
+	    	//svBut = new ScrollView(this);
+	    	//hll_tara_button.setHorizontalScrollBarEnabled(true); //setScrollBarStyle(HorizontalScrollView. HORIZONTAL);
+	    	llR.addView(svBut,
+				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1));
+	    	svBut.addView(llbut,
+	    			new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.MATCH_PARENT,1));
+	    }
+	   
+	   //byte ib=CountTara;
+	   //llbut.removeAllViewsInLayout();
 	   int i=1;
 	   if (c.moveToFirst()) { 
 		   
@@ -392,8 +531,7 @@ SeekBar.OnSeekBarChangeListener
 	        		row = new TableRow(this);
 	                //row.setGravity(Gravity.CENTER);
 	                //row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,1.0f));
-	        		 
-	        		 
+    		 
 	                llbut.addView(row,
 	                		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT,1));
 	                //row.addView(llbut, params);
@@ -415,7 +553,7 @@ SeekBar.OnSeekBarChangeListener
 	        	
 	        	btnPgr.setText(c.getString(c.getColumnIndex("name")));
 	        	btnPgr.setTag(c.getInt(c.getColumnIndex("_id"))+"-"+c.getString(c.getColumnIndex("name")));
-	        	btnPgr.setTextSize(30f);
+	        	btnPgr.setTextSize(sText);
 	        	btnPgr.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
 	        	btnPgr.setOnClickListener(new OnClickListener() {
 	                public void onClick(View v) {
@@ -454,23 +592,78 @@ SeekBar.OnSeekBarChangeListener
    
    void setBut() {
 	   //Log.d("MyLog", "setbut__count_tara="+CountTara+" but.size="+but.size()+" idPgr="+tvIdPgr.getText());
+	   llbut.removeAllViewsInLayout();
+	   svBut.removeAllViewsInLayout();
+	   int count_but=0;
+	   Cursor cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
+	   if (cc.moveToFirst()) { 
+	        do {count_but++;
+	        } while (cc.moveToNext());
+	      }; 
+	   // scale size font
+	      int l=1;
+		   if (cc.moveToFirst()) { 
+			   
+		        do {	        	
+		        	String[] n = (cc.getString(cc.getColumnIndex("name"))).split(" ");
+		        	for (int i=0; i<n.length; i++ )
+		        		if (n[i].length()>l) l=n[i].length();
+		        } while (cc.moveToNext());
+		        
+		      }
+		   float sText=((display_w)/(6*scale*scale*l))+scale*5;
+	    	
+	    if (count_but<19)
+	    {  /* llbut = new TableLayout(this);
+	    	llbut.setOrientation(TableLayout.HORIZONTAL);
+	    	llbut.setStretchAllColumns(true);
+	        llbut.setShrinkAllColumns(true);*/
+	    	llR.removeView(llbut);
+	    	llR.removeView(svBut);
+	    
+	    	llR.addView(llbut,
+				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1));  
+	    //	llR_.setVisibility(LinearLayout.VISIBLE);
+	    }
+	    else
+	    {
+	    	/*llbut = new TableLayout(this);
+	    	llbut.setOrientation(TableLayout.HORIZONTAL);
+	    	llbut.setStretchAllColumns(true);
+	        llbut.setShrinkAllColumns(true);*/
+	    	llR.removeView(llbut);
+	    	llR.removeView(svBut);
+	    	
+	    	//svBut = new ScrollView(this);
+	    	//hll_tara_button.setHorizontalScrollBarEnabled(true); //setScrollBarStyle(HorizontalScrollView. HORIZONTAL);
+	    	
+	    	llR.addView(svBut,
+				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1));
+	    	svBut.addView(llbut,
+	    			new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.MATCH_PARENT,1));
+	    	//llR_.setVisibility(LinearLayout.VISIBLE);
+	    }
+	    
+	    
+	    //MinimumWidth((int)(display_w/6));
 	   byte ib;
 	   if (tranz.size()==0)
 	   {
 	   for (int i=but.size()-1; i>=CountTara; i--) but.remove(i);
 	   ib=CountTara;
-	   
 	   }
 	   else
-		   {for (int i=but.size()-1; i>=CountTara; i--) but.get(i).tb.setVisibility(ToggleButton.INVISIBLE);// remove(i);
+		   {for (int i=but.size()-1; i>=CountTara; i--) but.get(i).tb.setVisibility(ToggleButton.GONE);// remove(i);
 		   ib=(byte)but.size();
 		   }
-	   llbut.removeAllViewsInLayout();   
+	   //llbut.removeAllViewsInLayout();  
+	   
 	   //Log.d("MyLog", "setbut_del_count_tara="+CountTara+" but.size="+but.size()+" idPgr="+tvIdPgr.getText());
 	   
 	   //Log.d("MyLog", "setBut id_pgr="+tvIdPgr.getText());
-	   Cursor cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
+	   
 	   //Log.d("MyLog", "setBut id_pgr="+tvIdPgr.getText()+" cc.count="+cc.getCount()+" but.size="+but.size());
+	   //llbut.setMeasureWithLargestChildEnabled(true); 
 	   
 	   if (cc.moveToFirst()) { 
 		   
@@ -478,7 +671,11 @@ SeekBar.OnSeekBarChangeListener
 	        	
 	        	if (ib%3==CountTara%3) {
 	        		row = new TableRow(this);
-	                //row.setGravity(Gravity.CENTER);
+	        		//row = new LinearLayout(this);
+	        		//row.setOrientation(LinearLayout.HORIZONTAL);
+	                int w = (int)(4*display_h/5)/8;
+	                row.setMinimumHeight(w);
+	        		//row.setGravity(Gravity.CENTER);
 	                //row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,1));
 	        		 //TableRow.LayoutParams params = new TableRow.LayoutParams();//(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT);
 	 	    		//params.weight=1;
@@ -510,8 +707,20 @@ SeekBar.OnSeekBarChangeListener
 	        			cc.getString(cc.getColumnIndex("ted")), //ted
 	        			new ToggleButton(this)
 	        			));
-	        	but.get(ib).tb.setTextSize(30f);
+	        	
+	        	but.get(ib).tb.setMinimumWidth((int)(display_w/6));
+	        	/*
+	        	String[] n = (but.get(ib).tmc_name).split(" ");
+	        	
+	        	int l = 1;
+	        	for (int i=0; i<n.length; i++ )
+	        		if (n[i].length()>l) l=n[i].length();
+	        	float sText=((display_w)/(6*scale*scale*l))+scale*10;
+	        	*/
+	        	but.get(ib).tb.setTextSize(sText);
+	        	
 	        	int l1=(but.get(ib).tmc_name+"\n").length(), l2=(but.get(ib).tmc_name+"\n"+but.get(ib).ost+but.get(ib).ted+" ЦЕНА "+but.get(ib).price).length();
+	        	
 	        	final SpannableStringBuilder text = new SpannableStringBuilder(but.get(ib).tmc_name
 	        			+"\n"+but.get(ib).ost+but.get(ib).ted+" ЦЕНА "+but.get(ib).price); 
 	        	//final ForegroundColorSpan style = new ForegroundColorSpan(Color.rgb(255, 0, 0)); 
@@ -551,7 +760,7 @@ SeekBar.OnSeekBarChangeListener
 	        	
 	        	//llbut.addView(but.get(ib).tb/*,PB*/);
 	        	row.addView(but.get(ib).tb,
-	        			new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT,1));
+	        			new TableRow/*LinearLayout*/.LayoutParams(TableRow/*LinearLayout*/.LayoutParams.MATCH_PARENT,TableRow/*LinearLayout*/.LayoutParams.MATCH_PARENT,1) );
 	        	
 	        	//Log.d("MyLog", "add button");
 	        	ib++;
@@ -742,6 +951,7 @@ SeekBar.OnSeekBarChangeListener
    	sAdapter.notifyDataSetChanged();
    	tvSum.setText("");sumI=0;tranz.clear();
    	}
+	   tvDialogN=0;
    }
    
   /* public void showPic(View v)
@@ -780,6 +990,7 @@ SeekBar.OnSeekBarChangeListener
 	   case R.id.tvOtherKol_:
 		   tvKol.setText("");
 		   tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
+		   tvDialogN=0;
 	     break;
 	   case R.id.etCheckNal:
 		   etNal.setText("");
@@ -835,6 +1046,7 @@ SeekBar.OnSeekBarChangeListener
         	 } else
         	 {tvKol.setText(tvDKol.getText());
         	 if (Btovar!=-1) fixV();}
+		   tvDialogN=0;
 	     break;
 	   case R.id.etCheckNal:
 		   if (StrToFloat(tvDKol.getText().toString())==0)//(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
@@ -863,7 +1075,7 @@ SeekBar.OnSeekBarChangeListener
    protected Dialog onCreateDialog(int id) {
      if (id == 1) {
        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-       adb.setTitle(dialogNumTitle(tvDialogN));
+       //adb.setTitle(dialogNumTitle(tvDialogN));
        //adb.setMessage("Message");
        strDialog="";
        Dview = (LinearLayout) getLayoutInflater().inflate(R.layout.other_kol, null);
@@ -887,6 +1099,21 @@ SeekBar.OnSeekBarChangeListener
        btComa = (Button) Dview.findViewById(R.id.btnComaCC);
        btXD = (Button) Dview.findViewById(R.id.btnXXX);
        btDD = (Button) Dview.findViewById(R.id.btnDDD);
+       float sText = ((display_w/7)/(scale*scale));//+scale*5;
+       bt1.setTextSize(sText);
+       bt2.setTextSize(sText);
+       bt3.setTextSize(sText);
+       bt4.setTextSize(sText);
+       bt5.setTextSize(sText);
+       bt6.setTextSize(sText);
+       bt7.setTextSize(sText);
+       bt8.setTextSize(sText);
+       bt9.setTextSize(sText);
+       bt0.setTextSize(sText);
+       btComa.setTextSize(sText);
+       btXD.setTextSize(sText);
+       btDD.setTextSize(sText);
+       tvDKol.setTextSize(sText);
        
        OnClickListener listenerDKol = new OnClickListener() {
      	  @Override
@@ -960,8 +1187,10 @@ SeekBar.OnSeekBarChangeListener
           	dialogNumOK(tvDialogN);
            }
        });
+    
        dialogg = adb.create();
-  
+       dialogg.setTitle(dialogNumTitle(tvDialogN));
+     
        // обработчик отображения
        /*dialogg.setOnShowListener(new OnShowListener() {
          public void onShow(DialogInterface dialog) {
@@ -974,11 +1203,15 @@ SeekBar.OnSeekBarChangeListener
      ///////////////dialog 2 - number
      if (id == 2) {
          AlertDialog.Builder adb = new AlertDialog.Builder(this);
-         adb.setTitle("ПРОВЕРЬТЕ ЧЕК ПЕРЕД ЗАКРЫТИЕМ");
+         //adb.setTitle("ПРОВЕРЬТЕ ЧЕК ПЕРЕД ЗАКРЫТИЕМ");
          //adb.setMessage("Message");
          //strDialog="";
          Dview = (LinearLayout) getLayoutInflater().inflate(R.layout.chek, null);
          //Button bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
+ 	    //Window window = getDialog().getWindow();
+ 	    //Dview.setLayoutParams(new LinearLayout.LayoutParams(display_w/*-(int)(display_w/6)*/, display_h/*-(int)(display_h/8)*/,1)); 
+ 	    //setLayout(, );
+ 	    //adb.setGravity(Gravity.CENTER);
          // устанавливаем ее, как содержимое тела диалога
          adb.setView(Dview);
          // tvDKol - сдача
@@ -1009,75 +1242,11 @@ SeekBar.OnSeekBarChangeListener
              // определяем список и присваиваем ему адаптер
              sAdapterD.setViewBinder(new MyViewBinder());*/
              lvComboD.setAdapter(sAdapter);
-         /*bt0 = (Button) Dview.findViewById(R.id.btn000);
-         bt1 = (Button) Dview.findViewById(R.id.btn111);
-         bt2 = (Button) Dview.findViewById(R.id.btn222);
-         bt3 = (Button) Dview.findViewById(R.id.btn333);
-         bt4 = (Button) Dview.findViewById(R.id.btn444);
-         bt5 = (Button) Dview.findViewById(R.id.btn555);
-         bt6 = (Button) Dview.findViewById(R.id.btn666);
-         bt7 = (Button) Dview.findViewById(R.id.btn777);
-         bt8 = (Button) Dview.findViewById(R.id.btn888);
-         bt9 = (Button) Dview.findViewById(R.id.btn999);
-         btComa = (Button) Dview.findViewById(R.id.btnComaCC);
-         btXD = (Button) Dview.findViewById(R.id.btnXXX);
-         btDD = (Button) Dview.findViewById(R.id.btnDDD);
-         
-         OnClickListener listenerDKol = new OnClickListener() {
-       	  @Override
-       	  public void onClick(View v) {
-       			Pattern pattern = Pattern.compile(regexp_numb, Pattern.CASE_INSENSITIVE);
-         			Matcher matcher = pattern.matcher(strDialog.concat(((Button) v).getText().toString()));
-         			if (matcher.matches()) {strDialog=strDialog.concat(((Button) v).getText().toString()); tvDKol.setText(strDialog); }
-         			}
-       	 };
-       	bt0.setOnClickListener(listenerDKol);
-       	bt2.setOnClickListener(listenerDKol);
-       	bt3.setOnClickListener(listenerDKol);
-       	bt4.setOnClickListener(listenerDKol);
-       	bt5.setOnClickListener(listenerDKol);
-       	bt6.setOnClickListener(listenerDKol);
-       	bt7.setOnClickListener(listenerDKol);
-       	bt8.setOnClickListener(listenerDKol);
-       	bt9.setOnClickListener(listenerDKol);
-       	bt1.setOnClickListener(listenerDKol);*/
-         /*bt0.setOnClickListener(new OnClickListener() {
-             public void onClick(View v) {
-     			Pattern pattern = Pattern.compile(regexp_numb, Pattern.CASE_INSENSITIVE);
-     			Matcher matcher = pattern.matcher(strDialog.concat("0"));
-     			if (matcher.matches()) {strDialog=strDialog.concat("0"); tvDKol.setText(strDialog); }
-     			//Log.d("MyLog", ""+strDialog);
-     			//tvDKol.setText(matcher.matches()?matcher.group():strDialog);
-     			
-          	  // strDialog=strDialog.concat("0");
-             	//tvDKol.setText(""+strDialog);
-             }
-           });*/
-  /*   	
-     	btComa.setOnClickListener(new OnClickListener() {
-             public void onClick(View v) {
-          	   Pattern pattern = Pattern.compile(regexp_numb, Pattern.CASE_INSENSITIVE);
-        			Matcher matcher = pattern.matcher(strDialog.concat("."));
-        			if (matcher.matches()) {strDialog=strDialog.concat("."); tvDKol.setText(strDialog); }
-             }
-           });
-     	
-     	btXD.setOnClickListener(new OnClickListener() {
-             public void onClick(View v) {
-             	tvDKol.setText("");
-             }
-           });
-     	
-     	btDD.setOnClickListener(new OnClickListener() {
-             public void onClick(View v) {
-             	tvDKol.setText((tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0"))?"":
-             		tvDKol.getText().subSequence(0, tvDKol.getText().length()-1) );
-             }
-           });
-*/
+
          adb.setNegativeButton("ОТМЕНА", new DialogInterface.OnClickListener() {
              public void onClick(DialogInterface dialog, int id) {
-          	  // Log.d("MyLog", "Cancel");
+            	 tvDialogN=0;
+            	 // Log.d("MyLog", "Cancel");
             	 //tvKol.setText("");
             	 //tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
              }
@@ -1089,8 +1258,23 @@ SeekBar.OnSeekBarChangeListener
             	 getCheckDialog(); 
              }
          });
+         
+        
          dialogg = adb.create();
-    
+        // WindowManager.LayoutParams lp = dialogg.getWindow().getAttributes();
+     	//lp.dimAmount = 0.6f; // уровень затемнения от 1.0 до 0.0
+     	//lp.width=display_w-(int)(display_w/7);
+     	//lp.height=display_h-(int)(display_h/7);
+        // WindowManager.LayoutParams lp = dialogg.getWindow().getAttributes();
+       //  lp.width=display_h;
+       //  lp.height=display_h;
+     	//dialogg.getWindow().setAttributes(//lp
+     	//		new WindowManager.LayoutParams( WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+     	//		); //setLayout(display_w, display_h); 
+
+     	//dialogg.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+     	// Установите заголовок
+     	dialogg.setTitle("ПРОВЕРЬТЕ ЧЕК ПЕРЕД ЗАКРЫТИЕМ");
          // обработчик отображения
          /*dialogg.setOnShowListener(new OnShowListener() {
            public void onShow(DialogInterface dialog) {
@@ -1111,7 +1295,7 @@ SeekBar.OnSeekBarChangeListener
      super.onPrepareDialog(id, dialog);
      //Log.d("MyLog", "Prepare");
      if (id == 1) tvDKol.setText("");
-     if (id == 2) {etSkidka.setText(""); etNal.setText(""); tvDItogo.setText(tvSum.getText()); tvSdacha.setText(""); 
+     if (id == 2) {etSkidka.setText("0"); etNal.setText("0"); tvDItogo.setText(tvSum.getText()); tvSdacha.setText("0"); 
      etNal.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
          	//showPic(v);
@@ -1204,10 +1388,18 @@ SeekBar.OnSeekBarChangeListener
 	}
   protected void onDestroy() {
     super.onDestroy();
+    c.close();
   }
+
+  @Override
+  protected void onStart() {
+	  super.onStart();
+  }
+  
   @Override
   protected void onRestart() {
     super.onRestart();
+    
    // btnBack.setTag(-1);
     //Log.d("MyLog", "restart "+btnBack.getTag().toString());
 //    c.requery();
@@ -1262,7 +1454,32 @@ SeekBar.OnSeekBarChangeListener
                 //col.setText((String) 
                 		//;
             //}   
-             Button b=(Button)v.findViewById(R.id.comboX);
+            if (tvDialogN!=0) {
+            /*TextView tvI=(TextView)v.findViewById(R.id.comboItog);
+            tvI.setTextColor(Color.WHITE);
+            TextView tvS=(TextView)v.findViewById(R.id.comboSumma);
+            tvS.setTextColor(Color.WHITE);*/
+            	LinearLayout llHide=(LinearLayout)v.findViewById(R.id.comboHideLL);
+                llHide.setVisibility(LinearLayout.GONE);
+                
+            Button bSkidka=(Button)v.findViewById(R.id.comboSkidka);
+            bSkidka.setVisibility(Button.VISIBLE);
+            bSkidka.setOnClickListener(new OnClickListener() {
+               @Override
+               public void onClick(View arg0) {
+                   //Toast.makeText(RasxodActivity.this,dataSet.get("summa").toString()+" position "+pos,Toast.LENGTH_SHORT).show();
+               	/*sumI=sumI-Float.parseFloat(dataSet.get("summa").toString());
+               	tvSum.setText(String.valueOf(sumI));
+               	if (tvDialogN!=0) tvDItogo.setText(String.valueOf(sumI));
+               	for (int i=0; i<tranz.size(); i++) {if (tranz.get(i).tagL==(byte)pos) {tranz.remove(i);} }
+               	data.remove(pos);
+               	sAdapter.notifyDataSetChanged();*/
+               	
+               }
+           });
+            }
+            
+            Button b=(Button)v.findViewById(R.id.comboX);
              b.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -1270,6 +1487,7 @@ SeekBar.OnSeekBarChangeListener
                     //Toast.makeText(RasxodActivity.this,dataSet.get("summa").toString()+" position "+pos,Toast.LENGTH_SHORT).show();
                 	sumI=sumI-Float.parseFloat(dataSet.get("summa").toString());
                 	tvSum.setText(String.valueOf(sumI));
+                	if (tvDialogN!=0) tvDItogo.setText(String.valueOf(sumI));
                 	for (int i=0; i<tranz.size(); i++) {if (tranz.get(i).tagL==(byte)pos) {tranz.remove(i);} }
                 	data.remove(pos);
                 	sAdapter.notifyDataSetChanged();
@@ -1336,10 +1554,13 @@ public void onStopTrackingTouch(SeekBar seekBar) {
 	//int leftValue = progress;
 	  //int rightValue = seekBar.getMax() - progress;
 	  // настраиваем вес
+	if (seekBar.getProgress()>30 && seekBar.getProgress()<70)
+	{
 	  llLP.weight = seekBar.getProgress();
 	  llRP.weight = seekBar.getMax()-seekBar.getProgress();
+		
 	  llL.requestLayout();
-	
+	}
 }
  
 }

@@ -97,6 +97,12 @@
             android:windowSoftInputMode="stateHidden"
             android:label="ОБОРОТНАЯ ВЕДОМОСТЬ"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".OtchetActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="ОТЧЕТЫ"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

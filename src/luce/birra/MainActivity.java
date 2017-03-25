@@ -187,7 +187,7 @@ static int getIntDataTime(String dat){
 			   startActivity(intent);
 			   break;
 		   case R.id.btnKassa:
-			   intent = new Intent(this, OborotkaActivity.class);
+			   intent = new Intent(this, OtchetActivity.class);
 			   startActivity(intent);
 			   //Log.d("MyLog", "MainActivity: tmc "+db.getAllData("tmc").getCount());
 			   /////////////////////////////////////////////////////////////////////////////////////////////////

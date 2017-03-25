@@ -149,7 +149,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
                 			 }, 
                 			 where, null,null,null,null);
         	///////////////////////////////////////////////////////
-        	String columnString =   "\"мнлемйкюрспю\",\"мюгбюмхе\",\"ед.хгл\",\"йнк мюв\",\"ясллю мюв\",\"жемю мюв\",\"йнк опх\",\"ясллю опх\",\"жемю опх\",\"йнк пюя\",\"ясллю пюя\",\"жемю пюя\",\"йнк йнм\",\"ясллю йнм\",\"жемю йнм\"";
+        	String columnString =   "\"мнлемйкюрспю\",\"мюгбюмхе\",\"ед.хгл\",\"йнк мюв\",\"ясллю мюв\",\"жемю мюв\",\"йнк опх\",\"ясллю опх\",\"йнк пюя\",\"ясллю пюя\",\"йнк йнм\",\"ясллю йнм\",\"жемю йнм\"";
         	//String dataString   =   "\"" + currentUser.userName +"\",\"" + currentUser.gender + "\",\"" + currentUser.street1 + "\",\"" + currentUser.postOFfice.toString()+ "\",\"" + currentUser.age.toString() + "\"";
         	//String combinedString = columnString + "\n" + dataString;
 
@@ -158,7 +158,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
         	if (root.canWrite()){
         	    File dir    =   new File (root.getAbsolutePath() + "/Oborotka");
         	     dir.mkdirs();
-        	     file   =   new File(dir, "O"+Calendar.getInstance().get(Calendar.DATE)+Calendar.getInstance().get(Calendar.MONTH)+Calendar.getInstance().get(Calendar.YEAR)+".csv");
+        	     file   =   new File(dir, "O"+Calendar.getInstance().get(Calendar.DATE)+Calendar.getInstance().get(Calendar.MONTH)+Calendar.getInstance().get(Calendar.YEAR)+".xls");
         	     FileOutputStream out   =   null;
         	    try {
         	        out = new FileOutputStream(file);
@@ -176,10 +176,10 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
         	    	        	if (koln!=0) pricen=Math.round((sumn/koln)*100)/100.0f;
         	    	        	kolp = cc.getFloat(cc.getColumnIndex("kol_pri")) ;
         	    	        	sump = cc.getFloat(cc.getColumnIndex("sum_pri")) ;
-        	    	        	if (kolp!=0) pricep=Math.round((sump/kolp)*100)/100.0f;
+        	    	        	//if (kolp!=0) pricep=Math.round((sump/kolp)*100)/100.0f;
         	    	        	kolr = cc.getFloat(cc.getColumnIndex("kol_ras")) ;
         	    	        	sumr = cc.getFloat(cc.getColumnIndex("sum_ras")) ;
-        	    	        	if (kolr!=0) pricep=Math.round((sumr/kolr)*100)/100.0f;
+        	    	        	//if (kolr!=0) pricep=Math.round((sumr/kolr)*100)/100.0f;
         	    	        	kolk = cc.getFloat(cc.getColumnIndex("kol_k")) ;
         	    	        	sumk = cc.getFloat(cc.getColumnIndex("sum_k")) ;
         	    	        	if (kolk!=0) pricep=Math.round((sumr/kolk)*100)/100.0f;
@@ -188,7 +188,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
         	    	        			//+ cc.getFloat(cc.getColumnIndex("kol_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("kol_ras"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_ras"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_ras"))+"\",\""
         	    	        			//+ cc.getFloat(cc.getColumnIndex("kol_k"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_k"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_k"))+ "\"" ;
         	    	        	dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +koln+ "\",\""+sumn+ "\",\"" + pricen+"\",\"" 
-        	    	        			+ kolp+"\",\""+ sump+"\",\""+ pricep+"\",\""+ kolr+"\",\""+ sumr+"\",\""+ pricer+"\",\""
+        	    	        			+ kolp+"\",\""+ sump+"\",\""+ kolr+"\",\""+ sumr+"\",\""
         	    	        			+ kolk+"\",\""+ sumk+"\",\""+ pricek+ "\"" ;
         	    	        	out.write(dataStr.getBytes());
         	    	        } while (cc.moveToNext());

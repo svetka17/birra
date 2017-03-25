@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
-			
+ 			
 	<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical" >
-
+<!-- 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,8 +36,12 @@
                     style="@style/lv_h"
                     android:layout_weight="2"
                     android:text="тара" />
+                <TextView
+                    style="@style/lv_h"
+                    android:layout_weight="1"
+                    android:text="скидка" />
             </LinearLayout>
-			
+-->			
 			<ListView
                 android:id="@+id/lvComboDia"
                 android:layout_width="match_parent"
@@ -54,7 +58,7 @@
                     style="@style/TV_h"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:text="ИТОГО"
                     android:textAppearance="@style/textB20" />
 
@@ -72,7 +76,7 @@
                     style="@style/TV_h"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:text="СКИДКА"
                     android:textAppearance="@style/textB20" />
 
@@ -90,7 +94,7 @@
                     style="@style/TV_h"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:text="НАЛИЧНЫЕ"
                     android:textAppearance="@style/textB20" />
 
@@ -105,7 +109,7 @@
                     <TextView
                     style="@style/TV_h"
             		android:textAppearance="@style/textB20"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="СДАЧА" />
