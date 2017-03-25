@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+                
+                <Spinner
+                    android:id="@+id/sp_Pgr_Otchet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0" />
+                <TextView
+ 		    android:id="@+id/tv_Id_PgrOtchet"
+ 		    android:layout_width="0dp"
+    		android:layout_height="match_parent"
+    		android:layout_weight="0"
+ 		    android:visibility="invisible" />
+
+         <TextView
+ 		    android:text="ПЕРИОД С"
+ 		    android:id="@+id/tv_otchetD1"
+ 		    style="@style/TV_h"
+            android:textAppearance="@style/textB30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data_Otchet"
+ 		    style="@style/ET_t"
+            android:textAppearance="@style/textI30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0.2"/>
+         
+         <TextView
+             android:id="@+id/tv_otchetD2"
+ 		    android:text="ПЕРИОД ПО"
+ 		    style="@style/TV_h"
+            android:textAppearance="@style/textB30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data2_Otchet"
+ 		    style="@style/ET_t"
+            android:textAppearance="@style/textI30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0.2"/>
+<!--  		<TextView
+ 		    android:text="ЧЕКИ"
+ 		    style="@style/TV_h"
+            android:textAppearance="@style/textB30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+		<TextView
+ 		    android:id="@+id/tv_Id_KlientOtchet"
+ 		    android:layout_width="0dp"
+    		android:layout_height="match_parent"
+    		android:layout_weight="0"
+ 		    android:visibility="invisible" />
+                
+                <Spinner
+                    android:id="@+id/sp_Klient_Otchet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0" />
+-->
+    </LinearLayout>
+
+    <TableLayout
+            style="@style/mw1"
+            android:shrinkColumns="*"
+        android:orientation="vertical" >
+<TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/btnOborotkaOtchet"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB30"
+            android:text="ОБОРОТНАЯ ВЕДОМОСТЬ" />
+
+ </TableRow>       
+ <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/btnPrihodOtchet"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB30"
+            android:text="ОТЧЕТ О ПРИХОДЕ" />
+        <Button
+            android:id="@+id/btnRasxodOtchet"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB30"
+            android:text="ОТЧЕТ О РАСХОДЕ" />
+ </TableRow> 
+    </TableLayout>
+
+
+    <LinearLayout
+            style="@style/mw0"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnExitOtchet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:textAppearance="@style/textB30"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>
