@@ -1,4 +1,6 @@
 package luce.birra;
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,21 +10,25 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
  
 public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -36,6 +42,7 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
   Spinner spPgr;
   //EditText et;
   LinearLayout ll;
+  //LinearLayout ltmp;
   /*
    * @Override
   public void onWindowFocusChanged(boolean hasFocus) {
@@ -55,12 +62,13 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
 	      	  }
 	  }
   }
- */ 
+ */
+  
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.prod);
     Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr", null);
-    
+    //showMessage("w = "+width+"; h = "+height+"; S = "+scale+"; W = "+display_w+"; H = "+display_h+" SF="+height/15, (byte)1);
     
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_Prod);
     //spPgr.setTextSize(20f); 
@@ -113,6 +121,7 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
         	getSupportLoaderManager().getLoader(0).forceLoad();
         }
         });
+  //showMessage("30SP = "+DpToPx(30)+"; W = "+((int)display_w/8)+"; W_DP = "+PxToDp(display_w/8)+"; W_PX = "+DpToPx(display_w/8)+"; S = "+scale+"; W = "+display_w+"; H = "+display_h, (byte)1);
     
    /* RadioGroup rgProd = (RadioGroup) findViewById(R.id.rgProd);
     rgProd.clearCheck();
@@ -134,6 +143,7 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
     });*/
     
     btnAdd = (Button) findViewById(R.id.btnAddProd_);
+   // btnAdd.setTextSize(TypedValue.COMPLEX_UNIT_PX, height/15);
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	Intent intent = new Intent(ProdActivity.this, ProdEditActivity.class);
@@ -188,7 +198,8 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
      
     // создаем лоадер для чтения данных
     getSupportLoaderManager().initLoader(0, null, this);
-    
+    //ltmp=(LinearLayout) findViewById(R.id.lllll);
+    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.prod_ll),(byte)2,(byte)3,(byte)3);
   }
  /*
   // обработка нажатия кнопки

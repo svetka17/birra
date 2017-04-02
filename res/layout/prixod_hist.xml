@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/prixod_hist_ll"
     android:orientation="vertical" >
     <LinearLayout
         style="@style/mw0"
@@ -20,21 +21,32 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0" />
          <TextView
- 		    android:text="ДАТА"
+             android:id="@+id/tv_data1_pri"
+ 		    android:text="ДАТА С"
  		    style="@style/TV_h"
-            android:textAppearance="@style/textB30"
  		    android:layout_width="wrap_content"
  		    android:layout_height="wrap_content"/>
          
-         <EditText
+         <TextView
  		    android:id="@+id/tv_Data_PtiHist"
  		    style="@style/ET_t"
-            android:textAppearance="@style/textI30"
  		    android:layout_width="wrap_content"
  		    android:layout_height="wrap_content"
- 		    android:layout_weight="0" >
- 		    <requestFocus />
-          </EditText>
+ 		    android:layout_weight="1" />
+
+         <TextView
+             android:id="@+id/tv_data2_pri"
+ 		    android:text="ДАТА ПО"
+ 		    style="@style/TV_h"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"/>
+         
+        <TextView
+ 		    android:id="@+id/tv_Data_PtiHist2"
+ 		    style="@style/ET_t"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    android:layout_weight="1"  />
 
     </LinearLayout>
 <TableRow  style="@style/mw0">
@@ -83,11 +95,16 @@
     <LinearLayout
         style="@style/mw0"
         android:orientation="horizontal" >
-
+        <Button
+            android:id="@+id/btnExcelPrixodHist"
+            style="@style/B"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="В EXCEL" />
         <Button
             android:id="@+id/btnAddPrixodHist"
             style="@style/B"
-            android:textAppearance="@style/textB30"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -96,7 +113,6 @@
         <Button
             android:id="@+id/btnExitPrixodHist"
             style="@style/B"
-            android:textAppearance="@style/textB30"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

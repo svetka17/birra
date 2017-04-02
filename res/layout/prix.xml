@@ -1,58 +1,279 @@
-<TableLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:stretchColumns="*"
-android:background="#abb3b2"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/prix_ll"
+    android:orientation="vertical" >
+<!--      <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+                
+                <Spinner
+                    android:id="@+id/sp_Pgr_Otchet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0" />
+                <TextView
+ 		    android:id="@+id/tv_Id_PgrOtchet"
+ 		    android:layout_width="0dp"
+    		android:layout_height="match_parent"
+    		android:layout_weight="0"
+ 		    android:visibility="invisible" />
+
+         <TextView
+ 		    android:text="ПЕРИОД С"
+ 		    android:id="@+id/tv_otchetD1"
+ 		    style="@style/TV_h"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data_Otchet"
+ 		    style="@style/ET_t"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0.2"/>
+         
+         <TextView
+             android:id="@+id/tv_otchetD2"
+ 		    android:text="ПЕРИОД ПО"
+ 		    style="@style/TV_h"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data2_Otchet"
+ 		    style="@style/ET_t"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0.2"/>
+-->
+<!--  		<TextView
+ 		    android:text="ЧЕКИ"
+ 		    style="@style/TV_h"
+            android:textAppearance="@style/textB30"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+		<TextView
+ 		    android:id="@+id/tv_Id_KlientOtchet"
+ 		    android:layout_width="0dp"
+    		android:layout_height="match_parent"
+    		android:layout_weight="0"
+ 		    android:visibility="invisible" />
+                
+                <Spinner
+                    android:id="@+id/sp_Klient_Otchet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0" />
+
+    </LinearLayout>
+-->
+    <TableLayout
+            style="@style/mw1"
+            android:shrinkColumns="*"
+        android:orientation="vertical" >
 <TableRow
-    android:background="#39743e"
-    android:padding="5dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Дата"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Время"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-</TableRow>
-<TableRow android:padding="5dp">
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Сегодня"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Текущее время"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-</TableRow>
-<TableRow android:padding="5dp">
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="08.11.2015"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="12:00"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-</TableRow>
-<TableRow android:padding="5dp">
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="09.11.2015"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="20:50"
-        android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-</TableRow>
-</TableLayout>
+        android:id="@+id/tvBigB"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+        android:text="БОЛЬШАЯ КНОПКА" />
+
+        <Button
+            android:id="@+id/btnBigB"
+            style="@style/B"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ВЫБРАТЬ" />
+
+        <TextView
+            android:id="@+id/tvBigBVal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="" />
+
+ </TableRow>   
+ <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+    <TextView
+        android:id="@+id/tvMediumB"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+        android:text="СРЕДНЯЯ КНОПКА" />
+
+        <Button
+            android:id="@+id/btnMediumB"
+            style="@style/B"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ВЫБРАТЬ" />
+
+        <TextView
+            android:id="@+id/tvMediumBVal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="" />
+
+ </TableRow> 
+ <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+    <TextView
+        android:id="@+id/tvSmallB"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+        android:text="МАЛАЯ КНОПКА" />
+
+        <Button
+            android:id="@+id/btnSmallB"
+            style="@style/B"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ВЫБРАТЬ" />
+
+        <TextView
+            android:id="@+id/tvSmallBVal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="" />
+
+ </TableRow> 
+ <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+    <TextView
+        android:id="@+id/tvBigT"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+        android:text="БОЛЬШОЙ ТЕКСТ" />
+
+        <Button
+            android:id="@+id/btnBigT"
+            style="@style/B"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ВЫБРАТЬ" />
+
+        <TextView
+            android:id="@+id/tvBigTVal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="" />
+
+ </TableRow> 
+ <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+    <TextView
+        android:id="@+id/tvMediumT"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+        android:text="СРЕДНИЙ ТЕКСТ" />
+
+        <Button
+            android:id="@+id/btnMediumT"
+            style="@style/B"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ВЫБРАТЬ" />
+
+        <TextView
+            android:id="@+id/tvMediumTVal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="" />
+
+ </TableRow> 
+ <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+    <TextView
+        android:id="@+id/tvSmallT"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+        android:text="МАЛЫЙ ТЕКСТ" />
+
+        <Button
+            android:id="@+id/btnSmallT"
+            style="@style/B"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ВЫБРАТЬ" />
+
+        <TextView
+            android:id="@+id/tvSmallTVal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="" />
+
+ </TableRow> 
+    </TableLayout>
+
+
+    <LinearLayout
+            style="@style/mw0"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnExitSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>

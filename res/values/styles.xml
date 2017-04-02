@@ -42,23 +42,23 @@
 	
     <style name="TV_h"> <item name="android:gravity">center_vertical</item>
         <item name="android:background">@drawable/edittexth_style</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
      </style>
     
     <style name="TV_i"> 
  		<item name="android:gravity">center_vertical</item>
         <item name="android:background">@drawable/edittext_style</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
     </style>
     
     <style name="B" > 
 		<item name="android:background">@drawable/edittexth_style</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
 <!--  -->
-        <item name="android:paddingLeft">10dp</item>
-		<item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">5dp</item>
+		<item name="android:paddingRight">5dp</item>
 		
     </style>
     
@@ -67,7 +67,7 @@
         <item name="android:gravity">center_vertical|center_horizontal</item>
 		
     </style>
-    
+<!--    
     <style name="textB35">
         <item name="android:textSize">35sp</item>
         <item name="android:textStyle">bold</item>
@@ -100,6 +100,7 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+-->    
     <style name="wm1" parent="AppBaseTheme">
         <item name="android:layout_width">wrap_content</item> 
         <item name="android:layout_height">match_parent</item> 
@@ -157,7 +158,7 @@
         <item name="android:background">@drawable/edittext_style</item>
         <item name="android:paddingLeft">5dp</item>
 		<item name="android:paddingRight">5dp</item>
-		<item name="android:textAppearance">@style/textI25</item>
+<!--  		<item name="android:textAppearance">@style/textI25</item> -->
     </style>
 
     <style name="lv_h" parent="AppBaseTheme">
@@ -168,7 +169,7 @@
         <item name="android:background">@drawable/edittexth_style</item>
         <item name="android:paddingLeft">5dp</item>
 		<item name="android:paddingRight">5dp</item>
-		<item name="android:textAppearance">@style/textB25</item>
+<!--  		<item name="android:textAppearance">@style/textB25</item> -->
     </style>
 
 </resources>

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rasxod_ll"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -49,7 +50,6 @@
             android:layout_weight="0"
             android:textOff="КОЛ"
             android:textOn="КОЛ"
-            android:textSize="30sp"
             android:textStyle="bold" />
 
             <TextView
@@ -57,8 +57,7 @@
                 style="@style/TV_h"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textAppearance="@style/textB30" />
+                android:layout_weight="1" />
   			</LinearLayout>   
   </LinearLayout>
 <!--  
@@ -111,7 +110,7 @@
 
                 <TextView
                     style="@style/lv_h"
-                    android:layout_weight="2"
+                    android:layout_weight="3"
                     android:text="наименование" />
 
                 <TextView
@@ -143,23 +142,27 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:orientation="horizontal" >
-
+<Button
+                    android:id="@+id/btnOkRasxod_okok"
+                    style="@style/B"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="ЗАКРЫТЬ ЧЕК" />
                 <Button
                     android:id="@+id/btnOkRasxod_ok"
                     style="@style/B"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="ЧЕК"
-                    android:textAppearance="@style/textB30" />
+                    android:text="ЧЕК" />
 
                 <TextView
                     android:id="@+id/tvSumSum"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:textAppearance="@style/textB30" />
+                    android:gravity="center_vertical|center_horizontal" />
                 <Button
                 android:id="@+id/btnXRasxod_x"
                 style="@style/BB"
@@ -167,8 +170,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="X"
-                android:textAppearance="@style/textB30" />
+                android:text="X"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -380,7 +382,7 @@
 </TableLayout>
 -->
         <LinearLayout
-
+			android:id="@+id/llRR"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -417,7 +419,7 @@
     android:layout_height="wrap_content"
     android:layout_weight="0"
     android:orientation="horizontal" >
-
+ 
                 <TextView
                     android:id="@+id/tvIdPgrBack"
                     android:layout_width="0dp"
@@ -430,8 +432,7 @@
                     style="@style/TV_i"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textAppearance="@style/textB30" />
+                    android:layout_weight="1" />
                 
                 
                 <Button
@@ -440,8 +441,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="НАЗАД"
-                    android:textAppearance="@style/textB30" />
+                    android:text="НАЗАД"/>
             </LinearLayout>
         </LinearLayout>
 <!--    

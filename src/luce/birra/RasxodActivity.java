@@ -23,6 +23,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,7 +50,7 @@ import android.widget.ToggleButton;
 public class RasxodActivity extends FragmentActivity implements OnCheckedChangeListener,
 SeekBar.OnSeekBarChangeListener
 {
-  Button /*btnExit,*/tbHist, tbXX, btnOk, btnBack, bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
+  Button /*btnExit,*/tbHist, tbXX, btnOk,btnOkOk, btnBack, bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
   //b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, btCom, btClear, btD;
   ToggleButton /*tb05, tb1, tb15, tb2, tb25, tb3,*/tbnKol, tbTara;
   TextView tvSum, tvKol, tvDKol, tvIdPgr, tvNamePgr;//, tvCombo;
@@ -65,7 +66,7 @@ SeekBar.OnSeekBarChangeListener
   //LinearLayout row;
   //TableRow.LayoutParams params;
   
-  LinearLayout /*lltara,*/ llL, llR;
+  LinearLayout /*lltara,*/ llL, llR, llRR;
   LinearLayout.LayoutParams llLP;
   LinearLayout.LayoutParams llRP;
   SeekBar sbar;
@@ -82,8 +83,8 @@ SeekBar.OnSeekBarChangeListener
   String regexp_numb = "\\-?\\d+(\\.\\d{0,})?";
   Map<String, Object> m;
   Dialog dialogg;
-  int display_h=0, display_w=0;
-  float scale=0;
+  //int display_h=0, display_w=0;
+  //float scale=0;
 //упаковываем данные в понятную для адаптера структуру
   ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
   MySimpleAdapter sAdapter, sAdapterD;
@@ -166,29 +167,12 @@ SeekBar.OnSeekBarChangeListener
    //ArrayList<LinearLayout> ll = new ArrayList<LinearLayout>();
    Cursor c = MainActivity.db.getRawData ("select distinct T._id as _id, T.name as name from tmc_pgr T left join tmc as TM on T._id=TM.pgr left join ostat as O on O.id_tmc=TM._id where O.kol>0 and TM.vis=1 ",null); 
    
-   private float PxToDp(float px) {
-		return px
-				/ getApplicationContext().getResources().getDisplayMetrics().density;
-	}
-
-	private float DpToPx(float dp) {
-		return dp
-				* getApplicationContext().getResources().getDisplayMetrics().density;
-	}
-   
    public void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);
     setContentView(R.layout.rasxod);
     //разрешение экрана
-    
-    Display display = getWindowManager().getDefaultDisplay();
-    DisplayMetrics metricsB = new DisplayMetrics();
-    display.getMetrics(metricsB);
-    display_h=metricsB.heightPixels; display_w=metricsB.widthPixels;
-    scale = getResources().getDisplayMetrics().density;
 
-    
     //count tara button
     Cursor get_count_but = MainActivity.db.getRawData ("select count(*) as c from tmc T left join ostat as O on O.id_tmc=T._id where O.kol>0 and T.ok=1 ",null);
     if (get_count_but.moveToFirst()) { 
@@ -242,9 +226,10 @@ SeekBar.OnSeekBarChangeListener
     //llR_ = (LinearLayout) findViewById(R.id.llR_);
     llL = (LinearLayout) findViewById(R.id.llL);
     llR = (LinearLayout) findViewById(R.id.llR);
+    llRR = (LinearLayout) findViewById(R.id.llRR);
     //llr = (LinearLayout) findViewById(R.id.llR);
     llLP = (LinearLayout.LayoutParams) llL.getLayoutParams();
-    llRP = (LinearLayout.LayoutParams) llR.getLayoutParams();
+    llRP = (LinearLayout.LayoutParams) llRR.getLayoutParams();
     sbar = (SeekBar) findViewById(R.id.seekBar);
     sbar.setOnSeekBarChangeListener(this);
     
@@ -275,7 +260,7 @@ SeekBar.OnSeekBarChangeListener
     if (cTara.moveToFirst()) { 
     	 
         do {
-        	LinearLayout.LayoutParams PB = new LinearLayout.LayoutParams(/*LinearLayout.LayoutParams.WRAP_CONTENT*/(int)display_w/8, LinearLayout.LayoutParams.MATCH_PARENT,1);
+        	LinearLayout.LayoutParams PB = new LinearLayout.LayoutParams(/*LinearLayout.LayoutParams.WRAP_CONTENT*/(int)MainActivity.w/8, LinearLayout.LayoutParams.MATCH_PARENT,1);
             PB.weight=1;
             //PB.leftMargin=5;
             //PB.rightMargin=5;
@@ -307,10 +292,11 @@ SeekBar.OnSeekBarChangeListener
 			Matcher matcher = pattern.matcher(but.get(ib).tmc_name.toString());
 			int l = matcher.find()?matcher.group().length():0;
         	
-        	float sT = (display_w/(8*scale*scale*(but.get(ib).tmc_name.toString().length()-l)))+scale*10-5;
+        	//float sT = (display_w/(8*scale*scale*(but.get(ib).tmc_name.toString().length()-l)))+scale*10-5;
         			//(2*(display_w/8)/scale)/(scale*but.get(ib).tmc_name.toString().length()); 
         			//((((display_w/8)/scale) / (but.get(ib).tmc_name.toString().length()))/scale)+10;
-        	but.get(ib).tb.setTextSize(sT);
+        	float sT=MainActivity.sizeMediumButton;
+        	but.get(ib).tb.setTextSize(TypedValue.COMPLEX_UNIT_PX,sT);
         	but.get(ib).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
         	but.get(ib).tb.setTag(ib);
         	but.get(ib).tb.setOnCheckedChangeListener(this);
@@ -399,7 +385,14 @@ SeekBar.OnSeekBarChangeListener
         	showDialog(2);
         }
       });
-    
+    btnOkOk = (Button) findViewById(R.id.btnOkRasxod_okok);
+    btnOkOk.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	getCheck();
+        	//tvDialogN=R.id.btnOkRasxod_ok;
+        	//showDialog(2);
+        }
+      });
     
 /*    b0 = (Button) findViewById(R.id.btn00);
     b1 = (Button) findViewById(R.id.btn11);
@@ -491,8 +484,8 @@ SeekBar.OnSeekBarChangeListener
 	        } while (c.moveToNext());
 	        
 	      }
-	   float sText=((display_w)/(4*scale*scale*l))+scale*5;
-	   
+	   //float sText=((display_w)/(4*scale*scale*l))+scale*5;
+	   float sText=MainActivity.sizeSmallButton;
 	    if (count_but_pgr<19)
 	    {  /* llbut = new TableLayout(this);
 	    	llbut.setOrientation(TableLayout.HORIZONTAL);*/
@@ -553,7 +546,7 @@ SeekBar.OnSeekBarChangeListener
 	        	
 	        	btnPgr.setText(c.getString(c.getColumnIndex("name")));
 	        	btnPgr.setTag(c.getInt(c.getColumnIndex("_id"))+"-"+c.getString(c.getColumnIndex("name")));
-	        	btnPgr.setTextSize(sText);
+	        	btnPgr.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
 	        	btnPgr.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
 	        	btnPgr.setOnClickListener(new OnClickListener() {
 	                public void onClick(View v) {
@@ -611,8 +604,8 @@ SeekBar.OnSeekBarChangeListener
 		        } while (cc.moveToNext());
 		        
 		      }
-		   float sText=((display_w)/(6*scale*scale*l))+scale*5;
-	    	
+		   //float sText=((display_w)/(6*scale*scale*l))+scale*5;
+	    	float sText=MainActivity.sizeSmallButton;
 	    if (count_but<19)
 	    {  /* llbut = new TableLayout(this);
 	    	llbut.setOrientation(TableLayout.HORIZONTAL);
@@ -673,7 +666,7 @@ SeekBar.OnSeekBarChangeListener
 	        		row = new TableRow(this);
 	        		//row = new LinearLayout(this);
 	        		//row.setOrientation(LinearLayout.HORIZONTAL);
-	                int w = (int)(4*display_h/5)/8;
+	                int w = (int)(4*MainActivity.h/5)/8;
 	                row.setMinimumHeight(w);
 	        		//row.setGravity(Gravity.CENTER);
 	                //row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,1));
@@ -708,7 +701,7 @@ SeekBar.OnSeekBarChangeListener
 	        			new ToggleButton(this)
 	        			));
 	        	
-	        	but.get(ib).tb.setMinimumWidth((int)(display_w/6));
+	        	but.get(ib).tb.setMinimumWidth((int)(MainActivity.w /6));
 	        	/*
 	        	String[] n = (but.get(ib).tmc_name).split(" ");
 	        	
@@ -717,7 +710,7 @@ SeekBar.OnSeekBarChangeListener
 	        		if (n[i].length()>l) l=n[i].length();
 	        	float sText=((display_w)/(6*scale*scale*l))+scale*10;
 	        	*/
-	        	but.get(ib).tb.setTextSize(sText);
+	        	but.get(ib).tb.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
 	        	
 	        	int l1=(but.get(ib).tmc_name+"\n").length(), l2=(but.get(ib).tmc_name+"\n"+but.get(ib).ost+but.get(ib).ted+" ЦЕНА "+but.get(ib).price).length();
 	        	
@@ -945,7 +938,7 @@ SeekBar.OnSeekBarChangeListener
    	for (int i=0; i<data.size(); i++) 
    	{sChek=sChek+"\n"+data.get(i).get("name").toString()+" "+data.get(i).get("kol").toString()+" "+data.get(i).get("price").toString()+" "+data.get(i).get("tara").toString(); }	
    	
-   	showMessage("ЧЕК № "+cou+" НА СУММУ:"+tvSum.getText().toString()+"\n"+sChek, (byte)1);
+   	//showMessage("ЧЕК № "+cou+" НА СУММУ:"+tvSum.getText().toString()+"\n"+sChek, (byte)1);
    		
    	data.clear();
    	sAdapter.notifyDataSetChanged();
@@ -1015,27 +1008,28 @@ SeekBar.OnSeekBarChangeListener
 	   }
    }
    
+   
    float StrToFloat(String s) {
 	   Float total = Float.valueOf(0);
-  	 try
-  	 {
-  	     total = Float.valueOf(s);
-  	 }
-  	 catch(NumberFormatException ex)
-  	 {
-  	     DecimalFormat df = new DecimalFormat();
-  	     Number n = null;
-  	     try
-  	     {
-  	         n = df.parse(s);
-  	     } 
-  	     catch(ParseException ex2){ }
-  	     if(n != null)
-  	         total = n.floatValue();
-  	 }
-  	 return total;
-   }; 
-   
+	 try
+	 {
+	     total = Float.valueOf(s);
+	 }
+	 catch(NumberFormatException ex)
+	 {
+	     DecimalFormat df = new DecimalFormat();
+	     Number n = null;
+	     try
+	     {
+	         n = df.parse(s);
+	     } 
+	     catch(ParseException ex2){ }
+	     if(n != null)
+	         total = n.floatValue();
+	 }
+	 return total;
+}; 
+
    void dialogNumOK(int tvI) {
 	   switch (tvI) {
 	   case R.id.tvOtherKol_:
@@ -1099,21 +1093,22 @@ SeekBar.OnSeekBarChangeListener
        btComa = (Button) Dview.findViewById(R.id.btnComaCC);
        btXD = (Button) Dview.findViewById(R.id.btnXXX);
        btDD = (Button) Dview.findViewById(R.id.btnDDD);
-       float sText = ((display_w/7)/(scale*scale));//+scale*5;
-       bt1.setTextSize(sText);
-       bt2.setTextSize(sText);
-       bt3.setTextSize(sText);
-       bt4.setTextSize(sText);
-       bt5.setTextSize(sText);
-       bt6.setTextSize(sText);
-       bt7.setTextSize(sText);
-       bt8.setTextSize(sText);
-       bt9.setTextSize(sText);
-       bt0.setTextSize(sText);
-       btComa.setTextSize(sText);
-       btXD.setTextSize(sText);
-       btDD.setTextSize(sText);
-       tvDKol.setTextSize(sText);
+      // float sText = ((MainActivity.w/7)/(MainActivity.scale*MainActivity.scale));//+scale*5;
+       float sText = MainActivity.sizeBigButton;
+       bt1.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       bt2.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       bt3.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       bt4.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       bt5.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       bt6.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       bt7.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       bt8.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       bt9.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       bt0.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       btComa.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       btXD.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       btDD.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+       tvDKol.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
        
        OnClickListener listenerDKol = new OnClickListener() {
      	  @Override
@@ -1386,6 +1381,8 @@ SeekBar.OnSeekBarChangeListener
 		else
 			{buttonView.setTextColor(clrNoCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
 	}
+  
+  @Override
   protected void onDestroy() {
     super.onDestroy();
     c.close();

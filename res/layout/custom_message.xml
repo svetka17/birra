@@ -8,6 +8,6 @@
 <TextView android:id="@+id/textView" 
     android:layout_width="wrap_content" 
     android:layout_height="match_parent"
-    android:textAppearance="@style/textI30"
+    android:textSize="30sp"
     android:textColor="#0812a1"/> 
 </LinearLayout> 

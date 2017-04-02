@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/oborotka_ll"
     android:orientation="vertical" >
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,14 +25,12 @@
          <TextView
  		    android:text="ДАТА C"
  		    style="@style/TV_h"
-            android:textAppearance="@style/textB30"
  		    android:layout_width="wrap_content"
  		    android:layout_height="wrap_content"
  		    android:layout_weight="0" />
          <EditText
  		    android:id="@+id/tv_Data_Oborotka"
  		    style="@style/ET_t"
-            android:textAppearance="@style/textI30"
  		    android:layout_width="wrap_content"
  		    android:layout_height="wrap_content"
  		    android:layout_weight="0" >
@@ -143,7 +142,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB30"
             android:text="ЭКСПОРТ В EXCEL" />
 
         <Button
@@ -152,7 +150,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB30"
             android:text="НАЗАД" />
     </LinearLayout>
 

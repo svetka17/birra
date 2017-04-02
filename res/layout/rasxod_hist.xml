@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rasxod_hist_ll"
     android:orientation="vertical" >
     <LinearLayout
         style="@style/mw0"
@@ -20,23 +21,34 @@
  		    android:visibility="invisible" />
 
          <TextView
- 		    android:text="ДАТА ПРОДАЖИ"
+             android:id="@+id/tv_data_ras1"
+ 		    android:text="ДАТА С"
  		    style="@style/TV_h"
-            android:textAppearance="@style/textB30"
  		    android:layout_width="wrap_content"
  		    android:layout_height="match_parent"
  		    android:layout_weight="0" />
-         <EditText
+         <TextView
  		    android:id="@+id/tv_Data_RasHist"
  		    style="@style/ET_t"
-            android:textAppearance="@style/textI30"
  		    android:layout_width="wrap_content"
  		    android:layout_height="match_parent"
- 		    android:layout_weight="0.2"/>
+ 		    android:layout_weight="1"/>
+                  <TextView
+                      android:id="@+id/tv_data_ras2"
+ 		    android:text="ДАТА ПО"
+ 		    style="@style/TV_h"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data_RasHist2"
+ 		    style="@style/ET_t"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="1"/>
 		<TextView
  		    android:text="ЧЕКИ"
  		    style="@style/TV_h"
-            android:textAppearance="@style/textB30"
  		    android:layout_width="wrap_content"
  		    android:layout_height="match_parent"
  		    android:layout_weight="0" />
@@ -114,14 +126,19 @@
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:text="ДОБАВИТЬ НОВЫЙ" />
--->
-        <Button
-            android:id="@+id/btnExitRasxodHist"
+--><Button
+            android:id="@+id/btnExcelRasxodHist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB30"
+            android:text="В EXCEL" />
+        <Button
+            android:id="@+id/btnExitRasxodHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            style="@style/B"
             android:text="НАЗАД" />
     </LinearLayout>
 

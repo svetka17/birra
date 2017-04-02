@@ -30,7 +30,8 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
   Button btnExit, btnAdd;
   AdapterLV scAdapter;
   static TextView tvIdPgr; 
-  static EditText tvDataIns;
+  //static EditText tvDataIns, tvDataIns2;
+  static TextView tvDataIns, tvDataIns2, tv_data1_pri, tv_data2_pri;
   Spinner spPgr;
   
   LinearLayout ll;
@@ -39,12 +40,32 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
     super.onCreate(savedInstanceState);
     setContentView(R.layout.prixod_hist);
     //final DialogFragment dlg = new DialogActivity();
-    tvDataIns = (EditText) findViewById(R.id.tv_Data_PtiHist);
+    tvDataIns = (TextView) findViewById(R.id.tv_Data_PtiHist);
     tvDataIns.setText(MainActivity.getStringData(MainActivity.getIntData()));
     tvDataIns.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	showDialog(1);
         	//dlg.show(getSupportFragmentManager(), "dlg");
+        }
+      });
+    tv_data1_pri = (TextView) findViewById(R.id.tv_data1_pri);
+    tv_data1_pri.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	showDialog(1);
+        }
+      });
+    tvDataIns2 = (TextView) findViewById(R.id.tv_Data_PtiHist2);
+    tvDataIns2.setText(MainActivity.getStringData(MainActivity.getIntData()));
+    tvDataIns2.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	showDialog(2);
+        	//dlg.show(getSupportFragmentManager(), "dlg");
+        }
+      });
+    tv_data2_pri = (TextView) findViewById(R.id.tv_data2_pri);
+    tv_data2_pri.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	showDialog(2);
         }
       });
     Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr", null);
@@ -107,7 +128,7 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
      
     // создаем лоадер для чтения данных
     getSupportLoaderManager().initLoader(0, null, this);
-    
+    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.prixod_hist_ll),(byte)2,(byte)3,(byte)3);
   }
   
   protected Dialog onCreateDialog(int id) {
@@ -115,6 +136,10 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
         DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         return tpd;
       }
+      if (id == 2) {
+          DatePickerDialog tpd = new DatePickerDialog(this, myCallBack2, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+          return tpd;
+        }
       return super.onCreateDialog(id);
     }
      
@@ -125,7 +150,13 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
       getSupportLoaderManager().getLoader(0).forceLoad();
     }
     };
-    
+    OnDateSetListener myCallBack2 = new OnDateSetListener() {
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+            int dayOfMonth) {
+          tvDataIns2.setText(String.valueOf(100+dayOfMonth).substring(1) + "." + String.valueOf(100+(monthOfYear+1)).substring(1) + "." + String.valueOf(100+(year%2000)).substring(1));
+          getSupportLoaderManager().getLoader(0).forceLoad();
+        }
+        };
   @Override
   protected void onRestart() {
     super.onRestart();
@@ -164,13 +195,15 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
     	String []str = {(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":" TP.pgr="+tvIdPgr.getText().toString()
     			,/*(tvDataIns.getText().length()==0)?"":" substr(P.data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"+
         				"and substr(R.data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"*/
-    			(tvDataIns.getText().length()==0)?"":" substr(T.data_ins,1,6)=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"
+    			(tvDataIns.getText().length()==0)?"":" substr(T.data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"
+    			,(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")"
         				};
         String where=str[0].toString();
         //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
         if (where.equals("")||where.length()==0) where=str[1].toString(); else 
         	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
-
+        if (where.equals("")||where.length()==0) where=str[2].toString(); else 
+        	if (!str[2].equals("")) where=where+" and "+str[2].toString(); 
     	 Cursor cursor = db.getQueryData("prixod as T left join tmc as TP on T.id_tmc = TP._id left join postav as P on T.id_post = P._id left join tmc_ed as E on T.ed = E._id", 
      			new String[] {"T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","T.kol as kol",
     			 "E.name as ted", "T.ed as ed","T.price as price","P.name as pname","T.prim as prim","T.id_post as id_post","TP.pgr as pgr"}, 

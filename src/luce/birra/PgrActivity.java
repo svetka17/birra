@@ -70,7 +70,7 @@ public class PgrActivity extends FragmentActivity implements /*OnItemClickListen
 
     // создаем лоадер для чтения данных
     getSupportLoaderManager().initLoader(0, null, this);
-
+    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.pgr_ll),(byte)2,(byte)3,(byte)3);
   }
   
   @Override

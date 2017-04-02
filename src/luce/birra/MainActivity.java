@@ -1,21 +1,77 @@
 package luce.birra;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.ParseException;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
  
 public class MainActivity extends Activity implements OnClickListener {
-Button btnExit, btnProd, btnOstat, btnPrixod, btnRasxod, btnKassa, btnSetting;
+Button btnExit, btnProd, btnOstat, btnPrixod, btnRasxod, btnKassa, btnSetting, btnAbout;
 static DB db;
+static int w=0;
+static int h=0;
+static float scale=0;
+static int sizeBigButton=15;
+static int sizeMediumButton=15;
+static int sizeSmallButton=15;
+static int sizeBigText=15;
+static int sizeMediumText=15;
+static int sizeSmallText=15;
+static void setSizeFont(ViewGroup mlayout,byte sB, byte sH, byte sI) {
+	float b = (sB==1)?sizeBigButton:((sB==2)?sizeMediumButton:sizeSmallButton);
+	float th = (sH==1)?sizeBigText:((sH==2)?sizeMediumText:sizeSmallText);
+	float ti = (sI==1)?sizeBigText:((sI==2)?sizeMediumText:sizeSmallText);
+	ArrayList<View> alv = getViewsByTag(mlayout);
+	for (int i=0; i<alv.size(); i++)
+    {if (alv.get(i) instanceof CheckBox) ((CheckBox)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , ti);
+	else if (alv.get(i) instanceof Button)
+    	((Button)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , b);
+    	else if (alv.get(i) instanceof EditText ) {
+    		((EditText)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , th);
+		}
+    	else ((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , ti);	
+    }
+}
 
+static ArrayList<View> getViewsByTag(ViewGroup root){
+    ArrayList<View> views = new ArrayList<View>();
+    final int childCount = root.getChildCount();
+    for (int i = 0; i < childCount; i++) {
+        final View child = root.getChildAt(i);
+        if (child instanceof ViewGroup) {
+            views.addAll(getViewsByTag((ViewGroup) child));
+        } 
+        else
+            views.add(child);
+    }
+    return views;
+}
+
+float PxToDp(float px) {
+	return px
+			/ getApplicationContext().getResources().getDisplayMetrics().density;
+}
+
+ float DpToPx(float dp) {
+	return dp
+			* getApplicationContext().getResources().getDisplayMetrics().density;
+}
 static int getIntDataTime(){
 	return ((((Calendar.getInstance().get(Calendar.YEAR)%2000)*100+Calendar.getInstance().get(Calendar.MONTH)+1)*100+Calendar.getInstance().get(Calendar.DATE))*100
 			+Calendar.getInstance().get(Calendar.HOUR_OF_DAY))*100+Calendar.getInstance().get(Calendar.MINUTE);
@@ -103,9 +159,26 @@ static int getIntDataTime(String dat){
         
         btnSetting = (Button) findViewById(R.id.btnSetting);
         btnSetting.setOnClickListener(this);
+        
+        btnAbout = (Button) findViewById(R.id.btnAbout);
+        btnAbout.setOnClickListener(this);
      // открываем подключение к БД
         db = new DB(this);
         db.open();
+        Display display = getWindowManager().getDefaultDisplay();
+        //DisplayMetrics metricsB = new DisplayMetrics();
+        //display.getMetrics(metricsB);
+        //display_h=metricsB.heightPixels; display_w=metricsB.widthPixels;
+        scale = getResources().getDisplayMetrics().density;
+        w = display.getWidth();  // deprecated, но работает везде
+        h = display.getHeight();  // deprecated, но работает 
+        sizeBigButton=h/15;
+        sizeMediumButton=h/23;
+        sizeSmallButton=h/30;
+        sizeBigText=h/15;
+        sizeMediumText=h/23;
+        sizeSmallText=h/30;
+        MainActivity.setSizeFont((LinearLayout)findViewById(R.id.main_ll),(byte)1,(byte)3,(byte)3);
     }
 
 
@@ -184,6 +257,10 @@ static int getIntDataTime(String dat){
 		     break;
 		   case R.id.btnRasxod:
 			   intent = new Intent(this, RasxodActivity.class);
+			   startActivity(intent);
+			   break;
+		   case R.id.btnAbout:
+			   intent = new Intent(this, SettingActivity.class);
 			   startActivity(intent);
 			   break;
 		   case R.id.btnKassa:

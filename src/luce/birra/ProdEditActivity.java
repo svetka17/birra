@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -195,7 +196,7 @@ public class ProdEditActivity extends FragmentActivity {
     	cbVis.setChecked(Integer.parseInt(getIntent().getStringExtra("ProdVis"))==1?true:false);
     	tvTara.setText(getIntent().getStringExtra("ProdTara"));
     }
-  
+    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.prod_edit_ll),(byte)2,(byte)3,(byte)3);
   }
   
   void setSpinnerItemById(Spinner spinner, int _id)

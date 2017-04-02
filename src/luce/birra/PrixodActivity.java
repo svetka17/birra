@@ -1,9 +1,13 @@
 package luce.birra;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,21 +18,25 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
  
-public class PrixodActivity extends FragmentActivity {
+public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
  
   Button btnExit, btnAdd, btnSProd, btnSPost, btnHist;
-  Spinner spProd, spPost;
+  Spinner spProd, spPost, spPgr;
   TextView spEd;
   TextView tvId,  tvEd, tvIdProd, tvIdPost;
+  static TextView tvIdPgr;
   EditText tvKol, tvPrice, tvDataIns,tvPrim;
-  Cursor cProd, cPost;//, cEd;
-  SimpleCursorAdapter scaProd, scaPost;//, scaEd;
-  String[] fromProd, fromPost;//, fromEd;
-  int[] toProd, toPost;//, toEd;
+  Cursor// cProd, 
+  cPost,  cPgr;//, cEd;
+  static Cursor cursor;
+  SimpleCursorAdapter scaProd, scaPost, scaPgr;//, scaEd;
+  String[] fromProd, fromPost, fromPgr;//, fromEd;
+  int[] toProd, toPost, toPgr;//, toEd;
   String s;
   
   void showMessage(String s, byte dur){
@@ -50,6 +58,9 @@ public class PrixodActivity extends FragmentActivity {
     tvId = (TextView) findViewById(R.id.tvIdPri);
     //etPgr = (EditText) findViewById(R.id.etEditIdPgrProd);
     tvIdProd = (TextView) findViewById(R.id.tvIdProdPri);
+    tvIdProd.setText("0");
+    tvIdPgr = (TextView) findViewById(R.id.tvIdPgrPri);
+    tvIdPgr.setText("0");
     tvIdPost = (TextView) findViewById(R.id.tvIdPostPri);
     tvDataIns = (EditText) findViewById(R.id.tvDatInsPri);
     /*tvDataIns = (CalendarView) findViewById(R.id.tvDatInsPri);
@@ -73,13 +84,36 @@ public class PrixodActivity extends FragmentActivity {
     tvPrim = (EditText) findViewById(R.id.tvPrimPri);
     spProd = (Spinner) findViewById(R.id.spProdPri);
     spPost = (Spinner) findViewById(R.id.spPostPri);
+    spPgr = (Spinner) findViewById(R.id.spPgrPri);
     spEd = (TextView) findViewById(R.id.spEdPri);
     tvPrim.setImeOptions(EditorInfo.IME_ACTION_DONE);
     tvDataIns.setImeOptions(EditorInfo.IME_ACTION_DONE);
     tvPrice.setImeOptions(EditorInfo.IME_ACTION_DONE);
     tvKol.setImeOptions(EditorInfo.IME_ACTION_DONE);
-    cProd = MainActivity.db.getRawData("select _id, name, 0 ed, '-' ted from foo union all select T._id as _id, T.name as name, T.ed as ed, E.name as ted from tmc as T left join tmc_ed as E on T.ed=E._id ", null);
+    //cProd = MainActivity.db.getRawData("select _id, name, pgr,ed,ted from (select _id, name,0 pgr, 0 ed, '-' ted from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted from tmc as T left join tmc_ed as E on T.ed=E._id) where pgr = "+((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText()), null);
+    //cProd = MainActivity.db.getRawData("select _id, name,0 pgr, 0 ed, '-' ted from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted from tmc as T left join tmc_ed as E on T.ed=E._id", null);
     cPost = MainActivity.db.getRawData("select _id, name from postav", null);
+    cPgr = MainActivity.db.getRawData("select _id, name from tmc_pgr", null);
+    /////////////
+    spPgr = (Spinner) findViewById(R.id.spPgrPri);
+    fromPgr = new String[] {"name"};
+    toPgr = new int[] {android.R.id.text1};
+    scaPgr = new SimpleCursorAdapter(this, R.layout.spinner_item, cPgr, fromPgr, toPgr);
+    scaPgr.setDropDownViewResource(R.layout.spinner_drop_down); 
+    spPgr.setAdapter(scaPgr);
+    spPgr.setOnItemSelectedListener(new OnItemSelectedListener() {
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+            //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
+        	spPgr.setTag(id);
+        	tvIdPgr.setText(String.valueOf(id));
+        	getSupportLoaderManager().getLoader(0).forceLoad();
+        	}
+        public void onNothingSelected(AdapterView<?> parent) {
+        	spPgr.setTag(0);
+        	tvIdPgr.setText(String.valueOf("0"));
+        	getSupportLoaderManager().getLoader(0).forceLoad();
+        }
+        });
     //cEd = MainActivity.db.getRawData("select _id, name from foo union all select _id, name from tmc_ed", null);
     // make an adapter from the cursor
     fromProd = new String[] {"name"};
@@ -88,7 +122,7 @@ public class PrixodActivity extends FragmentActivity {
     toPost = new int[] {android.R.id.text1};
     //fromEd = new String[] {"name"};
     //toEd = new int[] {android.R.id.text1};
-    scaProd = new SimpleCursorAdapter(this, R.layout.spinner_item, cProd, fromProd, toProd);
+    scaProd = new SimpleCursorAdapter(this, R.layout.spinner_item, null, fromProd, toProd);
     scaPost = new SimpleCursorAdapter(this, R.layout.spinner_item, cPost, fromPost, toPost);
     //scaEd = new SimpleCursorAdapter(this, R.layout.spinner_item, cEd, fromEd, toEd);
     // set layout for activated adapter
@@ -110,9 +144,9 @@ public class PrixodActivity extends FragmentActivity {
             //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
         	spProd.setTag(id);
         	tvIdProd.setText(String.valueOf(id));
-        	s=cProd.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("name"));
-        	tvEd.setText(cProd.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ed")) );
-        	spEd.setText(cProd.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ted")) );
+        	s=/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("name"));
+        	tvEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ed")) );
+        	spEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ted")) );
         }
         public void onNothingSelected(AdapterView<?> parent) {
         	spProd.setTag(0);
@@ -225,7 +259,8 @@ public class PrixodActivity extends FragmentActivity {
     	tvEd.setText(getIntent().getStringExtra("PrixodEd"));
     	//spEd.setSelection(Integer.parseInt(getIntent().getStringExtra("PrixodEd")));
     	//setSpinnerItemById(spEd, Integer.parseInt(getIntent().getStringExtra("PrixodEd")));
-    	
+    	tvIdPgr.setText(getIntent().getStringExtra("PrixodPgr"));
+    	setSpinnerItemById(spPgr, Integer.parseInt(getIntent().getStringExtra("PrixodPgr")));
     	tvIdPost.setText(getIntent().getStringExtra("PrixodPost"));
     	setSpinnerItemById(spPost, Integer.parseInt(getIntent().getStringExtra("PrixodPost")));
     	//spPost.setSelection(Integer.parseInt(getIntent().getStringExtra("PrixodPost")));
@@ -239,7 +274,8 @@ public class PrixodActivity extends FragmentActivity {
 
     	tvId.setText(getIntent().getStringExtra("PrixodId"));
     }
-  
+    getSupportLoaderManager().initLoader(0, null, this);
+    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.prixod_ll),(byte)2,(byte)3,(byte)3);
   }
   
   void setSpinnerItemById(Spinner spinner, int _id)
@@ -259,11 +295,67 @@ public class PrixodActivity extends FragmentActivity {
   @Override
   protected void onRestart() {
     super.onRestart();
-    //getSupportLoaderManager().getLoader(0).forceLoad();
+    getSupportLoaderManager().getLoader(0).forceLoad();
   } 
   
   protected void onDestroy() {
     super.onDestroy();
+  }
+
+@Override
+public Loader<Cursor> onCreateLoader(int i, Bundle arg1) {
+	// TODO Auto-generated method stub
+    if (i == 0 ) return new PgrLoader(this, MainActivity.db);
+	return null;
+}
+
+@Override
+public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+	// TODO Auto-generated method stub
+	scaProd.swapCursor(cursor);
+	/*	switch(loader.getId())
+    {
+    case 0:
+  	  scaProd.swapCursor(cursor);
+     break;
+    
+ }*/
+}
+
+@Override
+public void onLoaderReset(Loader<Cursor> arg0) {
+	// TODO Auto-generated method stub
+}
+
+static class PgrLoader extends CursorLoader {
+	  
+    DB db;
+    public PgrLoader(Context context, DB db) {
+      super(context);
+      this.db = db;
+    }
+     
+    @Override
+    public Cursor loadInBackground() {
+    	/*String []str = {
+    			(tvDataIns.getText().length()==0)?"":" substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"
+    			,(tvDataIns2.getText().length()==0)?"":" substr(data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")"
+        				};
+    	String where=str[0].toString();
+        //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
+        if (where.equals("")||where.length()==0) where=str[1].toString(); else 
+        	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
+        if (!where.equals("")) where=" where "+where;*/
+        cursor = MainActivity.db.getRawData("select _id, name, pgr,ed,ted from (select _id, name,0 pgr, 0 ed, '-' ted from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted from tmc as T left join tmc_ed as E on T.ed=E._id) where pgr = "
+        +((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText())
+        , null);    
+    //Cursor cursor = MainActivity.db.getRawData("select _id, name sumka, null name from foo union all select _id, sumka, name from klient "+
+    //where
+    //, null);
+    
+      return cursor;
+    }
+     
   }
  
 }

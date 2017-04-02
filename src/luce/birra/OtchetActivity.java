@@ -5,43 +5,31 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
-import luce.birra.RasxodActivity.chB;
-
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
  
 public class OtchetActivity extends FragmentActivity {
 
-  ListView lvData;
-  Button btnExit, btnAdd, btnO, btnP, btnR;
+ // ListView lvData;
+  Button btnExit, btnAdd, btnO, btnOO, btnOOO, btnP, btnR;
   AdapterLV scAdapterO;//scAdapterR, scAdapterP ;
   static TextView tvIdPgr; //tvIdKlient, 
   static TextView tvDataIns, tvDataIns2;
@@ -49,7 +37,7 @@ public class OtchetActivity extends FragmentActivity {
   //Cursor cKlient;
   //SimpleCursorAdapter scaKlient;
   TextView d1,d2;
-  LinearLayout ll;
+//  LinearLayout ll;
   
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -120,26 +108,44 @@ public class OtchetActivity extends FragmentActivity {
         }
       });
     
+    btnOO = (Button) findViewById(R.id.btnObO);
+    btnOO.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	Intent intent = new Intent(OtchetActivity.this, OstatActivity.class);
+			   startActivity(intent);
+        }
+      });
+    btnOOO = (Button) findViewById(R.id.btnOO);
+    btnOOO.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	oborotka();
+        }
+      });
     btnO = (Button) findViewById(R.id.btnOborotkaOtchet);
     btnO.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	oborotka();
+        	Intent intent = new Intent(OtchetActivity.this, OborotkaActivity.class);
+			   startActivity(intent);
         }
       });
     
     btnP = (Button) findViewById(R.id.btnPrihodOtchet);
     btnP.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	prixod();
+        	//prixod();
+        	Intent intent = new Intent(OtchetActivity.this, PrixodHistActivity.class);
+			   startActivity(intent);
         }
       });
     btnR = (Button) findViewById(R.id.btnRasxodOtchet);
     btnR.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	rasxod();
+        	//rasxod();
+        	Intent intent = new Intent(OtchetActivity.this, RasxodHistActivity.class);
+			   startActivity(intent);
         }
       });
- 
+    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.otchet_ll),(byte)1,(byte)3,(byte)3);
 }
   //intent = new Intent(this, OtchetActivity.class);
   //startActivity(intent);

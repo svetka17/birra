@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/prod_edit_ll"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -20,13 +21,11 @@
                     android:id="@+id/etEditIdProd"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    style="@style/TV_h"
-            		android:textAppearance="@style/textB35" />
+                    style="@style/TV_h" />
 
                 <CheckBox
                     android:id="@+id/cbEditVisProd"
                     style="@style/TV_h"
-                    android:textAppearance="@style/textB20"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -36,8 +35,7 @@
 
                 <CheckBox
                     android:id="@+id/cbEditOkProd"
-                    style="@style/TV_h"
-                    android:textAppearance="@style/textB20" 
+                    style="@style/TV_h" 
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -47,7 +45,6 @@
 
                 <TextView
                     style="@style/TV_h"
-            		android:textAppearance="@style/textB25"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="ОБЪЕМ" />
@@ -56,7 +53,6 @@
                     android:id="@+id/etEditTaraProd"
                     android:hint="ВВЕДИТЕ ЗНАЧЕНИЕ ОБЪЕМА ТАРЫ"
                     style="@style/ET_n"
-                    android:textAppearance="@style/textI30" 
                     android:singleLine="true"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
@@ -73,7 +69,6 @@
 
                 <TextView
                     style="@style/TV_h"
-            		android:textAppearance="@style/textB25"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="НАИМЕНОВАНИЕ НА ЭКРАНЕ" />
@@ -85,8 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:singleLine="true"
-                    style="@style/ET_t"
-            		android:textAppearance="@style/textI30" >
+                    style="@style/ET_t" >
                 
                 </EditText>
                 
@@ -97,7 +91,6 @@
 
                 <TextView
                     style="@style/TV_h"
-            		android:textAppearance="@style/textB25"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="ТИП (ПОДГРУППА)" />
@@ -120,7 +113,6 @@
 
                 <TextView
                     style="@style/TV_h"
-            		android:textAppearance="@style/textB25"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="ЦЕНА" />
@@ -132,14 +124,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:singleLine="true"
-                style="@style/ET_n"
-            	android:textAppearance="@style/textI30">
+                style="@style/ET_n">
                 
                 </EditText>
                 
             <TextView
                     style="@style/TV_h"
-            		android:textAppearance="@style/textB25"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="ЕД.ИЗМЕРЕНИЯ" />
@@ -161,7 +151,6 @@
 
                 <TextView
                     style="@style/TV_h"
-            		android:textAppearance="@style/textB25"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="ДАТА" />
@@ -169,7 +158,6 @@
             <TextView
                 android:id="@+id/tvEditDatInsProd"
                 style="@style/TV_h"
-            	android:textAppearance="@style/textB25"
             	android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -187,7 +175,6 @@
         <Button
             android:id="@+id/btnOkEditProd"
             style="@style/B"
-            android:textAppearance="@style/textB35"
             android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -196,7 +183,6 @@
         <Button
             android:id="@+id/btnExitEditProd"
             style="@style/B"
-            android:textAppearance="@style/textB35"
             android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

@@ -422,7 +422,8 @@ public void bindView(View view, Context context, final Cursor cursor) {
              	    intent = new Intent(contxt, PrixodActivity.class);
              	    
              	    intent.putExtra("PrixodEd", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("ed")));
-                    intent.putExtra("PrixodId", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("_id")));
+             	   intent.putExtra("PrixodPgr", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("pgr")));
+             	    intent.putExtra("PrixodId", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("_id")));
                     intent.putExtra("PrixodProd", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("id_tmc")));
                     intent.putExtra("PrixodPrice", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("price")));
                     intent.putExtra("PrixodKol", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("kol")));

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/prod_ll"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -20,7 +21,6 @@
         <CheckBox
             android:id="@+id/cb_Vis_Prod"
             style="@style/TV_h"
-            android:textAppearance="@style/textB20" 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -30,7 +30,6 @@
         <CheckBox
             android:id="@+id/cb_Ok_Prod"
             style="@style/TV_h"
-            android:textAppearance="@style/textB20"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -178,7 +177,6 @@
         <Button
             android:id="@+id/btnAddProd_"
             style="@style/B"
-            android:textAppearance="@style/textB35"
            	android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -187,7 +185,6 @@
         <Button
             android:id="@+id/btnGoPGR_"
             style="@style/B"
-            android:textAppearance="@style/textB35"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -196,7 +193,6 @@
         <Button
             android:id="@+id/btnExitProd_"
             style="@style/B"
-            android:textAppearance="@style/textB35"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="НАЗАД"/>

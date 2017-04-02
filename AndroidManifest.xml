@@ -103,6 +103,12 @@
             android:windowSoftInputMode="stateHidden"
             android:label="ОТЧЕТЫ"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".SettingActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="НАСТРОЙКИ "
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

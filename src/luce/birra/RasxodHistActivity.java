@@ -30,7 +30,8 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
   Button btnExit, btnAdd;
   AdapterLV scAdapter;
   static TextView tvIdPgr, tvIdKlient; 
-  static EditText tvDataIns;
+  //static EditText tvDataIns;
+  static TextView tvDataIns,tvDataIns2, tvd1, tvd2;
   Spinner spPgr, spKlient;
   //Cursor cKlient;
   SimpleCursorAdapter scaKlient;
@@ -42,14 +43,32 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     setContentView(R.layout.rasxod_hist);
     //final DialogFragment dlg = new DialogActivity();
     
-    tvDataIns = (EditText) findViewById(R.id.tv_Data_RasHist);
+    tvDataIns = (TextView) findViewById(R.id.tv_Data_RasHist);
     tvDataIns.setText(MainActivity.getStringData(MainActivity.getIntData()));
     tvDataIns.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	showDialog(1);
         }
       });
-   
+    tvd1 = (TextView) findViewById(R.id.tv_data_ras1);
+    tvd1.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	showDialog(1);
+        }
+      });
+    tvDataIns2 = (TextView) findViewById(R.id.tv_Data_RasHist2);
+    tvDataIns2.setText(MainActivity.getStringData(MainActivity.getIntData()));
+    tvDataIns2.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	showDialog(2);
+        }
+      });
+    tvd2 = (TextView) findViewById(R.id.tv_data_ras2);
+    tvd2.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	showDialog(2);
+        }
+      });
     Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_RasHist);
     tvIdPgr = (TextView) findViewById(R.id.tv_Id_PgrRasHist);
@@ -129,7 +148,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     getSupportLoaderManager().initLoader(1, null, this);
     getSupportLoaderManager().initLoader(0, null, this);
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
-    
+    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.rasxod_hist_ll),(byte)2,(byte)3,(byte)3);
   }
   
   protected Dialog onCreateDialog(int id) {
@@ -137,6 +156,10 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         return tpd;
       }
+      if (id == 2) {
+          DatePickerDialog tpd = new DatePickerDialog(this, myCallBack2, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+          return tpd;
+        }
       return super.onCreateDialog(id);
     }
      
@@ -148,7 +171,14 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
       getSupportLoaderManager().getLoader(0).forceLoad();
     }
     };
-    
+    OnDateSetListener myCallBack2 = new OnDateSetListener() {
+    public void onDateSet(DatePicker view, int year, int monthOfYear,
+        int dayOfMonth) {
+      tvDataIns2.setText(String.valueOf(100+dayOfMonth).substring(1) + "." + String.valueOf(100+(monthOfYear+1)).substring(1) + "." + String.valueOf(100+(year%2000)).substring(1));
+      getSupportLoaderManager().getLoader(1).forceLoad();
+      getSupportLoaderManager().getLoader(0).forceLoad();
+    }
+    };
   @Override
   protected void onRestart() {
     super.onRestart();
@@ -207,7 +237,8 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     @Override
     public Cursor loadInBackground() {
     	String []str = {(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":" TP.pgr="+tvIdPgr.getText().toString(),
-        		(tvDataIns.getText().length()==0)?"":" substr(T.data_ins,1,6)=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")",
+        		(tvDataIns.getText().length()==0)?"":" substr(T.data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")",
+        				(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")",
         				(tvIdKlient.getText().toString().equals("0")||tvIdKlient.getText().length()==0)?"":" K._id="+tvIdKlient.getText().toString()};
         String where=str[0].toString();
         //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
@@ -216,6 +247,9 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
      
         if (where.equals("")||where.length()==0) where=str[2].toString(); else 
         	if (!str[2].equals("")) where=where+" and "+str[2].toString();
+        
+        if (where.equals("")||where.length()==0) where=str[3].toString(); else 
+        	if (!str[3].equals("")) where=where+" and "+str[3].toString();
      
             	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join klient as K on T.id_klient = K._id", 
              			new String[] {"T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","round(T.kol,3)||' '||E.name as kol",
@@ -238,10 +272,18 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 	     
 	    @Override
 	    public Cursor loadInBackground() {
-	    	
-	            	 Cursor cursor = MainActivity.db.getRawData("select _id, name sumka, null name from foo union all select _id, sumka, name from klient "+
-	     	        		((tvDataIns.getText().length()==0)?"":" where substr(data_ins,1,6)=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")")
-	    	        		, null);
+	    	String []str = {(tvDataIns.getText().length()==0)?"":" substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"
+	    			,(tvDataIns2.getText().length()==0)?"":" substr(data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")"
+	        				};
+	    	String where=str[0].toString();
+	        //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
+	        if (where.equals("")||where.length()==0) where=str[1].toString(); else 
+	        	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
+	        if (!where.equals("")) where=" where "+where;
+	    Cursor cursor = MainActivity.db.getRawData("select _id, name sumka, null name from foo union all select _id, sumka, name from klient "+
+	    //((tvDataIns.getText().length()==0)?"":" where substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")")
+	    where
+	    , null);
 	    
 	      return cursor;
 	    }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
  
 public class PgrEditActivity extends FragmentActivity {
@@ -46,7 +47,7 @@ public class PgrEditActivity extends FragmentActivity {
     	etName.setText(getIntent().getStringExtra("PgrName"));
     	tvId.setText(getIntent().getStringExtra("PgrId"));
     }
-  
+    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.pgr_edit_ll),(byte)2,(byte)3,(byte)3);
   }
  
   protected void onDestroy() {

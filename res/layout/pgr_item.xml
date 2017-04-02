@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/pgr_item_tr"
     android:layout_height="wrap_content">
 
     <TextView
@@ -28,8 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ИЗМЕНИТЬ"
-            android:textAppearance="@style/textB20" />
+            android:text="ИЗМЕНИТЬ" />
 
         <Button
             android:id="@+id/btnDelPgr"
@@ -37,7 +37,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB20"
             android:text="УДАЛИТЬ" />
     </LinearLayout>
 

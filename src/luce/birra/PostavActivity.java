@@ -68,7 +68,7 @@ public class PostavActivity extends FragmentActivity implements LoaderCallbacks<
      
     // создаем лоадер для чтения данных
     getSupportLoaderManager().initLoader(0, null, this);
-    
+    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.postav_ll),(byte)2,(byte)3,(byte)3);
   }
     
   @Override

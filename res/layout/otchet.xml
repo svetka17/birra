@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/otchet_ll"
     android:orientation="vertical" >
     <LinearLayout
         style="@style/mw0"
@@ -23,14 +24,12 @@
  		    android:text="ПЕРИОД С"
  		    android:id="@+id/tv_otchetD1"
  		    style="@style/TV_h"
-            android:textAppearance="@style/textB30"
  		    android:layout_width="wrap_content"
  		    android:layout_height="match_parent"
  		    android:layout_weight="0" />
          <TextView
  		    android:id="@+id/tv_Data_Otchet"
  		    style="@style/ET_t"
-            android:textAppearance="@style/textI30"
  		    android:layout_width="wrap_content"
  		    android:layout_height="match_parent"
  		    android:layout_weight="0.2"/>
@@ -39,14 +38,12 @@
              android:id="@+id/tv_otchetD2"
  		    android:text="ПЕРИОД ПО"
  		    style="@style/TV_h"
-            android:textAppearance="@style/textB30"
  		    android:layout_width="wrap_content"
  		    android:layout_height="match_parent"
  		    android:layout_weight="0" />
          <TextView
  		    android:id="@+id/tv_Data2_Otchet"
  		    style="@style/ET_t"
-            android:textAppearance="@style/textI30"
  		    android:layout_width="wrap_content"
  		    android:layout_height="match_parent"
  		    android:layout_weight="0.2"/>
@@ -86,10 +83,29 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB30"
             android:text="ОБОРОТНАЯ ВЕДОМОСТЬ" />
 
- </TableRow>       
+ </TableRow>   
+ <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/btnObO"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="ОСТАТКИ" />
+         <Button
+            android:id="@+id/btnOO"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="ОСТАТКИ+РАСХОД" />
+
+ </TableRow>     
  <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -100,7 +116,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB30"
             android:text="ОТЧЕТ О ПРИХОДЕ" />
         <Button
             android:id="@+id/btnRasxodOtchet"
@@ -108,7 +123,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB30"
             android:text="ОТЧЕТ О РАСХОДЕ" />
  </TableRow> 
     </TableLayout>
@@ -124,7 +138,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB30"
             android:text="НАЗАД" />
     </LinearLayout>
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/rasxod_hist_item_tr"
     android:layout_height="wrap_content">
 <!--  
     <TextView
@@ -68,7 +69,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"  
         style="@style/B"
-        android:textAppearance="@style/textB20"
             android:text="ИЗМЕНИТЬ" />
 
         <Button
@@ -77,7 +77,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
         style="@style/B"
-        android:textAppearance="@style/textB20"
             android:text="УДАЛИТЬ" />
     </LinearLayout>
 

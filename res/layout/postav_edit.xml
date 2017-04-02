@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/postav_edit_ll"
     android:orientation="vertical" >
 
             	<LinearLayout
@@ -19,7 +20,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0"
                     style="@style/TV_h"
-            		android:textAppearance="@style/textB25"
                     android:text="НАИМЕНОВАНИЕ" />
                 
                 <EditText
@@ -28,7 +28,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/ET_t"
-                    android:textAppearance="@style/textI30"
                     android:hint="ВВЕДИТЕ НОВОЕ НАИМЕНОВАНИЕ ПОСТАВЩИКА" >
                     <requestFocus />
                 </EditText>
@@ -43,7 +42,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     style="@style/TV_h"
-            		android:textAppearance="@style/textB25"
                     android:text="АДРЕС" />
                 
                 <EditText
@@ -52,7 +50,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/ET_t"
-                    android:textAppearance="@style/textI30"
                     android:hint="ВВЕДИТЕ АДРЕС">
                     <requestFocus />
                 </EditText>
@@ -66,7 +63,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     style="@style/TV_h"
-            		android:textAppearance="@style/textB25"
                     android:text="ТЕЛЕФОН" />
                 
                 <EditText
@@ -75,7 +71,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/ET_t"
-                    android:textAppearance="@style/textI30"
                     android:hint="ВВЕДИТЕ ТЕЛЕФОН" >
                     <requestFocus />
                 </EditText>
@@ -89,7 +84,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     style="@style/TV_h"
-            		android:textAppearance="@style/textB25"
                     android:text="ПРИМЕЧАНИЕ" />
                 
                 <EditText
@@ -98,7 +92,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     style="@style/ET_t"
-                    android:textAppearance="@style/textI30"
                     android:hint="ВВЕДИТЕ ПРИМЕЧАНИЕ">
                     <requestFocus />
                 </EditText>
@@ -113,7 +106,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB35"
             android:text="ГОТОВО" />
 
         <Button
@@ -122,7 +114,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             style="@style/B"
-            android:textAppearance="@style/textB35"
             android:text="НАЗАД" />
 
     </LinearLayout>

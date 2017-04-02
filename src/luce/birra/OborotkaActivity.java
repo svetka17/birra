@@ -220,7 +220,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
     //getSupportLoaderManager().initLoader(1, null, this);
     getSupportLoaderManager().initLoader(0, null, this);
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
-    
+    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.oborotka_ll),(byte)2,(byte)3,(byte)3);
   }
   
   protected Dialog onCreateDialog(int id) {
