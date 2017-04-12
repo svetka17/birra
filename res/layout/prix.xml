@@ -19,7 +19,6 @@
     		android:layout_height="match_parent"
     		android:layout_weight="0"
  		    android:visibility="invisible" />
-
          <TextView
  		    android:text="ПЕРИОД С"
  		    android:id="@+id/tv_otchetD1"
@@ -67,7 +66,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="0" />
-
     </LinearLayout>
 -->
     <TableLayout

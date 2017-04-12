@@ -1,5 +1,4 @@
 package luce.birra;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,8 +27,8 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   Button btnExit, btnAdd, btnSProd, btnSPost, btnHist;
   Spinner spProd, spPost, spPgr;
   TextView spEd;
-  TextView tvId,  tvEd, tvIdProd, tvIdPost;
-  static TextView tvIdPgr;
+  TextView tvId,  tvEd, tvIdProd, tvOst;
+  static TextView tvIdPgr, tvIdPost;
   EditText tvKol, tvPrice, tvDataIns,tvPrim;
   Cursor// cProd, 
   cPost,  cPgr;//, cEd;
@@ -56,6 +55,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     super.onCreate(savedInstanceState);
     setContentView(R.layout.prixod);
     tvId = (TextView) findViewById(R.id.tvIdPri);
+    tvOst = (TextView) findViewById(R.id.tvOstatokPri);
     //etPgr = (EditText) findViewById(R.id.etEditIdPgrProd);
     tvIdProd = (TextView) findViewById(R.id.tvIdProdPri);
     tvIdProd.setText("0");
@@ -146,11 +146,13 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         	tvIdProd.setText(String.valueOf(id));
         	s=/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("name"));
         	tvEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ed")) );
+        	tvOst.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
         	spEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ted")) );
         }
         public void onNothingSelected(AdapterView<?> parent) {
         	spProd.setTag(0);
         	tvIdProd.setText(String.valueOf("0"));
+        	tvOst.setText("0");
         }
         });
     spPost.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -158,10 +160,14 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
             //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
         	spPost.setTag(id);
         	tvIdPost.setText(String.valueOf(id));
+        	//getSupportLoaderManager().getLoader(0).forceLoad();
+        	//tvOst.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
         }
         public void onNothingSelected(AdapterView<?> parent) {
         	spPost.setTag(0);
         	tvIdPost.setText(String.valueOf("0"));
+        	//getSupportLoaderManager().getLoader(0).forceLoad();
+        	//tvOst.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(1)).getColumnIndex("ost")) );
         }
         });
     /*spEd.setSelection(0);
@@ -198,6 +204,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         				//(Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("_id"))
         		//Log.d("MyLog", "datatime "+MainActivity.getIntDataTime()+" ddd"+tvDataIns.getText() );
         		//Toast.makeText(PrixodActivity.this, "опхунд "+s+" йнк-бн:"+tvKol.getText().toString()+" жемю:"+tvPrice.getText().toString(), Toast.LENGTH_LONG).show();
+        		tvOst.setText(String.valueOf(MainActivity.StrToFloat(tvOst.getText().toString())+Float.parseFloat(tvKol.getText().toString())));
         		showMessage("опхунд "+s+" йнк-бн:"+tvKol.getText().toString()+" жемю:"+tvPrice.getText().toString(), (byte)0);
         		}
   			 else
@@ -213,6 +220,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   	        	MainActivity.db.updRec("prixod", Integer.parseInt(tvId.getText().toString()), 
   	        			new String[] {"price","kol"}, new float[] {Float.parseFloat(tvPrice.getText().toString()),Float.parseFloat(tvKol.getText().toString())});  				 
   				//Toast.makeText(PrixodActivity.this, "опхунд хглемем "+s+" йнк-бн:"+tvKol.getText().toString()+" жемю:"+tvPrice.getText().toString(), Toast.LENGTH_LONG).show();
+  	        	
   	        	showMessage("опхунд хглемем "+s+" йнк-бн:"+tvKol.getText().toString()+" жемю:"+tvPrice.getText().toString(), (byte)0);
   				finish();
   			 }
@@ -275,9 +283,10 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     	tvId.setText(getIntent().getStringExtra("PrixodId"));
     }
     getSupportLoaderManager().initLoader(0, null, this);
-    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.prixod_ll),(byte)2,(byte)3,(byte)3);
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.prixod_ll));
   }
   
+
   void setSpinnerItemById(Spinner spinner, int _id)
   {
       int spinnerCount = spinner.getCount();
@@ -346,7 +355,9 @@ static class PgrLoader extends CursorLoader {
         if (where.equals("")||where.length()==0) where=str[1].toString(); else 
         	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
         if (!where.equals("")) where=" where "+where;*/
-        cursor = MainActivity.db.getRawData("select _id, name, pgr,ed,ted from (select _id, name,0 pgr, 0 ed, '-' ted from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted from tmc as T left join tmc_ed as E on T.ed=E._id) where pgr = "
+        cursor = MainActivity.db.getRawData("select _id, name, pgr,ed,ted, ost from (select _id, name,0 pgr, 0 ed, '-' ted, 0 ost from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted, sum(O.kol) as ost from tmc as T left join tmc_ed as E on T.ed=E._id left join ostat as O on T._id=O.id_tmc "
+        //((tvIdPost.getText().equals("") )?"0":tvIdPost.getText())
+        +" group by T._id, T.name, T.pgr, T.ed, E.name) where pgr = "
         +((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText())
         , null);    
     //Cursor cursor = MainActivity.db.getRawData("select _id, name sumka, null name from foo union all select _id, sumka, name from klient "+
@@ -359,5 +370,12 @@ static class PgrLoader extends CursorLoader {
   }
  
 }
+/*
+ near ")": 
+select _id, name, pgr,ed,ted, ost from 
+(select _id, name,0 pgr, 0 ed, '-' ted, 0 ost from foo 
+		union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted, O.kol as ost 
+		from tmc as T left join tmc_ed as E on T.ed=E._id left join ostat as O on T._id=O.id_tmc and T.id_post=) where pgr = pgr*/
+
 
 

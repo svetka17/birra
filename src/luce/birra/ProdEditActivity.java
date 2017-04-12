@@ -1,15 +1,12 @@
 package luce.birra;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -27,7 +24,7 @@ public class ProdEditActivity extends FragmentActivity {
   CheckBox cbVis, cbOk;
   Spinner spPgr, spEd;
   TextView tvId, tvEd, tvIdPgr;//, tvData;
-  EditText etName, tvTara, etPrice;
+  EditText etName, tvTara, etPrice, etPos;
   
   void showMessage(String s, byte dur){
 	  LayoutInflater inflater = getLayoutInflater();
@@ -46,6 +43,7 @@ public class ProdEditActivity extends FragmentActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.prod_edit);
     etName = (EditText) findViewById(R.id.tvEditNameProd);
+    etPos = (EditText) findViewById(R.id.etEditPos);
     //etPgr = (EditText) findViewById(R.id.etEditIdPgrProd);
     etPrice = (EditText) findViewById(R.id.tvEditPriceProd);
     cbVis = (CheckBox) findViewById(R.id.cbEditVisProd);
@@ -59,6 +57,7 @@ public class ProdEditActivity extends FragmentActivity {
     Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr", null);
     Cursor cE = MainActivity.db.getRawData("select _id, name from tmc_ed", null);
     etName.setImeOptions(EditorInfo.IME_ACTION_DONE);
+    etPos.setImeOptions(EditorInfo.IME_ACTION_DONE);
     etPrice.setImeOptions(EditorInfo.IME_ACTION_DONE);
     tvTara.setImeOptions(EditorInfo.IME_ACTION_DONE);
     /*etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -124,7 +123,24 @@ public class ProdEditActivity extends FragmentActivity {
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	if  (!etName.getText().toString().equals("") && !etPrice.getText().toString().equals("") )
-  			 {if ((tvId.getText().toString().length()==0)) 
+  			 { int count=0;
+        	//	Log.d("MyLog", "0 count="+count );
+        		count=(int)MainActivity.StrToFloat(etPos.getText().toString()); 
+        		//.length()==0?0:Integer.parseInt(etPos.getText().toString());
+        	//	Log.d("MyLog", "1 count="+count );
+        		if (etPos.getText().toString().length()==0)
+  			 	{
+  			   Cursor ccc = MainActivity.db.getRawData ("select count(*) c from tmc T where T.pgr="+tvIdPgr.getText(),null);
+  			   if (ccc.moveToFirst()) { 
+  			        do {count=ccc.getInt(ccc.getColumnIndex("c"))+1;
+  			        } while (ccc.moveToNext());
+  			      }; 
+  			 //   Log.d("MyLog", "2 count="+count );
+  			    etPos.setText(String.valueOf(count));
+  			 // Log.d("MyLog", "3 count="+count );
+  			 	}
+        	
+        		if (tvId.getText().toString().length()==0) 
         		{//MainActivity.db.addRecTMC(name, pgr, price, vis, data_del, data_ins, ok);
   				/*Log.d("MyLog", etName.getText().toString()+" "+
         				Integer.parseInt(tvIdPgr.getText().toString())+" "+ 
@@ -136,6 +152,7 @@ public class ProdEditActivity extends FragmentActivity {
         				Integer.parseInt(tvEd.getText().toString()/*spPgr.getTag().toString()*/), 
         				Float.parseFloat(etPrice.getText().toString()), 
         				cbVis.isChecked()?(byte)1:(byte)0, 
+        				(byte)count,		
         				(tvTara.getText().toString().length()==0||tvTara.getText().equals("0"))?0:Float.parseFloat(tvTara.getText().toString()), 
         				MainActivity.getIntDataTime(), 
         				cbOk.isChecked()?(byte)1:(byte)0); 
@@ -145,7 +162,8 @@ public class ProdEditActivity extends FragmentActivity {
         				(cbVis.isChecked()?(byte)1:(byte)0)+" count="+i );*/
   				//Toast.makeText(ProdEditActivity.this, "ÕŒ¬€… “Œ¬¿–: "+etName.getText().toString()+" ÷≈Õ¿ œ–Œƒ¿∆»:"+etPrice.getText().toString(), Toast.LENGTH_LONG).show();
   				 showMessage("ÕŒ¬€… “Œ¬¿–: "+etName.getText().toString()+" ÷≈Õ¿ œ–Œƒ¿∆»:"+etPrice.getText().toString(), (byte)0);
-  				//finish();
+  				etPos.setText("");
+  				 //finish();
         		}
   			 
   			 else
@@ -153,9 +171,10 @@ public class ProdEditActivity extends FragmentActivity {
         	MainActivity.db.updRec("tmc", Integer.parseInt(tvId.getText().toString()), 
         			"name", etName.getText().toString());	
         	MainActivity.db.updRec("tmc", Integer.parseInt(tvId.getText().toString()), 
-        			new String[] {"data_ins","vis","pgr","ed","ok"}, 
+        			new String[] {"data_ins","vis","pos","pgr","ed","ok"}, 
         			new int[] {MainActivity.getIntDataTime(),
         					cbVis.isChecked()?(byte)1:(byte)0,
+        							count,
         					Integer.parseInt(tvIdPgr.getText().toString()),
         					Integer.parseInt(tvEd.getText().toString()),
         					cbOk.isChecked()?(byte)1:(byte)0}); 
@@ -192,11 +211,12 @@ public class ProdEditActivity extends FragmentActivity {
     	tvEd.setText(getIntent().getStringExtra("ProdEd"));
     	//tvId.setText(getIntent().getIntExtra("ProdId",0));
     	tvId.setText(getIntent().getStringExtra("ProdId"));
+    	etPos.setText(getIntent().getStringExtra("ProdPos"));
     	cbOk.setChecked(Integer.parseInt(getIntent().getStringExtra("ProdOk"))==1?true:false);
     	cbVis.setChecked(Integer.parseInt(getIntent().getStringExtra("ProdVis"))==1?true:false);
     	tvTara.setText(getIntent().getStringExtra("ProdTara"));
     }
-    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.prod_edit_ll),(byte)2,(byte)3,(byte)3);
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.prod_edit_ll));
   }
   
   void setSpinnerItemById(Spinner spinner, int _id)

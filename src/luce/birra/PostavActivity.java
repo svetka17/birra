@@ -7,13 +7,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
+import luce.birra.AdapterLV.CambiareListener;
  
 public class PostavActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -54,7 +53,15 @@ public class PostavActivity extends FragmentActivity implements LoaderCallbacks<
     int[] to = new int[] {R.id.tvIdPostav, R.id.tvNamePostav,R.id.tvAdresPostav,R.id.tvTelefPostav,R.id.tvPrimPostav, R.id.tvDataInsPostav  };
     //int[] toH = new int[] {R.id.tvIdPostav,R.id.tvNamePostav,R.id.tvAdresPostav,R.id.tvTelefPostav,R.id.tvPrimPostav};
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelPostav, R.id.btnUpdPostav, (byte)7, this, R.layout.postav_item, null, from, to, 0);
+    scAdapter = new AdapterLV(R.id.btnDelPostav, R.id.btnUpdPostav, (byte)7, this, R.layout.postav_item, null, from, to, 0)
+    		.setCamdiareListener(new CambiareListener() {
+    			@Override
+    			public void OnCambiare(byte flag, long id) {
+    				if (flag==1) {
+    					MainActivity.db.delRec("postav",id);
+    					getSupportLoaderManager().getLoader(0).forceLoad();}
+    			}
+    		});
     lvData = (ListView) findViewById(R.id.lvPostav);
     //lvData.setOnItemClickListener(this);
     /*lvData.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -68,7 +75,7 @@ public class PostavActivity extends FragmentActivity implements LoaderCallbacks<
      
     // создаем лоадер для чтения данных
     getSupportLoaderManager().initLoader(0, null, this);
-    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.postav_ll),(byte)2,(byte)3,(byte)3);
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.postav_ll));
   }
     
   @Override

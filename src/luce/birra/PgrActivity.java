@@ -8,13 +8,16 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+import luce.birra.AdapterLV.CambiareListener;
 
  
 public class PgrActivity extends FragmentActivity implements /*OnItemClickListener,*/ LoaderCallbacks<Cursor> {
@@ -26,7 +29,20 @@ public class PgrActivity extends FragmentActivity implements /*OnItemClickListen
   AdapterLV scAdapter;
   TextView tv;
   LinearLayout ll;
-
+  
+  void showMessage(String s, byte dur){
+	  LayoutInflater inflater = getLayoutInflater();
+	  View layout = inflater.inflate(R.layout.custom_message ,
+	  		(ViewGroup) findViewById(R.id.toast_layout));
+	  Toast toast = new Toast(PgrActivity.this); 
+	  TextView tv=(TextView) layout.findViewById(R.id.textView);
+	  tv.setText(s);
+	  //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0); 
+	  toast.setDuration((dur==0)?Toast.LENGTH_SHORT:Toast.LENGTH_LONG);
+	  toast.setView(layout); 
+	  toast.show();
+  }
+  
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.pgr);
@@ -53,24 +69,36 @@ public class PgrActivity extends FragmentActivity implements /*OnItemClickListen
     int[] to = new int[] {R.id.tvIdPgr, R.id.tvNamePgr/*, R.id.tvDataInsPgr*/  };
     //int[] toH = new int[] {R.id.tvIdPgr, R.id.tvNamePgr, R.id.tvDataInsPgr  };
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelPgr, R.id.btnUpdPgr, (byte)2, this, R.layout.pgr_item, null, from, to, 0);
+    scAdapter = 
+    new AdapterLV(R.id.btnDelPgr, R.id.btnUpdPgr, (byte)2, this, R.layout.pgr_item, null, from, to, 0)
+    .setCamdiareListener(new CambiareListener() {
+		@Override
+		public void OnCambiare(byte flag, long id) {
+			if (flag==1) {
+				int countT=0;
+				Cursor cc = MainActivity.db.getRawData ("select count(*) c from tmc T where T.pgr="+id,null);
+				   if (cc.moveToFirst()) { 
+				        do {countT=cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
+				        } while (cc.moveToNext());
+				      };
+				if (countT!=0)      
+				{MainActivity.db.delRec("tmc_pgr",id);
+				getSupportLoaderManager().getLoader(0).forceLoad();}
+				else 
+					showMessage("Удалять запрещено, имеются остатки", (byte)1);
+				}
+			
+			//MainActivity.db.delRec("tmc_pgr",id);
+			//getSupportLoaderManager().getLoader(0).forceLoad();
+		}
+	});
     
     lvData = (ListView) findViewById(R.id.lvPgr);
-    //lvData = (GridView) findViewById(R.id.lvPgr);
-    //lvData.setOnItemClickListener(this);
-    /*!!!!!!!!!!!lvData.setOnItemClickListener(new AdapterView.OnItemClickListener()
-    {
-        public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id)
-        {
-            Log.d("MyLog", position+" "+itemClicked.getId()+" FPgr click delete "+id);
-        }
-    });*/
-    //plvData = (PinnedSectionListView) lvData;
     lvData.setAdapter(scAdapter);
 
     // создаем лоадер для чтения данных
     getSupportLoaderManager().initLoader(0, null, this);
-    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.pgr_ll),(byte)2,(byte)3,(byte)3);
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.pgr_ll));
   }
   
   @Override

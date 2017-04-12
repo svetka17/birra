@@ -12,8 +12,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_weight="0"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:gravity="center_vertical|center_horizontal"
         android:textStyle="bold" >
 
@@ -47,17 +47,19 @@
         <Button
             android:id="@+id/btnDDD"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textStyle="bold"
             android:text="&lt;--" />
 
         <Button
             android:id="@+id/btnXXX"
             style="@style/B"
             android:layout_weight="2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:textStyle="bold"
             android:text="C" />
 </TableRow>
 <TableRow
@@ -67,25 +69,28 @@
         <Button
             android:id="@+id/btn777"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textStyle="bold"
             android:text="7" />
 
         <Button
             android:id="@+id/btn888"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textStyle="bold"
             android:text="8" />
 
         <Button
             android:id="@+id/btn999"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textStyle="bold"
             android:text="9" />
 </TableRow>
 <TableRow
@@ -95,25 +100,28 @@
         <Button
             android:id="@+id/btn444"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textStyle="bold"
             android:text="4" />
 
         <Button
             android:id="@+id/btn555"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textStyle="bold"
             android:text="5" />
 
         <Button
             android:id="@+id/btn666"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textStyle="bold"
             android:text="6" />
 </TableRow>
 <TableRow
@@ -123,25 +131,28 @@
         <Button
             android:id="@+id/btn111"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textStyle="bold"
             android:text="1" />
 
         <Button
             android:id="@+id/btn222"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textStyle="bold"
             android:text="2" />
 
         <Button
             android:id="@+id/btn333"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textStyle="bold"
             android:text="3" />
 </TableRow>
 <TableRow
@@ -151,17 +162,19 @@
         <Button
             android:id="@+id/btn000"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textStyle="bold"
             android:text="0" />
 
         <Button
             android:id="@+id/btnComaCC"
             style="@style/B"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
+        android:textStyle="bold"
             android:text="." />
 </TableRow>
 <!--         

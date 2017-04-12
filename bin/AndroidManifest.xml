@@ -107,7 +107,25 @@
             android:name=".SettingActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
-            android:label="НАСТРОЙКИ "
+            android:label="НАСТРОЙКИ"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".SettingAllActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="НАСТРОЙКИ"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".KlientActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="СПРАВОЧНИК КЛИЕНТОВ"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".KlientEditActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="НОВЫЙ КЛИЕНТ"
             android:screenOrientation="landscape" />
     </application>
 

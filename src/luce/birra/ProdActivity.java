@@ -1,6 +1,5 @@
 package luce.birra;
-import java.util.ArrayList;
-
+import luce.birra.AdapterLV.CambiareListener;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,13 +9,10 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -63,6 +59,18 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
 	  }
   }
  */
+  void showMessage(String s, byte dur){
+	  LayoutInflater inflater = getLayoutInflater();
+	  View layout = inflater.inflate(R.layout.custom_message ,
+	  		(ViewGroup) findViewById(R.id.toast_layout));
+	  Toast toast = new Toast(ProdActivity.this); 
+	  TextView tv=(TextView) layout.findViewById(R.id.textView);
+	  tv.setText(s);
+	  //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0); 
+	  toast.setDuration((dur==0)?Toast.LENGTH_SHORT:Toast.LENGTH_LONG);
+	  toast.setView(layout); 
+	  toast.show();
+  }
   
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -154,6 +162,7 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
     btnPgr = (Button) findViewById(R.id.btnGoPGR_);
     btnPgr.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
+        	//MainActivity.db.updRec("tmc", "pgr", 0);
         	Intent intent = new Intent(ProdActivity.this, PgrActivity.class);
 			startActivity(intent);
         }
@@ -166,11 +175,29 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
         }
       });
     // формируем столбцы сопоставления
-    String[] from = new String[] { "_id", "name", /*"namepgr",*/ "price", "ted"/*, "vis"*/};
-    int[] to = new int[] {R.id.tvId_Prod_, R.id.tvName_Prod_,  /*R.id.tvName_Pgr_Prod_,*/ R.id.tvPriceProd_,R.id.tvEdProd_/*, R.id.tvVisProd_*/};
+    String[] from = new String[] { "_id", "name", /*"namepgr",*/ "price", "ted", "pos"};
+    int[] to = new int[] {R.id.tvId_Prod_, R.id.tvName_Prod_,  /*R.id.tvName_Pgr_Prod_,*/ R.id.tvPriceProd_,R.id.tvEdProd_, R.id.tvPos_Prod_};
     //int[] toH = new int[] {0,0,0,0,R.id.tvId_Prod_, R.id.tvName_Prod_,  /*R.id.tvName_Pgr_Prod_,*/ R.id.tvPriceProd_/*, R.id.tvVisProd_*/};
     // создаем адаптер и настраиваем список
-    scAdapter = new AdapterLV(R.id.btn_Del_Prod,R.id.btn_Upd_Prod,(byte)1,this, R.layout.prod_item, null, from, to, 0);
+    scAdapter = new AdapterLV(R.id.btn_Del_Prod,R.id.btn_Upd_Prod,(byte)1,this, R.layout.prod_item, null, from, to, 0)
+    		.setCamdiareListener(new CambiareListener() {
+    			@Override
+    			public void OnCambiare(byte flag, long id) {
+    				if (flag==1) {
+    					int countT=0;
+    					Cursor cc = MainActivity.db.getRawData ("select count(*) c from ostat T where T.id_tmc="+id,null);
+    					   if (cc.moveToFirst()) { 
+    					        do {countT=cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
+    					        } while (cc.moveToNext());
+    					      };
+    					if (countT!=0)      
+    					{MainActivity.db.delRec("tmc",id);
+    					getSupportLoaderManager().getLoader(0).forceLoad();}
+    					else 
+    						showMessage("Удалять запрещено, имеются остатки", (byte)1);
+    					}
+    			}
+    		});
     lvData = (ListView) findViewById(R.id.lvProd_);
     /*lvData.setOnItemClickListener(new AdapterView.OnItemClickListener()
     {
@@ -199,7 +226,7 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
     // создаем лоадер для чтения данных
     getSupportLoaderManager().initLoader(0, null, this);
     //ltmp=(LinearLayout) findViewById(R.id.lllll);
-    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.prod_ll),(byte)2,(byte)3,(byte)3);
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.prod_ll));
   }
  /*
   // обработка нажатия кнопки
@@ -273,34 +300,20 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
         String where=str[0].toString();
         //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
         if (where.equals("")||where.length()==0) where=str[1].toString(); else 
-        	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
+        	if (!str[1].equals("")) where=where+" and "+str[1].toString();
+        	//else where=where+str[1].toString();
         if (where.equals("")||where.length()==0) where=str[2].toString(); else 
         	if (!str[1].equals("")) where=where+" and "+str[2].toString(); 
+        	//else where=where+str[2].toString();
+       // Log.d("MyLog", "where = " + where);
     	 Cursor cursor = db.getQueryData("tmc as T left join tmc_pgr as TP on T.pgr=TP._id left join tmc_ed as E on T.ed=E._id", 
-    			 new String[] {"T._id as _id","T.name as name","T.pgr as pgr","TP.name as namepgr","T.price as price","E._id as ed","E.name as ted", "T.vis as vis", "T.ok as ok","T.tara as tara"}, 
+    			 new String[] {"T._id as _id","T.name as name","T.pgr as pgr","TP.name as namepgr","T.price as price","E._id as ed","E.name as ted", "T.vis as vis", "T.ok as ok","T.tara as tara","T.pos as pos"}, 
      			 where,//"TP.pgr = ?",// and ?",
      			null,//new String[] {tvIdPgr.getText().toString().equals("0")?"TP.pgr":tvIdPgr.getText().toString() //, 
     					//(tvDataIns.getText().length()==0)?"1=1":"substr(T.data_ins,1,6)=trim("+MainActivity.getIntData(tvDataIns.getText().toString())+")"
     					//		},
     					null,null,null);
     	 
-   /*Cursor cursor = db.getQueryData("tmc as T left join tmc_pgr as TP on T.pgr=TP._id", 
-    			new String[] {"T._id as _id","T.name as name","T.pgr as pgr","TP.name as namepgr","T.price as price", "T.vis as vis", "T.ok as ok","T.tara as tara"}, 
-    			 "? and T.vis = ? and T.ok = ?",
-    			 new String[] {(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"1=1":"TP._id="+tvIdPgr.getText().toString(),
-    					 cbVis.isChecked()?"1":"0",cbOk.isChecked()?"1":"0"},null,null,null);
-   */
-    	//Cursor cursor = db.getRawData (
-    		//	"select T._id as _id, T.name as name, substr(T.data_ins,5)||'.'||substr(T.data_ins,3,2)||'.'||substr(T.data_ins,1,2) as data_ins, "
-    			//+"T.vis as vis, T.price as price, TP.name as pgr, T.ok as ok, T.data_del as data_del, T.pgr as id_pgr "
-    			//"select T._id as _id, "
-    			//+"TP.name as nampgr, T.price as price, T.pgr as idpgr "
-    			  //      + "from tmc as T "
-    				//	+ "left join tmc_pgr as TP "
-    			      //  + "on T.pgr = TP._id "
-    					//+ "where T.ok = ?"
-    			//,null//new String[] {"0"}
-    			//);
       return cursor;
     }
      

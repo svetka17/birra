@@ -6,7 +6,9 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        style="@style/mw0"
+        android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
         android:orientation="horizontal" >
 
         <TextView
@@ -37,13 +39,18 @@
             android:text="ТАРА" />
     </LinearLayout>
     
-<TableRow  style="@style/mw0">
+<TableRow  android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0">
 
         <TextView
             style="@style/lv_h"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:text="№ ТОВАРА" />
-
+        <TextView
+            style="@style/lv_h"
+            android:layout_weight="0.5"
+            android:text="П/П" />
         <TextView
             style="@style/lv_h"
             android:layout_weight="1"
@@ -155,7 +162,9 @@
 -->
     <ListView
         android:id="@+id/lvProd_"
-        style="@style/mw1" />
+        android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
 <!--
     <GridView
@@ -171,7 +180,9 @@
 -->
 
     <LinearLayout
-        style="@style/mw0"
+        android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
         android:orientation="horizontal" >
 
         <Button

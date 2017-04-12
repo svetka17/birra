@@ -18,11 +18,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import luce.birra.AdapterLV.CambiareListener;
  
 public class RasxodHistActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -100,7 +100,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     tvIdKlient.setText("0");
     
     spKlient = (Spinner) findViewById(R.id.sp_Klient_RasHist);
-    String[] fromKlient = new String[] {"sumka"};
+    /*String[] fromKlient = new String[] {"sumka"};
     int[] toKlient = new int[] {android.R.id.text1};
     scaKlient = new SimpleCursorAdapter(this, R.layout.spinner_item, null, fromKlient, toKlient);   
     scaKlient.setDropDownViewResource(R.layout.spinner_drop_down); 
@@ -119,7 +119,27 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         }
         });
     spKlient.setAdapter(scaKlient);
-    
+    */
+    String[] fromKlient = new String[] {"_id","sumka"};
+    int[] toKlient = new int[] {R.id.spt1, R.id.spt2};
+    scaKlient = new SimpleCursorAdapter(this, R.layout.spinner_dub, null, fromKlient, toKlient);   
+    scaKlient.setDropDownViewResource(R.layout.spinner_dup_down); 
+
+    spKlient.setOnItemSelectedListener(new OnItemSelectedListener() {
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+            //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
+        	spKlient.setTag(id);
+        	tvIdKlient.setText(String.valueOf(id));
+        	getSupportLoaderManager().getLoader(0).forceLoad();
+        }
+        public void onNothingSelected(AdapterView<?> parent) {
+        	spKlient.setTag(0);
+        	tvIdKlient.setText("0");
+        	getSupportLoaderManager().getLoader(0).forceLoad();
+        }
+        });
+    spKlient.setAdapter(scaKlient);
+
     /*btnAdd = (Button) findViewById(R.id.btnAddPrixodHist);
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
@@ -140,7 +160,15 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelRasxodHist, R.id.btnUpdRasxodHist, (byte)4, this, R.layout.rasxod_hist_item, null, from, to, 0);
+    scAdapter = new AdapterLV(R.id.btnDelRasxodHist, R.id.btnUpdRasxodHist, (byte)4, this, R.layout.rasxod_hist_item, null, from, to, 0)
+    		.setCamdiareListener(new CambiareListener() {
+    			@Override
+    			public void OnCambiare(byte flag, long id) {
+    				if (flag==1) {
+    					MainActivity.db.delRec("rasxod",id);
+    					getSupportLoaderManager().getLoader(0).forceLoad();}
+    			}
+    		});
     lvData = (ListView) findViewById(R.id.lvRasxodHist);
     lvData.setAdapter(scAdapter);
      
@@ -148,7 +176,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     getSupportLoaderManager().initLoader(1, null, this);
     getSupportLoaderManager().initLoader(0, null, this);
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
-    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.rasxod_hist_ll),(byte)2,(byte)3,(byte)3);
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.rasxod_hist_ll));
   }
   
   protected Dialog onCreateDialog(int id) {

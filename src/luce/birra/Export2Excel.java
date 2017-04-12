@@ -1,5 +1,9 @@
 package luce.birra;
-import android.os.AsyncTask;
+
+import java.io.File;
+import java.io.FileWriter;
+
+//import android.os.AsyncTask;
 /*import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +18,29 @@ import android.provider.SyncStateContract.Constants;
 import android.util.Log;*/
 //http://stackoverflow.com/questions/5401104/android-exporting-to-csv-and-sending-as-email-attachment
 //http://stackoverflow.com/questions/4632501/android-generate-csv-file-from-table-values
-public class /*ExportDatabaseCSVTask*/ Export2Excel extends AsyncTask<String, String, Boolean> {
+public class /*ExportDatabaseCSVTask*/ Export2Excel //extends AsyncTask<String, String, Boolean> 
+{
+//https://habrahabr.ru/sandbox/38101/
+	private void saveFile(String filename) {
+		File fileName = new File(filename);
+		String sdState = android.os.Environment.getExternalStorageState();
+		if (sdState.equals(android.os.Environment.MEDIA_MOUNTED)) {
+		File sdDir = android.os.Environment.getExternalStorageDirectory();
+		fileName = new File(sdDir, "cache/primer.txt");
+		} else {
+		//fileName = context.getCacheDir();
+		}
+		if (!fileName.exists())
+		fileName.mkdirs();
+		try {
+		FileWriter f = new FileWriter(fileName);
+		f.write("hello world");
+		f.flush();
+		f.close();
+		} catch (Exception e) {
+
+		}
+    }
 /*    private final ProgressDialog dialog = new ProgressDialog(SearchResultActivity.this);
     boolean memoryErr = false;
 
@@ -27,8 +53,8 @@ public class /*ExportDatabaseCSVTask*/ Export2Excel extends AsyncTask<String, St
 
     // to write process 
      */
-    protected Boolean doInBackground(final String... args) {
-   /*
+   /* protected Boolean doInBackground(final String... args) {
+   
         boolean success = false;
 
         String currentDateString = new SimpleDateFormat(Constants.SimpleDtFrmt_ddMMyyyy).format(new Date());
@@ -102,7 +128,7 @@ public class /*ExportDatabaseCSVTask*/ Export2Excel extends AsyncTask<String, St
                 Log.e("SearchResultActivity", e.getMessage(), e);
                 return success;
             }
-        }*/
+        }
         return true;//success;
     }
 
@@ -119,6 +145,6 @@ public class /*ExportDatabaseCSVTask*/ Export2Excel extends AsyncTask<String, St
             } else {
                 dialogBox(Constants.Flag.FLAG_EXPRT_F);
             }
-        }*/
-    }
+        }
+    }*/
 }

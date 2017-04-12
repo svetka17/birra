@@ -22,7 +22,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
  
@@ -118,7 +117,9 @@ public class OtchetActivity extends FragmentActivity {
     btnOOO = (Button) findViewById(R.id.btnOO);
     btnOOO.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	oborotka();
+        	//oborotka();
+        	Intent intent = new Intent(OtchetActivity.this, RasxodOstatActivity.class);
+			   startActivity(intent);
         }
       });
     btnO = (Button) findViewById(R.id.btnOborotkaOtchet);
@@ -145,7 +146,7 @@ public class OtchetActivity extends FragmentActivity {
 			   startActivity(intent);
         }
       });
-    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.otchet_ll),(byte)1,(byte)3,(byte)3);
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.otchet_ll));
 }
   //intent = new Intent(this, OtchetActivity.class);
   //startActivity(intent);

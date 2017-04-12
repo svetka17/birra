@@ -317,10 +317,13 @@ public class SettingActivity extends FragmentActivity {
       Dview = (LinearLayout) getLayoutInflater().inflate(R.layout.size_text, null);
       //Button bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
       // устанавливаем ее, как содержимое тела диалога
+      //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+      
       adb.setView(Dview);
       // находим TexView для отображения кол-ва
       tvDKol = (TextView) Dview.findViewById(R.id.tvsize);
-      sbDKol = (SeekBar) Dview.findViewById(R.id.seekBarSize);
+      
+      //sbDKol = (SeekBar) Dview.findViewById(R.id.seekBarSize);
       
       adb.setNegativeButton("ОТМЕНА", new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int id) {

@@ -14,7 +14,9 @@
             android:orientation="vertical" >
 
             <LinearLayout
-                style="@style/mw1"
+                android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                 android:orientation="horizontal" >
                 
                 <TextView
@@ -64,7 +66,9 @@
             </LinearLayout>
 
             <LinearLayout
-                style="@style/mw1"
+                android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -83,12 +87,16 @@
                     style="@style/ET_t" >
                 
                 </EditText>
-                
+ 				
             </LinearLayout>
 
             <LinearLayout
-                style="@style/mw1">
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
 
+                
                 <TextView
                     style="@style/TV_h"
                     android:layout_width="wrap_content"
@@ -102,13 +110,42 @@
                 
                 <Spinner
                     android:id="@+id/spEditPgr_Prod"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+				<TextView
+                    style="@style/TV_h"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"/>
+                    android:text="№ В ГРУППЕ" />
+<!--                  <EditText
+                android:id="@+id/tvEditPositionProd"
+                android:hint="ВВЕДИТЕ ПОРЯДКОВЫЙ НОМЕР В ГРУППЕ"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:singleLine="true"
+                style="@style/ET_n">
+                
+                </EditText>
+-->   
+                <EditText
+                    android:id="@+id/etEditPos"
+                    android:hint="НОМЕР В ГРУППЕ"
+                    style="@style/ET_n"
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+				
+                </EditText> 
             </LinearLayout>
             <LinearLayout
-                style="@style/mw1"
+                android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -146,7 +183,9 @@
 
             </LinearLayout>
             <LinearLayout
-                style="@style/mw1"
+                android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                 android:orientation="horizontal" >
 
                 <TextView

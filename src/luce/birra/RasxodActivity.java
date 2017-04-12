@@ -1,7 +1,7 @@
 package luce.birra;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
+//import java.text.DecimalFormat;
+//import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,20 +18,19 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -42,6 +41,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -54,7 +54,9 @@ SeekBar.OnSeekBarChangeListener
   //b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, btCom, btClear, btD;
   ToggleButton /*tb05, tb1, tb15, tb2, tb25, tb3,*/tbnKol, tbTara;
   TextView tvSum, tvKol, tvDKol, tvIdPgr, tvNamePgr;//, tvCombo;
-  TextView etNal, etSkidka,tvNal, tvSkidka, tvDItogo, tvSdacha;
+  TextView etNal, etSkidka,tvNal, tvSkidka, tvDItogo, tvSdacha, tvIdKlient;
+  SimpleCursorAdapter scaKlient;
+  Spinner spKlient;
   ListView lvCombo, lvComboD;
   LinearLayout Dview;
    
@@ -79,6 +81,7 @@ SeekBar.OnSeekBarChangeListener
   byte Btara=-1, Btovar=-1, CountTara=0;
   float sumI=0, otherVal=0;
   String tmcV;
+  String kol_skidka="";
   String strDialog="", strKol="";
   String regexp_numb = "\\-?\\d+(\\.\\d{0,})?";
   Map<String, Object> m;
@@ -87,8 +90,10 @@ SeekBar.OnSeekBarChangeListener
   //float scale=0;
 //упаковываем данные в понятную для адаптера структуру
   ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+  int combo_pos=0;
   MySimpleAdapter sAdapter, sAdapterD;
   int count_but_tara=0, count_but=0, count_but_pgr=0;
+  
   void tara(byte ii){
 	  Btara=ii;
 	  for (int i=0; i<CountTara; i++) 
@@ -101,7 +106,7 @@ SeekBar.OnSeekBarChangeListener
   void showMessage(String s, byte dur){
 	  LayoutInflater inflater = getLayoutInflater();
 	  View layout = inflater.inflate(R.layout.custom_message ,
-	  		(ViewGroup) findViewById(R.id.toast_layout));
+	  		(LinearLayout) findViewById(R.id.toast_layout));
 	  Toast toast = new Toast(RasxodActivity.this); 
 	  TextView tv=(TextView) layout.findViewById(R.id.textView);
 	  tv.setText(s);
@@ -137,16 +142,17 @@ SeekBar.OnSeekBarChangeListener
 		  this.ted=ted;
 		  this.tb=tb;
   }}
+  
   class tranDB {
 	  //addRecRASXOD(int id_tmc, float kol, float price, int id_post, int id_klient, String prim, int data_del, int data_ins, byte ok)
-	   byte tagL;
-	   byte tagB;
+	   byte tagL; //порядковый номер в чеке в combo
+	   byte tagB; //таг кнопки
 	   int id_tmc;
 	   float kol;
 	   byte ed;
 	   float price;
 	   int id_post;
-	   int id_klient;
+	   int id_klient; //пока ничего не пишется
 	   String prim;
 	  tranDB(byte tagL, byte tagB, int id_tmc, float kol, byte ed, float price, int id_post,int id_klient, String prim){
 		  this.tagL=tagL;
@@ -171,8 +177,7 @@ SeekBar.OnSeekBarChangeListener
 
     super.onCreate(savedInstanceState);
     setContentView(R.layout.rasxod);
-    //разрешение экрана
-
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.rasxod_ll));
     //count tara button
     Cursor get_count_but = MainActivity.db.getRawData ("select count(*) as c from tmc T left join ostat as O on O.id_tmc=T._id where O.kol>0 and T.ok=1 ",null);
     if (get_count_but.moveToFirst()) { 
@@ -253,9 +258,8 @@ SeekBar.OnSeekBarChangeListener
     tvIdPgr = (TextView) findViewById(R.id.tvIdPgrBack);
     tvIdPgr.setText("-1");
     tvIdPgr.setTag(-1);
-    
       
-    Cursor cTara = MainActivity.db.getRawData ("select T._id as _id, T.name as name, T.price as price, T.tara as tara, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id where T.ok=1 and S.kol>0 order by T.tara",null);
+    Cursor cTara = MainActivity.db.getRawData ("select T._id as _id, T.name as name, T.price as price, T.tara as tara, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id where T.ok=1 and S.kol>0 order by T.pos",/*order by T.tara*/null);
     byte ib=0;//, il=0;
     if (cTara.moveToFirst()) { 
     	 
@@ -295,8 +299,8 @@ SeekBar.OnSeekBarChangeListener
         	//float sT = (display_w/(8*scale*scale*(but.get(ib).tmc_name.toString().length()-l)))+scale*10-5;
         			//(2*(display_w/8)/scale)/(scale*but.get(ib).tmc_name.toString().length()); 
         			//((((display_w/8)/scale) / (but.get(ib).tmc_name.toString().length()))/scale)+10;
-        	float sT=MainActivity.sizeMediumButton;
-        	but.get(ib).tb.setTextSize(TypedValue.COMPLEX_UNIT_PX,sT);
+        	//float sT=MainActivity.sizeMediumButton;
+        	but.get(ib).tb.setTextSize(TypedValue.COMPLEX_UNIT_PX, MainActivity.butTara );
         	but.get(ib).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
         	but.get(ib).tb.setTag(ib);
         	but.get(ib).tb.setOnCheckedChangeListener(this);
@@ -316,7 +320,9 @@ SeekBar.OnSeekBarChangeListener
 
     
     tvKol = (TextView) findViewById(R.id.tvOtherKol_);
+    tvKol.setTextSize(TypedValue.COMPLEX_UNIT_PX, MainActivity.butTara );
     tbnKol = (ToggleButton) findViewById(R.id.btnOtherKolRasxod);
+    tbnKol.setTextSize(TypedValue.COMPLEX_UNIT_PX, MainActivity.butTara );
     tbnKol.setTag(-2);
     tbnKol.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 		@Override
@@ -336,6 +342,7 @@ SeekBar.OnSeekBarChangeListener
 	} );
     
     tbTara = (ToggleButton) findViewById(R.id.btnTaraRasxod_);
+    tbTara.setTextSize(TypedValue.COMPLEX_UNIT_PX, MainActivity.butTara );
     tbTara.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -347,8 +354,8 @@ SeekBar.OnSeekBarChangeListener
 	} );
  
    lvCombo = (ListView) findViewById(R.id.lvCombo);
-   String[] from = { "name", "kol","price", "tara","itog", "summa", "button"};
-   int[] to = { R.id.comboName, R.id.comboKol,R.id.comboPrice, R.id.comboTara,R.id.comboItog, R.id.comboSumma, R.id.comboX };
+   String[] from = { "name", "kol","price", "tara","itog", "summa", "button","skidka_but","skidka_sum"};
+   int[] to = { R.id.comboName, R.id.comboKol,R.id.comboPrice, R.id.comboTara,R.id.comboItog, R.id.comboSumma, R.id.comboX,R.id.comboSkidka, R.id.comboSkidkaSum };
         // создаем адаптер
         sAdapter = new MySimpleAdapter(this, data, R.layout.combo_item, from, to);
         // определяем список и присваиваем ему адаптер
@@ -394,80 +401,6 @@ SeekBar.OnSeekBarChangeListener
         }
       });
     
-/*    b0 = (Button) findViewById(R.id.btn00);
-    b1 = (Button) findViewById(R.id.btn11);
-    b2 = (Button) findViewById(R.id.btn22);
-    b3 = (Button) findViewById(R.id.btn33);
-    b4 = (Button) findViewById(R.id.btn44);
-    b5 = (Button) findViewById(R.id.btn55);
-    b6 = (Button) findViewById(R.id.btn66);
-    b7 = (Button) findViewById(R.id.btn77);
-    b8 = (Button) findViewById(R.id.btn88);
-    b9 = (Button) findViewById(R.id.btn99);
-    btCom = (Button) findViewById(R.id.btnComaC);
-    btClear = (Button) findViewById(R.id.btnXX);
-    btD = (Button) findViewById(R.id.btnDD);
-    
-    btCom.setOnClickListener(new OnClickListener() {
-        public void onClick(View v) {
-     	   Pattern pattern = Pattern.compile(regexp_numb, Pattern.CASE_INSENSITIVE);
-   			Matcher matcher = pattern.matcher(strKol.concat("."));
-   			if (matcher.matches()) {strKol=strKol.concat("."); tvKol.setText(strKol); }
-        }
-      });
-	
-	btClear.setOnClickListener(new OnClickListener() {
-        public void onClick(View v) {
-        	tvKol.setText("");
-        	tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));tbnKol.setChecked(false);Btara=-1; 
-        	strKol="";
-        }
-      });
-	
-	btD.setOnClickListener(new OnClickListener() {
-        public void onClick(View v) {
-        	if (StrToFloat(tvKol.getText().toString())==0)//(tvKol.getText().length()==0||tvKol.getText().equals("")||tvKol.getText().equals("0"))
-        		{tvKol.setText(""); strKol="";}
-        	else
-        	{tvKol.setText(tvKol.getText().subSequence(0, tvKol.getText().length()-1)); 
-        	strKol=strKol.substring(0, strKol.length()-1);}
-        	//tvKol.setText((tvKol.getText().length()==0||tvKol.getText().equals("")||tvKol.getText().equals("0"))?"":
-        		//tvKol.getText().subSequence(0, tvKol.getText().length()-1) );
-        	if (StrToFloat(tvKol.getText().toString())==0)//(tvKol.getText().toString().equals("")||tvKol.getText().equals("0")||tvKol.getText().equals("0.")||tvKol.getText().equals(".")) 
-				{tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));tbnKol.setChecked(false);strKol="";Btara=-1; }
-        }
-      });
-    
-    OnClickListener listenerKol = new OnClickListener() {
-    	  @Override
-    	  public void onClick(View v) {
-  			Pattern pattern = Pattern.compile(regexp_numb, Pattern.CASE_INSENSITIVE);
-  			Matcher matcher = pattern.matcher(strKol.concat(((Button) v).getText().toString()));
-  			if (matcher.matches()) {strKol=strKol.concat(((Button) v).getText().toString()); tvKol.setText(strKol); 
-  			//push btnKOl
-  			//if (!tbnKol.isChecked())
-  			// {tbnKol.setTextColor(clrCheck); 
-  			// tbnKol.setBackground(getResources().getDrawable(R.drawable.edittext_style));
-  			// tara((byte)-2); }
-  			}
-  			//else
-  				if (StrToFloat(tvKol.getText().toString())==0)//(tvKol.getText().toString().equals("")||tvKol.getText().equals("0")||tvKol.getText().equals("0.")||tvKol.getText().equals(".")) 
-  				{tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));tbnKol.setChecked(false);Btara=-1; }
-    	  }
-    	 };
-    
-    b0.setOnClickListener(listenerKol);
-    b1.setOnClickListener(listenerKol);
-    b2.setOnClickListener(listenerKol);
-    b3.setOnClickListener(listenerKol);
-    b4.setOnClickListener(listenerKol);
-    b5.setOnClickListener(listenerKol);
-    b6.setOnClickListener(listenerKol);
-    b7.setOnClickListener(listenerKol);
-    b8.setOnClickListener(listenerKol);
-    b9.setOnClickListener(listenerKol);
-*/    
-   // showMessage("W = "+display_w+"; Н = "+display_h, (byte)1);
   }
    
    void setPgr() {
@@ -485,7 +418,7 @@ SeekBar.OnSeekBarChangeListener
 	        
 	      }
 	   //float sText=((display_w)/(4*scale*scale*l))+scale*5;
-	   float sText=MainActivity.sizeSmallButton;
+	   //float sText=MainActivity.sizeSmallButton;
 	    if (count_but_pgr<19)
 	    {  /* llbut = new TableLayout(this);
 	    	llbut.setOrientation(TableLayout.HORIZONTAL);*/
@@ -546,7 +479,7 @@ SeekBar.OnSeekBarChangeListener
 	        	
 	        	btnPgr.setText(c.getString(c.getColumnIndex("name")));
 	        	btnPgr.setTag(c.getInt(c.getColumnIndex("_id"))+"-"+c.getString(c.getColumnIndex("name")));
-	        	btnPgr.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+	        	btnPgr.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butPgr);
 	        	btnPgr.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
 	        	btnPgr.setOnClickListener(new OnClickListener() {
 	                public void onClick(View v) {
@@ -588,13 +521,13 @@ SeekBar.OnSeekBarChangeListener
 	   llbut.removeAllViewsInLayout();
 	   svBut.removeAllViewsInLayout();
 	   int count_but=0;
-	   Cursor cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
+	   Cursor cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, T._id",null);
 	   if (cc.moveToFirst()) { 
 	        do {count_but++;
 	        } while (cc.moveToNext());
 	      }; 
 	   // scale size font
-	      int l=1;
+	      /*int l=1;
 		   if (cc.moveToFirst()) { 
 			   
 		        do {	        	
@@ -603,9 +536,9 @@ SeekBar.OnSeekBarChangeListener
 		        		if (n[i].length()>l) l=n[i].length();
 		        } while (cc.moveToNext());
 		        
-		      }
+		      }*/
 		   //float sText=((display_w)/(6*scale*scale*l))+scale*5;
-	    	float sText=MainActivity.sizeSmallButton;
+	    	//float sText=MainActivity.sizeSmallButton;
 	    if (count_but<19)
 	    {  /* llbut = new TableLayout(this);
 	    	llbut.setOrientation(TableLayout.HORIZONTAL);
@@ -636,7 +569,16 @@ SeekBar.OnSeekBarChangeListener
 	    			new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.MATCH_PARENT,1));
 	    	//llR_.setVisibility(LinearLayout.VISIBLE);
 	    }
-	    
+/*
+ * 1 в наименование город
+ * 2 в чеке крупные кнопки нал ичных
+ * 3 в истории расхода чеки по номеру и сумме поиск
+ * 4 отчет расход + остаток + обнуление
+ * 5 порядковые товара задать вручную
+ * 6 вертикальный seekbar
+ * 7 обнуление и измение (по расходу) остатков
+ * 
+ * */	    
 	    
 	    //MinimumWidth((int)(display_w/6));
 	   byte ib;
@@ -674,7 +616,7 @@ SeekBar.OnSeekBarChangeListener
 	 	    		//params.weight=1;
 	        		 
 	                llbut.addView(row,
-	                		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT,1));
+	                		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, /*TableLayout.LayoutParams.MATCH_PARENT*/0,1));
 	                //row.addView(llbut, params);
 	        	}
 	        	
@@ -690,7 +632,8 @@ SeekBar.OnSeekBarChangeListener
 	        	but.add(new chB(
 	        			ib, 							//indBT
 	        			cc.getInt(cc.getColumnIndex("_id")), //id_tmc
-	        			cc.getString(cc.getColumnIndex("name")), //tmc_name
+	        			cc.getString(cc.getColumnIndex("name"))+
+	        			( (cc.getString(cc.getColumnIndex("namep")).equals("")||cc.getString(cc.getColumnIndex("namep")).equals("-нет-")||cc.getString(cc.getColumnIndex("namep")).equals("НЕТ") )?"":"\n"+cc.getString(cc.getColumnIndex("namep")) ) , //tmc_name
 	        			0, 									//val
 	        			cc.getFloat(cc.getColumnIndex("kol")), //ost 
 	        			cc.getInt(cc.getColumnIndex("id_post")),//id_post
@@ -710,7 +653,7 @@ SeekBar.OnSeekBarChangeListener
 	        		if (n[i].length()>l) l=n[i].length();
 	        	float sText=((display_w)/(6*scale*scale*l))+scale*10;
 	        	*/
-	        	but.get(ib).tb.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
+	        	but.get(ib).tb.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
 	        	
 	        	int l1=(but.get(ib).tmc_name+"\n").length(), l2=(but.get(ib).tmc_name+"\n"+but.get(ib).ost+but.get(ib).ted+" ЦЕНА "+but.get(ib).price).length();
 	        	
@@ -718,7 +661,7 @@ SeekBar.OnSeekBarChangeListener
 	        			+"\n"+but.get(ib).ost+but.get(ib).ted+" ЦЕНА "+but.get(ib).price); 
 	        	//final ForegroundColorSpan style = new ForegroundColorSpan(Color.rgb(255, 0, 0)); 
 	        	final StyleSpan style2 = new StyleSpan(Typeface.BOLD); 
-	        	final AbsoluteSizeSpan s12 = new AbsoluteSizeSpan(12,true);
+	        	final AbsoluteSizeSpan s12 = new AbsoluteSizeSpan(MainActivity.butNameS ,false);
 	        	text.setSpan(s12, l1, l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
 	        	//text.setSpan(style, l1, l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
 	        	//textView.setTypeface(null,Typeface.BOLD);
@@ -736,15 +679,35 @@ SeekBar.OnSeekBarChangeListener
 	        	but.get(ib).tb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 	        		@Override
 	        		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-	        			
+	        			byte tmp=0;
 	        			if (isChecked)
 	        			{ buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittext_style));
 	        			Btovar=Byte.parseByte(buttonView.getTag().toString());
 	        			for (int i=CountTara; i<but.size(); i++) {
 	        		    	if ((i)!= Integer.parseInt(buttonView.getTag().toString())) 
 	        		    	{but.get(i).tb.setChecked(false); but.get(i).tb.setTextColor(clrNoCheck) ; but.get(i).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
-	        			    }
-	        			if (Btara!=-1) fixV();// buttonView.setChecked(false);}
+	        		    	else tmp=but.get(i).ed ;
+	        				}
+	        				
+	        			//06.04!! if (Btara!=-1) fixV();// buttonView.setChecked(false);}
+	        			
+	        			if (Btara!=-1) 
+	        				{if (!(tmp!=1 && Btara!=-2 ))
+	        				fixV();// buttonView.setChecked(false);}
+	        				else //
+	        					{//tara(-2);
+	        					tbnKol.setTextColor(clrCheck); 
+	        					 tbnKol.setBackground(getResources().getDrawable(R.drawable.edittext_style));
+	        					 tara((byte)-2); 
+	        					 tvDialogN=R.id.tvOtherKol_;
+	        					    showDialog(1);
+	        					}	
+	        				}
+	        			else if (tmp!=1) {tbnKol.setTextColor(clrCheck); 
+   					 tbnKol.setBackground(getResources().getDrawable(R.drawable.edittext_style));
+   					 tara((byte)-2); 
+   					 tvDialogN=R.id.tvOtherKol_;
+   					    showDialog(1);}
 	        			}
 	        			else
 	        				{buttonView.setTextColor(clrNoCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
@@ -753,7 +716,7 @@ SeekBar.OnSeekBarChangeListener
 	        	
 	        	//llbut.addView(but.get(ib).tb/*,PB*/);
 	        	row.addView(but.get(ib).tb,
-	        			new TableRow/*LinearLayout*/.LayoutParams(TableRow/*LinearLayout*/.LayoutParams.MATCH_PARENT,TableRow/*LinearLayout*/.LayoutParams.MATCH_PARENT,1) );
+	        			new TableRow/*LinearLayout*/.LayoutParams(0,TableRow/*LinearLayout*/.LayoutParams.MATCH_PARENT,1) );
 	        	
 	        	//Log.d("MyLog", "add button");
 	        	ib++;
@@ -771,7 +734,8 @@ SeekBar.OnSeekBarChangeListener
    void fixV() {
 	   if (tbTara.isChecked()) 
    	{m = new HashMap<String, Object>();
-		   	  
+   		m.put("skidka_sum", 0);
+   		m.put("skidka_but", 0);
    		   m.put("name", but.get(Btovar).tmc_name);
    		   m.put("price", but.get(Btovar).price);
    		   if (Btara!=-2) 
@@ -780,9 +744,9 @@ SeekBar.OnSeekBarChangeListener
    		   m.put("itog", but.get(Btara).val+" * "+but.get(Btovar).price+" = ");} 
    		   else
    		   {m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted); 
-   		   m.put("summa", but.get(Btovar).price*StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+   		   m.put("summa", but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
    				   );
-   		m.put("itog", StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
+   		m.put("itog", MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
    				+" * "+but.get(Btovar).price+" = ");}
    		      m.put("tara", "СВОЯ ТАРА");
    		      data.add(m);
@@ -791,15 +755,16 @@ SeekBar.OnSeekBarChangeListener
    	{tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, but.get(Btara).val, but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "своя тара"));
    	sumI=sumI+but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/);}
    		   else
-   		{tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/) 
+   		{tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/) 
    				, but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "своя тара"));
-   	   	sumI=sumI+but.get(Btovar).price*StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+   	   	sumI=sumI+but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
    	   			;}
    	}
    	else
    	{
    	  m = new HashMap<String, Object>();
-   	
+   	  	m.put("skidka_sum", 0);
+		m.put("skidka_but", 0);
    	  	m.put("name", but.get(Btovar).tmc_name);
    	 m.put("price", but.get(Btovar).price);
    	 if (Btara!=-2) {m.put("kol", but.get(Btara).val+" "+but.get(Btovar).ted);
@@ -810,9 +775,9 @@ SeekBar.OnSeekBarChangeListener
    	{m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted);
     m.put("tara", /*" + ПАКЕТ "*/"");
     m.put("summa", but.get(Btovar).price*
-    		StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+    		MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
     		);
-    m.put("itog", StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
+    m.put("itog", MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
     		+" * "+but.get(Btovar).price+" = ");}
 		      data.add(m);
 		      
@@ -820,14 +785,14 @@ SeekBar.OnSeekBarChangeListener
 		      sAdapter.notifyDataSetChanged();
 		      if (Btara!=-2) {	      
    	tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, but.get(Btara).val,but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "с тарой"));	
-       tranz.add(new tranDB((byte)(data.size()-1), Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "тара"));
+       tranz.add(new tranDB(/*(byte)(data.size()-1)*/(byte) -1 /*если тара, то позиция в чеке -1*/, Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "тара"));
        sumI=sumI+(but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/)+but.get(Btara).price);
 		      }
 		      else
 			      
 		    	   	{tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, (tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()),but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "пакет"));	
 		    	      // tranz.add(new tranDB((byte)(data.size()-1), Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "tara"));
-		    	       sumI=sumI+(but.get(Btovar).price*StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+		    	       sumI=sumI+(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
 		    	    		   +0);}
    	}
    	
@@ -853,7 +818,8 @@ SeekBar.OnSeekBarChangeListener
    void getCheck() {
 	   if (/*tvCombo.getText().equals("")*/data.size()==0) finish();
    	else
-   	{long cou=MainActivity.db.addRecKLIENTcount("svetka", Float.parseFloat(tvSum.getText().toString()), "", MainActivity.getIntDataTime(), (byte)0);
+   	{//no klient
+   		long cou=MainActivity.db.addRecKLIENTcount("svetka", Float.parseFloat(tvSum.getText().toString()), "", MainActivity.getIntDataTime(), 0, (byte)0);
    		
    	for (int i=0; i<tranz.size(); i++) {
    		//public void addRecRASXOD(int id_tmc, float kol, float price, int id_post, int id_klient, String prim, int data_del, int data_ins, byte ok)
@@ -870,8 +836,9 @@ SeekBar.OnSeekBarChangeListener
        	final SpannableStringBuilder text = new SpannableStringBuilder(but.get(tranz.get(i).tagB).tmc_name+"\n"+but.get(tranz.get(i).tagB).ost+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+but.get(tranz.get(i).tagB).price); 
        	//final ForegroundColorSpan style = new ForegroundColorSpan(Color.rgb(255, 0, 0)); 
        	final StyleSpan style2 = new StyleSpan(Typeface.BOLD); 
-       	final AbsoluteSizeSpan s12 = new AbsoluteSizeSpan(12,true);
+       	final AbsoluteSizeSpan s12 = new AbsoluteSizeSpan(MainActivity.butNameS,false);
        	text.setSpan(s12, l1, l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
+       	
        	//text.setSpan(style, l1, l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
        	//textView.setTypeface(null,Typeface.BOLD);
        	text.setSpan(style2,l1,l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
@@ -903,16 +870,27 @@ SeekBar.OnSeekBarChangeListener
    }
   
    void getCheckDialog() {
-	   //if (/*tvCombo.getText().equals("")*/data.size()==0) finish();
-   	//else
+	   
 	   if (data.size()!=0)
-   	{long cou=MainActivity.db.addRecKLIENTcount("svetka", Float.parseFloat(tvSum.getText().toString()), "", MainActivity.getIntDataTime(), (byte)0);
-   	if (StrToFloat(etSkidka.getText().toString())!=0)
-   		MainActivity.db.addRecRASXOD(0, 0, (byte)0, -StrToFloat(etSkidka.getText().toString()), 0, (int)cou, "СКИДКА "+etSkidka.getText().toString()+"ГРН", MainActivity.getIntDataTime(), (byte)0);
+   	{
+		// int klient=0; if (!=0) 
+    long cou=MainActivity.db.addRecKLIENTcount("чек", Float.parseFloat(tvSum.getText().toString()), "" , MainActivity.getIntDataTime(),(int) MainActivity.StrToFloat(tvIdKlient.getText().toString()) , (byte)0);
+
+    //это общая скидка, если она есть
+    if (MainActivity.StrToFloat(etSkidka.getText().toString())!=0)
+   		MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat(etSkidka.getText().toString()), (byte)4, 0, 0, (int)cou, "СКИДКА "+etSkidka.getText().toString()+"ГРН", MainActivity.getIntDataTime(), (byte)0);
+
+   	
+    for (int i=0; i<tranz.size(); i++) {
    		
-   	for (int i=0; i<tranz.size(); i++) {
-   	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,
+   	long tmp = MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc,
    			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
+
+   	//эта жесть создает скидку по позиции если она есть в чеке (в поле rasxod.ok пишу _id расхода, по которой скидка)
+   	//Log.d("MyLog", tranz.get(i).tagL+" ");
+   	if (tranz.get(i).tagL!=-1 && MainActivity.StrToFloat( data.get(tranz.get(i).tagL).get("skidka_sum").toString() )!=0 )
+   		MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat( data.get(tranz.get(i).tagL).get("skidka_sum").toString() ), (byte)4, 0, 0, (int)cou, "СКИДКА ПО ПОЗИЦИИ "+tmp+":"+data.get(tranz.get(i).tagL).get("skidka_sum").toString()+"ГРН", MainActivity.getIntDataTime(),(int)tmp);
+   	
    	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
    	//Log.d("MyLog", "PtagB="+tranz.get(i).tagB+" ost="+but.get(tranz.get(i).tagB).ost);
    	if (tranz.get(i).tagB>CountTara-1) {
@@ -920,7 +898,7 @@ SeekBar.OnSeekBarChangeListener
        	final SpannableStringBuilder text = new SpannableStringBuilder(but.get(tranz.get(i).tagB).tmc_name+"\n"+but.get(tranz.get(i).tagB).ost+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+but.get(tranz.get(i).tagB).price); 
        	//final ForegroundColorSpan style = new ForegroundColorSpan(Color.rgb(255, 0, 0)); 
        	final StyleSpan style2 = new StyleSpan(Typeface.BOLD); 
-       	final AbsoluteSizeSpan s12 = new AbsoluteSizeSpan(12,true);
+       	final AbsoluteSizeSpan s12 = new AbsoluteSizeSpan(MainActivity.butNameS,false);
        	text.setSpan(s12, l1, l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
        	//text.setSpan(style, l1, l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
        	//textView.setTypeface(null,Typeface.BOLD);
@@ -929,6 +907,7 @@ SeekBar.OnSeekBarChangeListener
    	but.get(tranz.get(i).tagB).tb.setTextOn(text);//(but.get(tranz.get(i).tagB).tmc_name+"\n"+but.get(tranz.get(i).tagB).ost+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+but.get(tranz.get(i).tagB).price);
    	but.get(tranz.get(i).tagB).tb.setChecked(but.get(tranz.get(i).tagB).tb.isChecked());
    	}
+   	
    	}
    	
    	//tvCombo.setText("");
@@ -941,10 +920,11 @@ SeekBar.OnSeekBarChangeListener
    	//showMessage("ЧЕК № "+cou+" НА СУММУ:"+tvSum.getText().toString()+"\n"+sChek, (byte)1);
    		
    	data.clear();
-   	sAdapter.notifyDataSetChanged();
+   	//sAdapter.notifyDataSetChanged();
    	tvSum.setText("");sumI=0;tranz.clear();
    	}
 	   tvDialogN=0;
+	 //  sAdapter.notifyDataSetChanged();
    }
    
   /* public void showPic(View v)
@@ -980,6 +960,13 @@ SeekBar.OnSeekBarChangeListener
    
    void dialogNumCancel(int tvI) {
 	   switch (tvI) {
+	////tvDialogN=R.id.comboSkidkaSum
+	   case R.id.comboSkidkaSum:
+		   data.get(combo_pos).put("skidka_sum", "");
+		   sAdapter.notifyDataSetChanged();
+		   tvDKol.setText("0");
+		   tvDialogN=0;
+	     break;
 	   case R.id.tvOtherKol_:
 		   tvKol.setText("");
 		   tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
@@ -987,53 +974,45 @@ SeekBar.OnSeekBarChangeListener
 	     break;
 	   case R.id.etCheckNal:
 		   etNal.setText("");
+		   tvDialogN=0;
 	     break;
 	   case R.id.etCheckSkidka:
 		   etSkidka.setText("");
+		   tvDialogN=0;
 	     break;
 	   }
    }
    
    String dialogNumTitle(int tvI) {
 	   switch (tvI) {
+	   
 	   case R.id.tvOtherKol_:
-		   return "Введите вес/колличество товара";
+		   return "Введите вес/количество товара";
 	     
 	   case R.id.etCheckNal:
 		   return "Введите сумму наличных";
-	     
+	   case R.id.comboSkidkaSum:  
 	   case R.id.etCheckSkidka:
-		   return "Введите сумму скидки";
+		   return "Введите % скидки по умолчанию";
 	   default: return "";
 	   }
    }
-   
-   
-   float StrToFloat(String s) {
-	   Float total = Float.valueOf(0);
-	 try
-	 {
-	     total = Float.valueOf(s);
-	 }
-	 catch(NumberFormatException ex)
-	 {
-	     DecimalFormat df = new DecimalFormat();
-	     Number n = null;
-	     try
-	     {
-	         n = df.parse(s);
-	     } 
-	     catch(ParseException ex2){ }
-	     if(n != null)
-	         total = n.floatValue();
-	 }
-	 return total;
-}; 
+
 
    void dialogNumOK(int tvI) {
 	   switch (tvI) {
+	   //tvDialogN=R.id.comboSkidkaSum
+	   case R.id.comboSkidkaSum:
+		   if (MainActivity.StrToFloat(tvDKol.getText().toString())==0) 
+			   data.get(combo_pos).put("skidka_sum", "");
+			   else
+        	  data.get(combo_pos).put("skidka_sum", tvDKol.getText());
+        	 
+		   sAdapter.notifyDataSetChanged();
+		   tvDialogN=0;
+	     break;
 	   case R.id.tvOtherKol_:
-		   if (StrToFloat(tvDKol.getText().toString())==0) //(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
+		   if (MainActivity.StrToFloat(tvDKol.getText().toString())==0) //(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
 		   {
         		 tvKol.setText("");
             	 tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
@@ -1043,24 +1022,26 @@ SeekBar.OnSeekBarChangeListener
 		   tvDialogN=0;
 	     break;
 	   case R.id.etCheckNal:
-		   if (StrToFloat(tvDKol.getText().toString())==0)//(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
+		   if (MainActivity.StrToFloat(tvDKol.getText().toString())==0)//(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
 		   		{
         		 etNal.setText("");
         		 tvSdacha.setText("");
         	 } else
         	 {etNal.setText(tvDKol.getText());
-        	 tvSdacha.setText(String.valueOf (StrToFloat(etNal.getText().toString())-(StrToFloat(tvDItogo.getText().toString())-StrToFloat(etSkidka.getText().toString())) ) );
+        	 tvSdacha.setText(String.valueOf (MainActivity.StrToFloat(etNal.getText().toString())-(MainActivity.StrToFloat(tvDItogo.getText().toString())-MainActivity.StrToFloat(etSkidka.getText().toString())) ) );
         	 }
+		   tvDialogN=0;
 	     break;
 	   case R.id.etCheckSkidka:
-		   if (StrToFloat(tvDKol.getText().toString())==0)//(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
+		   if (MainActivity.StrToFloat(tvDKol.getText().toString())==0)//(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
 		   {
       		 etSkidka.setText("");
       	 } else
       	 {etSkidka.setText(tvDKol.getText());
-      	 if (StrToFloat(etNal.getText().toString())!=0)
-      	 tvSdacha.setText(String.valueOf (StrToFloat(etNal.getText().toString())-(StrToFloat(tvDItogo.getText().toString())-StrToFloat(etSkidka.getText().toString())) ) );
+      	 if (MainActivity.StrToFloat(etNal.getText().toString())!=0)
+      	 tvSdacha.setText(String.valueOf (MainActivity.StrToFloat(etNal.getText().toString())-(MainActivity.StrToFloat(tvDItogo.getText().toString())-MainActivity.StrToFloat(etSkidka.getText().toString())) ) );
       	 }
+		   tvDialogN=0;
 	     break;
 	   }
    }
@@ -1074,6 +1055,7 @@ SeekBar.OnSeekBarChangeListener
        strDialog="";
        Dview = (LinearLayout) getLayoutInflater().inflate(R.layout.other_kol, null);
        //Button bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
+       MainActivity.setSizeFontMain(Dview);
        // устанавливаем ее, как содержимое тела диалога
        adb.setView(Dview);
        // находим TexView для отображения кол-ва
@@ -1094,22 +1076,8 @@ SeekBar.OnSeekBarChangeListener
        btXD = (Button) Dview.findViewById(R.id.btnXXX);
        btDD = (Button) Dview.findViewById(R.id.btnDDD);
       // float sText = ((MainActivity.w/7)/(MainActivity.scale*MainActivity.scale));//+scale*5;
-       float sText = MainActivity.sizeBigButton;
-       bt1.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       bt2.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       bt3.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       bt4.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       bt5.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       bt6.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       bt7.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       bt8.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       bt9.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       bt0.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       btComa.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       btXD.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       btDD.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       tvDKol.setTextSize(TypedValue.COMPLEX_UNIT_PX,sText);
-       
+       //float sText = MainActivity.sizeBigButton;
+
        OnClickListener listenerDKol = new OnClickListener() {
      	  @Override
      	  public void onClick(View v) {
@@ -1151,6 +1119,7 @@ SeekBar.OnSeekBarChangeListener
    	
    	btXD.setOnClickListener(new OnClickListener() {
            public void onClick(View v) {
+        	   strDialog="";
            	tvDKol.setText("");
            }
          });
@@ -1202,6 +1171,7 @@ SeekBar.OnSeekBarChangeListener
          //adb.setMessage("Message");
          //strDialog="";
          Dview = (LinearLayout) getLayoutInflater().inflate(R.layout.chek, null);
+         MainActivity.setSizeFontMain(Dview);
          //Button bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
  	    //Window window = getDialog().getWindow();
  	    //Dview.setLayoutParams(new LinearLayout.LayoutParams(display_w/*-(int)(display_w/6)*/, display_h/*-(int)(display_h/8)*/,1)); 
@@ -1216,8 +1186,9 @@ SeekBar.OnSeekBarChangeListener
       	etNal = (TextView) Dview.findViewById(R.id.etCheckNal);
       	tvNal = (TextView) Dview.findViewById(R.id.tvCheckNal);
       	//etNal.clearFocus();
-      	
-      	
+      
+      	tvIdKlient = (TextView) Dview.findViewById(R.id.tvIdKlientCheck);
+      	spKlient = (Spinner) Dview.findViewById(R.id.sp_check_klient);
       	//etNal.setImeOptions(EditorInfo.IME_NULL);
       	etSkidka = (TextView) Dview.findViewById(R.id.etCheckSkidka);
       	tvSkidka = (TextView) Dview.findViewById(R.id.tvCheckSkidka);
@@ -1251,6 +1222,7 @@ SeekBar.OnSeekBarChangeListener
           	  // Log.d("MyLog", "Dismiss");
             		 
             	 getCheckDialog(); 
+            	 //sAdapter.notifyDataSetChanged();
              }
          });
          
@@ -1289,8 +1261,10 @@ SeekBar.OnSeekBarChangeListener
    protected void onPrepareDialog(int id, Dialog dialog) {
      super.onPrepareDialog(id, dialog);
      //Log.d("MyLog", "Prepare");
-     if (id == 1) tvDKol.setText("");
-     if (id == 2) {etSkidka.setText("0"); etNal.setText("0"); tvDItogo.setText(tvSum.getText()); tvSdacha.setText("0"); 
+     if (id == 1) { strDialog=""; tvDKol.setText(""); }
+     if (id == 2) {
+    	 //tvSkidka.setText("СКИДКА В %");
+    	 etSkidka.setText("0"); tvIdKlient.setText("0"); etNal.setText("0"); tvDItogo.setText(tvSum.getText()); tvSdacha.setText("0"); 
      etNal.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
          	//showPic(v);
@@ -1319,23 +1293,32 @@ SeekBar.OnSeekBarChangeListener
         	showDialog(1);
         }
       });
-   	} 
+   	
      strDialog="";
-     //tvDKol = (TextView) dialog.getWindow().findViewById(R.id.tvOtherKolD);
-     /*bt0 = (Button) dialog.getWindow().findViewById(R.id.btn000);
-     bt1 = (Button) dialog.getWindow().findViewById(R.id.btn111);
-     bt2 = (Button) dialog.getWindow().findViewById(R.id.btn222);
-     bt3 = (Button) dialog.getWindow().findViewById(R.id.btn333);
-     bt4 = (Button) dialog.getWindow().findViewById(R.id.btn444);
-     bt5 = (Button) dialog.getWindow().findViewById(R.id.btn555);
-     bt6 = (Button) dialog.getWindow().findViewById(R.id.btn666);
-     bt7 = (Button) dialog.getWindow().findViewById(R.id.btn777);
-     bt8 = (Button) dialog.getWindow().findViewById(R.id.btn888);
-     bt9 = (Button) dialog.getWindow().findViewById(R.id.btn999);
-     btComa = (Button) dialog.getWindow().findViewById(R.id.btnComaCC);
-     btXD = (Button) dialog.getWindow().findViewById(R.id.btnXXX);
-     btDD = (Button) dialog.getWindow().findViewById(R.id.btnDDD);*/
-    
+     String[] fromKlient = new String[] {"_id","name","sconto_sum","sconto_per"};
+     int[] toKlient = new int[] {R.id.spt_1, R.id.spt_2, R.id.spt_3, R.id.spt_4};
+     final Cursor cKlient = MainActivity.db.getRawData("select _id, name, 0 sconto_sum, 0 sconto_per from foo union all select _id, name, sconto_sum, sconto_per from karta_klient where ok=0 ",null);
+     scaKlient = new SimpleCursorAdapter(this, R.layout.spinner_quatro, cKlient, fromKlient, toKlient);   
+     scaKlient.setDropDownViewResource(R.layout.spinner_quatro_down); 
+
+     spKlient.setOnItemSelectedListener(new OnItemSelectedListener() {
+         public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+             //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
+         	spKlient.setTag(id);
+         	tvIdKlient.setText(String.valueOf(id));
+         	etSkidka.setText(cKlient.getString(2));
+         	//tvEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ed")) );
+         	//getSupportLoaderManager().getLoader(0).forceLoad();
+         }
+         public void onNothingSelected(AdapterView<?> parent) {
+         	spKlient.setTag(0);
+         	tvIdKlient.setText("0");
+         	etSkidka.setText("0");
+         	//getSupportLoaderManager().getLoader(0).forceLoad();
+         }
+         });
+     spKlient.setAdapter(scaKlient);
+     }
  	
      /*if (id == 1) {
        // Находим TextView для отображения времени и показываем текущее
@@ -1424,9 +1407,9 @@ SeekBar.OnSeekBarChangeListener
 	      super.setViewText(v, text);
 	      // если нужный нам TextView, то разрисовываем 
 	      if (v.getId() == R.id.comboSumma) {
-	        float i = Float.parseFloat(text);
+	        //float i = Float.parseFloat(text);
 	        //if (i < 0) v.setTextColor(Color.RED); else
-	          if (i > 100) v.setTextColor(Color.RED);
+	          //if (i > 100) v.setTextColor(Color.RED);
 	      }
 	    }
 	 
@@ -1451,29 +1434,45 @@ SeekBar.OnSeekBarChangeListener
                 //col.setText((String) 
                 		//;
             //}   
-            if (tvDialogN!=0) {
+            if (tvDialogN!=0 && tvDialogN!=R.id.tvOtherKol_) {
             /*TextView tvI=(TextView)v.findViewById(R.id.comboItog);
             tvI.setTextColor(Color.WHITE);
             TextView tvS=(TextView)v.findViewById(R.id.comboSumma);
             tvS.setTextColor(Color.WHITE);*/
             	LinearLayout llHide=(LinearLayout)v.findViewById(R.id.comboHideLL);
                 llHide.setVisibility(LinearLayout.GONE);
-                
+                final TextView tSkidka=(TextView)v.findViewById(R.id.comboSkidkaSum);   
+                tSkidka.setVisibility(TextView.VISIBLE);
             Button bSkidka=(Button)v.findViewById(R.id.comboSkidka);
+            bSkidka.setText("СКИДКА");
             bSkidka.setVisibility(Button.VISIBLE);
             bSkidka.setOnClickListener(new OnClickListener() {
                @Override
                public void onClick(View arg0) {
-                   //Toast.makeText(RasxodActivity.this,dataSet.get("summa").toString()+" position "+pos,Toast.LENGTH_SHORT).show();
-               	/*sumI=sumI-Float.parseFloat(dataSet.get("summa").toString());
-               	tvSum.setText(String.valueOf(sumI));
-               	if (tvDialogN!=0) tvDItogo.setText(String.valueOf(sumI));
-               	for (int i=0; i<tranz.size(); i++) {if (tranz.get(i).tagL==(byte)pos) {tranz.remove(i);} }
-               	data.remove(pos);
-               	sAdapter.notifyDataSetChanged();*/
-               	
+            	tvDialogN=R.id.comboSkidkaSum;
+            	combo_pos=pos;
+               	showDialog(1);
+               	//data.get(pos).put("skidka_sum", kol_skidka);
+            	//sAdapter.notifyDataSetChanged();
+               	//tSkidka.setText(kol_skidka);//(tvDKol.getText());
+               	//tSkidka.setText("321");
+               	//sAdapter.notifyDataSetChanged();
                }
            });
+            tSkidka.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+             	tvDialogN=R.id.comboSkidkaSum;
+             	combo_pos=pos;
+                	showDialog(1);
+                	//((TextView) arg0).setText(kol_skidka);//(tvDKol.getText());
+                	//((TextView) arg0).setText("123");
+                	//sAdapter.mData.get(pos)
+                	//data.get(pos).put("skidka_sum", kol_skidka);
+                	//sAdapter.notifyDataSetChanged();
+                }
+            });
+
             }
             
             Button b=(Button)v.findViewById(R.id.comboX);
@@ -1491,9 +1490,12 @@ SeekBar.OnSeekBarChangeListener
                 	
                 }
             });
+             
             return v;
         }
-	  }
+	//@Override    public void bindV
+  }
+  
   class MyViewBinder implements SimpleAdapter.ViewBinder {
 	     
 	    //int red = getResources().getColor(R.color.Red);
@@ -1504,6 +1506,7 @@ SeekBar.OnSeekBarChangeListener
 	    public boolean setViewValue(View view, Object data,
 	        String textRepresentation) {
 	      int i = 0;
+	      //MainActivity.setSizeFontItem((LinearLayout)/*findViewById(R.id.oborotka_item_tr)*/view);
 	      switch (view.getId()) {
 	      // LinearLayout
 	      /*case R.id.llLoad:

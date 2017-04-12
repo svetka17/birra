@@ -4,19 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class AdapterLV extends SimpleCursorAdapter {
 	int bD; int bU; byte nT; String namT; Context contxt; 
 	TextView tv;
 	CheckBox cb;
+	//Dialog dialogg;
 	//public int[] wH;
 	//public int wH;
 	//byte countH;
@@ -46,11 +45,26 @@ public AdapterLV(/*int[] r,*/ int bD, int bU, byte nT, Context context, int layo
     case 5: namT="ostat"; break;
     case 6: namT="klient"; break;
     case 7: namT="postav"; break;
+    case 8: namT="karta_klient"; break;
+    case 9: namT="user"; break;
+    case 10: namT=""; break;
     }
+}
+
+private CambiareListener listenerFlag;
+
+public interface CambiareListener {
+    public void OnCambiare(byte flag, long id);
+}
+
+public AdapterLV setCamdiareListener(CambiareListener listener) {
+    this.listenerFlag = listener;
+    return this;
 }
 
 @Override
 public void bindView(View view, Context context, final Cursor cursor) {
+	MainActivity.setSizeFontItem((TableRow)/*findViewById(R.id.oborotka_item_tr)*/view);
 	switch (nT) {
 	case 0:
 //{"_id", "id_tmc","name","ted","kol_n","sum_n","price_n","kol_pri","sum_pri","price_pri","kol_ras","sum_ras","price_ras","kol_k","sum_k","price_k"}		
@@ -320,8 +334,9 @@ public void bindView(View view, Context context, final Cursor cursor) {
 		
     	break;
     case 7:
+    case 10:
 		//for (i=0;i<r.length;i++) {
-			tv = (TextView) view.findViewById(R.id.tvNamePostav);
+			//tv = (TextView) view.findViewById(R.id.tvNamePostav);
 		//}
     	break;
         }
@@ -333,7 +348,12 @@ public void bindView(View view, Context context, final Cursor cursor) {
             ListView lv = (ListView) parent_row.getParent();
             final int position = lv.getPositionForView(parent_row);
             try{
-            	MainActivity.db.delRec(namT,getItemId(position));
+            	//if (nT!=0 && nT!=10)
+            	//{
+            		
+            	//MainActivity.db.delRec(namT,getItemId(position));
+            	listenerFlag.OnCambiare((byte)1, getItemId(position));
+            	//}
                 switch (/*tables*/nT) {
                 case 1:
                 /*	if (getItemId(position)>7)
@@ -364,6 +384,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
                 	//getSupportLoaderManager().getLoader(0).forceLoad();
                     break;*/
                 case 5:	
+                case 8:
                     break;
                     }
                 }
@@ -389,6 +410,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
             Intent intent;
             //String enumTable = Tables.valueOf(nT);
             try{
+            	
                 //Tables tables  = Tables.valueOf(nT);
                 switch (/*Tables.valueOf(nT)*/nT) {
                 case 2:
@@ -406,10 +428,22 @@ public void bindView(View view, Context context, final Cursor cursor) {
                     intent.putExtra("PostavTel", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("telef")));
                     contxt.startActivity(intent);
                    break;
+                case 8:
+                	intent = new Intent(contxt, KlientEditActivity.class);
+                    intent.putExtra("KartaName", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("name")));
+                    intent.putExtra("KartaId", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("_id")));
+                    intent.putExtra("KartaPrim", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("prim")));
+                    intent.putExtra("KartaAdres", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("adres")));
+                    intent.putExtra("KartaTel", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("telef")));
+                    intent.putExtra("KartaScontoSum", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("sconto_sum")));
+                    intent.putExtra("KartaScontoPer", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("sconto_per")));
+                    contxt.startActivity(intent);
+                   break;
                 case  1:
              	    intent = new Intent(contxt, ProdEditActivity.class);
                     intent.putExtra("ProdName", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("name")));
                     intent.putExtra("ProdId", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("_id")));
+                    intent.putExtra("ProdPos", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("pos")));
                     intent.putExtra("ProdPrice", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("price")));
                     intent.putExtra("ProdPgr", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("pgr")));
                     intent.putExtra("ProdEd", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("ed")));
@@ -435,6 +469,9 @@ public void bindView(View view, Context context, final Cursor cursor) {
                     break;
                 case  4:
                 case  5:
+                case 10:
+                case 0:
+                	listenerFlag.OnCambiare((byte)2, getItemId(position));
                     break;
                     }
                 }
@@ -447,5 +484,6 @@ public void bindView(View view, Context context, final Cursor cursor) {
 	
 	super.bindView(view, context, cursor);
    }
+
 }
 

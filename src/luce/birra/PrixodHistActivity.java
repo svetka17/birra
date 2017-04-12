@@ -12,17 +12,20 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import luce.birra.AdapterLV.CambiareListener;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
  
 public class PrixodHistActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -34,7 +37,19 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
   static TextView tvDataIns, tvDataIns2, tv_data1_pri, tv_data2_pri;
   Spinner spPgr;
   
-  LinearLayout ll;
+  //LinearLayout ll;
+  void showMessage(String s, byte dur){
+	  LayoutInflater inflater = getLayoutInflater();
+	  View layout = inflater.inflate(R.layout.custom_message ,
+	  		(ViewGroup) findViewById(R.id.toast_layout));
+	  Toast toast = new Toast(PrixodHistActivity.this); 
+	  TextView tv=(TextView) layout.findViewById(R.id.textView);
+	  tv.setText(s);
+	  //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0); 
+	  toast.setDuration((dur==0)?Toast.LENGTH_SHORT:Toast.LENGTH_LONG);
+	  toast.setView(layout); 
+	  toast.show();
+  }
 
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -114,7 +129,29 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
     //int[] toH = new int[] {R.id.tvNnomPrixod_,R.id.tvNamePrixod_,R.id.tvNamePostPrixod_,R.id.tvKolPrixod_,R.id.tvEdPrixod_,R.id.tvPricePrixod_,R.id.tvDataInsPrixod_};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelPrixodHist, R.id.btnUpdPrixodHist, (byte)3, this, R.layout.prixod_hist_item, null, from, to, 0);
+    scAdapter = new AdapterLV(R.id.btnDelPrixodHist, R.id.btnUpdPrixodHist, (byte)3, this, R.layout.prixod_hist_item, null, from, to, 0)
+    		.setCamdiareListener(new CambiareListener() {
+    			@Override
+    			public void OnCambiare(byte flag, long id) {
+    				if (flag==1) {
+    					float kolo=0, kolp=0;
+    					Cursor cc = MainActivity.db.getRawData ("select O.kol kolo, P.kol kolp from ostat O left join prixod P on O.id_tmc=P.id_tmc and O.ed=P.ed and O.id_post=P.id_post where P._id="+id,null);
+    					   if (cc.moveToFirst()) { 
+    					        do {kolo=cc.getFloat(cc.getColumnIndex("kolo"));
+    					        	kolp=cc.getFloat(cc.getColumnIndex("kolp"));
+    					        		//MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), -cc.getFloat(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 0);
+    					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
+    					        } while (cc.moveToNext());
+    					      };
+    					if (kolp<=kolo)      
+    					{MainActivity.db.delRec("prixod",id);
+    					getSupportLoaderManager().getLoader(0).forceLoad();
+    					}
+    					else 
+    						showMessage("Нельзя удалять, возникнет отрицательный остаток", (byte)1);    					
+    				}
+    			}
+    		});
     lvData = (ListView) findViewById(R.id.lvPrixodHist);
     //lvData.setOnItemClickListener(this);
     /*lvData.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -128,7 +165,7 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
      
     // создаем лоадер для чтения данных
     getSupportLoaderManager().initLoader(0, null, this);
-    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.prixod_hist_ll),(byte)2,(byte)3,(byte)3);
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.prixod_hist_ll));
   }
   
   protected Dialog onCreateDialog(int id) {

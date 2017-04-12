@@ -1,120 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chek_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/chek_ll"
-    android:orientation="horizontal">
- 			
-	<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical" >
-<!-- 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:orientation="horizontal" >
-
-                <TextView
-                    style="@style/lv_h"
-                    android:layout_weight="2"
-                    android:text="наименование" />
-
-                <TextView
-                    style="@style/lv_h"
-                    android:layout_weight="1"
-                    android:text="кол-во" />
-
-                <TextView
-                    style="@style/lv_h"
-                    android:layout_weight="1"
-                    android:text="цена" />
-
-                <TextView
-                    style="@style/lv_h"
-                    android:layout_weight="2"
-                    android:text="тара" />
-                <TextView
-                    style="@style/lv_h"
-                    android:layout_weight="1"
-                    android:text="скидка" />
-            </LinearLayout>
--->			
-			<ListView
-                android:id="@+id/lvComboDia"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-            </ListView>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:orientation="horizontal" >
-
-                <TextView
-                    style="@style/TV_h"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:text="ИТОГО"/>
-
-                <TextView
-                    android:id="@+id/etItogSummaD"
-                    style="@style/TV_i"
-                    android:singleLine="true"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
-				
-                <TextView
-                    android:id="@+id/tvCheckSkidka"
-                    style="@style/TV_h"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:text="СКИДКА" />
-
-                <TextView
-                    android:id="@+id/etCheckSkidka"
-                    style="@style/TV_i"
-                    android:singleLine="true"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
-                
-                <TextView
-                    android:id="@+id/tvCheckNal"
-                    style="@style/TV_h"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:text="НАЛИЧНЫЕ"/>
-
-                <TextView
-                    android:id="@+id/etCheckNal"
-                    style="@style/TV_i"
-                    android:singleLine="true"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
-                    <TextView
-                    style="@style/TV_h"
-                    android:layout_weight="0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="СДАЧА" />
-                    <TextView
-                    android:id="@+id/tvCheckSdacha"
-                    style="@style/TV_h"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-</LinearLayout>
+    android:orientation="vertical" >
 <!--  
 		<TableLayout
 		    android:layout_width="0dp"
@@ -248,4 +137,92 @@
 			
 </TableLayout>
 -->
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="0"
+	    android:orientation="horizontal" >
+
+	    <TextView
+	        android:id="@+id/tvIdKlientCheck"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:visibility="invisible" />
+
+	    <Spinner
+	        android:id="@+id/sp_check_klient"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:layout_weight="0" />
+
+	    <TextView
+	        style="@style/TV_h"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:layout_weight="0"
+	        android:text="ИТОГО" />
+
+	    <TextView
+	        android:id="@+id/etItogSummaD"
+	        style="@style/TV_i"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:singleLine="true" />
+
+	    <TextView
+	        android:id="@+id/tvCheckSkidka"
+	        style="@style/TV_h"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:layout_weight="0"
+	        android:text="СКИДКА В %" />
+
+	    <TextView
+	        android:id="@+id/etCheckSkidka"
+	        style="@style/TV_i"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:singleLine="true" />
+
+	    <TextView
+	        android:id="@+id/tvCheckNal"
+	        style="@style/TV_h"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:layout_weight="0"
+	        android:text="НАЛИЧНЫЕ" />
+
+	    <TextView
+	        android:id="@+id/etCheckNal"
+	        style="@style/TV_i"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:singleLine="true" />
+
+	    <TextView
+	        style="@style/TV_h"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:layout_weight="0"
+	        android:text="СДАЧА" />
+
+	    <TextView
+	        android:id="@+id/tvCheckSdacha"
+	        style="@style/TV_h"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1" />
+	</LinearLayout>
+
+	<ListView
+	    android:id="@+id/lvComboDia"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1" >
+	</ListView>
+
 </LinearLayout>

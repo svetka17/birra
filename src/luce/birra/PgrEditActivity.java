@@ -47,7 +47,7 @@ public class PgrEditActivity extends FragmentActivity {
     	etName.setText(getIntent().getStringExtra("PgrName"));
     	tvId.setText(getIntent().getStringExtra("PgrId"));
     }
-    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.pgr_edit_ll),(byte)2,(byte)3,(byte)3);
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.pgr_edit_ll));
   }
  
   protected void onDestroy() {

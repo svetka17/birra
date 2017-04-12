@@ -91,13 +91,13 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btnSetting"
+            android:id="@+id/btnSettingSpr"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right|center_vertical"
             android:layout_weight="2"
             android:gravity="right|center_vertical|center_horizontal"
-            android:text="ВЫГРУЗИТЬ В EXCEL"
+            android:text="СПРАВОЧНИКИ"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
             android:background="@drawable/edittexth_style"

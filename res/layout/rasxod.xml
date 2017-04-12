@@ -33,9 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textOff="СВОЯ ТАРА"
-            android:textOn="СВОЯ ТАРА"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textOn="СВОЯ ТАРА"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,8 +47,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0"
             android:textOff="КОЛ"
-            android:textOn="КОЛ"
-            android:textStyle="bold" />
+            android:textOn="КОЛ" />
 
             <TextView
                 android:id="@+id/tvOtherKol_"
@@ -101,13 +98,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical" >
-
+<!--  
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:orientation="horizontal" >
-
+-->
+<TableRow  style="@style/mw0">
                 <TextView
                     style="@style/lv_h"
                     android:layout_weight="3"
@@ -127,9 +125,9 @@
                     style="@style/lv_h"
                     android:layout_weight="2"
                     android:text="тара" />
-
-            </LinearLayout>
-
+    </TableRow>
+<!--              </LinearLayout>
+-->
             <ListView
                 android:id="@+id/lvCombo"
                 android:layout_width="match_parent"

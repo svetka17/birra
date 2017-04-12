@@ -61,7 +61,7 @@ public class PostavEditActivity extends FragmentActivity {
     	tvPrim.setText(getIntent().getStringExtra("PostavPrim"));
     	tvId.setText(getIntent().getStringExtra("PostavId"));
     }
-    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.postav_edit_ll),(byte)2,(byte)3,(byte)3);
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.postav_edit_ll));
   }
   
   protected void onDestroy() {

@@ -55,6 +55,11 @@
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/tvOstatokPri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    style="@style/TV_h" />
             </LinearLayout>
 
             <LinearLayout
@@ -75,7 +80,8 @@
                 	android:layout_height="match_parent"
                 	android:selectAllOnFocus="true"
                     android:hint="ВВЕДИТЕ КОЛИЧЕСТВО">
-                    <requestFocus />
+                    <requestFocus>
+                </requestFocus>
                 </EditText>
 
                 <TextView
@@ -103,7 +109,8 @@
                 	android:layout_width="match_parent"
                 	android:layout_height="match_parent"
                     android:hint="ВВЕДИТЕ ЦЕНУ ЗАКУПКИ">
-                    <requestFocus />
+                    <requestFocus>
+                </requestFocus>
                 </EditText>
 
             </LinearLayout>
@@ -124,7 +131,8 @@
                 	android:layout_width="wrap_content"
                 	android:layout_height="match_parent"
                     android:hint="ВВЕДИТЕ ПРИМЕЧАНИЕ (не обязательное поле)">
-                    <requestFocus />
+                    <requestFocus>
+                </requestFocus>
                 </EditText>
                 </LinearLayout>
 				<LinearLayout
@@ -141,7 +149,8 @@
                 	android:layout_width="wrap_content"
                 	android:layout_height="match_parent"
                     android:hint="ВВЕДИТЕ ДАТУ (ИЛИ БУДЕТ ПОДСТАВЛЕНО СЕГОДНЯШНЕЕ ЧИСЛО)" >
-                    <requestFocus />
+                    <requestFocus>
+                </requestFocus>
                 </EditText>
             </LinearLayout>
         </LinearLayout>

@@ -1,4 +1,5 @@
 package luce.birra;
+import luce.birra.AdapterLV.CambiareListener;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -7,19 +8,21 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
  
 public class OstatActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -30,7 +33,20 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
   static TextView tvIdPgr;
   Spinner spPgr;
 
-  LinearLayout ll;
+  //LinearLayout ll;
+  
+  void showMessage(String s, byte dur){
+	  LayoutInflater inflater = getLayoutInflater();
+	  View layout = inflater.inflate(R.layout.custom_message ,
+	  		(ViewGroup) findViewById(R.id.toast_layout));
+	  Toast toast = new Toast(OstatActivity.this); 
+	  TextView tv=(TextView) layout.findViewById(R.id.textView);
+	  tv.setText(s);
+	  //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0); 
+	  toast.setDuration((dur==0)?Toast.LENGTH_SHORT:Toast.LENGTH_LONG);
+	  toast.setView(layout); 
+	  toast.show();
+  }
   
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -94,7 +110,30 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     //int[] toH = new int[] {R.id.tvId_Ostat,R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,R.id.tvNamePost_Ostat,R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat,R.id.tvDataIns_Ostat};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelOstat, R.id.btnUpdOstat, (byte)5, this, R.layout.ostat_item, null, from, to, 0);
+    scAdapter = new AdapterLV(R.id.btnDelOstat, R.id.btnUpdOstat, (byte)5, this, R.layout.ostat_item, null, from, to, 0)
+    		.setCamdiareListener(new CambiareListener() {
+    			@Override
+    			public void OnCambiare(byte flag, long id) {
+    				if (flag==1) {
+    					long countT=0;
+    					Cursor cc = MainActivity.db.getRawData ("select id_tmc, kol, ed, id_post from ostat where kol<>0 and _id="+id,null);
+    					   if (cc.moveToFirst()) { 
+    					        do {countT=
+    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getFloat(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 0);
+    					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
+    					        } while (cc.moveToNext());
+    					      };
+    					if (countT!=0)      
+    					{//MainActivity.db.delRec("tmc_pgr",id);
+    					getSupportLoaderManager().getLoader(0).forceLoad();
+    					//else 
+    						showMessage("Остаток обнулен", (byte)1);
+    					//MainActivity.db.delRec("ostat",id);
+    					//getSupportLoaderManager().getLoader(0).forceLoad();
+    					}
+    			} 
+    				}
+    		});
     
     lvData = (ListView) findViewById(R.id.lvOstat);
     //lvData.setOnItemClickListener(this);
@@ -109,7 +148,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
      
     // создаем лоадер для чтения данных
     getSupportLoaderManager().initLoader(0, null, this);
-    MainActivity.setSizeFont((LinearLayout)findViewById(R.id.ostat_ll),(byte)2,(byte)3,(byte)3);
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.ostat_ll));
   }
   
   @Override

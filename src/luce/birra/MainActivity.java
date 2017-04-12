@@ -1,13 +1,17 @@
 package luce.birra;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.ParseException;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
@@ -19,6 +23,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.SeekBar;
+import android.widget.TableRow;
 import android.widget.TextView;
  
 public class MainActivity extends Activity implements OnClickListener {
@@ -33,7 +40,20 @@ static int sizeSmallButton=15;
 static int sizeBigText=15;
 static int sizeMediumText=15;
 static int sizeSmallText=15;
-static void setSizeFont(ViewGroup mlayout,byte sB, byte sH, byte sI) {
+static String pathD = "";
+static int butTara=15;
+static int butPgr=15;
+static int butName=15;
+static int butNameS=7;
+static int tabH=15;
+static int tabI=15;
+static int tabBut=15;
+static int butMenu=15;
+static int tvH=15;
+static int tvI=15;
+
+// SharedPreferences sPref;
+/*static void setSizeFont(ViewGroup mlayout,byte sB, byte sH, byte sI) {
 	float b = (sB==1)?sizeBigButton:((sB==2)?sizeMediumButton:sizeSmallButton);
 	float th = (sH==1)?sizeBigText:((sH==2)?sizeMediumText:sizeSmallText);
 	float ti = (sI==1)?sizeBigText:((sI==2)?sizeMediumText:sizeSmallText);
@@ -46,6 +66,40 @@ static void setSizeFont(ViewGroup mlayout,byte sB, byte sH, byte sI) {
     		((EditText)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , th);
 		}
     	else ((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , ti);	
+    }
+}*/
+
+static void setSizeFontMain(ViewGroup mlayout) {
+	
+	ArrayList<View> alv = getViewsByTag(mlayout);
+	for (int i=0; i<alv.size(); i++)
+    {
+	if (!(alv.get(i) instanceof SeekBar || alv.get(i) instanceof NumberPicker))
+	if (alv.get(i) instanceof CheckBox) ((CheckBox)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvI);
+	else if (alv.get(i) instanceof Button)
+    	((Button)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , butMenu);
+    	else if (alv.get(i) instanceof EditText ) {
+    		((EditText)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvI);
+		}
+    	else 
+    		if (((TextView)alv.get(i)).getParent() instanceof TableRow) ((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tabH);
+    		else
+    		((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvH);	
+    }
+}
+
+static void setSizeFontItem(ViewGroup mlayout) {
+	
+	ArrayList<View> alv = getViewsByTag(mlayout);
+	for (int i=0; i<alv.size(); i++)
+    {
+		if (alv.get(i) instanceof CheckBox) ((CheckBox)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tabI);
+	else if (alv.get(i) instanceof Button)
+    	((Button)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tabBut);
+    	//else if (alv.get(i) instanceof EditText ) {
+    		//((EditText)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvI);
+		//}
+    	else ((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tabI);	
     }
 }
 
@@ -72,10 +126,12 @@ float PxToDp(float px) {
 	return dp
 			* getApplicationContext().getResources().getDisplayMetrics().density;
 }
-static int getIntDataTime(){
+
+ static int getIntDataTime(){
 	return ((((Calendar.getInstance().get(Calendar.YEAR)%2000)*100+Calendar.getInstance().get(Calendar.MONTH)+1)*100+Calendar.getInstance().get(Calendar.DATE))*100
 			+Calendar.getInstance().get(Calendar.HOUR_OF_DAY))*100+Calendar.getInstance().get(Calendar.MINUTE);
 }
+ 
 static String getStringData(int dat){
 	return String.valueOf(dat).substring(4, 6)+"."+String.valueOf(dat).substring(2, 4)+"."+String.valueOf(dat).substring(0, 2);
 }
@@ -105,7 +161,7 @@ static int getIntData(){
 static int getIntData(String dat){
 	try{
 		return Integer.parseInt(dat.substring(6, 8).concat(dat.substring(3, 5)).concat(dat.substring(0, 2))) ;
-		}catch(ParseException ex){
+		}catch(Exception ex){
 		    // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
 			//ex.printStackTrace();
 			return 0;
@@ -115,12 +171,33 @@ static int getIntData(String dat){
 static int getIntDataTime(String dat){
 	try{
 		return Integer.parseInt(dat.substring(6, 8).concat(dat.substring(3, 5)).concat(dat.substring(0, 2)).concat(dat.substring(9, 11)).concat(dat.substring(12, 14))) ;
-		}catch(ParseException ex){
+		}catch(Exception ex){
 		    // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
 			//ex.printStackTrace();
 			return 0;
 		}
 }
+
+static float StrToFloat(String s) {
+	   Float total = Float.valueOf(0);
+	 try
+	 {
+	     total = Float.valueOf(s);
+	 }
+	 catch(NumberFormatException ex)
+	 {
+	     DecimalFormat df = new DecimalFormat();
+	     Number n = null;
+	     try
+	     {
+	         n = df.parse(s);// parse(s);
+	     } 
+	     catch(ParseException ex2){ }
+	     if(n != null)
+	         total = n.floatValue();
+	 }
+	 return total;
+};
 /*static int getIntDataTime(String dat){
 	try{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy HH:mm"); // here set the pattern as you date in string was containing like date/month/year
@@ -133,7 +210,38 @@ static int getIntDataTime(String dat){
 			return 0;
 		}
 }*/
+void saveSetting() {
+		SharedPreferences sPref = getSharedPreferences("BirraPref", MODE_PRIVATE);//getPreferences(MODE_PRIVATE);
+	    Editor ed = sPref.edit();
+	    ed.putInt("buttara", butTara );
+	    ed.putInt("butpgr", butPgr );
+	    ed.putInt("butname", butName );
+	    ed.putInt("butnames", butNameS );
+	    ed.putInt("tabh", tabH );
+	    ed.putInt("tabi", tabI );
+	    ed.putInt("tabbut", tabBut );
+	    ed.putInt("butmenu", butMenu );
+	    ed.putInt("tvh", tvH );
+	    ed.putInt("tvi", tvI );
+	    ed.commit();
+	    //Toast.makeText(this, "настройки сохранены", Toast.LENGTH_SHORT).show();
+	  }
 
+  void loadSetting() {
+	SharedPreferences sPref = getSharedPreferences("BirraPref", MODE_PRIVATE);//getPreferences(MODE_PRIVATE);
+	butTara = sPref.getInt("buttara", (int)(h/15));
+	butPgr = sPref.getInt("butpgr", (int)(h/15));
+    butName = sPref.getInt("butname", (int)(h/23));
+    butNameS = sPref.getInt("butnames", (int)(h/46));
+    tabH = sPref.getInt("tabh", (int)(h/25));
+    tabI = sPref.getInt("tabi", (int)(h/25));
+    tabBut = sPref.getInt("tabbut", (int)(h/30));
+    butMenu = sPref.getInt("butmenu", (int)(h/25));
+    tvH = sPref.getInt("tvh", (int)(h/25));
+    tvI = sPref.getInt("tvi", (int)(h/25));
+    //Toast.makeText(this, "настройки загружены", Toast.LENGTH_SHORT).show();
+  }
+  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,7 +265,7 @@ static int getIntDataTime(String dat){
         btnKassa = (Button) findViewById(R.id.btnKassa);
         btnKassa.setOnClickListener(this);
         
-        btnSetting = (Button) findViewById(R.id.btnSetting);
+        btnSetting = (Button) findViewById(R.id.btnSettingSpr);
         btnSetting.setOnClickListener(this);
         
         btnAbout = (Button) findViewById(R.id.btnAbout);
@@ -165,6 +273,7 @@ static int getIntDataTime(String dat){
      // открываем подключение к БД
         db = new DB(this);
         db.open();
+        
         Display display = getWindowManager().getDefaultDisplay();
         //DisplayMetrics metricsB = new DisplayMetrics();
         //display.getMetrics(metricsB);
@@ -172,13 +281,8 @@ static int getIntDataTime(String dat){
         scale = getResources().getDisplayMetrics().density;
         w = display.getWidth();  // deprecated, но работает везде
         h = display.getHeight();  // deprecated, но работает 
-        sizeBigButton=h/15;
-        sizeMediumButton=h/23;
-        sizeSmallButton=h/30;
-        sizeBigText=h/15;
-        sizeMediumText=h/23;
-        sizeSmallText=h/30;
-        MainActivity.setSizeFont((LinearLayout)findViewById(R.id.main_ll),(byte)1,(byte)3,(byte)3);
+        loadSetting();
+        MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.main_ll));
     }
 
 
@@ -236,7 +340,7 @@ static int getIntDataTime(String dat){
     protected void onDestroy() {
       super.onDestroy();
       //db.close();
-      //Log.d(TAG, "MainActivity: onDestroy()");
+      saveSetting();
     }
     
 	@Override
@@ -260,7 +364,16 @@ static int getIntDataTime(String dat){
 			   startActivity(intent);
 			   break;
 		   case R.id.btnAbout:
-			   intent = new Intent(this, SettingActivity.class);
+			   intent = new Intent(this, SettingAllActivity.class);
+			   startActivity(intent);
+			   break;
+		   case R.id.btnSettingSpr:
+			   /*Cursor cc = MainActivity.db.getRawData ("select count(*) c from tmc T where T.pgr=1",null);
+			   if (cc.moveToFirst()) { 
+			        do { Log.d("MyLog",cc.getInt(cc.getColumnIndex("c"))+ " count: tmc "+db.getAllData("tmc").getCount());
+			        } while (cc.moveToNext());
+			      };*/
+			   intent = new Intent(this, SprActivity.class);
 			   startActivity(intent);
 			   break;
 		   case R.id.btnKassa:
