@@ -51,6 +51,7 @@ static int tabBut=15;
 static int butMenu=15;
 static int tvH=15;
 static int tvI=15;
+static int seek=50;
 
 // SharedPreferences sPref;
 /*static void setSizeFont(ViewGroup mlayout,byte sB, byte sH, byte sI) {
@@ -223,6 +224,7 @@ void saveSetting() {
 	    ed.putInt("butmenu", butMenu );
 	    ed.putInt("tvh", tvH );
 	    ed.putInt("tvi", tvI );
+	    ed.putInt("seek", seek );
 	    ed.commit();
 	    //Toast.makeText(this, "настройки сохранены", Toast.LENGTH_SHORT).show();
 	  }
@@ -239,6 +241,7 @@ void saveSetting() {
     butMenu = sPref.getInt("butmenu", (int)(h/25));
     tvH = sPref.getInt("tvh", (int)(h/25));
     tvI = sPref.getInt("tvi", (int)(h/25));
+    seek = sPref.getInt("seek", 50);
     //Toast.makeText(this, "настройки загружены", Toast.LENGTH_SHORT).show();
   }
   

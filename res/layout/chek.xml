@@ -4,224 +4,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-<!--  
-		<TableLayout
-		    android:layout_width="0dp"
-		    android:layout_height="match_parent"
-		    android:layout_weight="0.3"
-		    android:stretchColumns="*" >
-            
-            <TableRow android:layout_weight="1" >    
-            <Button
-                android:id="@+id/bDel"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                style="@style/BB"
-                android:textAppearance="@style/textB30" />
-
-            <Button
-                android:id="@+id/bX"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:layout_span="2"
-                android:text="C"
-                android:textAppearance="@style/textB30" />
-			</TableRow>
-			<TableRow android:layout_weight="1">
-            <Button
-                android:id="@+id/b7"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="7"
-                android:textAppearance="@style/textB30" />
-
-            <Button
-                android:id="@+id/b8"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="8"
-                android:textAppearance="@style/textB30" />
-
-            <Button
-                android:id="@+id/b9"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="9"
-                android:textAppearance="@style/textB30" />
-			</TableRow>
-			<TableRow android:layout_weight="1">
-            <Button
-                android:id="@+id/b4"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="4"
-                android:textAppearance="@style/textB30" />
-
-            <Button
-                android:id="@+id/b5"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="5"
-                android:textAppearance="@style/textB30" />
-
-            <Button
-                android:id="@+id/b6"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="6"
-                android:textAppearance="@style/textB30" />
-			</TableRow>
-			<TableRow android:layout_weight="1">
-            <Button
-                android:id="@+id/b1"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="1"
-                android:textAppearance="@style/textB30" />
-
-            <Button
-                android:id="@+id/b2"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="2"
-                android:textAppearance="@style/textB30" />
-
-            <Button
-                android:id="@+id/b3"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="3"
-                android:textAppearance="@style/textB30" />
-			</TableRow>
-			    <TableRow android:layout_weight="1">
-            <Button
-                android:id="@+id/b0"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="0"
-                android:textAppearance="@style/textB30" />
-
-            <Button
-                android:id="@+id/bZpt"
-                style="@style/BB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-				android:layout_span="2"
-                android:text="."
-                android:textAppearance="@style/textB30" />
-			</TableRow>
-			
-</TableLayout>
--->
 
 	<LinearLayout
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_weight="0"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1"
 	    android:orientation="horizontal" >
-
-	    <TextView
+<TextView
 	        android:id="@+id/tvIdKlientCheck"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:visibility="invisible" />
 
-	    <Spinner
-	        android:id="@+id/sp_check_klient"
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:layout_weight="0" />
+	    	    <Spinner
+	    	        android:id="@+id/sp_check_klient"
+	    	        android:layout_width="0dp"
+	    	        android:layout_weight="1"
+	    	        android:layout_height="match_parent"
+	    	        android:layout_weight="1" />
 
-	    <TextView
-	        style="@style/TV_h"
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:layout_weight="0"
-	        android:text="ИТОГО" />
-
-	    <TextView
-	        android:id="@+id/etItogSummaD"
+	    	<TextView
+	        android:id="@+id/etCheckSkidkaPer"
 	        style="@style/TV_i"
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:layout_weight="1"
-	        android:singleLine="true" />
+	        android:layout_width="0dp"
+	    	        android:layout_weight="1"
+	        android:layout_height="match_parent" />
 
 	    <TextView
 	        android:id="@+id/tvCheckSkidka"
 	        style="@style/TV_h"
-	        android:layout_width="wrap_content"
+	        android:layout_width="0dp"
+	    	android:layout_weight="1"
 	        android:layout_height="match_parent"
-	        android:layout_weight="0"
-	        android:text="СКИДКА В %" />
+	        android:lineSpacingMultiplier="0.8"
+	        android:text="@string/skidka_text" />
 
 	    <TextView
 	        android:id="@+id/etCheckSkidka"
 	        style="@style/TV_i"
-	        android:layout_width="wrap_content"
+	        android:layout_width="0dp"
 	        android:layout_height="match_parent"
-	        android:layout_weight="1"
-	        android:singleLine="true" />
+	        android:layout_weight="0" />
+
+	    	    <TextView
+	        android:id="@+id/etCheckSkidkaPerSum"
+	        style="@style/TV_i"
+	        android:layout_width="0dp"
+	    	android:layout_weight="1"
+	        android:layout_height="match_parent"/>
 
 	    <TextView
 	        android:id="@+id/tvCheckNal"
 	        style="@style/TV_h"
-	        android:layout_width="wrap_content"
+	        android:layout_width="0dp"
+	    	android:layout_weight="1"
 	        android:layout_height="match_parent"
-	        android:layout_weight="0"
 	        android:text="НАЛИЧНЫЕ" />
 
 	    <TextView
 	        android:id="@+id/etCheckNal"
 	        style="@style/TV_i"
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:layout_weight="1"
-	        android:singleLine="true" />
+	        android:layout_width="0dp"
+	    	android:layout_weight="1"
+	        android:layout_height="match_parent"/>
 
 	    <TextView
 	        style="@style/TV_h"
-	        android:layout_width="wrap_content"
+	        android:layout_width="0dp"
+	    	android:layout_weight="1"
 	        android:layout_height="match_parent"
-	        android:layout_weight="0"
 	        android:text="СДАЧА" />
 
 	    <TextView
 	        android:id="@+id/tvCheckSdacha"
 	        style="@style/TV_h"
-	        android:layout_width="wrap_content"
+	       android:layout_width="0dp"
+	    	android:layout_weight="1"
+	        android:layout_height="match_parent" />
+	    	<TextView
+	        style="@style/TV_h"
+	        android:layout_width="0dp"
+	    	android:layout_weight="1"
 	        android:layout_height="match_parent"
-	        android:layout_weight="1" />
+	        android:text="ИТОГО" />
+
+	    <TextView
+	        android:id="@+id/etItogSummaD"
+	        style="@style/TV_h"
+	       android:layout_width="0dp"
+	    	        android:layout_weight="1"
+	        android:layout_height="match_parent" />
 	</LinearLayout>
 
 	<ListView
 	    android:id="@+id/lvComboDia"
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
+	    android:layout_height="match_parent"
 	    android:layout_weight="1" >
 	</ListView>
 

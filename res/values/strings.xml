@@ -10,5 +10,9 @@
     <string name="no">НЕТ</string>
     <string name="maybe">НЕ ЗНАЮ</string>
     <string name="message">сообщение</string>
+    <string name="skidka_text">
+    <b>ОБЩАЯ</b>\n
+    СКИДКА
+    </string>
 
 </resources>

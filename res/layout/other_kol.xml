@@ -4,26 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/other_kol_ll"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
-    <TextView
+           <TextView
+        android:id="@+id/tvOtherKolDTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/TV_h" >
+</TextView>
+<LinearLayout
+    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="0">
+        
+           <TextView
         android:id="@+id/tvOtherKolD"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_weight="0"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:gravity="center_vertical|center_horizontal"
-        android:textStyle="bold" >
+        android:layout_weight="1"
+        style="@style/TV_h" >
 
     </TextView>
-
+<!--  
 <ScrollView
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="right"
     android:layout_weight="1" >
+-->    
 <!--  
     <GridLayout
         android:layout_width="wrap_content"
@@ -35,10 +45,10 @@
         android:rowCount="5" >
 -->
 <TableLayout
-    android:layout_width="match_parent"
+    android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
+        android:layout_weight="5"
         android:orientation="horizontal" >        
         <TableRow
         android:layout_width="match_parent"
@@ -181,5 +191,8 @@
     </GridLayout>
 -->
 </TableLayout>    
+<!--
 </ScrollView>
+-->
+</LinearLayout>
 </LinearLayout>
