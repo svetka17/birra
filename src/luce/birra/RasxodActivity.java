@@ -2,6 +2,8 @@ package luce.birra;
 
 //import java.text.DecimalFormat;
 //import java.text.ParseException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -23,7 +26,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -575,17 +577,7 @@ SeekBar.OnSeekBarChangeListener
 	    	svBut.addView(llbut,
 	    			new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.MATCH_PARENT,1));
 	    	//llR_.setVisibility(LinearLayout.VISIBLE);
-	    }
-/*
- * 1 в наименование город
- * 2 в чеке крупные кнопки нал ичных
- * 3 в истории расхода чеки по номеру и сумме поиск
- * 4 отчет расход + остаток + обнуление
- * 5 порядковые товара задать вручную
- * 6 вертикальный seekbar
- * 7 обнуление и измение (по расходу) остатков
- * 
- * */	    
+	    }    
 	    
 	    //MinimumWidth((int)(display_w/6));
 	   byte ib;
@@ -741,6 +733,7 @@ SeekBar.OnSeekBarChangeListener
    }
    
    void fixV() {
+	   float tmp=0;
 	   if (tbTara.isChecked()) 
    	{m = new HashMap<String, Object>();
    		m.put("skidka_sum", 0);
@@ -756,11 +749,12 @@ SeekBar.OnSeekBarChangeListener
    		   m.put("itog", but.get(Btara).val+" * "+but.get(Btovar).price+" = ");} 
    		   else
    		   {m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted); 
-   		   m.put("summa", but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+   		   tmp = MainActivity.round(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()),2);
+   		   m.put("summa", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
    				   );
-   		m.put("summa2", but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+   		m.put("summa2", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
 				   );
-   		m.put("skidka_sum_itog", but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+   		m.put("skidka_sum_itog", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
 				   );
    		m.put("itog", MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
    				+" * "+but.get(Btovar).price+" = ");}
@@ -786,22 +780,18 @@ SeekBar.OnSeekBarChangeListener
    	 m.put("price", but.get(Btovar).price);
    	 if (Btara!=-2) {m.put("kol", but.get(Btara).val+" "+but.get(Btovar).ted);
 		      m.put("tara", " + ТАРА "+but.get(Btara).tmc_name);
-		      m.put("summa", (but.get(Btovar).price*(but.get(Btara).val/*/0.5*/)+but.get(Btara).price));
-		      m.put("summa2", (but.get(Btovar).price*(but.get(Btara).val/*/0.5*/)+but.get(Btara).price));
-		      m.put("skidka_sum_itog", (but.get(Btovar).price*(but.get(Btara).val/*/0.5*/)+but.get(Btara).price));
+		      tmp = MainActivity.round(but.get(Btovar).price*(but.get(Btara).val/*/0.5*/)+but.get(Btara).price,2);
+		      m.put("summa", tmp);
+		      m.put("summa2", tmp);
+		      m.put("skidka_sum_itog", tmp);
 		      m.put("itog", but.get(Btara).val+" * "+but.get(Btovar).price+" + "+but.get(Btara).price+" = ");}
    	 else
    	{m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted);
     m.put("tara", /*" + ПАКЕТ "*/"");
-    m.put("summa", but.get(Btovar).price*
-    		MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
-    		);
-    m.put("summa2", but.get(Btovar).price*
-    		MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
-    		);
-    m.put("skidka_sum_itog", but.get(Btovar).price*
-    		MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
-    		);
+    tmp = MainActivity.round(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()),2);
+    m.put("summa", tmp);
+    m.put("summa2", tmp);
+    m.put("skidka_sum_itog", tmp);
     m.put("itog", MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
     		+" * "+but.get(Btovar).price+" = ");}
 		      data.add(m);
@@ -945,7 +935,12 @@ SeekBar.OnSeekBarChangeListener
    	//showMessage("ЧЕК № "+cou+" НА СУММУ:"+tvSum.getText().toString()+"\n"+sChek, (byte)1);
    		
    	data.clear();
-   	//sAdapter.notifyDataSetChanged();
+    etSkidkaPerSum.setText("");
+	etSkidkaPer.setText(""); 
+	etSkidka.setText("0"); 
+	tvIdKlient.setText("0"); 
+	etNal.setText("0"); 
+	 //tvSdacha.setText("0");
    	tvSum.setText("");sumI=0;tranz.clear();
    	}
 	   tvDialogN=0;
@@ -996,7 +991,7 @@ SeekBar.OnSeekBarChangeListener
 		   tvDialogN=0;
 	     break;
 	   case R.id.tvOtherKol_:
-		   tvKol.setText("");
+		   tvKol.setText("");Btara=-1;
 		   tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
 		   tvDialogN=0;
 	     break;
@@ -1024,7 +1019,9 @@ SeekBar.OnSeekBarChangeListener
 	             				);
 	      	 }
 	      	 //if (valsum!=0) etSkidkaPerSum.setText(String.valueOf(valsum)); else etSkidkaPerSum.setText("");
-	      	tvSdacha.setText(String.valueOf (MainActivity.StrToFloat(etNal.getText().toString())-(MainActivity.StrToFloat(tvDItogo.getText().toString())-MainActivity.StrToFloat(etSkidka.getText().toString()) ) ) );
+	      	tvSdacha.setText(String.valueOf (
+	      		MainActivity.round(MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString())+MainActivity.StrToFloat(etSkidkaPerSum.getText().toString()) ,2)
+	      		) );
 	      	 
 		   tvDialogN=0;
 	     break;
@@ -1072,10 +1069,10 @@ SeekBar.OnSeekBarChangeListener
 				   data.get(combo_pos).put("skidka_but_text", tvDKol.getText().toString()+"%" );
 	        		data.get(combo_pos).put("skidka_sum", 
 	        				//round(45.457*100)/100.00
-	        		Math.round((MainActivity.StrToFloat(data.get(combo_pos).get("summa").toString() ) * MainActivity.StrToFloat(data.get(combo_pos).get("skidka_but").toString())/100)*100/100)
+	        		MainActivity.round( MainActivity.StrToFloat(data.get(combo_pos).get("summa").toString() ) * MainActivity.StrToFloat(data.get(combo_pos).get("skidka_but").toString())/100 ,2)
 	        		);
 	        		data.get(combo_pos).put("skidka_sum_itog", 
-	    	        		MainActivity.StrToFloat(data.get(combo_pos).get("summa2").toString() )-MainActivity.StrToFloat(data.get(combo_pos).get("skidka_sum").toString() )
+	    	        	MainActivity.round(	MainActivity.StrToFloat(data.get(combo_pos).get("summa2").toString() )-MainActivity.StrToFloat(data.get(combo_pos).get("skidka_sum").toString() ),2)
 	    	        		);
         	  }
         	
@@ -1083,8 +1080,10 @@ SeekBar.OnSeekBarChangeListener
 	      for (int i=0; i<data.size(); i++) 
 	     		valsum=valsum+MainActivity.StrToFloat(data.get(i).get("skidka_sum").toString() ) ;
 	     		
-	      	if (valsum!=0) etSkidkaPerSum.setText(String.valueOf(valsum)); else etSkidkaPerSum.setText("");
-	      	tvSdacha.setText(String.valueOf (MainActivity.StrToFloat(etNal.getText().toString())-(MainActivity.StrToFloat(tvDItogo.getText().toString())-MainActivity.StrToFloat(etSkidka.getText().toString()) - valsum) ) );
+	      	if (valsum!=0) etSkidkaPerSum.setText(String.valueOf(MainActivity.round(valsum,2))); else etSkidkaPerSum.setText("");
+	      	tvSdacha.setText( String.valueOf (
+	      		MainActivity.round(MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString()) + valsum,2) 
+	      			) );
 	      	 
 		   sAdapter.notifyDataSetChanged();
 		   tvDialogN=0;
@@ -1092,7 +1091,7 @@ SeekBar.OnSeekBarChangeListener
 	   case R.id.tvOtherKol_:
 		   if (MainActivity.StrToFloat(tvDKol.getText().toString())==0) //(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
 		   {
-        		 tvKol.setText("");
+        		 tvKol.setText("");Btara=-1;
             	 tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
         	 } else
         	 {tvKol.setText(tvDKol.getText());
@@ -1107,7 +1106,9 @@ SeekBar.OnSeekBarChangeListener
         	 } else
         	 {etNal.setText(tvDKol.getText());
         	 //tvSdacha.setText(String.valueOf (MainActivity.StrToFloat(etNal.getText().toString())-(MainActivity.StrToFloat(tvDItogo.getText().toString())-MainActivity.StrToFloat(etSkidka.getText().toString())) ) );
-        	 tvSdacha.setText(String.valueOf (MainActivity.StrToFloat(etNal.getText().toString())-(MainActivity.StrToFloat(tvDItogo.getText().toString())-MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())) ) );
+        	 tvSdacha.setText(String.valueOf ( 
+        			MainActivity.round( MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString()) + MainActivity.StrToFloat(etSkidkaPerSum.getText().toString()) ,2)
+        			 ) );
         	 }
 		   tvDialogN=0;
 	     break;
@@ -1119,7 +1120,9 @@ SeekBar.OnSeekBarChangeListener
       	 {etSkidka.setText(tvDKol.getText());
       	 if (MainActivity.StrToFloat(etNal.getText().toString())!=0)
       	 //tvSdacha.setText(String.valueOf (MainActivity.StrToFloat(etNal.getText().toString())-(MainActivity.StrToFloat(tvDItogo.getText().toString())-MainActivity.StrToFloat(etSkidka.getText().toString())) ) );
-      		tvSdacha.setText(String.valueOf (MainActivity.StrToFloat(etNal.getText().toString())-(MainActivity.StrToFloat(tvDItogo.getText().toString())-MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())) ) );
+      		tvSdacha.setText(String.valueOf ( 
+      			MainActivity.round(	MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString()) + MainActivity.StrToFloat(etSkidkaPerSum.getText().toString()),2)
+      			) );
       	 }
 		   tvDialogN=0;
 	     break;
@@ -1127,8 +1130,9 @@ SeekBar.OnSeekBarChangeListener
 		   if (MainActivity.StrToFloat(tvDKol.getText().toString())==0)//(tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0")) 
 		   {
       		 etSkidkaPer.setText("");
+      		etSkidkaPer.setTag(0);
       	 } else
-      	 {etSkidkaPer.setText(tvDKol.getText());
+      	 {etSkidkaPer.setText(tvDKol.getText()); etSkidkaPer.setTag(tvDKol.getText());
       	float val = MainActivity.StrToFloat(tvDKol.getText().toString());
       	//float valsum=0;
       	 for (int i=0; i<data.size(); i++) 
@@ -1137,18 +1141,20 @@ SeekBar.OnSeekBarChangeListener
      		{
      		data.get(i).put("skidka_but", val);
      		data.get(i).put("skidka_but_text", val+"%");
-     		valsum=valsum+MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) * val/100;
+     		valsum=valsum+MainActivity.round( MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) * val/100,2);
      		data.get(i).put("skidka_sum", 
-     		Math.round(( MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) * val/100)*100/100)
+     		 MainActivity.round( MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) * val/100,2)
      				);
      		data.get(i).put("skidka_sum_itog", 
-             		MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) -MainActivity.StrToFloat(data.get(i).get("skidka_sum").toString() )
+             	MainActivity.round(MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) -MainActivity.StrToFloat(data.get(i).get("skidka_sum").toString() ),2)
              				);
      		}
      	}
       	 }
-      	 if (valsum!=0) etSkidkaPerSum.setText(String.valueOf(valsum)); else etSkidkaPerSum.setText("");
-      	tvSdacha.setText(String.valueOf (MainActivity.StrToFloat(etNal.getText().toString())-(MainActivity.StrToFloat(tvDItogo.getText().toString())-MainActivity.StrToFloat(etSkidka.getText().toString()) - valsum) ) );
+      	 if (valsum!=0) etSkidkaPerSum.setText(String.valueOf(MainActivity.round(valsum,2))); else etSkidkaPerSum.setText("");
+      	tvSdacha.setText(String.valueOf ( 
+      		MainActivity.round(	MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString()) + valsum,2)
+      		) );
       	 sAdapter.notifyDataSetChanged();
 		//tvDialogN=0;
       	 
@@ -1170,7 +1176,7 @@ SeekBar.OnSeekBarChangeListener
        strDialog="";
        Dview = (LinearLayout) getLayoutInflater().inflate(R.layout.other_kol, null);
        //Button bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
-       MainActivity.setSizeFontMain(Dview);
+       MainActivity.setSizeFontKalk(Dview);
        // устанавливаем ее, как содержимое тела диалога
        
        // находим TexView для отображения кол-ва
@@ -1271,8 +1277,14 @@ SeekBar.OnSeekBarChangeListener
        
        adb.setView(Dview);
        dialogg = adb.create();
-       //dialogg.setTitle(dialogNumTitle(tvDialogN));
-       
+       //касание вне экрана диалога
+       dialogg.setOnDismissListener(new OnDismissListener() {
+		
+		@Override
+		public void onDismiss(DialogInterface arg0) {
+			dialogNumCancel(tvDialogN);
+		}
+	});
        // обработчик отображения
        /*dialogg.setOnShowListener(new OnShowListener() {
          public void onShow(DialogInterface dialog) {
@@ -1302,9 +1314,7 @@ SeekBar.OnSeekBarChangeListener
       	//etNal.clearFocus();
        	etSkidkaPer = (TextView) Dview.findViewById(R.id.etCheckSkidkaPer);
       	tvIdKlient = (TextView) Dview.findViewById(R.id.tvIdKlientCheck);
-      	spKlient = (Spinner) Dview.findViewById(R.id.sp_check_klient);
-      	//etNal.setImeOptions(EditorInfo.IME_NULL);
-        tvDItogo = (TextView) Dview.findViewById(R.id.etItogSummaD);
+      	tvDItogo = (TextView) Dview.findViewById(R.id.etItogSummaD);
         
         tvSdacha = (TextView) Dview.findViewById(R.id.tvCheckSdacha);
       	etNal = (TextView) Dview.findViewById(R.id.etCheckNal);
@@ -1313,6 +1323,63 @@ SeekBar.OnSeekBarChangeListener
 
       	etSkidkaPerSum = (TextView) Dview.findViewById(R.id.etCheckSkidkaPerSum);
       	tvSkidka = (TextView) Dview.findViewById(R.id.tvCheckSkidka);
+      	spKlient = (Spinner) Dview.findViewById(R.id.sp_check_klient);
+      	String[] fromKlient = new String[] {"_id","name","sconto_per","sconto_sum"};
+        int[] toKlient = new int[] {R.id.spt_1, R.id.spt_2, R.id.spt_3, R.id.spt_4};
+        //final Cursor cKlient = MainActivity.db.getRawData("select _id, name, 0 sconto_per, 0 sconto_sum from foo union all select _id, name, sconto_per, sconto_sum from karta_klient where ok=0 ",null);
+        final Cursor cKlient = MainActivity.db.getRawData("select _id, name, sconto_per, sconto_sum from karta_klient where ok=0 ",null);
+        scaKlient = new SimpleCursorAdapter(this, R.layout.spinner_quatro, cKlient, fromKlient, toKlient);   
+        scaKlient.setDropDownViewResource(R.layout.spinner_quatro_down); 
+
+        spKlient.setOnItemSelectedListener(new OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
+            	spKlient.setTag(id);
+            	tvIdKlient.setText(String.valueOf(id));
+            	etSkidkaPer.setText(cKlient.getString(2));
+            	
+            	float val=0;
+            	for (int i=0; i<data.size(); i++) 
+            	{
+            	//data.get(combo_pos).put("skidka_sum", tvDKol.getText());
+            		if (MainActivity.StrToFloat(cKlient.getString(2))!=0 )
+            		{
+            		data.get(i).put("skidka_but", cKlient.getFloat(2));
+            		data.get(i).put("skidka_but_text", cKlient.getFloat(2)+"%");
+            		val=val+MainActivity.round(MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) * MainActivity.StrToFloat(data.get(i).get("skidka_but").toString())/100,2);
+            		data.get(i).put("skidka_sum", 
+            		MainActivity.round( MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) * MainActivity.StrToFloat(data.get(i).get("skidka_but").toString())/100 ,2)
+            				);
+            		data.get(i).put("skidka_sum_itog", 
+                    		MainActivity.round(MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) -MainActivity.StrToFloat(data.get(i).get("skidka_sum").toString() ),2)
+                    				);
+            		}
+            	}
+            	if (val!=0) etSkidkaPerSum.setText(String.valueOf(MainActivity.round(val,2))); else etSkidkaPerSum.setText(String.valueOf(""));
+            	sAdapter.notifyDataSetChanged();
+    		   tvDialogN=0;
+            	//tvEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ed")) );
+            	//getSupportLoaderManager().getLoader(0).forceLoad();
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            	spKlient.setTag(0);
+            	tvIdKlient.setText("0");
+            	etSkidkaPer.setText("");
+            	etSkidkaPerSum.setText("");
+            	for (int i=0; i<data.size(); i++) 
+            	{
+            		data.get(i).put("skidka_but", 0);
+            		data.get(i).put("skidka_but_text", "СКИДКА");
+            		data.get(i).put("skidka_sum",0);
+            		data.get(i).put("skidka_sum_itog", 
+                    		MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) );
+            	}
+            	sAdapter.notifyDataSetChanged();
+    		    tvDialogN=0;
+            }
+            });
+        spKlient.setAdapter(scaKlient);
+        
       	
       	//etSkidka.clearFocus();
       	
@@ -1349,6 +1416,15 @@ SeekBar.OnSeekBarChangeListener
          
         
          dialogg = adb.create();
+         
+         dialogg.setOnDismissListener(new OnDismissListener() {
+     		
+     		@Override
+     		public void onDismiss(DialogInterface arg0) {
+     			dialogNumCancel(tvDialogN);
+     		}
+     	});
+         
         // WindowManager.LayoutParams lp = dialogg.getWindow().getAttributes();
      	//lp.dimAmount = 0.6f; // уровень затемнения от 1.0 до 0.0
      	//lp.width=display_w-(int)(display_w/7);
@@ -1384,8 +1460,27 @@ SeekBar.OnSeekBarChangeListener
      //Log.d("MyLog", "Prepare");
      if (id == 1) { strDialog=""; tvDKol.setText("");  titleD.setText(dialogNumTitle(tvDialogN)); }
      if (id == 2) {
-    	 etSkidkaPer.setText(""); etSkidkaPerSum.setText("");
-    	 etSkidka.setText("0"); tvIdKlient.setText("0"); etNal.setText("0"); tvDItogo.setText(tvSum.getText()); tvSdacha.setText("0"); 
+    	 //etSkidkaPerSum.setText("");
+    	 //etSkidkaPer.setText(""); 
+    	 //etSkidka.setText("0"); 
+    	 //tvIdKlient.setText("0"); 
+    	 //etNal.setText("0"); 
+    	 //tvSdacha.setText("0");
+    	 tvDItogo.setText(tvSum.getText());  
+    
+    	 /*float vals=0;
+	      for (int i=0; i<data.size(); i++) 
+	     		vals=vals+MainActivity.StrToFloat(data.get(i).get("skidka_sum").toString() ) ;
+	     		
+	      	if (vals!=0) etSkidkaPerSum.setText(String.valueOf(vals)); else etSkidkaPerSum.setText("");*/
+	      	tvSdacha.setText( String.valueOf (
+	      		MainActivity.round(	MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString()) + MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())/*vals*/,2)
+	      		) );
+	      	 
+		   //sAdapter.notifyDataSetChanged();
+		   //tvDialogN=0;
+		   
+    	 
      etNal.setOnClickListener(new OnClickListener() {
          public void onClick(View v) {
          	//showPic(v);
@@ -1430,60 +1525,9 @@ SeekBar.OnSeekBarChangeListener
       });
    	
      strDialog="";
-     String[] fromKlient = new String[] {"_id","name","sconto_per","sconto_sum"};
-     int[] toKlient = new int[] {R.id.spt_1, R.id.spt_2, R.id.spt_3, R.id.spt_4};
-     //final Cursor cKlient = MainActivity.db.getRawData("select _id, name, 0 sconto_per, 0 sconto_sum from foo union all select _id, name, sconto_per, sconto_sum from karta_klient where ok=0 ",null);
-     final Cursor cKlient = MainActivity.db.getRawData("select _id, name, sconto_per, sconto_sum from karta_klient where ok=0 ",null);
-     scaKlient = new SimpleCursorAdapter(this, R.layout.spinner_quatro, cKlient, fromKlient, toKlient);   
-     scaKlient.setDropDownViewResource(R.layout.spinner_quatro_down); 
-
-     spKlient.setOnItemSelectedListener(new OnItemSelectedListener() {
-         public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
-             //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
-         	spKlient.setTag(id);
-         	tvIdKlient.setText(String.valueOf(id));
-         	etSkidkaPer.setText(cKlient.getString(2));
-         	float val=0;
-         	for (int i=0; i<data.size(); i++) 
-         	{
-         	//data.get(combo_pos).put("skidka_sum", tvDKol.getText());
-         		if (MainActivity.StrToFloat(cKlient.getString(2))!=0 )
-         		{
-         		data.get(i).put("skidka_but", cKlient.getFloat(2));
-         		data.get(i).put("skidka_but_text", cKlient.getFloat(2)+"%");
-         		val=val+MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) * MainActivity.StrToFloat(data.get(i).get("skidka_but").toString())/100;
-         		data.get(i).put("skidka_sum", 
-         		Math.round( ( MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) * MainActivity.StrToFloat(data.get(i).get("skidka_but").toString())/100)*100/100)
-         				);
-         		data.get(i).put("skidka_sum_itog", 
-                 		MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) -MainActivity.StrToFloat(data.get(i).get("skidka_sum").toString() )
-                 				);
-         		}
-         	}
-         	if (val!=0) etSkidkaPerSum.setText(String.valueOf(val)); else etSkidkaPerSum.setText(String.valueOf(""));
-         	sAdapter.notifyDataSetChanged();
- 		   tvDialogN=0;
-         	//tvEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ed")) );
-         	//getSupportLoaderManager().getLoader(0).forceLoad();
-         }
-         public void onNothingSelected(AdapterView<?> parent) {
-         	spKlient.setTag(0);
-         	tvIdKlient.setText("0");
-         	etSkidkaPer.setText("");
-         	etSkidkaPerSum.setText("");
-         	for (int i=0; i<data.size(); i++) 
-         	{
-         		data.get(i).put("skidka_but", 0);
-         		data.get(i).put("skidka_but_text", "СКИДКА");
-         		data.get(i).put("skidka_sum",0);
-         		data.get(i).put("skidka_sum_itog", 
-                 		MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) );
-         	}
-         	sAdapter.notifyDataSetChanged();
- 		    tvDialogN=0;
-         }
-         });
-     spKlient.setAdapter(scaKlient);
+     
+     //spKlient.setSelection((int) MainActivity.StrToFloat(tvIdKlient.getText().toString())-1);
+     //etSkidkaPer.setText( (int)MainActivity.StrToFloat(etSkidkaPer.getTag().toString()) );
      }
  	
      /*if (id == 1) {

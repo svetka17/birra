@@ -10,8 +10,8 @@
         android:id="@+id/tvOtherKolDTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        style="@style/TV_h" >
+        android:layout_weight="0"
+        style="@style/TV_i" >
 </TextView>
 <LinearLayout
     android:layout_width="match_parent"
@@ -23,17 +23,16 @@
         android:id="@+id/tvOtherKolD"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        style="@style/TV_h" >
+        android:layout_weight="2"
+        style="@style/TV_i" >
 
     </TextView>
-<!--  
+ 
 <ScrollView
-    android:layout_width="wrap_content"
+    android:layout_width="0dp"
     android:layout_height="match_parent"
-    android:layout_gravity="right"
-    android:layout_weight="1" >
--->    
+    android:layout_weight="5" >
+    
 <!--  
     <GridLayout
         android:layout_width="wrap_content"
@@ -45,9 +44,9 @@
         android:rowCount="5" >
 -->
 <TableLayout
-    android:layout_width="0dp"
+    android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center_horizontal|center_vertical"
         android:layout_weight="5"
         android:orientation="horizontal" >        
         <TableRow
@@ -191,8 +190,8 @@
     </GridLayout>
 -->
 </TableLayout>    
-<!--
+
 </ScrollView>
--->
+
 </LinearLayout>
 </LinearLayout>

@@ -7,100 +7,139 @@
 
 	<LinearLayout
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
+	    android:layout_height="0dp"
 	    android:layout_weight="1"
 	    android:orientation="horizontal" >
+
+	<LinearLayout
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1"
+	    android:orientation="vertical" >	    	    
 <TextView
 	        android:id="@+id/tvIdKlientCheck"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:visibility="invisible" />
+	        android:visibility="gone" />
 
 	    	    <Spinner
 	    	        android:id="@+id/sp_check_klient"
-	    	        android:layout_width="0dp"
-	    	        android:layout_weight="1"
-	    	        android:layout_height="match_parent"
-	    	        android:layout_weight="1" />
+	    	        android:layout_width="match_parent"
+	    	        android:layout_height="0dp"
+	    	        android:layout_weight="1.5" />
 
 	    	<TextView
 	        android:id="@+id/etCheckSkidkaPer"
 	        style="@style/TV_i"
-	        android:layout_width="0dp"
-	    	        android:layout_weight="1"
-	        android:layout_height="match_parent" />
-
+	        android:layout_width="match_parent"
+	    	android:layout_weight="1"
+	        android:layout_height="0dp" />
+</LinearLayout>
+	<LinearLayout
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1.5"
+	    android:orientation="vertical" >
 	    <TextView
 	        android:id="@+id/tvCheckSkidka"
 	        style="@style/TV_h"
-	        android:layout_width="0dp"
-	    	android:layout_weight="1"
-	        android:layout_height="match_parent"
-	        android:lineSpacingMultiplier="0.8"
+	        android:layout_width="match_parent"
+	    	android:layout_weight="1.5"
+	        android:layout_height="0dp"
+	        android:lineSpacingMultiplier="0.9"
 	        android:text="@string/skidka_text" />
 
 	    <TextView
 	        android:id="@+id/etCheckSkidka"
 	        style="@style/TV_i"
-	        android:layout_width="0dp"
-	        android:layout_height="match_parent"
-	        android:layout_weight="0" />
-
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1" />
+</LinearLayout>
+	<LinearLayout
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1.5"
+	    android:orientation="vertical" >
+	    	    <TextView
+	        style="@style/TV_h"
+	        android:layout_width="match_parent"
+	    	android:layout_weight="1.5"
+	        android:layout_height="0dp"
+	        android:text="СУММА СКИДКИ" />
+	    	    
 	    	    <TextView
 	        android:id="@+id/etCheckSkidkaPerSum"
-	        style="@style/TV_i"
-	        android:layout_width="0dp"
+	        style="@style/TV_h"
+	        android:layout_width="match_parent"
 	    	android:layout_weight="1"
-	        android:layout_height="match_parent"/>
-
+	        android:layout_height="0dp"/>
+</LinearLayout>
+	<LinearLayout
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1.5"
+	    android:orientation="vertical" >
 	    <TextView
 	        android:id="@+id/tvCheckNal"
 	        style="@style/TV_h"
-	        android:layout_width="0dp"
-	    	android:layout_weight="1"
-	        android:layout_height="match_parent"
+	        android:layout_width="match_parent"
+	    	android:layout_weight="1.5"
+	        android:layout_height="0dp"
 	        android:text="НАЛИЧНЫЕ" />
 
 	    <TextView
 	        android:id="@+id/etCheckNal"
 	        style="@style/TV_i"
-	        android:layout_width="0dp"
+	        android:layout_width="match_parent"
 	    	android:layout_weight="1"
-	        android:layout_height="match_parent"/>
-
+	        android:layout_height="0dp"/>
+</LinearLayout>
+	<LinearLayout
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1"
+	    android:orientation="vertical" >
 	    <TextView
 	        style="@style/TV_h"
-	        android:layout_width="0dp"
-	    	android:layout_weight="1"
-	        android:layout_height="match_parent"
+	        android:layout_width="match_parent"
+	    	android:layout_weight="1.5"
+	        android:layout_height="0dp"
 	        android:text="СДАЧА" />
 
 	    <TextView
 	        android:id="@+id/tvCheckSdacha"
 	        style="@style/TV_h"
-	       android:layout_width="0dp"
+	       android:layout_width="match_parent"
 	    	android:layout_weight="1"
-	        android:layout_height="match_parent" />
+	        android:layout_height="0dp" />
+</LinearLayout>
+	<LinearLayout
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1"
+	    android:orientation="vertical" >
 	    	<TextView
 	        style="@style/TV_h"
-	        android:layout_width="0dp"
-	    	android:layout_weight="1"
-	        android:layout_height="match_parent"
+	        android:layout_width="match_parent"
+	    	android:layout_weight="1.5"
+	        android:layout_height="0dp"
 	        android:text="ИТОГО" />
 
 	    <TextView
 	        android:id="@+id/etItogSummaD"
 	        style="@style/TV_h"
-	       android:layout_width="0dp"
+	       android:layout_width="match_parent"
 	    	        android:layout_weight="1"
-	        android:layout_height="match_parent" />
+	        android:layout_height="0dp" />
+	    </LinearLayout>
 	</LinearLayout>
 
 	<ListView
 	    android:id="@+id/lvComboDia"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:layout_weight="1" >
+	    android:layout_height="0dp"
+	    android:layout_weight="2" >
 	</ListView>
 
 </LinearLayout>

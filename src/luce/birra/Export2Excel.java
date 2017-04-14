@@ -20,6 +20,7 @@ import android.util.Log;*/
 //http://stackoverflow.com/questions/4632501/android-generate-csv-file-from-table-values
 public class /*ExportDatabaseCSVTask*/ Export2Excel //extends AsyncTask<String, String, Boolean> 
 {
+	//http://javadevblog.com/obzor-biblioteki-apache-poi-rabota-s-prilozheniyami-paketa-microsoft-office-v-java.html
 //https://habrahabr.ru/sandbox/38101/
 	private void saveFile(String filename) {
 		File fileName = new File(filename);

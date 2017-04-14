@@ -115,6 +115,12 @@
             android:windowSoftInputMode="stateHidden"
             android:label="НАСТРОЙКИ"
             android:screenOrientation="landscape" />
+                <activity
+            android:name=".SprActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="СПРАВОЧНИКИ"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".KlientActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
@@ -126,6 +132,12 @@
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="НОВЫЙ КЛИЕНТ"
+            android:screenOrientation="landscape" />
+                <activity
+            android:name=".RasxodOstatActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="Расход и остаток"
             android:screenOrientation="landscape" />
     </application>
 

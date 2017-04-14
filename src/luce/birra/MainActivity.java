@@ -89,6 +89,26 @@ static void setSizeFontMain(ViewGroup mlayout) {
     }
 }
 
+static void setSizeFontKalk(ViewGroup mlayout) {
+	
+	ArrayList<View> alv = getViewsByTag(mlayout);
+	for (int i=0; i<alv.size(); i++)
+    {
+	//if (!(alv.get(i) instanceof SeekBar || alv.get(i) instanceof NumberPicker))
+	//if (alv.get(i) instanceof CheckBox) ((CheckBox)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvI);
+	//else 
+		if (alv.get(i) instanceof Button)
+    	((Button)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , butPgr);
+    	//else if (alv.get(i) instanceof EditText ) {
+    		//((EditText)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , butPgr);
+		//}
+    	else 
+    		//if (((TextView)alv.get(i)).getParent() instanceof TableRow) ((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tabH);
+    		//else
+    		((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , butPgr-5);	
+    }
+}
+
 static void setSizeFontItem(ViewGroup mlayout) {
 	
 	ArrayList<View> alv = getViewsByTag(mlayout);
@@ -158,6 +178,14 @@ static int getIntData(){
 			return 0;
 		}
 }*/
+
+static float round(float number, int scale) {
+    int pow = 10;
+    for (int i = 1; i < scale; i++)
+        pow *= 10;
+    float tmp = number * pow;
+    return (float) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / pow;
+}
 
 static int getIntData(String dat){
 	try{
