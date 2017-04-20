@@ -443,7 +443,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "data_ins integer,"
                   + "ok integer default 0);");
           
-          db.execSQL("INSERT or replace INTO karta_klient (_id,name,ok,sconto_sum,sconto_per) VALUES(0,'0%',0,1,1)");
+          db.execSQL("INSERT or replace INTO karta_klient (_id,name,ok,sconto_sum,sconto_per) VALUES(0,'0%',0,0,0)");
           db.execSQL("INSERT or replace INTO user (_id,name,password,ok,admin) VALUES(0,'svetka','1',1,1)");
           db.execSQL("INSERT or replace INTO foo (_id,name) VALUES(0,'-нет-')");
           db.execSQL("INSERT or replace INTO postav (_id,name) VALUES(0,'-нет-')");

@@ -1,15 +1,21 @@
 package luce.birra;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import luce.birra.DialogScreen.DialogListener;
+import luce.birra.OpenFileDialog.OpenDialogListenerDir;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -69,6 +75,68 @@ static int seek=50;
     	else ((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , ti);	
     }
 }*/
+
+static void excel(Context cntx, Activity act, String dat1, String dat2, String pgr, String tit, byte metod ){
+	final String dat11=dat1;
+	final String dat22=dat2;
+	final String pgrr=pgr;
+	final String titt=tit;
+	final byte met=metod;
+	final Context context=cntx;
+	//final Intent sendIntent;
+	final Activity activity=act;
+	DialogScreen getkol = new DialogScreen(context,activity,0)
+	 	.setDialogScreenListener(new DialogListener() {
+	 	@Override
+		public void OnSelectedKol(float k) {
+			
+			File file = null; Uri u1; Intent sendIntent;
+			switch((byte)k) {
+			//case 0: 
+			case 1:
+				switch(met){
+				case 1:
+				file=Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), ""); break;
+				}
+				u1  =  Uri.fromFile(file);
+				//intent = new Intent(Intent.);
+				sendIntent = new Intent(Intent.ACTION_VIEW);
+				//sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Оборотная ведомость с "+tvDataIns.getText().toString()+" по "+Calendar.getInstance().get(Calendar.DATE)+"."+Calendar.getInstance().get(Calendar.MONTH)+"."+Calendar.getInstance().get(Calendar.YEAR));
+				//sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+				sendIntent.setDataAndType(Uri.fromFile(file),"application/vnd.ms-excel");
+				//sendIntent.setType("text/html");
+				context.startActivity(sendIntent); 
+				break;
+			case 2:
+				OpenFileDialog fileDialog = new OpenFileDialog(context)
+	        	.setOpenDialogListenerDir(new OpenDialogListenerDir() {
+					@Override
+					public void OnSelectedDir(String dirName) {
+						switch(met){
+						case 1:
+						Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), dirName);
+						}
+					}
+				}) ;
+	        	fileDialog.show();
+	        	break;
+			case 3:
+				switch(met){
+				case 1:
+				file=Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), "");
+				}
+				u1  =  Uri.fromFile(file);
+				sendIntent = new Intent(Intent.ACTION_SEND);
+				sendIntent.putExtra(Intent.EXTRA_SUBJECT, titt+" "+dat11+" "+dat22/*Calendar.getInstance().get(Calendar.DATE)+"."+Calendar.getInstance().get(Calendar.MONTH)+"."+Calendar.getInstance().get(Calendar.YEAR)*/);
+				sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+				sendIntent.setType("text/html");
+				context.startActivity(sendIntent); 
+				break;
+			default:
+			}
+		}
+	}) ;getkol.show();
+}
 
 static void setSizeFontMain(ViewGroup mlayout) {
 	

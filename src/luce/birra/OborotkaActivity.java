@@ -5,6 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
+import luce.birra.DialogScreen.DialogListener;
+import luce.birra.OpenFileDialog.OpenDialogListenerDir;
+
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -42,7 +46,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
   //Cursor cKlient;
   //SimpleCursorAdapter scaKlient;
   //TextView tv;
-  LinearLayout ll;
+  //LinearLayout ll;
   
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -120,92 +124,9 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
     btnAdd = (Button) findViewById(R.id.btnAddOborotka);
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	//////////////////////////////////////
-        	String dataStr="";
-        	String []str = {(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":" TP._id="+tvIdPgr.getText().toString()
-        			,(tvDataIns.getText().length()==0)?"":"where substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"
-            				};
-            String where=str[0].toString();
-            //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
-            Cursor cc = MainActivity.db.getQueryData( 
-                			 "ostat as O left join (select id_tmc, id_post, ed, sum(round(kol,3)) as sumkr, sum(round(kol,3)*round(price,2)) as sumsr from rasxod " + str[1].toString() + 
-                			 " group by id_tmc, id_post, ed) as R on O.id_tmc=R.id_tmc and O.id_post=R.id_post and O.ed=R.ed "
-                  			+ " left join (select id_tmc, id_post, ed, sum(round(kol,3)) as sumkp, sum(round(kol,3)*round(price,2)) as sumsp from prixod " + str[1].toString() +
-                  			" group by id_tmc, id_post, ed) as P on O.id_tmc=P.id_tmc and O.id_post=P.id_post and O.ed=P.ed"
-                  			+ " left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id",
-                			 new String[] {"O._id as _id",
-                			"O.id_tmc as id_tmc","T.name as name","E.name as ted",
-                			//"O.sumka+R.sumkr-P.sumkp as kol_n","O.sumka+R.sumsr-P.sumsp as sum_n","0 as price_n",
-                			"sumkp as kol_pri","sumsp sum_pri",//"0 as price_pri",
-                			"sumkr kol_ras","sumsr as sum_ras",//"0 as price_ras",
-                			"O.kol kol_k","O.sumka as sum_k"//,"0 as price_k"
-                			 }, 
-                			 where, null,null,null,null);
-        	///////////////////////////////////////////////////////
-        	String columnString =   "\"ÕŒÃ≈Õ À¿“”–¿\",\"Õ¿«¬¿Õ»≈\",\"≈ƒ.»«Ã\",\" ŒÀ Õ¿◊\",\"—”ÃÃ¿ Õ¿◊\",\"÷≈Õ¿ Õ¿◊\",\" ŒÀ œ–»\",\"—”ÃÃ¿ œ–»\",\" ŒÀ –¿—\",\"—”ÃÃ¿ –¿—\",\" ŒÀ  ŒÕ\",\"—”ÃÃ¿  ŒÕ\",\"÷≈Õ¿  ŒÕ\"";
-        	//String dataString   =   "\"" + currentUser.userName +"\",\"" + currentUser.gender + "\",\"" + currentUser.street1 + "\",\"" + currentUser.postOFfice.toString()+ "\",\"" + currentUser.age.toString() + "\"";
-        	//String combinedString = columnString + "\n" + dataString;
-
-        	File file   = null;
-        	File root   = Environment.getExternalStorageDirectory();
-        	if (root.canWrite()){
-        	    File dir    =   new File (root.getAbsolutePath() + "/Oborotka");
-        	     dir.mkdirs();
-        	     file   =   new File(dir, "O"+Calendar.getInstance().get(Calendar.DATE)+Calendar.getInstance().get(Calendar.MONTH)+Calendar.getInstance().get(Calendar.YEAR)+".xls");
-        	     FileOutputStream out   =   null;
-        	    try {
-        	        out = new FileOutputStream(file);
-        	        } catch (FileNotFoundException e) {
-        	            e.printStackTrace();
-        	        }
-        	        try {
-        	            out.write(columnString.getBytes());
-        	        	if (cc.moveToFirst()) { 
-        	      		   
-        	    	        do {
-        	    	        	float koln=0, sumn=0, pricen=0, kolp=0, sump=0, pricep=0, kolr=0, sumr=0, pricer=0, kolk=0, sumk=0, pricek=0;
-        	    	        	koln = cc.getFloat(cc.getColumnIndex("kol_k"))+cc.getFloat(cc.getColumnIndex("kol_ras"))-cc.getFloat(cc.getColumnIndex("kol_pri")) ;
-        	    	        	sumn = cc.getFloat(cc.getColumnIndex("sum_k"))+cc.getFloat(cc.getColumnIndex("sum_ras"))-cc.getFloat(cc.getColumnIndex("sum_pri")) ;
-        	    	        	if (koln!=0) pricen=Math.round((sumn/koln)*100)/100.0f;
-        	    	        	kolp = cc.getFloat(cc.getColumnIndex("kol_pri")) ;
-        	    	        	sump = cc.getFloat(cc.getColumnIndex("sum_pri")) ;
-        	    	        	//if (kolp!=0) pricep=Math.round((sump/kolp)*100)/100.0f;
-        	    	        	kolr = cc.getFloat(cc.getColumnIndex("kol_ras")) ;
-        	    	        	sumr = cc.getFloat(cc.getColumnIndex("sum_ras")) ;
-        	    	        	//if (kolr!=0) pricep=Math.round((sumr/kolr)*100)/100.0f;
-        	    	        	kolk = cc.getFloat(cc.getColumnIndex("kol_k")) ;
-        	    	        	sumk = cc.getFloat(cc.getColumnIndex("sum_k")) ;
-        	    	        	if (kolk!=0) pricep=Math.round((sumr/kolk)*100)/100.0f;
-        	    	        	
-        	    	        	//dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +koln+ "\",\""+sumn+ "\",\"" + cc.getFloat(cc.getColumnIndex("price_n"))+"\",\"" 
-        	    	        			//+ cc.getFloat(cc.getColumnIndex("kol_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("kol_ras"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_ras"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_ras"))+"\",\""
-        	    	        			//+ cc.getFloat(cc.getColumnIndex("kol_k"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_k"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_k"))+ "\"" ;
-        	    	        	dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +koln+ "\",\""+sumn+ "\",\"" + pricen+"\",\"" 
-        	    	        			+ kolp+"\",\""+ sump+"\",\""+ kolr+"\",\""+ sumr+"\",\""
-        	    	        			+ kolk+"\",\""+ sumk+"\",\""+ pricek+ "\"" ;
-        	    	        	out.write(dataStr.getBytes());
-        	    	        } while (cc.moveToNext());
-        	    	        
-        	    	      } 
-        	        } catch (IOException e) {
-        	            e.printStackTrace(); cc.close();
-        	        }
-        	        try {
-        	            out.close();
-        	        } catch (IOException e) {
-        	            e.printStackTrace(); cc.close();
-        	        }
-        	        Uri u1  =   null;
-        	        u1  =   Uri.fromFile(file);
-
-        	        Intent sendIntent = new Intent(Intent.ACTION_SEND);
-        	        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Œ·ÓÓÚÌ‡ˇ ‚Â‰ÓÏÓÒÚ¸ Ò "+tvDataIns.getText().toString()+" ÔÓ "+Calendar.getInstance().get(Calendar.DATE)+"."+Calendar.getInstance().get(Calendar.MONTH)+"."+Calendar.getInstance().get(Calendar.YEAR));
-        	        sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
-        	        sendIntent.setType("text/html");
-        	        startActivity(sendIntent);    
-        	}
-        	cc.close();
-        	///////////////////////////////////////////////////////
+        	MainActivity.excel(OborotkaActivity.this, OborotkaActivity.this, tvDataIns.getText().toString(), 
+        			Calendar.getInstance().get(Calendar.DATE)+"."+Calendar.getInstance().get(Calendar.MONTH)+"."+Calendar.getInstance().get(Calendar.YEAR), 
+        			tvIdPgr.getText().toString(), "Œ·ÓÓÚÌ‡ˇ ‚Â‰ÓÏÓÒÚ¸", (byte)1);
         	}
       });
     

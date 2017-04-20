@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
+import luce.birra.DialogScreen.DialogListener;
+
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -36,7 +38,6 @@ public class OtchetActivity extends FragmentActivity {
   //Cursor cKlient;
   //SimpleCursorAdapter scaKlient;
   TextView d1,d2;
-//  LinearLayout ll;
   
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
