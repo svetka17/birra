@@ -154,6 +154,15 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         	finish();
         }
       });
+    
+    btnAdd = (Button) findViewById(R.id.btnExcelRasxodHist);
+    btnAdd.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	MainActivity.excel(RasxodHistActivity.this, RasxodHistActivity.this, tvDataIns.getText().toString(), 
+        			tvDataIns2.getText().toString(), 
+        			tvIdPgr.getText().toString(), "Расход за период", (byte)2);
+        	}
+      });
     // формируем столбцы сопоставления
     String[] from = new String[] { /*"_id",*/"id_tmc","name","kol","ch","sumka","price","prim"};
     int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Hist, R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist};

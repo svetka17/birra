@@ -1,10 +1,12 @@
 package luce.birra;
 import java.util.Calendar;
 
+import luce.birra.AdapterLV.CambiareListener;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,11 +16,10 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import luce.birra.AdapterLV.CambiareListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -30,7 +31,7 @@ import android.widget.Toast;
 public class PrixodHistActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
   ListView lvData;
-  Button btnExit, btnAdd;
+  Button btnExit, btnEx, btnAdd;
   AdapterLV scAdapter;
   static TextView tvIdPgr; 
   //static EditText tvDataIns, tvDataIns2;
@@ -112,8 +113,17 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
     btnAdd = (Button) findViewById(R.id.btnAddPrixodHist);
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	//Intent intent = new Intent(PgrActivity.this, PrihodA.class);
-			//startActivity(intent);
+        	Intent intent = new Intent(PrixodHistActivity.this, PrixodActivity.class);
+			   startActivity(intent);
+        }
+      });
+    
+    btnEx = (Button) findViewById(R.id.btnExcelPrixodHist);
+    btnEx.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	MainActivity.excel(PrixodHistActivity.this, PrixodHistActivity.this, tvDataIns.getText().toString(), 
+        			tvDataIns2.getText().toString(), 
+        			tvIdPgr.getText().toString(), "Приход за период", (byte)4);
         }
       });
     

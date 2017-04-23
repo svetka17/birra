@@ -90,15 +90,26 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 	 	@Override
 		public void OnSelectedKol(float k) {
 			
-			File file = null; Uri u1; Intent sendIntent;
+			File file = null; //Uri u1; 
+			Intent sendIntent;
 			switch((byte)k) {
 			//case 0: 
 			case 1:
 				switch(met){
 				case 1:
 				file=Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), ""); break;
+				case 2:
+					file=Export2Excel.rasxod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
+				case 3:
+					file=Export2Excel.rasxod_ostat(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
+				case 4:
+					file=Export2Excel.prixod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
+				case 5:
+					file=Export2Excel.ostat((int) StrToFloat(pgrr), ""); break;
+				case 6:
+					file=Export2Excel.all_spr(""); break;
 				}
-				u1  =  Uri.fromFile(file);
+				//u1  =  Uri.fromFile(file);
 				//intent = new Intent(Intent.);
 				sendIntent = new Intent(Intent.ACTION_VIEW);
 				//sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Оборотная ведомость с "+tvDataIns.getText().toString()+" по "+Calendar.getInstance().get(Calendar.DATE)+"."+Calendar.getInstance().get(Calendar.MONTH)+"."+Calendar.getInstance().get(Calendar.YEAR));
@@ -114,7 +125,17 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 					public void OnSelectedDir(String dirName) {
 						switch(met){
 						case 1:
-						Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), dirName);
+						Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), dirName); break;
+						case 2:
+						Export2Excel.rasxod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), dirName); break;
+						case 3:
+							Export2Excel.rasxod_ostat(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), dirName); break;
+						case 4:
+							Export2Excel.prixod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), dirName); break;
+						case 5:
+							Export2Excel.ostat((int) StrToFloat(pgrr), dirName); break;
+						case 6:
+							Export2Excel.all_spr(dirName); break;
 						}
 					}
 				}) ;
@@ -124,11 +145,21 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 				switch(met){
 				case 1:
 				file=Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), "");
+				case 2:
+					file=Export2Excel.rasxod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
+				case 3:
+					file=Export2Excel.rasxod_ostat(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
+				case 4:
+					file=Export2Excel.prixod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
+				case 5:
+					file=Export2Excel.ostat((int) StrToFloat(pgrr), ""); break;
+				case 6:
+					file=Export2Excel.all_spr(""); break;
 				}
-				u1  =  Uri.fromFile(file);
+				//u1  =  Uri.fromFile(file);
 				sendIntent = new Intent(Intent.ACTION_SEND);
 				sendIntent.putExtra(Intent.EXTRA_SUBJECT, titt+" "+dat11+" "+dat22/*Calendar.getInstance().get(Calendar.DATE)+"."+Calendar.getInstance().get(Calendar.MONTH)+"."+Calendar.getInstance().get(Calendar.YEAR)*/);
-				sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+				sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
 				sendIntent.setType("text/html");
 				context.startActivity(sendIntent); 
 				break;

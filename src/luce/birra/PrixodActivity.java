@@ -305,6 +305,8 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   protected void onRestart() {
     super.onRestart();
     getSupportLoaderManager().getLoader(0).forceLoad();
+    //spPost.getAdapter().notify();
+    //scaPost.swapCursor(cPost);
   } 
   
   protected void onDestroy() {

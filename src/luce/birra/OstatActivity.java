@@ -93,8 +93,8 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     btnAdd = (Button) findViewById(R.id.btnAddOstat);
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	//Intent intent = new Intent(PgrActivity.this, PgrEditActivity.class);
-			//startActivity(intent);
+        	MainActivity.excel(OstatActivity.this, OstatActivity.this, "","", 
+        			tvIdPgr.getText().toString(), "Наличие в магазине", (byte)5);
         }
       });
     
