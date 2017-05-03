@@ -81,7 +81,7 @@ public class PgrActivity extends FragmentActivity implements /*OnItemClickListen
 				        do {countT=cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
 				        } while (cc.moveToNext());
 				      };
-				if (countT!=0)      
+				if (countT==0)      
 				{MainActivity.db.delRec("tmc_pgr",id);
 				getSupportLoaderManager().getLoader(0).forceLoad();}
 				else 

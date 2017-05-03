@@ -283,7 +283,7 @@ void makeDialog() {
     tvIdPgr.setText("-1");
     tvIdPgr.setTag(-1);
       
-    Cursor cTara = MainActivity.db.getRawData ("select T._id as _id, T.name as name, T.price as price, T.tara as tara, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id where T.ok=1 and T.vis=0 and S.kol>0 order by T.pos",/*order by T.tara*/null);
+    Cursor cTara = MainActivity.db.getRawData ("select T._id as _id, T.name as name, T.price as price, T.tara as tara, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id where T.ok=1 and S.kol>0 order by T.pos",/*order by T.tara*/null);
     byte ib=0;//, il=0;
     if (cTara.moveToFirst()) { 
     	 
@@ -547,7 +547,7 @@ void makeDialog() {
 	   llbut.removeAllViewsInLayout();
 	   svBut.removeAllViewsInLayout();
 	   int count_but=0;
-	   Cursor cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T inner join ostat S on T._id=S.id_tmc inner join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, T._id",null);
+	   Cursor cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, T._id",null);
 	   if (cc.moveToFirst()) { 
 	        do {count_but++;
 	        } while (cc.moveToNext());

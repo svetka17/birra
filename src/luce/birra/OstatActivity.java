@@ -121,7 +121,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     					Cursor cc = MainActivity.db.getRawData ("select id_tmc, kol, ed, id_post from ostat where kol<>0 and _id="+id,null);
     					   if (cc.moveToFirst()) { 
     					        do {countT=
-    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getFloat(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 0);
+    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), MainActivity.round(cc.getFloat(cc.getColumnIndex("kol")),6), (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 0);
     					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
     					        } while (cc.moveToNext());
     					      };

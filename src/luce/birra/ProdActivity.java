@@ -185,12 +185,12 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
     			public void OnCambiare(byte flag, long id) {
     				if (flag==1) {
     					int countT=0;
-    					Cursor cc = MainActivity.db.getRawData ("select count(*) c from ostat T where T.id_tmc="+id,null);
+    					Cursor cc = MainActivity.db.getRawData ("select count(*) c from ostat T where T.kol<>0 and T.id_tmc="+id,null);
     					   if (cc.moveToFirst()) { 
     					        do {countT=cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
     					        } while (cc.moveToNext());
     					      };
-    					if (countT!=0)      
+    					if (countT==0)      
     					{MainActivity.db.delRec("tmc",id);
     					getSupportLoaderManager().getLoader(0).forceLoad();}
     					else 
