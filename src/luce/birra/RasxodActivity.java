@@ -76,7 +76,7 @@ SeekBar.OnSeekBarChangeListener
   LinearLayout ll_tara_button;
   LinearLayout lltarabutton;
   //LinearLayout llR_;
-  int Bpost=0,btnK=0,clrCheck=Color.BLUE;
+  int Bpost=0,btnK=0,clrCheck=Color.WHITE;
   
   byte CountTara=0;
   float otherVal=0;
@@ -215,7 +215,7 @@ void makeDialog() {
     	
     	
     	lltarabutton = (LinearLayout) findViewById(R.id.llbuttontara);
-    if (count_but_tara<8)
+    if (count_but_tara<9)
     {  //showMessage("30SP = "+DpToPx(30)+"; W = "+((int)display_w/8)+"; W_DP = "+PxToDp(display_w/8)+"; W_PX = "+DpToPx(display_w/8)+"; S = "+scale+"; W = "+display_w+"; H = "+display_h, (byte)1);
     	ll_tara_button = new LinearLayout(this);
     	ll_tara_button.setOrientation(LinearLayout.HORIZONTAL);
@@ -351,7 +351,7 @@ void makeDialog() {
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			if (isChecked)
 			 {buttonView.setTextColor(clrCheck); 
-			 buttonView.setBackground(getResources().getDrawable(R.drawable.edittext_style));
+			 buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 			 tara((byte)-2); 
 			 tvDialogN=R.id.tvOtherKol_;
 			
@@ -371,7 +371,7 @@ void makeDialog() {
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			if (isChecked)
-			 {buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittext_style));}
+			 {buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.tara_chek));}
 			else
 				{buttonView.setTextColor(clrNoCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittexth_style)); }
 		}
@@ -565,7 +565,7 @@ void makeDialog() {
 		      }*/
 		   //float sText=((display_w)/(6*scale*scale*l))+scale*5;
 	    	//float sText=MainActivity.sizeSmallButton;
-	    if (count_but<19)
+	    if (count_but<16)
 	    {  /* llbut = new TableLayout(this);
 	    	llbut.setOrientation(TableLayout.HORIZONTAL);
 	    	llbut.setStretchAllColumns(true);
@@ -697,7 +697,7 @@ void makeDialog() {
 	        		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 	        			byte tmp=0;
 	        			if (isChecked)
-	        			{ buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittext_style));
+	        			{ buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 	        			Btovar=Byte.parseByte(buttonView.getTag().toString());
 	        			for (int i=CountTara; i<but.size(); i++) {
 	        		    	if ((i)!= Integer.parseInt(buttonView.getTag().toString())) 
@@ -713,7 +713,7 @@ void makeDialog() {
 	        				else //
 	        					{//tara(-2);
 	        					tbnKol.setTextColor(clrCheck); 
-	        					 tbnKol.setBackground(getResources().getDrawable(R.drawable.edittext_style));
+	        					 tbnKol.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 	        					 tara((byte)-2); 
 	        					 tvDialogN=R.id.tvOtherKol_;
 	        					 
@@ -722,7 +722,7 @@ void makeDialog() {
 	        					}	
 	        				}
 	        			else if (tmp!=1) {tbnKol.setTextColor(clrCheck); 
-   					 tbnKol.setBackground(getResources().getDrawable(R.drawable.edittext_style));
+   					 tbnKol.setBackground(getResources().getDrawable(R.drawable.btn_chek));
    					 tara((byte)-2); 
    					 tvDialogN=R.id.tvOtherKol_;
    					
@@ -762,7 +762,7 @@ void makeDialog() {
    	{m = new HashMap<String, Object>();
    		m.put("skidka_sum", 0);
    		m.put("skidka_but", 0);
-   		m.put("skidka_but_text", "— »ƒ ¿");
+   		m.put("skidka_but_text", "0%");
    		   m.put("name", but.get(Btovar).tmc_name);
    		   m.put("price", but.get(Btovar).price);
    		   if (Btara!=-2) 
@@ -800,7 +800,7 @@ void makeDialog() {
    	  m = new HashMap<String, Object>();
    	  	m.put("skidka_sum", 0);
 		m.put("skidka_but", 0);
-		m.put("skidka_but_text", "— »ƒ ¿");
+		m.put("skidka_but_text", "0%");
    	  	m.put("name", but.get(Btovar).tmc_name);
    	 m.put("price", but.get(Btovar).price);
    	 if (Btara!=-2) {m.put("kol", but.get(Btara).val+" "+but.get(Btovar).ted);
@@ -867,7 +867,13 @@ void makeDialog() {
    			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
    	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i);
    	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i+" ost="+but.get(tranz.get(i).tagB).ost);
+   	
    	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
+   	if (but.get(tranz.get(i).tagB).ost<=0)//ÂÒÎË ÍÓÎ-‚Ó <0 ÚÓ ‰Ó·‡‚ÎˇÂÏ ÓÒÚ‡ÚÓÍ ÔÓ ÔËıÓ‰Û
+   	{
+   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, "ÓÒÚ‡ÚÓÍ "+but.get(tranz.get(i).tagB).ost+" ˜ÂÍ "+cou, MainActivity.getIntDataTime(),(byte)0);
+   		but.get(tranz.get(i).tagB).ost=1;
+   	}
    	//Log.d("MyLog", "PtagB="+tranz.get(i).tagB+" ost="+but.get(tranz.get(i).tagB).ost);
    	if (tranz.get(i).tagB>CountTara-1) {
    		
@@ -932,7 +938,11 @@ void makeDialog() {
    		MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat( data.get(tranz.get(i).tagL).get("skidka_sum").toString() ), (byte)4, 0, 0, (int)cou, "— »ƒ ¿ œŒ œŒ«»÷»» "+tmp+":"+data.get(tranz.get(i).tagL).get("skidka_sum").toString()+"√–Õ", MainActivity.getIntDataTime(),(int)tmp);
    	
    	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
-   	//Log.d("MyLog", "PtagB="+tranz.get(i).tagB+" ost="+but.get(tranz.get(i).tagB).ost);
+   	if (but.get(tranz.get(i).tagB).ost<=0)//ÂÒÎË ÍÓÎ-‚Ó <0 ÚÓ ‰Ó·‡‚ÎˇÂÏ ÓÒÚ‡ÚÓÍ ÔÓ ÔËıÓ‰Û
+   	{
+   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, "ÓÒÚ‡ÚÓÍ "+but.get(tranz.get(i).tagB).ost+" ˜ÂÍ "+cou, MainActivity.getIntDataTime(),(byte)0);
+   		but.get(tranz.get(i).tagB).ost=1;
+   	}
    	if (tranz.get(i).tagB>CountTara-1) {
    		int l1=(but.get(tranz.get(i).tagB).tmc_name+"\n").length(), l2=(but.get(tranz.get(i).tagB).tmc_name+"\n"+but.get(tranz.get(i).tagB).ost+but.get(tranz.get(i).tagB).ted+" ÷≈Õ¿ "+but.get(tranz.get(i).tagB).price).length();
        	final SpannableStringBuilder text = new SpannableStringBuilder(but.get(tranz.get(i).tagB).tmc_name+"\n"+but.get(tranz.get(i).tagB).ost+but.get(tranz.get(i).tagB).ted+" ÷≈Õ¿ "+but.get(tranz.get(i).tagB).price); 
@@ -1009,7 +1019,7 @@ void makeDialog() {
 	   case R.id.comboSkidkaSum:
 		   data.get(combo_pos).put("skidka_sum", 0);
 		   data.get(combo_pos).put("skidka_but", 0);
-		   data.get(combo_pos).put("skidka_but_text", "— »ƒ ¿");
+		   data.get(combo_pos).put("skidka_but_text", "0%");
 		   data.get(combo_pos).put("skidka_sum_itog", data.get(combo_pos).get("summa2"));
 		   sAdapter.notifyDataSetChanged();
 		   //tvDKol.setText("0");
@@ -1038,7 +1048,7 @@ void makeDialog() {
 	     		data.get(i).put("skidka_but", 0);
 	     		//valsum=valsum+MainActivity.StrToFloat(data.get(i).get("summa2").toString() );
 	     		data.get(i).put("skidka_sum", 0 );
-	     		data.get(i).put("skidka_but_text", "— »ƒ ¿" );
+	     		data.get(i).put("skidka_but_text", "0%" );
 	     		data.get(i).put("skidka_sum_itog", 
 	             		MainActivity.StrToFloat(data.get(i).get("summa2").toString()  )
 	             				);
@@ -1213,7 +1223,7 @@ void makeDialog() {
             	for (int i=0; i<data.size(); i++) 
             	{
             		data.get(i).put("skidka_but", 0);
-            		data.get(i).put("skidka_but_text", "— »ƒ ¿");
+            		data.get(i).put("skidka_but_text", "0%");
             		data.get(i).put("skidka_sum",0);
             		data.get(i).put("skidka_sum_itog", 
                     		MainActivity.StrToFloat(data.get(i).get("summa2").toString() ) );
@@ -1282,7 +1292,7 @@ void makeDialog() {
 
      	//dialogg.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
      	// ”ÒÚ‡ÌÓ‚ËÚÂ Á‡„ÓÎÓ‚ÓÍ
-     	dialogg.setTitle("œ–Œ¬≈–‹“≈ ◊≈  œ≈–≈ƒ «¿ –€“»≈Ã");
+     	//dialogg.setTitle("œ–Œ¬≈–‹“≈ ◊≈  œ≈–≈ƒ «¿ –€“»≈Ã");
          // Ó·‡·ÓÚ˜ËÍ ÓÚÓ·‡ÊÂÌËˇ
          /*dialogg.setOnShowListener(new OnShowListener() {
            public void onShow(DialogInterface dialog) {
@@ -1413,7 +1423,7 @@ void makeDialog() {
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		if (isChecked)
 		{buttonView.setTextColor(clrCheck);
-		buttonView.setBackground(getResources().getDrawable(R.drawable.edittext_style));
+		buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 		 //Log.d("MyLog", "tag="+Byte.parseByte(buttonView.getTag().toString()));
 		tara(Byte.parseByte(buttonView.getTag().toString()));
 		if (Btovar!=-1) fixV(); 

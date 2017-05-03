@@ -26,7 +26,7 @@
 	    	        android:id="@+id/sp_check_klient"
 	    	        android:layout_width="match_parent"
 	    	        android:layout_height="0dp"
-	    	        android:layout_weight="1.5" />
+	    	        android:layout_weight="1" />
 
 	    	<TextView
 	        android:id="@+id/etCheckSkidkaPer"
@@ -40,15 +40,16 @@
 	    android:layout_height="match_parent"
 	    android:layout_weight="1.5"
 	    android:orientation="vertical" >
+
 	    <TextView
 	        android:id="@+id/tvCheckSkidka"
 	        style="@style/TV_h"
 	        android:layout_width="match_parent"
-	    	android:layout_weight="1.5"
 	        android:layout_height="0dp"
-	        android:lineSpacingMultiplier="0.9"
-	        android:text="@string/skidka_text" />
+	        android:layout_weight="1"
+	        android:text="ОБЩАЯ СКИДКА" />
 
+<!-- 	        android:lineSpacingMultiplier="0.9" b88fff -->
 	    <TextView
 	        android:id="@+id/etCheckSkidka"
 	        style="@style/TV_i"
@@ -61,12 +62,14 @@
 	    android:layout_height="match_parent"
 	    android:layout_weight="1.5"
 	    android:orientation="vertical" >
+
 	    	    <TextView
-	        style="@style/TV_h"
-	        android:layout_width="match_parent"
-	    	android:layout_weight="1.5"
-	        android:layout_height="0dp"
-	        android:text="СУММА СКИДКИ" />
+	    	        style="@style/TV_h"
+	    	        android:layout_width="match_parent"
+	    	        android:layout_height="0dp"
+	    	        android:layout_weight="1"
+	    	        android:text="СУММА СКИДКИ"
+	    	        android:textSize="10sp" />
 	    	    
 	    	    <TextView
 	        android:id="@+id/etCheckSkidkaPerSum"
@@ -80,12 +83,13 @@
 	    android:layout_height="match_parent"
 	    android:layout_weight="1.5"
 	    android:orientation="vertical" >
+
 	    <TextView
 	        android:id="@+id/tvCheckNal"
 	        style="@style/TV_h"
 	        android:layout_width="match_parent"
-	    	android:layout_weight="1.5"
 	        android:layout_height="0dp"
+	        android:layout_weight="1"
 	        android:text="НАЛИЧНЫЕ" />
 
 	    <TextView
@@ -100,11 +104,12 @@
 	    android:layout_height="match_parent"
 	    android:layout_weight="1"
 	    android:orientation="vertical" >
+
 	    <TextView
 	        style="@style/TV_h"
 	        android:layout_width="match_parent"
-	    	android:layout_weight="1.5"
 	        android:layout_height="0dp"
+	        android:layout_weight="1"
 	        android:text="СДАЧА" />
 
 	    <TextView
@@ -119,12 +124,13 @@
 	    android:layout_height="match_parent"
 	    android:layout_weight="1"
 	    android:orientation="vertical" >
+
 	    	<TextView
-	        style="@style/TV_h"
-	        android:layout_width="match_parent"
-	    	android:layout_weight="1.5"
-	        android:layout_height="0dp"
-	        android:text="ИТОГО" />
+	    	    style="@style/TV_h"
+	    	    android:layout_width="match_parent"
+	    	    android:layout_height="0dp"
+	    	    android:layout_weight="1"
+	    	    android:text="ИТОГО" />
 
 	    <TextView
 	        android:id="@+id/etItogSummaD"
@@ -139,7 +145,7 @@
 	    android:id="@+id/lvComboDia"
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_weight="2" >
+	    android:layout_weight="1" >
 	</ListView>
 
 </LinearLayout>

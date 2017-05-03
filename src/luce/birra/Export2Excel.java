@@ -45,7 +45,7 @@ public class /*ExportDatabaseCSVTask*/ Export2Excel //extends AsyncTask<String, 
 {
 //http://javadevblog.com/obzor-biblioteki-apache-poi-rabota-s-prilozheniyami-paketa-microsoft-office-v-java.html
 //https://habrahabr.ru/sandbox/38101/
-	private void saveFile(String filename) {
+/*	private void saveFile(String filename) {
 		File fileName = new File(filename);
 		String sdState = android.os.Environment.getExternalStorageState();
 		if (sdState.equals(android.os.Environment.MEDIA_MOUNTED)) {
@@ -65,7 +65,7 @@ public class /*ExportDatabaseCSVTask*/ Export2Excel //extends AsyncTask<String, 
 
 		}
     }
-	
+*/	
 static File oborotka (int dat, int pgr, String dirN) {
 //////////////////////////////////////
 String []str = {pgr==0?"":" TP._id="+pgr, dat==0?"":" where substr(data_ins,1,6)>=trim("+dat+")"};

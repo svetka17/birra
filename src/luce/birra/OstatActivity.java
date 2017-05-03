@@ -1,5 +1,6 @@
 package luce.birra;
 import luce.birra.AdapterLV.CambiareListener;
+import luce.birra.DialogScreen.DialogListener;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
   static CheckBox cbVis;
   static TextView tvIdPgr;
   Spinner spPgr;
-
+  //int tvDialogN=0;
   //LinearLayout ll;
   
   void showMessage(String s, byte dur){
@@ -47,6 +48,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
 	  toast.setView(layout); 
 	  toast.show();
   }
+  
   
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -132,6 +134,33 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     					//getSupportLoaderManager().getLoader(0).forceLoad();
     					}
     			} 
+    				if (flag==2) {
+    					final long idd=id;
+    					DialogScreen getkol = new DialogScreen(OstatActivity.this,OstatActivity.this,R.id.cb_Kol_Ostat)
+    							 .setDialogScreenListener(new DialogListener() {
+    								@Override
+    								public void OnSelectedKol(float k) {
+    									if (k!=0) 
+    									{
+    										long countT=0;
+    				    					Cursor cc = MainActivity.db.getRawData ("select id_tmc, kol, ed, id_post, price from ostat where kol<>0 and _id="+idd,null);
+    				    					   if (cc.moveToFirst()) { 
+    				    					        do {countT=
+    				    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getFloat(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+idd, MainActivity.getIntDataTime(), 0);
+    				    					        		MainActivity.db.addRecPRIXOD(cc.getInt(cc.getColumnIndex("id_tmc")), k, (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getInt(cc.getColumnIndex("id_post")), "изменение остатка id="+idd, MainActivity.getIntDataTime(), (byte)0);
+    				    					        } while (cc.moveToNext());
+    				    					      };
+    				    					if (countT!=0)      
+    				    					{
+    				    					getSupportLoaderManager().getLoader(0).forceLoad();
+    				    						showMessage("Остаток изменен", (byte)1);
+    				    					}
+    									}
+    									//else dialogNumCancel(R.id.cb_Kol_Ostat);					
+    								}
+    							}) ;getkol.show();
+    							
+    				}
     				}
     		});
     

@@ -91,14 +91,41 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 	    cv.put("ok", ok);
 	    mDB.insert("tmc", null, cv);
 	  }
-
+	  
+	  public long addRecTMCcount(String name, int pgr, int ed, float price, byte vis, byte pos, float tara, int data_ins, byte ok) {
+		    ContentValues cv = new ContentValues();
+		    cv.put("name", name);
+		    cv.put("pgr", pgr);
+		    cv.put("ed", ed);
+		    cv.put("price", price);
+		    cv.put("vis", vis);
+		    cv.put("pos", pos);
+		    cv.put("tara", tara);
+		    cv.put("data_ins", data_ins);
+		    cv.put("ok", ok);
+		    return mDB.insert("tmc", null, cv);
+		  }
 	  public void addRecTMC_PGR(String name, int data_ins) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("name", name);
 		    cv.put("data_ins", data_ins);
 		    mDB.insert("tmc_pgr", null, cv);
 		  }
-      
+	  
+	  public long addRecTMC_PGRcount(String name, int data_ins) {
+		    ContentValues cv = new ContentValues();
+		    cv.put("name", name);
+		    cv.put("data_ins", data_ins);
+		    return mDB.insert("tmc_pgr", null, cv);
+		  }
+	  
+	  public long addRecTMC_EDcount(String name, int data_ins) {
+		    ContentValues cv = new ContentValues();
+		    cv.put("name", name);
+		    cv.put("data_ins", data_ins);
+		    return mDB.insert("tmc_ed", null, cv);
+		  }
+	  
 	  public void addRecUSER(String name, String pas, int data_ins, byte ok, byte adm) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("name", name);

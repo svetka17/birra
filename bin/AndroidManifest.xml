@@ -3,20 +3,21 @@
     package="luce.birra"
     android:versionCode="1"
     android:versionName="1.0" >
-
     <uses-sdk
         android:minSdkVersion="16"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="22" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<!-- -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="luce.birra.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
             <intent-filter>
@@ -26,115 +27,115 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ProdActivity"
+            android:name="luce.birra.ProdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="СПРАВОЧНИК ТОВАРОВ"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".PgrActivity"
+            android:name="luce.birra.PgrActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="СПРАВОЧНИК ТИПОВ ТОВАРОВ"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".PgrEditActivity"
+            android:name="luce.birra.PgrEditActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="СОЗДАНИЕ НОВОГО ТИПА ТОВАРА"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".ProdEditActivity"
+            android:name="luce.birra.ProdEditActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="СОЗДАНИЕ НОВОГО ТОВАРА"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".PrixodActivity"
+            android:name="luce.birra.PrixodActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="ПОСТУПЛЕНИЕ НОВОГО ТОВАРА"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".PostavActivity"
+            android:name="luce.birra.PostavActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="СПРАВОЧНИК ПОСТАВЩИКОВ"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".PostavEditActivity"
+            android:name="luce.birra.PostavEditActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="СОЗДАНИЕ НОВОГО ПОСТАВЩИКА"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".PrixodHistActivity"
+            android:name="luce.birra.PrixodHistActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="ИСТОРИЯ ПОСТАВОК"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".RasxodHistActivity"
+            android:name="luce.birra.RasxodHistActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="ИСТОРИЯ ПРОДАЖ"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".OstatActivity"
+            android:name="luce.birra.OstatActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="ТОВАР В НАЛИЧИИ"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".RasxodActivity"
+            android:name="luce.birra.RasxodActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="ПРОДАЖА"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".OborotkaActivity"
+            android:name="luce.birra.OborotkaActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="ОБОРОТНАЯ ВЕДОМОСТЬ"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".OtchetActivity"
+            android:name="luce.birra.OtchetActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="ОТЧЕТЫ"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".SettingActivity"
+            android:name="luce.birra.SettingActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="НАСТРОЙКИ"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".SettingAllActivity"
+            android:name="luce.birra.SettingAllActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="НАСТРОЙКИ"
             android:screenOrientation="landscape" />
                 <activity
-            android:name=".SprActivity"
+            android:name="luce.birra.SprActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="СПРАВОЧНИКИ"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".KlientActivity"
+            android:name="luce.birra.KlientActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="СПРАВОЧНИК КЛИЕНТОВ"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".KlientEditActivity"
+            android:name="luce.birra.KlientEditActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="НОВЫЙ КЛИЕНТ"
             android:screenOrientation="landscape" />
                 <activity
-            android:name=".RasxodOstatActivity"
+            android:name="luce.birra.RasxodOstatActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="Расход и остаток"

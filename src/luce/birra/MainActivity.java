@@ -6,18 +6,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import luce.birra.DialogScreen.DialogListener;
-import luce.birra.OpenFileDialog.OpenDialogListenerDir;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
@@ -33,6 +28,9 @@ import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TableRow;
 import android.widget.TextView;
+import luce.birra.DialogScreen.DialogListener;
+import luce.birra.OpenFileDialog.OpenDialogListener;
+import luce.birra.OpenFileDialog.OpenDialogListenerDir;
  
 public class MainActivity extends Activity implements OnClickListener {
 Button btnExit, btnProd, btnOstat, btnPrixod, btnRasxod, btnKassa, btnSetting, btnAbout;
@@ -76,7 +74,8 @@ static int seek=50;
     }
 }*/
 
-static void excel(Context cntx, Activity act, String dat1, String dat2, String pgr, String tit, byte metod ){
+static void excel(Context cntx, Activity act, String dat1, String dat2, String pgr, String tit, byte metod )
+{
 	final String dat11=dat1;
 	final String dat22=dat2;
 	final String pgrr=pgr;
@@ -163,6 +162,48 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 				sendIntent.setType("text/html");
 				context.startActivity(sendIntent); 
 				break;
+			default:
+			}
+		}
+	}) ;getkol.show();
+}
+
+static void excel_import(Context cntx, Activity act, byte metod )
+{
+
+	final byte met=metod;
+	final Context context=cntx;
+	//final Intent sendIntent;
+	final Activity activity=act;
+	DialogScreen getkol = new DialogScreen(context,activity,1)
+	 	.setDialogScreenListener(new DialogListener() {
+	 	@Override
+		public void OnSelectedKol(float k) {
+			
+			//File file = null; //Uri u1; 
+			//Intent sendIntent;
+			switch((byte)k) {
+			//case 0: 
+			
+			case 1:
+				OpenFileDialog fileDialog = new OpenFileDialog(context)
+	        	.setOpenDialogListener(new OpenDialogListener() {
+					
+					@Override
+					public void OnSelectedFile(String fileName) {
+							switch(met){
+							case 1:
+							Import2Excel.load_tmc(fileName, context); break;
+							case 2:
+								//Import2Excel.load_tmc_pgr(fileName); break; 
+								break;
+							}
+					}
+				});
+	        	
+	        	fileDialog.show();
+	        	break;
+			
 			default:
 			}
 		}
@@ -413,6 +454,41 @@ void saveSetting() {
         h = display.getHeight();  // deprecated, но работает 
         loadSetting();
         MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.main_ll));
+        /*
+        int density= getResources().getDisplayMetrics().densityDpi;
+
+        switch(density)
+        {
+        case DisplayMetrics.DENSITY_LOW:
+           Toast.makeText(this, "LDPI", Toast.LENGTH_SHORT).show();
+            break;
+        case DisplayMetrics.DENSITY_MEDIUM:
+             Toast.makeText(this, "MDPI", Toast.LENGTH_SHORT).show();
+            break;
+        case DisplayMetrics.DENSITY_HIGH:
+            Toast.makeText(this, "HDPI", Toast.LENGTH_SHORT).show();
+            break;
+        case DisplayMetrics.DENSITY_XHIGH:
+             Toast.makeText(this, "XHDPI", Toast.LENGTH_SHORT).show();
+            break;
+        }
+        
+        int screenSize = getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        switch(screenSize) {
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                Toast.makeText(this, "Large screen",Toast.LENGTH_LONG).show();
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                Toast.makeText(this, "Normal screen",Toast.LENGTH_LONG).show();
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                Toast.makeText(this, "Small screen",Toast.LENGTH_LONG).show();
+                break;
+            default:
+                Toast.makeText(this, "Screen size is neither large, normal or small" , Toast.LENGTH_LONG).show();
+        }*/
     }
 
 
