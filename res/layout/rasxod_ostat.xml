@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rasxod_ostat_ll"
+    android:orientation="vertical" >
+    <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+                
+                <Spinner
+                    android:id="@+id/sp_Pgr_RasOst"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0" />
+                <TextView
+ 		    android:id="@+id/tv_Id_PgrRasOst"
+ 		    android:layout_width="0dp"
+    		android:layout_height="match_parent"
+    		android:layout_weight="0"
+ 		    android:visibility="invisible" />
+
+         <TextView
+             android:id="@+id/tv_data_rasost1"
+ 		    android:text="ДАТА С"
+ 		    style="@style/TV_h"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data_RasOst"
+ 		    style="@style/ET_t"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="1"/>
+                  <TextView
+                      android:id="@+id/tv_data_rasost2"
+ 		    android:text="ДАТА ПО"
+ 		    style="@style/TV_h"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data_RasOst2"
+ 		    style="@style/ET_t"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="1"/>
+
+    </LinearLayout>
+<TableRow  style="@style/mw0">
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="№ ТОВАРА"/>
+ <TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ГРУППА"/>
+ 				<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="НАИМЕНОВАНИЕ"/>
+ 				<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ПОСТАВЩИК"/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="КОЛ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ЕД.ИЗМ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="СУММА"/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ОСТАТОК"/>
+<TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+    </TableRow>
+    <ListView
+        android:id="@+id/lvRasxodOst"
+            style="@style/mm1" />
+
+    <LinearLayout
+            style="@style/mw0"
+        android:orientation="horizontal" >
+	<Button
+            android:id="@+id/btnExcelRasxodOst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="В EXCEL" />
+        <Button
+            android:id="@+id/btnExitRasxodOst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            style="@style/B"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>

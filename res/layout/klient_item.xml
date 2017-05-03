@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/klient_item_tr"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvIdKlient"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+
+    <TextView
+        android:id="@+id/tvNameKlient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvSconto_perKlient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+<TextView
+        android:id="@+id/tvSconto_sumKlient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+        <TextView
+        android:id="@+id/tvAdresKlient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+
+        <TextView
+        android:id="@+id/tvTelefKlient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+
+        <TextView
+        android:id="@+id/tvPrimKlient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+  
+    <TextView
+        android:id="@+id/tvDataInsKlient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        style="@style/_m1"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnUpdKlient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="ИЗМЕНИТЬ" />
+
+        <Button
+            android:id="@+id/btnDelKlient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="УДАЛИТЬ" />
+    </LinearLayout>
+
+</TableRow>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+<TableRow
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <CheckedTextView
+    android:id="@+id/spt_1"
+    style="?android:attr/spinnerDropDownItemStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:visibility="gone"
+    android:gravity="center_vertical|left"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@drawable/edittext_style"
+    android:textColor="#000000"
+    android:textSize="25sp"
+    android:textStyle="bold" />
+    
+    <CheckedTextView
+    android:id="@+id/spt_2"
+    style="?android:attr/spinnerDropDownItemStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:gravity="center_vertical|right"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@drawable/edittext_style"
+    android:textColor="#000000"
+    android:textSize="25sp"
+    android:textStyle="italic" />
+</TableRow>
+<TableRow
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <CheckedTextView
+    android:id="@+id/spt_3"
+    style="?android:attr/spinnerDropDownItemStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:gravity="center_vertical|left"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@drawable/edittext_style"
+    android:textColor="#5e00ff"
+    android:textSize="25sp"
+    android:textStyle="italic" />
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="0"
+    android:gravity="center_vertical|left"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:text="%"
+    android:background="@drawable/edittext_style"
+    android:textColor="#5e00ff"
+    android:textSize="25sp"
+    android:textStyle="italic" />
+    <CheckedTextView
+    android:id="@+id/spt_4"
+    style="?android:attr/spinnerDropDownItemStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:gravity="center_vertical|right"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@drawable/edittext_style"
+    android:textColor="#5e00ff"
+    android:textSize="25sp"
+    android:textStyle="bold" />
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="0"
+    android:gravity="center_vertical|left"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:text="ГРН"
+    android:background="@drawable/edittext_style"
+    android:textColor="#5e00ff"
+    android:textSize="25sp"
+    android:textStyle="bold" />
+</TableRow>
+</LinearLayout>
