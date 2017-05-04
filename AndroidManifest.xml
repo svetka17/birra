@@ -140,6 +140,18 @@
             android:windowSoftInputMode="stateHidden"
             android:label="Расход и остаток"
             android:screenOrientation="landscape" />
+                                <activity
+            android:name="luce.birra.UserActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="Расход и остаток"
+            android:screenOrientation="landscape" />
+                                                <activity
+            android:name="luce.birra.UserEditActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="Расход и остаток"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

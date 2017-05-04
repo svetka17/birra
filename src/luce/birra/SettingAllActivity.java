@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
+//import android.support.annotation.ColorInt;
 import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -85,7 +85,7 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
             /* Set a new Listener called when user click "select" */
             cp.setCallback(new ColorPickerCallback() {
                 @Override
-                public void onColorChosen(@ColorInt int color) {
+                public void onColorChosen(/*@ColorInt*/ int color) {
                     btnColor1.setBackgroundColor(color);
                 }
             });
@@ -101,7 +101,7 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
             /* Set a new Listener called when user click "select" */
             cp.setCallback(new ColorPickerCallback() {
                 @Override
-                public void onColorChosen(@ColorInt int color) {
+                public void onColorChosen(/*@ColorInt*/ int color) {
                     btnColor2.setBackgroundColor(color);
                 }
             });
@@ -252,7 +252,7 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
 		     break;
 	   case R.id.tvSettingButName1:
 		   	 MainActivity.butName = np.getValue();//sbDKol.getProgress();
-		   	MainActivity.butNameS = (int)(MainActivity.butName/MainActivity.scale);
+		   	//MainActivity.butNameS = (int)(MainActivity.butName/MainActivity.scale);
 		   	int l1=("Õ¿»Ã≈ÕŒ¬¿Õ»≈"+"\n").length(), l2=("Õ¿»Ã≈ÕŒ¬¿Õ»≈"+"\n"+"Œ—“¿“Œ  » ÷≈Õ¿").length();
         	
         	final SpannableStringBuilder text = new SpannableStringBuilder("Õ¿»Ã≈ÕŒ¬¿Õ»≈"+"\n"+"Œ—“¿“Œ  » ÷≈Õ¿"); 

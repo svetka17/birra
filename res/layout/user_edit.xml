@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/user_edit_ll"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/mw1"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            style="@style/wm1"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                android:orientation="horizontal" >
+                
+                <TextView
+                    android:id="@+id/etEditIdUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    style="@style/TV_h" />
+
+                <CheckBox
+                    android:id="@+id/cbEditOkUser"
+                    style="@style/TV_h"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checked="true"
+                    android:editable="true"
+                    android:text="ДЕЙСТВУЮЩИЙ" />
+
+                <CheckBox
+                    android:id="@+id/cbEditAdminUser"
+                    style="@style/TV_h" 
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checked="false"
+                    android:editable="true"
+                    android:text=" ГЛАВНЫЙ"/>
+                
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/TV_h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="ИМЯ (LOGIN)" />
+                
+                <EditText
+                    android:id="@+id/tvEditNameUser"
+                    android:hint="ВВЕДИТЕ ИМЯ"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:singleLine="true"
+                    style="@style/ET_t" >
+                
+                </EditText>
+ 				
+            </LinearLayout>
+
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/TV_h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="ПАРОЛЬ (PASSWORD)" />
+
+            <EditText
+                android:id="@+id/tvEditPasswordUser"
+                android:hint="ВВЕДИТЕ И ЗАПОМНИТЕ ПАРОЛЬ"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:singleLine="true"
+                style="@style/ET_t">
+                
+                </EditText>
+                
+            </LinearLayout>
+<!--              
+            <LinearLayout
+                android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/TV_h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="ДАТА" />
+
+            <TextView
+                android:id="@+id/tvEditDatInsUser"
+                style="@style/TV_h"
+            	android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:inputType="date" />
+                
+            </LinearLayout>
+-->            
+        </LinearLayout>
+
+        
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/mw0" >
+
+        <Button
+            android:id="@+id/btnOkEditUser"
+            style="@style/B"
+            android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+            android:text="ГОТОВО" />
+
+        <Button
+            android:id="@+id/btnExitEditUser"
+            style="@style/B"
+            android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+            android:text="НАЗАД" />
+
+    </LinearLayout>
+
+</LinearLayout>

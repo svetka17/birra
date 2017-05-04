@@ -1,6 +1,6 @@
 package luce.birra.colorpickerdialog;
 
-import android.support.annotation.ColorInt;
+//import android.support.annotation.ColorInt;
 
 /**
  * Created by Patrick Geselbracht on 2017-03-04
@@ -15,6 +15,6 @@ public interface ColorPickerCallback {
      * @param color Color chosen
      */
 
-    void onColorChosen(@ColorInt int color);
+    void onColorChosen(/*@ColorInt*/ int color);
 }
 

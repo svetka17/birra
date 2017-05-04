@@ -548,10 +548,13 @@ void makeDialog() {
 	   svBut.removeAllViewsInLayout();
 	   int count_but=0;
 	   Cursor cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, T._id",null);
+	   //Cursor cc = MainActivity.db.getRawData ("select count(*) c from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
 	   if (cc.moveToFirst()) { 
 	        do {count_but++;
+	        	//count_but=cc.getInt(cc.getColumnIndex("c"));
 	        } while (cc.moveToNext());
 	      }; 
+	     //cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
 	   // scale size font
 	      /*int l=1;
 		   if (cc.moveToFirst()) { 
@@ -565,13 +568,15 @@ void makeDialog() {
 		      }*/
 		   //float sText=((display_w)/(6*scale*scale*l))+scale*5;
 	    	//float sText=MainActivity.sizeSmallButton;
+	    llR.removeView(llbut);
+	    llR.removeView(svBut);
 	    if (count_but<16)
 	    {  /* llbut = new TableLayout(this);
 	    	llbut.setOrientation(TableLayout.HORIZONTAL);
 	    	llbut.setStretchAllColumns(true);
 	        llbut.setShrinkAllColumns(true);*/
-	    	llR.removeView(llbut);
-	    	llR.removeView(svBut);
+	    	//llR.removeView(llbut);
+	    	//llR.removeView(svBut);
 	    
 	    	llR.addView(llbut,
 				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1));  
@@ -583,8 +588,8 @@ void makeDialog() {
 	    	llbut.setOrientation(TableLayout.HORIZONTAL);
 	    	llbut.setStretchAllColumns(true);
 	        llbut.setShrinkAllColumns(true);*/
-	    	llR.removeView(llbut);
-	    	llR.removeView(svBut);
+	    	//llR.removeView(llbut);
+	    	//llR.removeView(svBut);
 	    	
 	    	//svBut = new ScrollView(this);
 	    	//hll_tara_button.setHorizontalScrollBarEnabled(true); //setScrollBarStyle(HorizontalScrollView. HORIZONTAL);
@@ -615,7 +620,7 @@ void makeDialog() {
 	   
 	   //Log.d("MyLog", "setBut id_pgr="+tvIdPgr.getText()+" cc.count="+cc.getCount()+" but.size="+but.size());
 	   //llbut.setMeasureWithLargestChildEnabled(true); 
-	   
+	   int w = (int)(4*MainActivity.h/5)/8;
 	   if (cc.moveToFirst()) { 
 		   
 	        do {
@@ -624,9 +629,11 @@ void makeDialog() {
 	        		row = new TableRow(this);
 	        		//row = new LinearLayout(this);
 	        		//row.setOrientation(LinearLayout.HORIZONTAL);
-	                int w = (int)(4*MainActivity.h/5)/8;
+	                
+	        		//int w = (int)(4*MainActivity.h/5)/8;
 	                row.setMinimumHeight(w);
-	        		//row.setGravity(Gravity.CENTER);
+	        		
+	                //row.setGravity(Gravity.CENTER);
 	                //row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,1));
 	        		 //TableRow.LayoutParams params = new TableRow.LayoutParams();//(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT);
 	 	    		//params.weight=1;
@@ -649,7 +656,8 @@ void makeDialog() {
 	        			ib, 							//indBT
 	        			cc.getInt(cc.getColumnIndex("_id")), //id_tmc
 	        			cc.getString(cc.getColumnIndex("name"))+
-	        			( (cc.getString(cc.getColumnIndex("namep")).equals("")||cc.getString(cc.getColumnIndex("namep")).equals("-íåò-")||cc.getString(cc.getColumnIndex("namep")).equals("ÍÅÒ") )?"":"\n"+cc.getString(cc.getColumnIndex("namep")) ) , //tmc_name
+	        			//( (cc.getString(cc.getColumnIndex("namep")).equals("")||cc.getString(cc.getColumnIndex("namep")).equals("-íåò-")||cc.getString(cc.getColumnIndex("namep")).equals("ÍÅÒ") )?"":"\n"+cc.getString(cc.getColumnIndex("namep")) ) , //tmc_name
+	        			( (cc.getString(cc.getColumnIndex("namep")).equals("")||cc.getString(cc.getColumnIndex("namep")).equals("-íåò-"))?"":"\n"+cc.getString(cc.getColumnIndex("namep")) ) , //tmc_name
 	        			0, 									//val
 	        			cc.getFloat(cc.getColumnIndex("kol")), //ost 
 	        			cc.getInt(cc.getColumnIndex("id_post")),//id_post
@@ -683,7 +691,7 @@ void makeDialog() {
 	        	//textView.setTypeface(null,Typeface.BOLD);
 	        	text.setSpan(style2,l1,l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 	        	//textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); 
-	     
+	    
 	        	but.get(ib).tb.setTextOff(text);//(but.get(ib).tmc_name+"\n"+but.get(ib).ost+but.get(ib).ted+" ÖÅÍÀ "+but.get(ib).price);
 	        	but.get(ib).tb.setTextOn(text);//(but.get(ib).tmc_name+"\n"+but.get(ib).ost+but.get(ib).ted+" ÖÅÍÀ "+but.get(ib).price);
 	        	but.get(ib).tb.setChecked(false);
@@ -1023,6 +1031,14 @@ void makeDialog() {
 		   data.get(combo_pos).put("skidka_sum_itog", data.get(combo_pos).get("summa2"));
 		   sAdapter.notifyDataSetChanged();
 		   //tvDKol.setText("0");
+		float valsum=0;
+		      for (int i=0; i<data.size(); i++) 
+		     		valsum=valsum+MainActivity.StrToFloat(data.get(i).get("skidka_sum").toString() ) ;
+		     		
+		      	if (valsum!=0) etSkidkaPerSum.setText(String.valueOf(MainActivity.round(valsum,2))); else etSkidkaPerSum.setText("");
+		      	
+		   tvDItogo.setText( String.valueOf( MainActivity.StrToFloat(tvSum.getText().toString()) - MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())
+	    			 ));
 		   tvDialogN=0;
 	     break;
 	   case R.id.tvOtherKol_:
@@ -1036,6 +1052,8 @@ void makeDialog() {
 	     break;
 	   case R.id.etCheckSkidka:
 		   etSkidka.setText("");
+		   tvDItogo.setText( String.valueOf( MainActivity.StrToFloat(tvSum.getText().toString()) - MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())
+	    			 ));
 		   tvDialogN=0;
 	     break;
 	   case R.id.etCheckSkidkaPer:
@@ -1054,8 +1072,11 @@ void makeDialog() {
 	             				);
 	      	 }
 	      	 //if (valsum!=0) etSkidkaPerSum.setText(String.valueOf(valsum)); else etSkidkaPerSum.setText("");
-	      	tvSdacha.setText(String.valueOf (
-	      		MainActivity.round(MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString())+MainActivity.StrToFloat(etSkidkaPerSum.getText().toString()) ,2)
+	      	tvDItogo.setText( String.valueOf( MainActivity.StrToFloat(tvSum.getText().toString()) - MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())
+	    			 ));
+	      	
+	      	 tvSdacha.setText(String.valueOf (
+	      		MainActivity.round(MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())/*+MainActivity.StrToFloat(etSkidka.getText().toString())+MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())*/ ,2)
 	      		) );
 	      	 
 		   tvDialogN=0;
@@ -1085,8 +1106,10 @@ void makeDialog() {
 	     		valsum=valsum+MainActivity.StrToFloat(data.get(i).get("skidka_sum").toString() ) ;
 	     		
 	      	if (valsum!=0) etSkidkaPerSum.setText(String.valueOf(MainActivity.round(valsum,2))); else etSkidkaPerSum.setText("");
+	      	tvDItogo.setText( String.valueOf( MainActivity.StrToFloat(tvSum.getText().toString()) - MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())
+	    			 ));
 	      	tvSdacha.setText( String.valueOf (
-	      		MainActivity.round(MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString()) + valsum,2) 
+	      		MainActivity.round(MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())/*+MainActivity.StrToFloat(etSkidka.getText().toString()) + valsum*/,2) 
 	      			) );
 	      	 
 		   sAdapter.notifyDataSetChanged();
@@ -1100,18 +1123,23 @@ void makeDialog() {
 	   case R.id.etCheckNal:
         	 etNal.setText(/*tvDKol.getText()*/String.valueOf(k));
         	 //tvSdacha.setText(String.valueOf (MainActivity.StrToFloat(etNal.getText().toString())-(MainActivity.StrToFloat(tvDItogo.getText().toString())-MainActivity.StrToFloat(etSkidka.getText().toString())) ) );
+        	 //tvDItogo.setText( String.valueOf( MainActivity.StrToFloat(tvSum.getText().toString()) - MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())
+        		//	 ));
         	 tvSdacha.setText(String.valueOf ( 
-        			MainActivity.round( MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString()) + MainActivity.StrToFloat(etSkidkaPerSum.getText().toString()) ,2)
+        			MainActivity.round( MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())/*+MainActivity.StrToFloat(etSkidka.getText().toString()) + MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())*/ ,2)
         			 ) );
         	 
 		   tvDialogN=0;
 	     break;
 	   case R.id.etCheckSkidka:
       	 etSkidka.setText(/*tvDKol.getText()*/String.valueOf(k));
+      	tvDItogo.setText( String.valueOf( MainActivity.StrToFloat(tvSum.getText().toString()) - MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())
+      			 ));
       	 if (MainActivity.StrToFloat(etNal.getText().toString())!=0)
       	 //tvSdacha.setText(String.valueOf (MainActivity.StrToFloat(etNal.getText().toString())-(MainActivity.StrToFloat(tvDItogo.getText().toString())-MainActivity.StrToFloat(etSkidka.getText().toString())) ) );
-      		tvSdacha.setText(String.valueOf ( 
-      			MainActivity.round(	MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString()) + MainActivity.StrToFloat(etSkidkaPerSum.getText().toString()),2)
+      		
+      		 tvSdacha.setText(String.valueOf ( 
+      			MainActivity.round(	MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())/*+MainActivity.StrToFloat(etSkidka.getText().toString()) + MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())*/,2)
       			) );
       	 
 		   tvDialogN=0;
@@ -1136,8 +1164,10 @@ void makeDialog() {
      	}
       	 
       	 if (valsum!=0) etSkidkaPerSum.setText(String.valueOf(MainActivity.round(valsum,2))); else etSkidkaPerSum.setText("");
-      	tvSdacha.setText(String.valueOf ( 
-      		MainActivity.round(	MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString()) + valsum,2)
+      	tvDItogo.setText( String.valueOf( MainActivity.StrToFloat(tvSum.getText().toString()) - MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())
+   			 ));
+      	 tvSdacha.setText(String.valueOf ( 
+      		MainActivity.round(	MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())/*+MainActivity.StrToFloat(etSkidka.getText().toString()) + valsum*/,2)
       		) );
       	 sAdapter.notifyDataSetChanged();
 		 tvDialogN=0;
@@ -1210,6 +1240,10 @@ void makeDialog() {
             		}
             	}
             	if (val!=0) etSkidkaPerSum.setText(String.valueOf(MainActivity.round(val,2))); else etSkidkaPerSum.setText(String.valueOf(""));
+            	
+            	tvDItogo.setText( String.valueOf( MainActivity.StrToFloat(tvSum.getText().toString()) - MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())
+   	    			 ));
+            	
             	sAdapter.notifyDataSetChanged();
     		   tvDialogN=0;
             	//tvEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ed")) );
@@ -1320,15 +1354,17 @@ void makeDialog() {
     	 //tvIdKlient.setText("0"); 
     	 //etNal.setText("0"); 
     	 //tvSdacha.setText("0");
-    	 tvDItogo.setText(tvSum.getText());  
-    
+    	 
+    	 //tvDItogo.setText(tvSum.getText());  
+    	 tvDItogo.setText( String.valueOf( MainActivity.StrToFloat(tvSum.getText().toString()) - MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())
+    			 ));
     	 /*float vals=0;
 	      for (int i=0; i<data.size(); i++) 
 	     		vals=vals+MainActivity.StrToFloat(data.get(i).get("skidka_sum").toString() ) ;
 	     		
 	      	if (vals!=0) etSkidkaPerSum.setText(String.valueOf(vals)); else etSkidkaPerSum.setText("");*/
 	      	tvSdacha.setText( String.valueOf (
-	      		MainActivity.round(	MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())+MainActivity.StrToFloat(etSkidka.getText().toString()) + MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())/*vals*/,2)
+	      		MainActivity.round(	MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())/*+MainActivity.StrToFloat(etSkidka.getText().toString()) + MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())*//*vals*/,2)
 	      		) );
 	      	 
 		   //sAdapter.notifyDataSetChanged();
@@ -1545,6 +1581,7 @@ void makeDialog() {
 
             }
             
+            /*
             Button b=(Button)v.findViewById(R.id.comboX);
              b.setOnClickListener(new OnClickListener() {
 
@@ -1559,7 +1596,7 @@ void makeDialog() {
                 	sAdapter.notifyDataSetChanged();
                 	
                 }
-            });
+            });*/
              
             return v;
         }

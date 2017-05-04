@@ -45,16 +45,16 @@ static int sizeBigText=15;
 static int sizeMediumText=15;
 static int sizeSmallText=15;
 static String pathD = "";
-static int butTara=15;
+static int butTara=21;
 static int butPgr=15;
 static int butName=15;
-static int butNameS=7;
+static int butNameS=12;
 static int tabH=15;
-static int tabI=15;
+static int tabI=13;
 static int tabBut=15;
-static int butMenu=15;
+static int butMenu=20;
 static int tvH=15;
-static int tvI=15;
+static int tvI=17;
 static int seek=50;
 
 // SharedPreferences sPref;
@@ -73,6 +73,30 @@ static int seek=50;
     	else ((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , ti);	
     }
 }*/
+
+/*
+Drawable background = imageView.getBackground();
+if (background instanceof ShapeDrawable) {
+    ((ShapeDrawable)background).getPaint().setColor(ContextCompat.getColor(mContext,R.color.colorToSet));
+} else if (background instanceof GradientDrawable) {
+    ((GradientDrawable)background).setColor(ContextCompat.getColor(mContext,R.color.colorToSet));
+} else if (background instanceof ColorDrawable) {
+    ((ColorDrawable)background).setColor(ContextCompat.getColor(mContext,R.color.colorToSet));
+}
+ * */
+
+/*
+ * //Drawable background;
+ * background = alv.get(i).getBackground();
+if (background instanceof GradientDrawable) {
+GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP, new int[] {color1, color2});
+gradient.setShape(GradientDrawable.RECTANGLE);
+ //gradient.setCornerRadius(10.f);
+ //if (background.equals(alv.get(i).getContext().getResources().getDrawable(R.drawable.edittexth_style)))
+ alv.get(i).setBackgroundDrawable(gradient);
+//((GradientDrawable)background).setColor(color2);
+}*/
+
 
 static void excel(Context cntx, Activity act, String dat1, String dat2, String pgr, String tit, byte metod )
 {
@@ -399,16 +423,16 @@ void saveSetting() {
 
   void loadSetting() {
 	SharedPreferences sPref = getSharedPreferences("BirraPref", MODE_PRIVATE);//getPreferences(MODE_PRIVATE);
-	butTara = sPref.getInt("buttara", (int)(h/15));
-	butPgr = sPref.getInt("butpgr", (int)(h/15));
-    butName = sPref.getInt("butname", (int)(h/23));
-    butNameS = sPref.getInt("butnames", (int)(h/46));
-    tabH = sPref.getInt("tabh", (int)(h/25));
-    tabI = sPref.getInt("tabi", (int)(h/25));
-    tabBut = sPref.getInt("tabbut", (int)(h/30));
-    butMenu = sPref.getInt("butmenu", (int)(h/25));
-    tvH = sPref.getInt("tvh", (int)(h/25));
-    tvI = sPref.getInt("tvi", (int)(h/25));
+	butTara = sPref.getInt("buttara", butTara/*(int)(h/15)*/);
+	butPgr = sPref.getInt("butpgr", butPgr /*(int)(h/15)*/);
+    butName = sPref.getInt("butname", butName /*(int)(h/23)*/);
+    //butNameS = sPref.getInt("butnames", butNameS /*(int)(h/46)*/);
+    tabH = sPref.getInt("tabh", tabH /*(int)(h/25)*/);
+    tabI = sPref.getInt("tabi", tabI /*(int)(h/25)*/);
+    tabBut = sPref.getInt("tabbut", tabBut /*(int)(h/30)*/);
+    butMenu = sPref.getInt("butmenu", butMenu /*(int)(h/25)*/);
+    tvH = sPref.getInt("tvh", tvH /*(int)(h/25)*/);
+    tvI = sPref.getInt("tvi", tvI /*(int)(h/25)*/);
     seek = sPref.getInt("seek", 50);
     //Toast.makeText(this, "настройки загружены", Toast.LENGTH_SHORT).show();
   }
@@ -554,7 +578,7 @@ void saveSetting() {
 		Intent intent;
 		switch (v.getId()) {
 		   case R.id.btnProd:
-			   intent = new Intent(this, ProdActivity.class);
+			   intent = new Intent(this, UserActivity.class);
 			   startActivity(intent);
 		     break;
 		   case R.id.btnPrixod:

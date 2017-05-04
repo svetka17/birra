@@ -6,7 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IntRange;
+//import android.support.annotation.IntRange;
 import android.text.InputFilter;
 import android.view.KeyEvent;
 import android.view.View;
@@ -71,9 +71,9 @@ public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListen
      *                 be place at 0.
      */
     public ColorPicker(Activity activity,
-                       @IntRange(from = 0, to = 255) int red,
-                       @IntRange(from = 0, to = 255) int green,
-                       @IntRange(from = 0, to = 255) int blue) {
+                       /*@IntRange(from = 0, to = 255)*/ int red,
+                       /*@IntRange(from = 0, to = 255)*/ int green,
+                       /*@IntRange(from = 0, to = 255)*/ int blue) {
         this(activity);
 
         this.red = Color.RED;// assertColorValueInRange(red);
@@ -96,10 +96,10 @@ public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListen
      * @since v1.1.0
      */
     public ColorPicker(Activity activity,
-                       @IntRange(from = 0, to = 255) int alpha,
-                       @IntRange(from = 0, to = 255) int red,
-                       @IntRange(from = 0, to = 255) int green,
-                       @IntRange(from = 0, to = 255) int blue) {
+                       /*@IntRange(from = 0, to = 255)*/ int alpha,
+                       /*@IntRange(from = 0, to = 255)*/ int red,
+                       /*@IntRange(from = 0, to = 255)*/ int green,
+                       /*@IntRange(from = 0, to = 255)*/ int blue) {
         this(activity);
 
         this.alpha = 0;//assertColorValueInRange(alpha);

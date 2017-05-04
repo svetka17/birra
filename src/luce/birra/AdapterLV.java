@@ -333,7 +333,18 @@ public void bindView(View view, Context context, final Cursor cursor) {
         tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
 		
     	break;
-    case 7:
+    case 7: break;
+    case 9: 
+    	cb = (CheckBox) view.findViewById(R.id.tvAdminUser);  	
+        cb.setChecked( ((cursor.getInt(cursor.getColumnIndex("admin"))==1)?true:false) );
+        cb.setText(((cursor.getInt(cursor.getColumnIndex("admin"))==1)?"дю":"мер"));
+        
+        tv = (TextView) view.findViewById(R.id.tvDataInsUser);  	
+        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+        
+        tv = (TextView) view.findViewById(R.id.tvPasswordUser);  	
+        tv.setText("********");
+        break;
     case 10:
 		//for (i=0;i<r.length;i++) {
 			//tv = (TextView) view.findViewById(R.id.tvNamePostav);
@@ -354,14 +365,8 @@ public void bindView(View view, Context context, final Cursor cursor) {
             	//MainActivity.db.delRec(namT,getItemId(position));
             	listenerFlag.OnCambiare((byte)1, getItemId(position));
             	//}
-                switch (/*tables*/nT) {
+                /*switch (nT) {
                 case 1:
-                /*	if (getItemId(position)>7)
-                	MainActivity.db.updRec(namT, getItemId(position),
-                			new String[] {"data_del","ok"}, 
-                			new int[] {MainActivity.getIntData(),1}
-                	);
-                	break;*/
                 	//context.get MyCursorLoader.forceLoad();
                 	//contxt.getApplicationContext().getApplicationContext().getClassLoader(). .getSupportLoaderManager().getLoader(0).forceLoad() ;
                 	break;
@@ -378,15 +383,10 @@ public void bindView(View view, Context context, final Cursor cursor) {
                 	//if (getItemId(position)>2)
                 	//((PostavActivity) contxt.getApplicationContext()).getSupportLoaderManager().getLoader(0).forceLoad() ;
                 	break;
-                /*case 3:
-                case 7:	
-                	MainActivity.db.delRec(namT,getItemId(position));
-                	//getSupportLoaderManager().getLoader(0).forceLoad();
-                    break;*/
                 case 5:	
                 case 8:
                     break;
-                    }
+                    }*/
                 }
                 catch(Exception e){
                 	throw new ClassCastException("Table not found: " + namT);
@@ -467,6 +467,16 @@ public void bindView(View view, Context context, final Cursor cursor) {
                     
                     contxt.startActivity(intent);
                     break;
+                case 9:
+                	intent = new Intent(contxt, UserEditActivity.class);
+                    intent.putExtra("UserName", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("name")));
+                    intent.putExtra("UserPassword", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("password")));
+                    intent.putExtra("UserId", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("_id")));
+                    intent.putExtra("UserOk", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("ok")));
+                    intent.putExtra("UserAdmin", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("admin")));
+                    intent.putExtra("UserDataIns", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("data_ins")));
+                    contxt.startActivity(intent);
+                   break;
                 case  4:
                 case  5:
                 case 10:

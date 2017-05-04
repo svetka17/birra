@@ -1,6 +1,6 @@
 package luce.birra.colorpickerdialog;
 
-import android.support.annotation.IntRange;
+//import android.support.annotation.IntRange;
 
 final class ColorFormatHelper {
 
@@ -10,7 +10,7 @@ final class ColorFormatHelper {
      * @param colorValue Color value
      * @return Specified input value if between 0 and 255, otherwise 0
      */
-    static int assertColorValueInRange(@IntRange(from = 0, to = 255) int colorValue) {
+    static int assertColorValueInRange(/*@IntRange(from = 0, to = 255)*/ int colorValue) {
         return ((0 <= colorValue) && (colorValue <= 255)) ? colorValue : 0;
     }
 
@@ -25,9 +25,9 @@ final class ColorFormatHelper {
      * @return HEX String containing the three values
      */
     static String formatColorValues(
-            @IntRange(from = 0, to = 255) int red,
-            @IntRange(from = 0, to = 255) int green,
-            @IntRange(from = 0, to = 255) int blue) {
+            /*@IntRange(from = 0, to = 255)*/ int red,
+            /*@IntRange(from = 0, to = 255)*/ int green,
+            /*@IntRange(from = 0, to = 255)*/ int blue) {
 
         return String.format("%02X%02X%02X",
                 assertColorValueInRange(red),
@@ -49,10 +49,10 @@ final class ColorFormatHelper {
      * @since v1.1.0
      */
     static String formatColorValues(
-            @IntRange(from = 0, to = 255) int alpha,
-            @IntRange(from = 0, to = 255) int red,
-            @IntRange(from = 0, to = 255) int green,
-            @IntRange(from = 0, to = 255) int blue) {
+            /*@IntRange(from = 0, to = 255)*/ int alpha,
+            /*@IntRange(from = 0, to = 255)*/ int red,
+            /*@IntRange(from = 0, to = 255)*/ int green,
+            /*@IntRange(from = 0, to = 255)*/ int blue) {
 
         return String.format("%02X%02X%02X%02X",
                 assertColorValueInRange(alpha),

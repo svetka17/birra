@@ -8,7 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.support.annotation.ColorInt;
+//import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -25,7 +25,7 @@ class MaterialColorPickerTextSeekBar extends SeekBar {
     private Paint textPaint;
     private Rect textRect;
 
-    @ColorInt
+ //   @ColorInt
     private int textColor;
 
  //   @Dimension(unit = 2)

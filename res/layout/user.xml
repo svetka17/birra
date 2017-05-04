@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/user_ll"
+    android:orientation="vertical" >
+
+<TableRow  style="@style/mw0">
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ИД№"/>
+ 		
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="2"
+ 		    android:text="ИМЯ"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="2"
+ 		    android:text="ПАРОЛЬ"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ГЛАВНЫЙ"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ДАТА СОЗДАНИЯ"/>
+ 		<TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+
+</TableRow>
+
+    <ListView
+        android:id="@+id/lvUser"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+<!--
+<GridView
+        android:id="@+id/lvPgr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:numColumns="1"
+         >
+ 
+    </GridView>
+-->    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnAddUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="ДОБАВИТЬ НОВЫЙ" />
+
+        <Button
+            android:id="@+id/btnExitUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>
