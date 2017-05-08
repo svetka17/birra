@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import luce.birra.DialogScreen.DialogListener;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -25,6 +24,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
+
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +48,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import luce.birra.DialogScreen.DialogListener;
 public class RasxodActivity extends FragmentActivity implements OnCheckedChangeListener,
 SeekBar.OnSeekBarChangeListener
 {
@@ -157,7 +158,8 @@ SeekBar.OnSeekBarChangeListener
   
   static class tranDB {
 	  //addRecRASXOD(int id_tmc, float kol, float price, int id_post, int id_klient, String prim, int data_del, int data_ins, byte ok)
-	   byte tagL; //порядковый номер в чеке в combo
+	   byte tag; //порядковый номер в чеке в combo (для тары = нмер в комбо что было понятно к какой позиции цека тара - для удаления)
+	   byte tagL; //порядковый номер в чеке в combo (для тары = -1)
 	   byte tagB; //таг кнопки
 	   int id_tmc;
 	   float kol;
@@ -166,7 +168,8 @@ SeekBar.OnSeekBarChangeListener
 	   int id_post;
 	   int id_klient; //пока ничего не пишется
 	   String prim;
-	  tranDB(byte tagL, byte tagB, int id_tmc, float kol, byte ed, float price, int id_post,int id_klient, String prim){
+	  tranDB(byte tag, byte tagL, byte tagB, int id_tmc, float kol, byte ed, float price, int id_post,int id_klient, String prim){
+		  this.tag=tag;
 		  this.tagL=tagL;
 		  this.tagB=tagB;
 		  this.id_tmc=id_tmc;
@@ -337,7 +340,14 @@ void makeDialog() {
       } else cTara.close();
     
     CountTara=ib;
-
+    
+    /*get_count_but = MainActivity.db.getRawData ("select count(*) as c from tmc T left join ostat as O on O.id_tmc=T._id where O.kol>0 and T.ok=1 and T.vis=1 ",null);
+    if (get_count_but.moveToFirst()) { 
+        do {CountTara=(byte)(CountTara-get_count_but.getInt(get_count_but.getColumnIndex("c")));
+        } while (get_count_but.moveToNext());
+      }; 
+    	get_count_but.close();*/
+    	//Log.d("MyLog", " CountTara "+CountTara);
     setPgr();
 
     
@@ -433,7 +443,7 @@ void makeDialog() {
 	   llbut.removeAllViewsInLayout();
 	   svBut.removeAllViewsInLayout();
 	   
-	   int l=1;
+	   /*int l=1;
 	   if (c.moveToFirst()) { 
 		   
 	        do {	        	
@@ -442,10 +452,10 @@ void makeDialog() {
 	        		if (n[i].length()>l) l=n[i].length();
 	        } while (c.moveToNext());
 	        
-	      }
+	      }*/
 	   //float sText=((display_w)/(4*scale*scale*l))+scale*5;
 	   //float sText=MainActivity.sizeSmallButton;
-	    if (count_but_pgr<19)
+	    if (count_but_pgr<16)
 	    {  /* llbut = new TableLayout(this);
 	    	llbut.setOrientation(TableLayout.HORIZONTAL);*/
 	    	llR.removeView(llbut);
@@ -603,29 +613,38 @@ void makeDialog() {
 	    
 	    //MinimumWidth((int)(display_w/6));
 	   byte ib;
+
 	   if (tranz.size()==0)
 	   {
 	   for (int i=but.size()-1; i>=CountTara; i--) but.remove(i);
 	   ib=CountTara;
+
 	   }
 	   else
-		   {for (int i=but.size()-1; i>=CountTara; i--) but.get(i).tb.setVisibility(ToggleButton.GONE);// remove(i);
+		   {
+		   for (int i=but.size()-1; i>=CountTara; i--) 
+			   {
+			
+			   but.get(i).tb.setVisibility(ToggleButton.GONE);// remove(i);
+			   }
+			   
 		   ib=(byte)but.size();
 		   }
 	   //llbut.removeAllViewsInLayout();  
 	   
 	   //Log.d("MyLog", "setbut_del_count_tara="+CountTara+" but.size="+but.size()+" idPgr="+tvIdPgr.getText());
-	   
-	   //Log.d("MyLog", "setBut id_pgr="+tvIdPgr.getText());
+
 	   
 	   //Log.d("MyLog", "setBut id_pgr="+tvIdPgr.getText()+" cc.count="+cc.getCount()+" but.size="+but.size());
 	   //llbut.setMeasureWithLargestChildEnabled(true); 
-	   int w = (int)(4*MainActivity.h/5)/8;
+	   int w = (int)((4*MainActivity.h/5)/8);
+	   int tmp_row=1;
 	   if (cc.moveToFirst()) { 
 		   
 	        do {
 	        	
-	        	if (ib%3==CountTara%3) {
+	        	if (/*ib%3==CountTara%3*/tmp_row%3==1) {
+	        
 	        		row = new TableRow(this);
 	        		//row = new LinearLayout(this);
 	        		//row.setOrientation(LinearLayout.HORIZONTAL);
@@ -652,6 +671,7 @@ void makeDialog() {
 	        	//params = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.MATCH_PARENT);
 	            //params.span = 6;
 	        	//but.add(new chB(byte indBT, int id_tmc, String tmc_name, float val, float ost, int post, float kol, float price, byte ed, String ted, ToggleButton tb))
+	        
 	        	but.add(new chB(
 	        			ib, 							//indBT
 	        			cc.getInt(cc.getColumnIndex("_id")), //id_tmc
@@ -749,6 +769,8 @@ void makeDialog() {
 	        	
 	        	//Log.d("MyLog", "add button");
 	        	ib++;
+	        	tmp_row++;
+	        
 	        } while (cc.moveToNext());
 	        
 	      } //else c.close();
@@ -795,10 +817,10 @@ void makeDialog() {
    		      sAdapter.notifyDataSetChanged();
    		   if (Btara!=-2)	
    	{
-   	tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, but.get(Btara).val, but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "своя тара"));
+   	tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, but.get(Btara).val, but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "своя тара"));
    	sumI=sumI+but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/);}
    		   else
-   		{tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/) 
+   		{tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/) 
    				, but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "своя тара"));
    	   	sumI=sumI+but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
    	   			;}
@@ -831,14 +853,17 @@ void makeDialog() {
 		      
    		
 		      sAdapter.notifyDataSetChanged();
-		      if (Btara!=-2) {	      
-   	tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, but.get(Btara).val,but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "с тарой"));	
-       tranz.add(new tranDB(/*(byte)(data.size()-1)*/(byte) -1 /*если тара, то позиция в чеке -1*/, Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "тара"));
-       sumI=sumI+(but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/)+but.get(Btara).price);
+		      if (Btara!=-2) {	
+		    	 // Log.d("MyLog", "tara1="+(byte)(data.size()-1));
+   	tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, but.get(Btara).val,but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "с тарой"));	
+   	
+   	tranz.add(new tranDB((byte)(data.size()-1),(byte) -1 /*если тара, то позиция в чеке -1*/, Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "тара"));
+   	  
+   	sumI=sumI+(but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/)+but.get(Btara).price);
 		      }
 		      else
 			      
-		    	   	{tranz.add(new tranDB((byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, MainActivity.StrToFloat(tvKol.getText().toString()),but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "пакет"));	
+		    	   	{tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc, MainActivity.StrToFloat(tvKol.getText().toString()),but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "пакет"));	
 		    	      // tranz.add(new tranDB((byte)(data.size()-1), Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "tara"));
 		    	       sumI=sumI+(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
 		    	    		   +0);}
@@ -934,23 +959,27 @@ void makeDialog() {
     if (MainActivity.StrToFloat(etSkidka.getText().toString())!=0)
    		MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat(etSkidka.getText().toString()), (byte)4, 0, 0, (int)cou, "СКИДКА "+etSkidka.getText().toString()+"ГРН", MainActivity.getIntDataTime(), (byte)0);
 
-   	
+    //Log.d("MyLog", "0tranz="+tranz.size());
+
     for (int i=0; i<tranz.size(); i++) {
    		
    	long tmp = MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc,
    			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
-
+   	
+  	//Log.d("MyLog", "data="+data.get(tranz.get(i).tagL).get("skidka_sum").toString());
    	//эта жесть создает скидку по позиции если она есть в чеке (в поле rasxod.ok пишу _id расхода, по которой скидка)
    	//Log.d("MyLog", tranz.get(i).tagL+" ");
-   	if (tranz.get(i).tagL!=-1 && MainActivity.StrToFloat( data.get(tranz.get(i).tagL).get("skidka_sum").toString() )!=0 )
-   		MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat( data.get(tranz.get(i).tagL).get("skidka_sum").toString() ), (byte)4, 0, 0, (int)cou, "СКИДКА ПО ПОЗИЦИИ "+tmp+":"+data.get(tranz.get(i).tagL).get("skidka_sum").toString()+"ГРН", MainActivity.getIntDataTime(),(int)tmp);
-   	
+   	if (tranz.get(i).tagL!=-1 /*&& MainActivity.StrToFloat( data.get(tranz.get(i).tagL).get("skidka_sum").toString() )!=0*/ )
+   	 if (MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() )!=0)
+   		MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() ), (byte)4, 0, 0, (int)cou, "СКИДКА ПО ПОЗИЦИИ "+tmp+":"+data.get(tranz.get(i).tag).get("skidka_sum").toString()+"ГРН", MainActivity.getIntDataTime(),(int)tmp);
+  
    	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
    	if (but.get(tranz.get(i).tagB).ost<=0)//если кол-во <0 то добавляем остаток по приходу
    	{
    		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
    		but.get(tranz.get(i).tagB).ost=1;
    	}
+ 
    	if (tranz.get(i).tagB>CountTara-1) {
    		int l1=(but.get(tranz.get(i).tagB).tmc_name+"\n").length(), l2=(but.get(tranz.get(i).tagB).tmc_name+"\n"+but.get(tranz.get(i).tagB).ost+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+but.get(tranz.get(i).tagB).price).length();
        	final SpannableStringBuilder text = new SpannableStringBuilder(but.get(tranz.get(i).tagB).tmc_name+"\n"+but.get(tranz.get(i).tagB).ost+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+but.get(tranz.get(i).tagB).price); 
@@ -969,7 +998,7 @@ void makeDialog() {
    	}
    	
    	//tvCombo.setText("");
-   	
+
    	//Toast.makeText(RasxodActivity.this, "ЧЕК № "+cou+" НА СУММУ:"+tvSum.getText().toString(), Toast.LENGTH_LONG).show();
    	String sChek="";
    	for (int i=0; i<data.size(); i++) 
@@ -1581,22 +1610,32 @@ void makeDialog() {
 
             }
             
-            /*
+            
             Button b=(Button)v.findViewById(R.id.comboX);
              b.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View arg0) {
-                    //Toast.makeText(RasxodActivity.this,dataSet.get("summa").toString()+" position "+pos,Toast.LENGTH_SHORT).show();
+                	
+                	//Toast.makeText(RasxodActivity.this,dataSet.get("summa").toString()+" position "+pos,Toast.LENGTH_SHORT).show();
                 	sumI=sumI-Float.parseFloat(dataSet.get("summa").toString());
                 	tvSum.setText(String.valueOf(sumI));
-                	if (tvDialogN!=0) tvDItogo.setText(String.valueOf(sumI));
-                	for (int i=0; i<tranz.size(); i++) {if (tranz.get(i).tagL==(byte)pos) {tranz.remove(i);} }
+                	//if (tvDialogN!=0) tvDItogo.setText(String.valueOf(sumI));
+                	//for (int i=0; i<tranz.size(); i++)
+                	for (int i=tranz.size()-1; i>=0; i--) 
+                	//{
+                		if (tranz.get(i).tag==(byte)pos) tranz.remove(i); 
+                	//}
+                	
+                	for (int i=tranz.size()-1; i>=0; i--)
+                	//{
+                		if (tranz.get(i).tag>=pos ) tranz.get(i).tag=(byte)(tranz.get(i).tag-1);
+                	//}
                 	data.remove(pos);
                 	sAdapter.notifyDataSetChanged();
-                	
+                
                 }
-            });*/
+            });
              
             return v;
         }
@@ -1661,7 +1700,7 @@ public void onStopTrackingTouch(SeekBar seekBar) {
 	//int leftValue = progress;
 	  //int rightValue = seekBar.getMax() - progress;
 	  // настраиваем вес
-	if (seekBar.getProgress()>30 && seekBar.getProgress()<70)
+	if (seekBar.getProgress()>20 && seekBar.getProgress()<80)
 	{
 	  llLP.weight = seekBar.getProgress();
 	  llRP.weight = seekBar.getMax()-seekBar.getProgress();

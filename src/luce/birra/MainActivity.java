@@ -56,7 +56,10 @@ static int butMenu=20;
 static int tvH=15;
 static int tvI=17;
 static int seek=50;
-
+static String usr = "";
+static byte access=0;
+int but_menu=0;
+static String my_pass="svetka";
 // SharedPreferences sPref;
 /*static void setSizeFont(ViewGroup mlayout,byte sB, byte sH, byte sI) {
 	float b = (sB==1)?sizeBigButton:((sB==2)?sizeMediumButton:sizeSmallButton);
@@ -249,7 +252,17 @@ static void setSizeFontMain(ViewGroup mlayout) {
     	else 
     		if (((TextView)alv.get(i)).getParent() instanceof TableRow) ((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tabH);
     		else
-    		((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvH);	
+    		{ //int l=1; 
+    		String[] n = ((TextView)alv.get(i)).getText().toString().split(" ");
+        	//for (int ii=0; ii<n.length; ii++ )
+        		//if (n[ii].length()>l) l=n[ii].length();
+        	
+    		//Log.d("MyLog", "text = "+((TextView)alv.get(i)).getText().toString()+" l="+n.length);
+        		if (n.length==1)
+    			((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvH);
+        		else
+        			((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvH/2);
+    		}
     }
 }
 
@@ -417,6 +430,7 @@ void saveSetting() {
 	    ed.putInt("tvh", tvH );
 	    ed.putInt("tvi", tvI );
 	    ed.putInt("seek", seek );
+	    ed.putString("usr", usr );
 	    ed.commit();
 	    //Toast.makeText(this, "настройки сохранены", Toast.LENGTH_SHORT).show();
 	  }
@@ -434,8 +448,64 @@ void saveSetting() {
     tvH = sPref.getInt("tvh", tvH /*(int)(h/25)*/);
     tvI = sPref.getInt("tvi", tvI /*(int)(h/25)*/);
     seek = sPref.getInt("seek", 50);
+    usr = sPref.getString("usr", "");
     //Toast.makeText(this, "настройки загружены", Toast.LENGTH_SHORT).show();
   }
+  
+  void makeDialog(int accs) {
+	  final int acc = accs;
+		DialogScreen getkol = new DialogScreen(MainActivity.this,MainActivity.this,accs)
+		 .setDialogScreenListener(new DialogListener() {
+			@Override
+			public void OnSelectedKol(float k) {
+				//Log.d("MyLog", "acc = "+acc);
+				//Log.d("MyLog", "k = "+k);
+				if (acc==-2) 
+				{	Intent intent;
+					if (k==1)
+						switch (but_menu) {
+						   case R.id.btnProd:
+							   intent = new Intent(MainActivity.this, UserActivity.class);
+							   startActivity(intent);
+						     break;
+						   case R.id.btnPrixod:
+							   intent = new Intent(MainActivity.this, PrixodActivity.class);
+							   startActivity(intent);
+						     break;
+						   case R.id.btnOstat:
+							   intent = new Intent(MainActivity.this, OstatActivity.class);
+							   startActivity(intent);
+						     break;
+						   case R.id.btnAbout:
+							   intent = new Intent(MainActivity.this, SettingAllActivity.class);
+							   startActivity(intent);
+							   break;
+						   case R.id.btnSettingSpr:
+							   intent = new Intent(MainActivity.this, SprActivity.class);
+							   startActivity(intent);
+							   break;
+						   case R.id.btnKassa:
+							   intent = new Intent(MainActivity.this, OtchetActivity.class);
+							   startActivity(intent);
+							   break;
+						   }
+				} 
+				
+				else
+				if (k!=1) MainActivity.this.finish();
+				/*else
+				{	Cursor c = MainActivity.db.getRawData ("select count(*) c from user where upper(trim(name))=upper(trim('"+lgn.getText().toString()+"')) and password='"+psw.getText().toString()+"'"+s_adm,null);
+            	int tmp=0;
+            	if (c.moveToFirst()) { 
+                    do {tmp=c.getInt(c.getColumnIndex("c"));
+                    } while (c.moveToNext());
+                  }; 
+                c.close();
+					access=;
+				}*/
+			}
+		}) ;getkol.show();
+	}  
   
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -478,6 +548,7 @@ void saveSetting() {
         h = display.getHeight();  // deprecated, но работает 
         loadSetting();
         MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.main_ll));
+        makeDialog(-1);
         /*
         int density= getResources().getDisplayMetrics().densityDpi;
 
@@ -571,11 +642,26 @@ void saveSetting() {
       super.onDestroy();
       //db.close();
       saveSetting();
+      //this.finishAffinity();
+      //Log.d("MyLog", "MainActivity: onDestroy()");
+      android.os.Process.killProcess(android.os.Process.myPid());
     }
     
 	@Override
 	public void onClick(View v) {
 		Intent intent;
+	if ( v.getId() == R.id.btnRasxod)
+		   {intent = new Intent(this, RasxodActivity.class);
+		   startActivity(intent);}
+	else
+		if (v.getId() == R.id.btnExit) finish();
+		else
+		{ 
+		if (access!=1)
+		{but_menu=v.getId();
+		makeDialog(-2);}
+
+		else
 		switch (v.getId()) {
 		   case R.id.btnProd:
 			   intent = new Intent(this, UserActivity.class);
@@ -589,10 +675,10 @@ void saveSetting() {
 			   intent = new Intent(this, OstatActivity.class);
 			   startActivity(intent);
 		     break;
-		   case R.id.btnRasxod:
+		   /*case R.id.btnRasxod:
 			   intent = new Intent(this, RasxodActivity.class);
 			   startActivity(intent);
-			   break;
+			   break;*/
 		   case R.id.btnAbout:
 			   intent = new Intent(this, SettingAllActivity.class);
 			   startActivity(intent);
@@ -609,52 +695,14 @@ void saveSetting() {
 		   case R.id.btnKassa:
 			   intent = new Intent(this, OtchetActivity.class);
 			   startActivity(intent);
-			   //Log.d("MyLog", "MainActivity: tmc "+db.getAllData("tmc").getCount());
-			   /////////////////////////////////////////////////////////////////////////////////////////////////
-			  /* File file   = null;
-			   String columnString =   "\"PersonName\",\"Gender\",\"Street1\",\"postOffice\",\"Age\"";
-			   String dataString   =   "\"" + "svetka" +"\",\"" + "dona" + "\",\"" + "kievskay" + "\",\"" + "office"+ "\",\"" + "36.8" + "\"";
-			   String combinedString = columnString + "\n" + dataString;
-			   File root   = Environment.getExternalStorageDirectory();
-			   Uri u1  =   null;
 			   
-			   if (root.canWrite()){
-			       File dir    =   new File (root.getAbsolutePath() + "/PersonData");
-			        dir.mkdirs();
-			        file   =   new File(dir, "Data.csv");
-			        FileOutputStream out   =   null;
-			       try {
-			           out = new FileOutputStream(file);
-			           } catch (FileNotFoundException e) {
-			               e.printStackTrace();
-			           }
-			           try {
-			               out.write(combinedString.getBytes());
-			           } catch (IOException e) {
-			               e.printStackTrace();
-			           }
-			           try {
-			               out.close();
-			           } catch (IOException e) {
-			               e.printStackTrace();
-			           }
-			       }
-			   
-			   //Uri u1  =   null;
-			   u1  =   Uri.fromFile(file);
-
-			   Intent sendIntent = new Intent(Intent.ACTION_SEND);
-			   sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Person Details");
-			   sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
-			   sendIntent.setType("text/html");
-			   startActivity(sendIntent);
-		*/
-			   //////////////////////////////////////////////////////////////////////////////////////////////////////
 			   //db.delRec("tmc", 6);
-			   break;
-		   case R.id.btnExit:
+			//   break;
+		  /* case R.id.btnExit:
 		     finish();
-		     break;
+		     break;*/
 		   }
+		
+		}
 	}
 }

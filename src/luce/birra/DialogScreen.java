@@ -1,22 +1,21 @@
 package luce.birra;
 
-import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.database.Cursor;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 public class DialogScreen extends AlertDialog.Builder {
@@ -26,7 +25,7 @@ public class DialogScreen extends AlertDialog.Builder {
 	//public static final int IDD_RATE = 3;
 	
 	String strDialog = "";
-	static TextView tvDKol;
+	//static TextView tvDKol;
 	String regexp_numb = "\\-?\\d+(\\.\\d{0,})?";
 	//float kol;
 	private DialogListener listener;
@@ -67,6 +66,78 @@ public class DialogScreen extends AlertDialog.Builder {
 	public DialogScreen(Context context, Activity activity, int titul) {
         super(context);
         switch(titul) {
+        case -2:
+        case -1: 
+        	TableLayout Lview = (TableLayout) activity.getLayoutInflater().inflate(R.layout.login_app, null);
+    	       MainActivity.setSizeFontMain((ViewGroup) Lview);
+    	       final EditText lgn = (EditText) Lview.findViewById(R.id.etUserName);
+    	       final EditText psw = (EditText) Lview.findViewById(R.id.etUserPassword);
+    	       final int tit = titul;
+    	       lgn.setText(MainActivity.usr);
+    	       
+                    setView(Lview).
+            setPositiveButton("ГОТОВО", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                	//Log.d("MyLog", "pass = "+psw.getText());
+                	String s_adm="";
+                	if (tit==-2) s_adm=" and admin=1 ";
+                	if (psw.getText().toString().equals(MainActivity.my_pass)) {MainActivity.access=1; listener.OnSelectedKol(1);}
+                	else
+                	{
+                		 /*c = MainActivity.db.getRawData ("select admin c, name from user where upper(trim(name))=upper(trim('"+lgn.getText().toString()+"')) and password='"+psw.getText().toString()+"'",null);
+                    	if (c.moveToFirst()) { 
+                            do {if (c.getInt(c.getColumnIndex("c"))==1) {MainActivity.access=1; }
+                            } while (c.moveToNext());
+                          }; 
+                        c.close(); */
+                		//c = MainActivity.db.getRawData ("select count(*) c from user where upper(trim(name))=upper(trim('"+lgn.getText().toString()+"')) and password='"+psw.getText().toString()+"'"+s_adm,null);
+                		//String ss = "select _id, admin c, name from user where upper(trim(name))=upper(trim('"+lgn.getText().toString()+"')) and password='"+psw.getText().toString()+"'"+s_adm;
+                		Cursor c = MainActivity.db.getRawData ("select _id, admin c, name from user where trim(name) = trim('"+lgn.getText().toString()+"') and trim(password) = trim('"+psw.getText().toString()+"')"+s_adm,null);
+                		//Log.d("MyLog", "cursor "+ss);
+                	int tmp=-1;
+                	if (c.moveToFirst()) { 
+                        do {
+                        	//Log.d("MyLog", "cursor "+c.getInt(c.getColumnIndex("_id")));
+                        	tmp=c.getInt(c.getColumnIndex("_id")); MainActivity.usr=c.getString(c.getColumnIndex("name"));
+                        MainActivity.access=(byte)c.getInt(c.getColumnIndex("c"));
+                        } while (c.moveToNext());
+                      }; 
+                    c.close();
+                    if (tmp!=-1) listener.OnSelectedKol(1); else listener.OnSelectedKol(2);
+                	/*if (tmp==1)
+                    {MainActivity.usr=lgn.getText().toString(); listener.OnSelectedKol(1);}
+                	else
+                	{
+                		c = MainActivity.db.getRawData ("select count(*) c from user where admin=1 and password='"+psw.getText().toString()+"'",null);
+                    	tmp=0;
+                    	if (c.moveToFirst()) { 
+                            do {tmp=c.getInt(c.getColumnIndex("c"));
+                            } while (c.moveToNext());
+                          }; 
+                        c.close();
+                        if (tmp>0) {MainActivity.usr=lgn.getText().toString(); MainActivity.access=1; listener.OnSelectedKol(1);} else listener.OnSelectedKol(2);
+                	}*/
+                }	
+                }
+            })
+            .setNegativeButton("ОТМЕНА", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					listener.OnSelectedKol(2);
+				}
+			})
+            .setCancelable(false)
+			/*.setOnDismissListener(new DialogInterface.OnDismissListener() {	
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					//Log.d("MyLog", "dismiss");
+					listener.OnSelectedKol(2);						
+				}
+			})*/
+			.setTitle("ВВЕДИТЕ ИМЯ ПОЛЬЗОВАТЕЛЯ И ПАРОЛЬ");
+            break;
 		case 0: 
 			/*OnDateSetListener myCallBack = new OnDateSetListener() {
 			    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) 
@@ -136,7 +207,7 @@ public class DialogScreen extends AlertDialog.Builder {
 	       MainActivity.setSizeFontKalk((ViewGroup) Dview);
 	       // устанавливаем ее, как содержимое тела диалога
 	       
-	       // находим TexView для отображения кол-ва
+	       final TextView tvDKol;
 	       tvDKol = (TextView) Dview.findViewById(R.id.tvOtherKolD);
 	       tvDKol.setText("");
 	    	//tvDKol.setText(strDialog);

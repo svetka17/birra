@@ -25,7 +25,7 @@ public class DB {
 		
 	
   private static final String DB_NAME = "birraDB";
-  private static final int DB_VERSION = 10;
+  private static final int DB_VERSION = 11;
   //private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
   //private static final String DB_TABLE = "mytab";
    
@@ -55,6 +55,7 @@ public class DB {
     mDBHelper = new DBHelper(mCtx, DB_NAME, null, DB_VERSION);
     mDB = mDBHelper.getWritableDatabase();
     mDB.execSQL("PRAGMA foreign_keys = ON;");
+   // mDB.execSQL("PRAGMA case_sensitive_like=OFF;");
   }
    
   // закрыть подключение
@@ -471,7 +472,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "ok integer default 0);");
           
           db.execSQL("INSERT or replace INTO karta_klient (_id,name,ok,sconto_sum,sconto_per) VALUES(0,'0%',0,0,0)");
-          db.execSQL("INSERT or replace INTO user (_id,name,password,ok,admin) VALUES(0,'svetka','1',1,1)");
+          db.execSQL("INSERT or replace INTO user (_id,name,password,ok,admin) VALUES(0,'САША','1',1,1)");
           db.execSQL("INSERT or replace INTO foo (_id,name) VALUES(0,'-нет-')");
           db.execSQL("INSERT or replace INTO postav (_id,name) VALUES(0,'-нет-')");
           db.execSQL("INSERT or replace INTO klient (_id,name) VALUES(0,'-нет-')");
@@ -503,6 +504,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
           db.execSQL("CREATE INDEX ost_post ON ostat (id_post);");
           db.execSQL("CREATE INDEX ost_kol ON ostat (kol);");
           db.execSQL("CREATE INDEX ost_sumka ON ostat (sumka);");
+          db.execSQL("CREATE INDEX tmc_pos ON tmc (pos);");
+          db.execSQL("CREATE INDEX tmcpgr ON tmc (pgr);");
+          db.execSQL("CREATE INDEX tmc_vis ON tmc (vis);");
           Log.d("MyLog", " --- onCreate create all table --- ");
           //////prixod
           db.execSQL("CREATE TRIGGER pri_ins1 " +
@@ -614,7 +618,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	Log.d("MyLog", " --- onUpgrade database --- ");
-    	if (newVersion == 10) {
+    	if (newVersion == 11) {
     	    db.beginTransaction();
     	    try {
     	    	
@@ -784,7 +788,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "data_ins integer,"
     	                  + "ok integer default 0);");
     	          db.execSQL("INSERT or replace INTO karta_klient (_id,name,ok,sconto_sum,sconto_per) VALUES(0,'0%',0,1,1)");
-    	          db.execSQL("INSERT or replace INTO user (_id,name,password,ok,admin) VALUES(0,'svetka','1',1,1)");
+    	          db.execSQL("INSERT or replace INTO user (_id,name,password,ok,admin) VALUES(0,'САША','1',1,1)");
     	          db.execSQL("INSERT or replace INTO foo (_id,name) VALUES(0,'-нет-')");
     	          db.execSQL("INSERT or replace INTO postav (_id,name) VALUES(0,'-нет-')");
     	          db.execSQL("INSERT or replace INTO klient (_id,name) VALUES(0,'-нет-')");
@@ -816,6 +820,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("CREATE INDEX ost_post ON ostat (id_post);");
     	          db.execSQL("CREATE INDEX ost_kol ON ostat (kol);");
     	          db.execSQL("CREATE INDEX ost_sumka ON ostat (sumka);");
+    	          db.execSQL("CREATE INDEX tmc_pos ON tmc (pos);");
+    	          db.execSQL("CREATE INDEX tmcpgr ON tmc (pgr);");
+    	          db.execSQL("CREATE INDEX tmc_vis ON tmc (vis);");
     	          Log.d("MyLog", " --- onUpgrade create all table --- ");
     	          //////prixod
     	          db.execSQL("CREATE TRIGGER pri_ins1 " +

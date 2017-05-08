@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/login_ll"
+    android:orientation="vertical" >
+
+<TableRow
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="end|center_vertical"
+        android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+        android:text="ИМЯ ПОЛЬЗОВАТЕЛЯ" />
+
+        <EditText
+            android:id="@+id/etUserName"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:inputType="textCapCharacters"
+            android:text="" />
+<!--              <requestFocus />
+    </EditText>
+-->
+ </TableRow>   
+ <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="end|center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="ПАРОЛЬ" />
+
+    <EditText
+        android:id="@+id/etUserPassword"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="left|center_vertical"
+        android:ems="10"
+        android:inputType="textPassword" >
+ 
+        <requestFocus />
+    </EditText>
+
+ </TableRow>  
+<!--  <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    <Button
+            android:id="@+id/btnExitApp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="НАЗАД" />
+
+        <Button
+            android:id="@+id/btnOkApp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="ГОТОВО" />
+
+ </TableRow>  
+--> 
+    </TableLayout>

@@ -75,23 +75,28 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llseekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_weight="5"
         android:orientation="vertical" >
 
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_weight="0"
             android:max="100"
-            android:progress="50" />
+            android:progress="50" 
+android:thumb="@drawable/thumba" />
+
 <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal" >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="horizontal" >
+
         <LinearLayout
             android:id="@+id/llL"
             android:layout_width="0dp"
@@ -160,7 +165,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/tara_chek"
+                    android:background="@drawable/summa_chek"
                     android:gravity="center_vertical|center_horizontal" />
                 <Button
                 android:id="@+id/btnXRasxod_x"
@@ -408,10 +413,11 @@
             android:id="@+id/llR"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="vertical" >
                 
             </LinearLayout>
+
 <LinearLayout
     android:id="@+id/llR_"
     android:layout_width="match_parent"
