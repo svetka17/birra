@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -138,7 +140,78 @@ public class DialogScreen extends AlertDialog.Builder {
 			})*/
 			.setTitle("¬¬≈ƒ»“≈ »Ãﬂ œŒÀ‹«Œ¬¿“≈Àﬂ » œ¿–ŒÀ‹");
             break;
-		case 0: 
+        case -3: 
+        	final LinearLayout LLview = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.color_picker, null);
+    	       //MainActivity.setSizeFontMain((ViewGroup) LLview);
+    	       final SeekBar sbr = (SeekBar) LLview.findViewById(R.id.sbRed1);
+    	       final SeekBar sbg = (SeekBar) LLview.findViewById(R.id.sbGreen1);
+    	       final SeekBar sbb = (SeekBar) LLview.findViewById(R.id.sbBlue1);
+    	       //final int tit = titul;
+    	       sbr.setProgress(MainActivity.red1);
+    	       sbg.setProgress(MainActivity.green1);
+    	       sbb.setProgress(MainActivity.blue1);
+    	       LLview.setBackgroundColor(0xff000000 + sbr.getProgress() * 0x10000 + sbg.getProgress() * 0x100 + sbb.getProgress());
+    	       sbr.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+				@Override
+				public void onStopTrackingTouch(SeekBar arg0) {}
+				@Override
+				public void onStartTrackingTouch(SeekBar arg0) {}
+				@Override
+				public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+					LLview.setBackgroundColor(0xff000000 + sbr.getProgress() * 0x10000 + sbg.getProgress() * 0x100 + sbb.getProgress());
+				}
+			});
+    	       sbg.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+   				@Override
+   				public void onStopTrackingTouch(SeekBar arg0) {}
+   				@Override
+   				public void onStartTrackingTouch(SeekBar arg0) {}
+   				@Override
+   				public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+   					LLview.setBackgroundColor(0xff000000 + sbr.getProgress() * 0x10000 + sbg.getProgress() * 0x100 + sbb.getProgress());
+   				}
+   			});
+    	       sbb.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+   				@Override
+   				public void onStopTrackingTouch(SeekBar arg0) {}
+   				@Override
+   				public void onStartTrackingTouch(SeekBar arg0) {}
+   				@Override
+   				public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+   					LLview.setBackgroundColor(0xff000000 + sbr.getProgress() * 0x10000 + sbg.getProgress() * 0x100 + sbb.getProgress());
+   				}
+   			});
+    	       
+                    setView(LLview).
+            setPositiveButton("√Œ“Œ¬Œ", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                	//Log.d("MyLog", "pass = "+psw.getText());
+                    //if (tmp!=-1) listener.OnSelectedKol(1); else listener.OnSelectedKol(2);
+                	MainActivity.red1=sbr.getProgress();
+                	MainActivity.green1=sbg.getProgress();
+                	MainActivity.blue1=sbb.getProgress();
+                	listener.OnSelectedKol(1);
+                }
+            })
+            .setNegativeButton("Œ“Ã≈Õ¿", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					//listener.OnSelectedKol(2);
+				}
+			})
+            //.setCancelable(false)
+			/*.setOnDismissListener(new DialogInterface.OnDismissListener() {	
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					//Log.d("MyLog", "dismiss");
+					listener.OnSelectedKol(2);						
+				}
+			})*/
+			.setTitle("¬€¡»–¿…“≈ ÷¬≈“");
+            break;
+        case 0: 
 			/*OnDateSetListener myCallBack = new OnDateSetListener() {
 			    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) 
 			    {

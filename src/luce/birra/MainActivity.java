@@ -56,6 +56,12 @@ static int butMenu=20;
 static int tvH=15;
 static int tvI=17;
 static int seek=50;
+static int red1=50;
+static int green1=50;
+static int blue1=50;
+static int red2=50;
+static int green2=50;
+static int blue2=50;
 static String usr = "";
 static byte access=0;
 int but_menu=0;
@@ -431,6 +437,12 @@ void saveSetting() {
 	    ed.putInt("tvi", tvI );
 	    ed.putInt("seek", seek );
 	    ed.putString("usr", usr );
+	    ed.putInt("red1", red1 );
+	    ed.putInt("red2", red2 );
+	    ed.putInt("green1", green1 );
+	    ed.putInt("green2", green2 );
+	    ed.putInt("blue1", blue1 );
+	    ed.putInt("blue2", blue2 );
 	    ed.commit();
 	    //Toast.makeText(this, "настройки сохранены", Toast.LENGTH_SHORT).show();
 	  }
@@ -449,6 +461,12 @@ void saveSetting() {
     tvI = sPref.getInt("tvi", tvI /*(int)(h/25)*/);
     seek = sPref.getInt("seek", 50);
     usr = sPref.getString("usr", "");
+    red1 = sPref.getInt("red1", 50);
+    red2 = sPref.getInt("red2", 50);
+    green1 = sPref.getInt("green1", 50);
+    green2 = sPref.getInt("green2", 50);
+    blue1 = sPref.getInt("blue1", 50);
+    blue2 = sPref.getInt("blue2", 50);
     //Toast.makeText(this, "настройки загружены", Toast.LENGTH_SHORT).show();
   }
   
@@ -650,8 +668,11 @@ void saveSetting() {
 	@Override
 	public void onClick(View v) {
 		Intent intent;
-	if ( v.getId() == R.id.btnRasxod)
+	if (v.getId() == R.id.btnRasxod)
 		   {intent = new Intent(this, RasxodActivity.class);
+		   startActivity(intent);}
+	if (v.getId() == R.id.btnKassa)
+	{intent = new Intent(this, OtchetActivity.class);
 		   startActivity(intent);}
 	else
 		if (v.getId() == R.id.btnExit) finish();
@@ -692,10 +713,10 @@ void saveSetting() {
 			   intent = new Intent(this, SprActivity.class);
 			   startActivity(intent);
 			   break;
-		   case R.id.btnKassa:
+		   /*case R.id.btnKassa:
 			   intent = new Intent(this, OtchetActivity.class);
 			   startActivity(intent);
-			   
+			   break;*/
 			   //db.delRec("tmc", 6);
 			//   break;
 		  /* case R.id.btnExit:

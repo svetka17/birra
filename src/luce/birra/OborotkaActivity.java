@@ -228,7 +228,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
              			//"ostat as O left join rasxod as R on O.id_tmc=R.id_tmc and O.id_post=R.id_post and O.ed=R.ed "
              			//+ " left join prixod as P on O.id_tmc=P.id_tmc and O.id_post=P.id_post and O.ed=P.ed"
              			//+ " left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id",
-            			 "ostat as O left join (select id_tmc, id_post, ed, sum(round(kol,3)) as sumkr, sum(round(kol,3)*round(price,2)) as sumsr from rasxod " + str[1].toString() + 
+            			 "ostat as O left join (select id_tmc, id_post, ed, sum(round(kol,3)) as sumkr, sum(round(kol,3)*round(price,2)-round(skidka,2)) as sumsr from rasxod " + str[1].toString() + 
             			 " group by id_tmc, id_post, ed) as R on O.id_tmc=R.id_tmc and O.id_post=R.id_post and O.ed=R.ed "
               			+ " left join (select id_tmc, id_post, ed, sum(round(kol,3)) as sumkp, sum(round(kol,3)*round(price,2)) as sumsp from prixod " + str[1].toString() +
               			" group by id_tmc, id_post, ed) as P on O.id_tmc=P.id_tmc and O.id_post=P.id_post and O.ed=P.ed"

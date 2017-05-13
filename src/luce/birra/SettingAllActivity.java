@@ -1,5 +1,6 @@
 package luce.birra;
 
+import luce.birra.DialogScreen.DialogListener;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -23,8 +24,6 @@ import android.widget.NumberPicker.OnValueChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import luce.birra.colorpickerdialog.ColorPicker;
-import luce.birra.colorpickerdialog.ColorPickerCallback;
  
 public class SettingAllActivity extends FragmentActivity implements OnClickListener {
 
@@ -60,7 +59,7 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
 		
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
-			if (seekBar.getProgress()>30 && seekBar.getProgress()<70)
+			if (seekBar.getProgress()>20 && seekBar.getProgress()<80)
 			{
 			  llLP.weight = seekBar.getProgress();
 			  llRP.weight = seekBar.getMax()-seekBar.getProgress();
@@ -79,32 +78,35 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
     btnColor1 = (Button) findViewById(R.id.btnSettingColor1);
     btnColor1.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	final ColorPicker cp = new ColorPicker(SettingAllActivity.this, 0, 10, 10, 10);
+        	DialogScreen getcol = new DialogScreen(SettingAllActivity.this,SettingAllActivity.this,-3)
+       	 .setDialogScreenListener(new DialogListener() {
+       		@Override
+       		public void OnSelectedKol(float k) {
+       			if (k!=0) btnColor1.setBackgroundColor(0xff000000 + MainActivity.red1 * 0x10000 + MainActivity.green1 * 0x100 + MainActivity.blue1);					
+       		}
+       	}) ;getcol.show();
+        	/*final ColorPicker cp = new ColorPicker(SettingAllActivity.this, 0, 10, 10, 10);
         	cp.show();
-            
-            /* Set a new Listener called when user click "select" */
             cp.setCallback(new ColorPickerCallback() {
                 @Override
-                public void onColorChosen(/*@ColorInt*/ int color) {
+                public void onColorChosen( int color) {
                     btnColor1.setBackgroundColor(color);
                 }
-            });
+            });*/
         }
       });
     
     btnColor2 = (Button) findViewById(R.id.btnSettingColor2);
     btnColor2.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	final ColorPicker cp = new ColorPicker(SettingAllActivity.this, 0, 10, 10, 10);
+        	/*final ColorPicker cp = new ColorPicker(SettingAllActivity.this, 0, 10, 10, 10);
         	cp.show();
-            
-            /* Set a new Listener called when user click "select" */
             cp.setCallback(new ColorPickerCallback() {
                 @Override
-                public void onColorChosen(/*@ColorInt*/ int color) {
+                public void onColorChosen(int color) {
                     btnColor2.setBackgroundColor(color);
                 }
-            });
+            });*/
         }
       });
     

@@ -25,7 +25,7 @@ public class DB {
 		
 	
   private static final String DB_NAME = "birraDB";
-  private static final int DB_VERSION = 11;
+  private static final int DB_VERSION = 12;
   //private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
   //private static final String DB_TABLE = "mytab";
    
@@ -151,12 +151,13 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("prixod", null, cv);
 		  }
 
-	  public void addRecRASXOD(int id_tmc, float kol, byte ed, float price, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
+	  public void addRecRASXOD(int id_tmc, float kol, byte ed, float price, float skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("kol", kol);
 		    cv.put("ed", ed);
 		    cv.put("price", price);
+		    cv.put("skidka", skidka);
 		    cv.put("id_post", id_post);
 		    cv.put("id_klient", id_klient);
 		    cv.put("prim", prim);
@@ -166,12 +167,13 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("rasxod", null, cv);
 		  }
 	  
-	  public long addRecRASXODcount(int id_tmc, float kol, byte ed, float price, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
+	  public long addRecRASXODcount(int id_tmc, float kol, byte ed, float price, float skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("kol", kol);
 		    cv.put("ed", ed);
 		    cv.put("price", price);
+		    cv.put("skidka", skidka);
 		    cv.put("id_post", id_post);
 		    cv.put("id_klient", id_klient);
 		    cv.put("prim", prim);
@@ -207,10 +209,11 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("karta_klient", null, cv);
 		  }
 
-	  public void addRecKLIENT(String name, float sum, String prim, int data_ins, int karta, byte ok) {
+	  public void addRecKLIENT(String name, float sum, float skidka, String prim, int data_ins, int karta, byte ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("name", name);
 		    cv.put("sumka", sum);
+		    cv.put("skidka", skidka);
 		    cv.put("prim", prim);
 		    cv.put("data_ins", data_ins);
 		    cv.put("karta", karta);
@@ -218,10 +221,11 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("klient", null, cv);
 		  }
 
-	  public long addRecKLIENTcount(String name, float sum, String prim, int data_ins, int karta, byte ok) {
+	  public long addRecKLIENTcount(String name, float sum, float skidka, String prim, int data_ins, int karta, byte ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("name", name);
 		    cv.put("sumka", sum);
+		    cv.put("skidka", skidka);
 		    cv.put("prim", prim);
 		    cv.put("data_ins", data_ins);
 		    cv.put("karta", karta);
@@ -421,6 +425,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "kol real not null,"
                   + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "price real not null CHECK (price>=0),"
+                  + "skidka real,"
                   + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "id_klient integer DEFAULT 0 REFERENCES klient(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "prim text,"
@@ -435,6 +440,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "kol real not null,"
                   + "ed integer not null,"
                   + "price real not null,"
+                  + "skidka real,"
                   + "id_post integer,"
                   + "id_klient integer,"
                   + "prim text,"
@@ -457,6 +463,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "_id integer primary key autoincrement,"
                   + "name text not null,"
                   + "sumka real,"
+                  + "skidka real,"
                   + "prim text,"
                   + "data_ins integer,"
                   + "karta integer,"
@@ -551,7 +558,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
         		    " ON prixod "+    	        		    
         		    " FOR EACH ROW "+
         		    " BEGIN "+
-        		    " insert into prixod_del (id_id, id_tmc, kol, ed, price, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.data_ins, OLD.ok); "+
+        		    " insert into prixod_del (id_id, id_tmc, kol, ed, price, skidka, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.skidka, OLD.id_post, OLD.data_ins, OLD.ok); "+
         		    " END;");
           db.execSQL("CREATE TRIGGER pri_del2 " +
       		    " AFTER DELETE "+
@@ -618,7 +625,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	Log.d("MyLog", " --- onUpgrade database --- ");
-    	if (newVersion == 11) {
+    	if (newVersion == 12) {
     	    db.beginTransaction();
     	    try {
     	    	
@@ -738,6 +745,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "kol real not null,"
     	                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "price real not null CHECK (price>=0),"
+    	                  + "skidka real,"
     	                  + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "id_klient integer DEFAULT 0 REFERENCES klient(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "prim text,"
@@ -752,6 +760,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "kol real not null,"
     	                  + "ed integer not null,"
     	                  + "price real not null,"
+    	                  + "skidka real,"
     	                  + "id_post integer,"
     	                  + "id_klient integer,"
     	                  + "prim text,"
@@ -774,6 +783,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "_id integer primary key autoincrement,"
     	                  + "name text not null,"
     	                  + "sumka real,"
+    	                  + "skidka real,"
     	                  + "prim text,"
     	                  + "data_ins integer,"
     	                  + "karta integer,"
@@ -919,7 +929,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW "+
     	      		    " BEGIN "+
-    	      		    " insert into rasxod_del (id_id, id_tmc, kol, ed, price, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.data_ins, OLD.ok); "+
+    	      		    " insert into rasxod_del (id_id, id_tmc, kol, ed, price, skidka, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.skidka, OLD.id_post, OLD.data_ins, OLD.ok); "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_del2 " +
     	    		    " AFTER DELETE "+

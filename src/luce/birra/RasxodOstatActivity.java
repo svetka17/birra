@@ -1,6 +1,8 @@
 package luce.birra;
 import java.util.Calendar;
 
+import luce.birra.AdapterLV.CambiareListener;
+
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -28,7 +30,7 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
   ListView lvData;
   Button btnExit, btnAdd;
   AdapterLV scAdapter;
-  static TextView tvIdPgr;//, tvIdKlient; 
+  static TextView tvIdPgr, itogKol, itogSum, itogSkidka, itogNoSkidka;//, tvIdKlient; 
   //static EditText tvDataIns;
   static TextView tvDataIns,tvDataIns2, tvd1, tvd2;
   Spinner spPgr;//, spKlient;
@@ -41,6 +43,10 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
     super.onCreate(savedInstanceState);
     setContentView(R.layout.rasxod_ostat);
     //final DialogFragment dlg = new DialogActivity();
+    itogKol = (TextView) findViewById(R.id.itogRasxodOstKol);
+    itogSum = (TextView) findViewById(R.id.itogRasxodOstSumma);
+    itogSkidka = (TextView) findViewById(R.id.itogRasxodOstSkidka);
+    itogNoSkidka = (TextView) findViewById(R.id.itogRasxodOstNoSkidka);
     
     tvDataIns = (TextView) findViewById(R.id.tv_Data_RasOst);
     tvDataIns.setText(MainActivity.getStringData(MainActivity.getIntData()));
@@ -87,11 +93,13 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
         	spPgr.setTag(id);
         	tvIdPgr.setText(String.valueOf(id));
         	getSupportLoaderManager().getLoader(0).forceLoad();
+        	setItog();
         }
         public void onNothingSelected(AdapterView<?> parent) {
         	spPgr.setTag(0);
         	tvIdPgr.setText("0");
         	getSupportLoaderManager().getLoader(0).forceLoad();
+        	setItog();
         }
         });
     
@@ -112,18 +120,28 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
         	}
       });
     // формируем столбцы сопоставления
-    String[] from = new String[] { /*"_id",*/"_id","pgr","name","post","kol","ed","sumka","ostat"};
-    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Ost, R.id.tv_Pgr_Rasxod_Ost, R.id.tv_Name_Rasxod_Ost,R.id.tv_Post_Rasxod_Ost,R.id.tv_Kol_Rasxod_Ost,R.id.tv_Ed_Rasxod_Ost,R.id.tv_Sumka_Rasxod_Ost,R.id.tv_Ostat_Rasxod_Ost};
+    String[] from = new String[] { /*"_id",*/"_id","pgr","name","post","kol","ed","sumka","skidka","ostat"};
+    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Ost, R.id.tv_Pgr_Rasxod_Ost, R.id.tv_Name_Rasxod_Ost,R.id.tv_Post_Rasxod_Ost,R.id.tv_Kol_Rasxod_Ost,R.id.tv_Ed_Rasxod_Ost,R.id.tv_Sumka_Rasxod_Ost,R.id.tv_Skidka_Rasxod_Ost,R.id.tv_Ostat_Rasxod_Ost};
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelRasxodOst, R.id.btnUpdRasxodOst, (byte)10, this, R.layout.rasxod_ostat_item, null, from, to, 0);
+    scAdapter = new AdapterLV(R.id.btnDelRasxodOst, R.id.btnUpdRasxodOst, (byte)10, this, R.layout.rasxod_ostat_item, null, from, to, 0)
+    .setCamdiareListener(new CambiareListener() {
+		@Override
+		public void OnCambiare(byte flag, long id) {
+			if (flag==1) {
+				//MainActivity.db.delRec("rasxod",id);
+				//getSupportLoaderManager().getLoader(0).forceLoad();
+				}
+		}
+	});
     lvData = (ListView) findViewById(R.id.lvRasxodOst);
     lvData.setAdapter(scAdapter);
      
     // создаем лоадер для чтения данных
     //getSupportLoaderManager().initLoader(1, null, this);
     getSupportLoaderManager().initLoader(0, null, this);
+    setItog();
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.rasxod_ostat_ll));
   }
@@ -146,6 +164,7 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
       tvDataIns.setText(String.valueOf(100+dayOfMonth).substring(1) + "." + String.valueOf(100+(monthOfYear+1)).substring(1) + "." + String.valueOf(100+(year%2000)).substring(1));
       //getSupportLoaderManager().getLoader(1).forceLoad();
       getSupportLoaderManager().getLoader(0).forceLoad();
+      setItog();
     }
     };
     OnDateSetListener myCallBack2 = new OnDateSetListener() {
@@ -154,6 +173,7 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
       tvDataIns2.setText(String.valueOf(100+dayOfMonth).substring(1) + "." + String.valueOf(100+(monthOfYear+1)).substring(1) + "." + String.valueOf(100+(year%2000)).substring(1));
       //getSupportLoaderManager().getLoader(1).forceLoad();
       getSupportLoaderManager().getLoader(0).forceLoad();
+      setItog();
     }
     };
   @Override
@@ -161,6 +181,7 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
     super.onRestart();
     //getSupportLoaderManager().getLoader(1).forceLoad();
     getSupportLoaderManager().getLoader(0).forceLoad();
+    setItog();
   }
   
   protected void onDestroy() {
@@ -225,14 +246,14 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
      
         if (where.equals("")||where.length()==0) where=str[2].toString(); else 
         	if (!str[2].equals("")) where=where+" and "+str[2].toString();
-        
+        if (where.equals("")||where.length()==0) where=" T.ok=0 "; else where=where+" and T.ok=0 ";
 /*        if (where.equals("")||where.length()==0) where=str[3].toString(); else 
         	if (!str[3].equals("")) where=where+" and "+str[3].toString();
 "id_tmc","pgr","name","post","kol","ed","sumka","ostat"
 */     
             	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed left join postav as KK on T.id_post=KK._id", 
              			new String[] {"TP._id as _id","TT.name as pgr","TP.name as name",/*"T.data_ins as data_ins",*/"KK.name as post","sum(T.kol) as kol","E.name as ed",
-            			 "sum(T.price*T.kol) as sumka","K.kol as ostat"}, 
+            			 "sum(T.price*T.kol) as sumka","round(sum(T.skidka),2) as skidka","K.kol as ostat"}, 
              			 //"TP.pgr = ?"
             			 where, null,"TP._id, TT.name, TP.name, KK.name, E.name, K.kol",null,null);
 
@@ -241,6 +262,44 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
      
   }
   
-
+void setItog () {
+	String []str = {(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":" TP.pgr="+tvIdPgr.getText().toString(),
+    		(tvDataIns.getText().length()==0)?"":" substr(T.data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")",
+    				(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")"
+    						};
+    String where=str[0].toString();
+    //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
+    if (where.equals("")||where.length()==0) where=str[1].toString(); else 
+    	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
+ 
+    if (where.equals("")||where.length()==0) where=str[2].toString(); else 
+    	if (!str[2].equals("")) where=where+" and "+str[2].toString();
+    //if (where.equals("")) where=" T.id_tmc<>0 "; else where=where+" and T.id_tmc<>0 ";
+      //  float tmpKol=0, tmpSum=0;
+        	 Cursor cursor = MainActivity.db.getQueryData
+("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed left join postav as KK on T.id_post=KK._id",
+         			new String[] {"sum(T.kol) as kol","sum(T.price*T.kol) as sumka","round(sum(T.skidka),2) as skidka"}, 
+         			 //"TP.pgr = ?"
+        			 where, null,null,null,null);
+        	 if (cursor.moveToFirst())  
+      		   
+     	        do {//tmpKol=cursor.getFloat(cursor.getColumnIndex("kol"));
+     	        	//tmpSum=cursor.getFloat(cursor.getColumnIndex("s"));
+     	        	itogKol.setText(String.valueOf( cursor.getFloat(cursor.getColumnIndex("kol")) ) );
+     	        	itogSum.setText(String.valueOf( cursor.getFloat(cursor.getColumnIndex("sumka")) ) );
+     	        	itogSkidka.setText(String.valueOf( cursor.getFloat(cursor.getColumnIndex("skidka")) ) );
+     	        	itogNoSkidka.setText(String.valueOf( cursor.getFloat(cursor.getColumnIndex("sumka"))-cursor.getFloat(cursor.getColumnIndex("skidka") )) );
+     	        } while (cursor.moveToNext());
+     	      
+        	        cursor.close();
+     	     
+}
+ 
+/*
+no such column: T.ok (code 1): , while compiling: 
+SELECT sum(T.kol) as kol, sum(T.price*T.kol) as sumka, sum(RR.rrkol) as poskidka, sum(T.price*T.kol)-sum(RR.rrkol) as s  
+FROM rasxod as T left join (select w._id as rrid, w.kol rrkol from rasxod as w where w._id=T.ok ) as RR on T.ok=RR.rrid left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed left join postav as KK on T.id_post=KK._id WHERE  substr(T.data_ins,1,6)>=trim(170512) and  substr(T.data_ins,1,6)<=trim(170512)
+*/
+  
 }
 

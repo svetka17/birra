@@ -165,10 +165,11 @@ SeekBar.OnSeekBarChangeListener
 	   float kol;
 	   byte ed;
 	   float price;
+	   //float skidka;
 	   int id_post;
 	   int id_klient; //пока ничего не пишется
 	   String prim;
-	  tranDB(byte tag, byte tagL, byte tagB, int id_tmc, float kol, byte ed, float price, int id_post,int id_klient, String prim){
+	  tranDB(byte tag, byte tagL, byte tagB, int id_tmc, float kol, byte ed, float price, /*float skidka,*/ int id_post,int id_klient, String prim){
 		  this.tag=tag;
 		  this.tagL=tagL;
 		  this.tagB=tagB;
@@ -176,6 +177,7 @@ SeekBar.OnSeekBarChangeListener
 		  this.kol=kol;
 		  this.ed=ed;
 		  this.price=price;
+		  //this.skidka=skidka;
 		  this.id_post=id_post;
 		  this.id_klient=id_klient;
 		  this.prim=prim;}
@@ -495,7 +497,7 @@ void makeDialog() {
 	                //row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,1.0f));
     		 
 	                llbut.addView(row,
-	                		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT,1));
+	                		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, /*TableLayout.LayoutParams.MATCH_PARENT*/0,1));
 	                //row.addView(llbut, params);
 	        	}
 	        	//LinearLayout.LayoutParams PL = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT );
@@ -517,6 +519,7 @@ void makeDialog() {
 	        	btnPgr.setTag(c.getInt(c.getColumnIndex("_id"))+"-"+c.getString(c.getColumnIndex("name")));
 	        	btnPgr.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butPgr);
 	        	btnPgr.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
+	        	btnPgr.setMinimumWidth((int)(MainActivity.w / 4));
 	        	btnPgr.setOnClickListener(new OnClickListener() {
 	                public void onClick(View v) {
 /////////////////////////////////////
@@ -544,7 +547,7 @@ void makeDialog() {
 	        	
 	        	//llbut.addView(btnPgr/*,PB*/);
 	        	row.addView(btnPgr,
-	        			new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT,1));
+	        			new TableRow.LayoutParams(/*TableRow.LayoutParams.MATCH_PARENT*/0,TableRow.LayoutParams.MATCH_PARENT,1));
 	        	i++;//ib++;
 	        } while (c.moveToNext());
 	        
@@ -892,12 +895,12 @@ void makeDialog() {
 	   if (/*tvCombo.getText().equals("")*/data.size()==0) finish();
    	else
    	{//no klient
-   		long cou=MainActivity.db.addRecKLIENTcount("svetka", Float.parseFloat(tvSum.getText().toString()), "", MainActivity.getIntDataTime(), 0, (byte)0);
+   		long cou=MainActivity.db.addRecKLIENTcount("svetka", Float.parseFloat(tvSum.getText().toString()),0, "", MainActivity.getIntDataTime(), 0, (byte)0);
    		
    	for (int i=0; i<tranz.size(); i++) {
    		//public void addRecRASXOD(int id_tmc, float kol, float price, int id_post, int id_klient, String prim, int data_del, int data_ins, byte ok)
    	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,
-   			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
+   			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
    	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i);
    	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i+" ost="+but.get(tranz.get(i).tagB).ost);
    	
@@ -953,25 +956,31 @@ void makeDialog() {
 	   if (data.size()!=0)
    	{
 		// int klient=0; if (!=0) 
-    long cou=MainActivity.db.addRecKLIENTcount("чек", Float.parseFloat(tvSum.getText().toString()), "" , MainActivity.getIntDataTime(),(int) MainActivity.StrToFloat(tvIdKlient.getText().toString()) , (byte)0);
+    long cou=MainActivity.db.addRecKLIENTcount("чек", MainActivity.StrToFloat(tvDItogo.getText().toString()), MainActivity.StrToFloat(etSkidka.getText().toString()), "" , MainActivity.getIntDataTime(),(int) MainActivity.StrToFloat(tvIdKlient.getText().toString()) , (byte)0);
 
     //это общая скидка, если она есть (суйчас она =0 не заполняется и invisible)
-    if (MainActivity.StrToFloat(etSkidka.getText().toString())!=0)
-   		MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat(etSkidka.getText().toString()), (byte)4, 0, 0, (int)cou, "СКИДКА "+etSkidka.getText().toString()+"ГРН", MainActivity.getIntDataTime(), (byte)0);
-
+    /*if (MainActivity.StrToFloat(etSkidka.getText().toString())!=0)
+   		MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat(etSkidka.getText().toString()), (byte)4, 0, 0, 0, (int)cou, "СКИДКА "+etSkidka.getText().toString()+"ГРН", MainActivity.getIntDataTime(), (byte)0);
+общая скидка по чеку в klient.skidka делится на количество позиций в чеке и прибавляется к rasxod.skidka */
     //Log.d("MyLog", "0tranz="+tranz.size());
-
+    float sk=0, skid=0;
+    if (MainActivity.StrToFloat(etSkidka.getText().toString())!=0) sk=/*MainActivity.round(*/MainActivity.StrToFloat(etSkidka.getText().toString())/tranz.size()/*,2)*/;
+    
     for (int i=0; i<tranz.size(); i++) {
-   		
-   	long tmp = MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc,
-   			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
-   	
+    skid=0;	
+    if (tranz.get(i).tagL!=-1) skid=MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() );
+	
+   	//long tmp = MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc,
+   		//	tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
+    	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,
+       			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
+       	
   	//Log.d("MyLog", "data="+data.get(tranz.get(i).tagL).get("skidka_sum").toString());
    	//эта жесть создает скидку по позиции если она есть в чеке (в поле rasxod.ok пишу _id расхода, по которой скидка)
    	//Log.d("MyLog", tranz.get(i).tagL+" ");
-   	if (tranz.get(i).tagL!=-1 /*&& MainActivity.StrToFloat( data.get(tranz.get(i).tagL).get("skidka_sum").toString() )!=0*/ )
-   	 if (MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() )!=0)
-   		MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() ), (byte)4, 0, 0, (int)cou, "СКИДКА ПО ПОЗИЦИИ "+tmp+":"+data.get(tranz.get(i).tag).get("skidka_sum").toString()+"ГРН", MainActivity.getIntDataTime(),(int)tmp);
+   	//if (tranz.get(i).tagL!=-1 /*&& MainActivity.StrToFloat( data.get(tranz.get(i).tagL).get("skidka_sum").toString() )!=0*/ )
+   	// if (MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() )!=0)
+   	//	MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() ), (byte)4, 0, 0, (int)cou, "СКИДКА ПО ПОЗИЦИИ "+tmp+":"+data.get(tranz.get(i).tag).get("skidka_sum").toString()+"ГРН", MainActivity.getIntDataTime(),(int)tmp);
   
    	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
    	if (but.get(tranz.get(i).tagB).ost<=0)//если кол-во <0 то добавляем остаток по приходу

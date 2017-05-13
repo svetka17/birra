@@ -84,7 +84,6 @@
             android:layout_weight="1"
             style="@style/B"
             android:text="ОБОРОТНАЯ ВЕДОМОСТЬ" />
-
  </TableRow>   
  <TableRow
         android:layout_width="match_parent"
@@ -103,7 +102,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             style="@style/B"
-            android:text="ОСТАТКИ+РАСХОД" />
+            android:text="ОТЧЕТ О РАСХОДЕ (СУММАРНО)" />
 
  </TableRow>     
  <TableRow
@@ -123,7 +122,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             style="@style/B"
-            android:text="ОТЧЕТ О РАСХОДЕ" />
+            android:text="ОТЧЕТ О РАСХОДЕ (ПОДРОБНО)" />
  </TableRow> 
     </TableLayout>
 

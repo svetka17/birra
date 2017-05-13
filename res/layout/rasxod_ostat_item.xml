@@ -42,6 +42,10 @@
         style="@style/lv_i"
         android:layout_weight="1" />
     <TextView
+        android:id="@+id/tv_Skidka_Rasxod_Ost"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
         android:id="@+id/tv_Ostat_Rasxod_Ost"
         style="@style/lv_i"
         android:layout_weight="1" />    

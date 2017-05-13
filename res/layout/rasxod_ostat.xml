@@ -79,7 +79,10 @@
  		    style="@style/lv_h"
             android:layout_weight="1"
  		    android:text="СУММА"/>
-
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="СКИДКА"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
@@ -94,6 +97,58 @@
         android:id="@+id/lvRasxodOst"
             style="@style/mm1" />
 
+    <TableRow  style="@style/mw0">
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text=""/>
+ <TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+ 				<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+ 				<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogRasxodOstKol"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogRasxodOstSumma"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogRasxodOstSkidka"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+            android:layout_width="0dp"
+            android:id="@+id/itogRasxodOstNoSkidka"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/summa_chek"
+            android:text=""/>
+    </TableRow>
+    
+    
     <LinearLayout
             style="@style/mw0"
         android:orientation="horizontal" >
