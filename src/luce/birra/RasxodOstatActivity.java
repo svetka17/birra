@@ -74,7 +74,7 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
         	showDialog(2);
         }
       });
-    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr", null);
+    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by _id", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_RasOst);
     tvIdPgr = (TextView) findViewById(R.id.tv_Id_PgrRasOst);
     tvIdPgr.setText("0");

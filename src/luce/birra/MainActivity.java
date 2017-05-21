@@ -64,6 +64,7 @@ static int green2=50;
 static int blue2=50;
 static String usr = "";
 static byte access=0;
+static byte postlitr=0;
 int but_menu=0;
 static String my_pass="svetka";
 // SharedPreferences sPref;
@@ -381,8 +382,9 @@ static int getIntData(String dat){
 }
 
 static int getIntDataTime(String dat){
-	try{
+	try{//Log.d("MyLog", "dtm="+dat);
 		return Integer.parseInt(dat.substring(6, 8).concat(dat.substring(3, 5)).concat(dat.substring(0, 2)).concat(dat.substring(9, 11)).concat(dat.substring(12, 14))) ;
+		//return Integer.parseInt( String.valueOf(Integer.parseInt(dat.substring(6, 10))%2000).concat(dat.substring(3, 5)).concat(dat.substring(0, 2)).concat(dat.substring(10, 12)).concat(dat.substring(13, 15))) ;
 		}catch(Exception ex){
 		    // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
 			//ex.printStackTrace();
@@ -443,6 +445,7 @@ void saveSetting() {
 	    ed.putInt("green2", green2 );
 	    ed.putInt("blue1", blue1 );
 	    ed.putInt("blue2", blue2 );
+	    ed.putInt("postlitr", postlitr );
 	    ed.commit();
 	    //Toast.makeText(this, "настройки сохранены", Toast.LENGTH_SHORT).show();
 	  }
@@ -467,6 +470,7 @@ void saveSetting() {
     green2 = sPref.getInt("green2", 50);
     blue1 = sPref.getInt("blue1", 50);
     blue2 = sPref.getInt("blue2", 50);
+    postlitr = (byte)sPref.getInt("postlitr", 0);
     //Toast.makeText(this, "настройки загружены", Toast.LENGTH_SHORT).show();
   }
   

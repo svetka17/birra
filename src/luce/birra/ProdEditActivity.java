@@ -54,7 +54,7 @@ public class ProdEditActivity extends FragmentActivity {
     tvIdPgr = (TextView) findViewById(R.id.etEditIdPgrProd);
     tvEd = (TextView) findViewById(R.id.etEdProd);
     tvId = (TextView) findViewById(R.id.etEditIdProd);
-    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr", null);
+    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by _id", null);
     Cursor cE = MainActivity.db.getRawData("select _id, name from tmc_ed", null);
     etName.setImeOptions(EditorInfo.IME_ACTION_DONE);
     etPos.setImeOptions(EditorInfo.IME_ACTION_DONE);

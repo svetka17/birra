@@ -93,7 +93,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     //cProd = MainActivity.db.getRawData("select _id, name, pgr,ed,ted from (select _id, name,0 pgr, 0 ed, '-' ted from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted from tmc as T left join tmc_ed as E on T.ed=E._id) where pgr = "+((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText()), null);
     //cProd = MainActivity.db.getRawData("select _id, name,0 pgr, 0 ed, '-' ted from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted from tmc as T left join tmc_ed as E on T.ed=E._id", null);
     cPost = MainActivity.db.getRawData("select _id, name from postav", null);
-    cPgr = MainActivity.db.getRawData("select _id, name from tmc_pgr", null);
+    cPgr = MainActivity.db.getRawData("select _id, name from tmc_pgr order by _id", null);
     /////////////
     spPgr = (Spinner) findViewById(R.id.spPgrPri);
     fromPgr = new String[] {"name"};
@@ -187,7 +187,9 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     btnAdd = (Button) findViewById(R.id.btnAddPri);
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	if  (0!=Integer.parseInt(tvEd.getText().toString()) && 0!=Integer.parseInt(tvIdProd.getText().toString()) && tvPrice.getText().toString().toString().length()!=0 && tvKol.getText().toString().length()!=0)
+        	//if (MainActivity.postlitr==1 && Integer.parseInt(tvIdPost.getText().toString())!=0)
+        	if  (0!=Integer.parseInt(tvEd.getText().toString()) && 0!=Integer.parseInt(tvIdProd.getText().toString()) && tvPrice.getText().toString().toString().length()!=0 && tvKol.getText().toString().length()!=0
+        			&& !(MainActivity.postlitr==1 && Integer.parseInt(tvIdPost.getText().toString())==0 && Byte.parseByte(tvEd.getText().toString())==1 ))
   			 {if ((tvId.getText().toString().length()==0)) 
         		//MainActivity.db.addRecPRIXOD(id_tmc, kol, price, id_post, prim, data_del, data_ins, ok);
         		{MainActivity.db.addRecPRIXOD(

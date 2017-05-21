@@ -1,9 +1,4 @@
 package luce.birra;
-import java.util.Calendar;
-
-import android.app.DatePickerDialog;
-import android.app.DatePickerDialog.OnDateSetListener;
-import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -17,12 +12,12 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import luce.birra.AdapterLV.CambiareListener;
+import luce.birra.DialogScreen.DialogListener;
  
 public class RasxodHistActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -44,32 +39,84 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     //final DialogFragment dlg = new DialogActivity();
     
     tvDataIns = (TextView) findViewById(R.id.tv_Data_RasHist);
-    tvDataIns.setText(MainActivity.getStringData(MainActivity.getIntData()));
+    tvDataIns.setText(MainActivity.getStringDataTime(MainActivity.getIntDataTime()));
     tvDataIns.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	showDialog(1);
+        	//showDialog(1);
+        	DialogScreen getDT = new DialogScreen(RasxodHistActivity.this,RasxodHistActivity.this,-4)
+			 .setDialogScreenListener(new DialogListener() {
+				@Override
+				public void OnSelectedKol(float k) {
+					if (k!=0) 
+					{
+						tvDataIns.setText(MainActivity.getStringDataTime((int)k));
+						getSupportLoaderManager().getLoader(1).forceLoad();
+					      getSupportLoaderManager().getLoader(0).forceLoad();
+					}
+					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
+				}
+			}) ;getDT.show();
         }
       });
     tvd1 = (TextView) findViewById(R.id.tv_data_ras1);
     tvd1.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	showDialog(1);
+        	//showDialog(1);
+        	DialogScreen getDT = new DialogScreen(RasxodHistActivity.this,RasxodHistActivity.this,-4)
+			 .setDialogScreenListener(new DialogListener() {
+				@Override
+				public void OnSelectedKol(float k) {
+					if (k!=0) 
+					{
+						tvd1.setText(MainActivity.getStringDataTime((int)k));
+						getSupportLoaderManager().getLoader(1).forceLoad();
+					      getSupportLoaderManager().getLoader(0).forceLoad();
+					}
+					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
+				}
+			}) ;getDT.show();
         }
       });
     tvDataIns2 = (TextView) findViewById(R.id.tv_Data_RasHist2);
-    tvDataIns2.setText(MainActivity.getStringData(MainActivity.getIntData()));
+    tvDataIns2.setText(MainActivity.getStringDataTime(MainActivity.getIntDataTime()));
     tvDataIns2.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	showDialog(2);
+        	//showDialog(2);
+        	DialogScreen getDT = new DialogScreen(RasxodHistActivity.this,RasxodHistActivity.this,-4)
+			 .setDialogScreenListener(new DialogListener() {
+				@Override
+				public void OnSelectedKol(float k) {
+					if (k!=0) 
+					{
+						tvDataIns2.setText(MainActivity.getStringDataTime((int)k));
+						getSupportLoaderManager().getLoader(1).forceLoad();
+					      getSupportLoaderManager().getLoader(0).forceLoad();
+					}
+					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
+				}
+			}) ;getDT.show();
         }
       });
     tvd2 = (TextView) findViewById(R.id.tv_data_ras2);
     tvd2.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	showDialog(2);
+        	//showDialog(2);
+        	DialogScreen getDT = new DialogScreen(RasxodHistActivity.this,RasxodHistActivity.this,-4)
+			 .setDialogScreenListener(new DialogListener() {
+				@Override
+				public void OnSelectedKol(float k) {
+					if (k!=0) 
+					{
+						tvd2.setText(MainActivity.getStringDataTime((int)k));
+						getSupportLoaderManager().getLoader(1).forceLoad();
+					      getSupportLoaderManager().getLoader(0).forceLoad();
+					}
+					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
+				}
+			}) ;getDT.show();
         }
       });
-    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr", null);
+    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by _id", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_RasHist);
     tvIdPgr = (TextView) findViewById(R.id.tv_Id_PgrRasHist);
     tvIdPgr.setText("0");
@@ -187,9 +234,10 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.rasxod_hist_ll));
   }
-  
+/*  
   protected Dialog onCreateDialog(int id) {
       if (id == 1) {
+    	  
         DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         return tpd;
       }
@@ -215,7 +263,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
       getSupportLoaderManager().getLoader(1).forceLoad();
       getSupportLoaderManager().getLoader(0).forceLoad();
     }
-    };
+    };*/
   @Override
   protected void onRestart() {
     super.onRestart();
@@ -274,11 +322,13 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     @Override
     public Cursor loadInBackground() {
     	String []str = {(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":" TP.pgr="+tvIdPgr.getText().toString(),
-        		(tvDataIns.getText().length()==0)?"":" substr(T.data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")",
-        				(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")",
+        		//(tvDataIns.getText().length()==0)?"":" substr(T.data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")",
+    			(tvDataIns.getText().length()==0)?"":" T.data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")",
+        				//(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")",
+    					(tvDataIns2.getText().length()==0)?"":" T.data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")",
         				(tvIdKlient.getText().toString().equals("0")||tvIdKlient.getText().length()==0)?"":" K._id="+tvIdKlient.getText().toString()};
         String where=str[0].toString();
-        //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
+        //Log.d("MyLog", "dt="+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString())));
         if (where.equals("")||where.length()==0) where=str[1].toString(); else 
         	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
      
@@ -309,8 +359,11 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 	     
 	    @Override
 	    public Cursor loadInBackground() {
-	    	String []str = {(tvDataIns.getText().length()==0)?"":" substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"
-	    			,(tvDataIns2.getText().length()==0)?"":" substr(data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")"
+	    	String []str = {
+	    			//(tvDataIns.getText().length()==0)?"":" substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"
+	    			(tvDataIns.getText().length()==0)?"":" data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")"
+	    			,//(tvDataIns2.getText().length()==0)?"":" substr(data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")"
+	    			(tvDataIns2.getText().length()==0)?"":" data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")"
 	        				};
 	    	String where=str[0].toString();
 	        //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);

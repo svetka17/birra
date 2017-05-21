@@ -1,5 +1,6 @@
 package luce.birra;
 
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,12 +14,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 public class DialogScreen extends AlertDialog.Builder {
 	
@@ -210,6 +213,44 @@ public class DialogScreen extends AlertDialog.Builder {
 				}
 			})*/
 			.setTitle("¬€¡»–¿…“≈ ÷¬≈“");
+            break;
+        case -4: 
+        	final LinearLayout DTview = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.date_time, null);
+    	       //MainActivity.setSizeFontMain((ViewGroup) LLview);
+    	       final DatePicker dp = (DatePicker) DTview.findViewById(R.id.datePickerD);
+    	       final TimePicker tp = (TimePicker) DTview.findViewById(R.id.timePickerD);
+    	       tp.setIs24HourView(true);
+    	       //final int tit = titul;
+    	      
+    	       
+                    setView(DTview).
+            setPositiveButton("√Œ“Œ¬Œ", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                	//Log.d("MyLog", "pass = "+psw.getText());
+                    //if (tmp!=-1) listener.OnSelectedKol(1); else listener.OnSelectedKol(2);
+                	//MainActivity.red1=sbr.getProgress();
+                	int tmp= ((((dp.getYear()%2000)*100+dp.getMonth()+1)*100+dp.getDayOfMonth())*100
+                			+tp.getCurrentHour() )*100+tp.getCurrentMinute();
+                	listener.OnSelectedKol(tmp);
+                }
+            })
+            .setNegativeButton("Œ“Ã≈Õ¿", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					listener.OnSelectedKol(0);
+				}
+			})
+            //.setCancelable(false)
+			.setOnDismissListener(new DialogInterface.OnDismissListener() {	
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					//Log.d("MyLog", "dismiss");
+					listener.OnSelectedKol(0);						
+				}
+			})
+			.setTitle("¬€¡»–¿…“≈ ƒ¿“” » ¬–≈Ãﬂ");
             break;
         case 0: 
 			/*OnDateSetListener myCallBack = new OnDateSetListener() {

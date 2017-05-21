@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
-//import android.support.annotation.ColorInt;
 import android.support.v4.app.FragmentActivity;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -18,12 +17,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.NumberPicker.OnValueChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+//import android.support.annotation.ColorInt;
  
 public class SettingAllActivity extends FragmentActivity implements OnClickListener {
 
@@ -33,6 +36,7 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
   NumberPicker np;
   int tvDialogN=0;
   SeekBar sb;
+  CheckBox cb;
   LinearLayout llL, llR;
   LinearLayout.LayoutParams llLP;
   LinearLayout.LayoutParams llRP;
@@ -43,6 +47,15 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
     super.onCreate(savedInstanceState);
     setContentView(R.layout.setting);
     //final DialogFragment dlg = new DialogActivity();
+    cb = (CheckBox) findViewById(R.id.cbSettingLitr);
+    cb.setChecked(MainActivity.postlitr==0?false:true);
+    cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		
+		@Override
+		public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+					if (arg0.isChecked()) MainActivity.postlitr=1; else MainActivity.postlitr=0; 
+		}
+	});
     
     llL = (LinearLayout) findViewById(R.id.llLSetting);
     llR = (LinearLayout) findViewById(R.id.llRRsetting);
