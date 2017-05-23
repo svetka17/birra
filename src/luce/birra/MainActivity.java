@@ -470,7 +470,7 @@ void saveSetting() {
     green2 = sPref.getInt("green2", 50);
     blue1 = sPref.getInt("blue1", 50);
     blue2 = sPref.getInt("blue2", 50);
-    postlitr = (byte)sPref.getInt("postlitr", 0);
+    postlitr = (byte)sPref.getInt("postlitr", 1);
     //Toast.makeText(this, "настройки загружены", Toast.LENGTH_SHORT).show();
   }
   

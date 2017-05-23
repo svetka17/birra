@@ -7,6 +7,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -197,7 +198,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
         });*/
     	break;
     case 5:
-    	
+    	if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
     	tv = (TextView) view.findViewById(R.id.tvNamePost_Ostat);  	
         tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
     	tv = (TextView) view.findViewById(R.id.tvDataIns_Ostat);  	
