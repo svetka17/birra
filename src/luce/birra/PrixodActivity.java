@@ -8,6 +8,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,7 +30,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   TextView spEd;
   TextView tvId,  tvEd, tvIdProd, tvOst;
   static TextView tvIdPgr, tvIdPost;
-  EditText tvKol, tvPrice, tvDataIns,tvPrim;
+  EditText tvKol, tvPrice, tvPriceVendor, tvDataIns,tvPrim, tvPos;
   Cursor// cProd, 
   cPost,  cPgr;//, cEd;
   static Cursor cursor;
@@ -58,6 +59,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     tvOst = (TextView) findViewById(R.id.tvOstatokPri);
     //etPgr = (EditText) findViewById(R.id.etEditIdPgrProd);
     tvIdProd = (TextView) findViewById(R.id.tvIdProdPri);
+    tvPos = (EditText) findViewById(R.id.tvPosPri);
     tvIdProd.setText("0");
     tvIdPgr = (TextView) findViewById(R.id.tvIdPgrPri);
     tvIdPgr.setText("0");
@@ -81,6 +83,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     tvKol = (EditText) findViewById(R.id.tvKolPri);
     tvEd = (TextView) findViewById(R.id.tvIdEdPri);
     tvPrice = (EditText) findViewById(R.id.tvPricePri);
+    tvPriceVendor = (EditText) findViewById(R.id.tvPricePriVendor);
     tvPrim = (EditText) findViewById(R.id.tvPrimPri);
     spProd = (Spinner) findViewById(R.id.spProdPri);
     spPost = (Spinner) findViewById(R.id.spPostPri);
@@ -89,6 +92,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     tvPrim.setImeOptions(EditorInfo.IME_ACTION_DONE);
     tvDataIns.setImeOptions(EditorInfo.IME_ACTION_DONE);
     tvPrice.setImeOptions(EditorInfo.IME_ACTION_DONE);
+    tvPriceVendor.setImeOptions(EditorInfo.IME_ACTION_DONE);
     tvKol.setImeOptions(EditorInfo.IME_ACTION_DONE);
     //cProd = MainActivity.db.getRawData("select _id, name, pgr,ed,ted from (select _id, name,0 pgr, 0 ed, '-' ted from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted from tmc as T left join tmc_ed as E on T.ed=E._id) where pgr = "+((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText()), null);
     //cProd = MainActivity.db.getRawData("select _id, name,0 pgr, 0 ed, '-' ted from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted from tmc as T left join tmc_ed as E on T.ed=E._id", null);
@@ -102,7 +106,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     scaPgr.setDropDownViewResource(R.layout.spinner_drop_down); 
     spPgr.setAdapter(scaPgr);
     spPgr.setOnItemSelectedListener(new OnItemSelectedListener() {
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
         	spPgr.setTag(id);
         	tvIdPgr.setText(String.valueOf(id));
@@ -143,18 +147,59 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
             //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
         	spProd.setTag(id);
+        	Log.d("MyLog", "onitemselect id="+id);
         	tvIdProd.setText(String.valueOf(id));
         	s=/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("name"));
         	tvEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ed")) );
-        	tvOst.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
-        	spEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ted")) );
+        	//String ss=String.valueOf( cursor.getFloat(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
+        	tvOst.setText(cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
+        	//tvPos.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("pos")) );
+        	//Log.d("MyLog", "cursor pos="+ position+ " "+id + " ost="+tvOst.getText());
+        	//String ss=cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("pos"));
+        	String ss="-";
+        	try {
+        	ss=cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ted"));
+        	//Log.d("MyLog", "try_tved=" );
+        	}
+        	catch (Exception e) {
+        		//Log.d("MyLog", "catch tved=" );
+			}
+        	
+        	spEd.setText( ss );
+        	
+        	int tmpi=-1; 
+        	try {
+        	tmpi=cursor.getInt(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("pos"));
+        	//Log.d("MyLog", "try "+ position+ " "+id+" tmpi="+tmpi );
+        	}
+        	catch (Exception e) { //Log.d("MyLog", "catch "+ position+ " "+id ); 
+        	};
+        	if (tmpi!=-1)
+        		{
+        		//Log.d("MyLog", "tvpos="+tmpi );
+        		tvPos.setText(String.valueOf(tmpi));
+        		//Log.d("MyLog", "_tvpos="+tmpi );
+        		}
+        	else {
+        		//Log.d("MyLog", "tvpos=null" );
+        		tvPos.setText("");
+        	//Log.d("MyLog", "_tvpos=null" ); 
+        	}
+        	
+        	//Log.d("MyLog", "end itemselect" );
+        	//Log.d("MyLog", "cursor pos="+ position+ " "+id + " ted="+spEd.getText()+" pos="+ss);
+        	
+        	//Log.d("MyLog", "cursor pos="+ position+ " "+id + " ost="+ss
+        	///*cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ed"))*/ );
         }
         public void onNothingSelected(AdapterView<?> parent) {
         	spProd.setTag(0);
         	tvIdProd.setText(String.valueOf("0"));
         	tvOst.setText("0");
+        	tvPos.setText("");
         }
         });
+    
     spPost.setOnItemSelectedListener(new OnItemSelectedListener() {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
             //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
@@ -188,7 +233,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	//if (MainActivity.postlitr==1 && Integer.parseInt(tvIdPost.getText().toString())!=0)
-        	if  (0!=Integer.parseInt(tvEd.getText().toString()) && 0!=Integer.parseInt(tvIdProd.getText().toString()) && tvPrice.getText().toString().toString().length()!=0 && tvKol.getText().toString().length()!=0
+        	if  (0!=Integer.parseInt(tvEd.getText().toString()) && 0!=Integer.parseInt(tvIdProd.getText().toString()) && tvPrice.getText().toString().toString().length()!=0 && tvPriceVendor.getText().toString().toString().length()!=0 && tvKol.getText().toString().length()!=0
         			&& !(MainActivity.postlitr==1 && Integer.parseInt(tvIdPost.getText().toString())==0 && Byte.parseByte(tvEd.getText().toString())==1 ))
   			 {if ((tvId.getText().toString().length()==0)) 
         		//MainActivity.db.addRecPRIXOD(id_tmc, kol, price, id_post, prim, data_del, data_ins, ok);
@@ -197,12 +242,14 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         				Float.parseFloat(tvKol.getText().toString()), 
         				Byte.parseByte(tvEd.getText().toString()),
         				Float.parseFloat(tvPrice.getText().toString()), 
+        				Float.parseFloat(tvPriceVendor.getText().toString()), 
         				Integer.parseInt(tvIdPost.getText().toString()), 
         				tvPrim.getText().toString(), 
         				//0, 
         				(tvDataIns.getText().toString().length()==0)?MainActivity.getIntDataTime():MainActivity.getIntDataTime(tvDataIns.getText().toString()) , 
         				(byte)0); 
-        		
+        		if ( MainActivity.StrToFloat(tvPos.getText().toString())!=0 ) 
+        			MainActivity.db.updRec("tmc", Integer.parseInt(tvIdProd.getText().toString()), "pos", (int)MainActivity.StrToFloat(tvPos.getText().toString()) ); 
         				//(Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("_id"))
         		//Log.d("MyLog", "datatime "+MainActivity.getIntDataTime()+" ddd"+tvDataIns.getText() );
         		//Toast.makeText(PrixodActivity.this, "опхунд "+s+" йнк-бн:"+tvKol.getText().toString()+" жемю:"+tvPrice.getText().toString(), Toast.LENGTH_LONG).show();
@@ -220,8 +267,10 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   	        				Integer.parseInt(tvIdPost.getText().toString()),
   	        				Integer.parseInt(tvEd.getText().toString())}); 
   	        	MainActivity.db.updRec("prixod", Integer.parseInt(tvId.getText().toString()), 
-  	        			new String[] {"price","kol"}, new float[] {Float.parseFloat(tvPrice.getText().toString()),Float.parseFloat(tvKol.getText().toString())});  				 
+  	        			new String[] {"price","price_vendor","kol"}, new float[] {Float.parseFloat(tvPrice.getText().toString()),Float.parseFloat(tvPriceVendor.getText().toString()),Float.parseFloat(tvKol.getText().toString())});  				 
   				//Toast.makeText(PrixodActivity.this, "опхунд хглемем "+s+" йнк-бн:"+tvKol.getText().toString()+" жемю:"+tvPrice.getText().toString(), Toast.LENGTH_LONG).show();
+  	        	if ( MainActivity.StrToFloat(tvPos.getText().toString())!=0 ) 
+        			MainActivity.db.updRec("tmc", Integer.parseInt(tvIdProd.getText().toString()), "pos", (int)MainActivity.StrToFloat(tvPos.getText().toString()) );
   	        	
   	        	showMessage("опхунд хглемем "+s+" йнк-бн:"+tvKol.getText().toString()+" жемю:"+tvPrice.getText().toString(), (byte)0);
   				finish();
@@ -266,23 +315,29 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     if( getIntent().getExtras() != null)
     {
 
+    	
     	tvEd.setText(getIntent().getStringExtra("PrixodEd"));
     	//spEd.setSelection(Integer.parseInt(getIntent().getStringExtra("PrixodEd")));
     	//setSpinnerItemById(spEd, Integer.parseInt(getIntent().getStringExtra("PrixodEd")));
-    	tvIdPgr.setText(getIntent().getStringExtra("PrixodPgr"));
-    	setSpinnerItemById(spPgr, Integer.parseInt(getIntent().getStringExtra("PrixodPgr")));
+    	
     	tvIdPost.setText(getIntent().getStringExtra("PrixodPost"));
     	setSpinnerItemById(spPost, Integer.parseInt(getIntent().getStringExtra("PrixodPost")));
     	//spPost.setSelection(Integer.parseInt(getIntent().getStringExtra("PrixodPost")));
     	tvPrice.setText(getIntent().getStringExtra("PrixodPrice"));
     	tvKol.setText(getIntent().getStringExtra("PrixodKol"));
-    	setSpinnerItemById(spProd, Integer.parseInt(getIntent().getStringExtra("PrixodProd")));
+    	
     	//spProd.setSelection(Integer.parseInt(getIntent().getStringExtra("PrixodProd")));
-    	tvIdProd.setText(getIntent().getStringExtra("PrixodProd"));
+    	
     	tvPrim.setText(getIntent().getStringExtra("PrixodPrim"));
     	tvDataIns.setText(MainActivity.getStringDataTime(Integer.parseInt(getIntent().getStringExtra("PrixodDataIns"))));
 
     	tvId.setText(getIntent().getStringExtra("PrixodId"));
+    	Log.d("MyLog", "extra id_tmc="+getIntent().getStringExtra("PrixodProd"));
+    	tvIdProd.setText(getIntent().getStringExtra("PrixodProd"));
+    	setSpinnerItemById(spProd, Integer.parseInt(getIntent().getStringExtra("PrixodProd")));
+    	
+    	tvIdPgr.setText(getIntent().getStringExtra("PrixodPgr"));
+    	//setSpinnerItemById(spPgr, Integer.parseInt(getIntent().getStringExtra("PrixodPgr")));
     }
     getSupportLoaderManager().initLoader(0, null, this);
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.prixod_ll));
@@ -317,14 +372,14 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
 
 @Override
 public Loader<Cursor> onCreateLoader(int i, Bundle arg1) {
-	// TODO Auto-generated method stub
+
     if (i == 0 ) return new PgrLoader(this, MainActivity.db);
 	return null;
 }
 
 @Override
 public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-	// TODO Auto-generated method stub
+
 	scaProd.swapCursor(cursor);
 	/*	switch(loader.getId())
     {
@@ -337,9 +392,9 @@ public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
 @Override
 public void onLoaderReset(Loader<Cursor> arg0) {
-	// TODO Auto-generated method stub
-}
 
+}
+!!price_loader
 static class PgrLoader extends CursorLoader {
 	  
     DB db;
@@ -359,15 +414,16 @@ static class PgrLoader extends CursorLoader {
         if (where.equals("")||where.length()==0) where=str[1].toString(); else 
         	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
         if (!where.equals("")) where=" where "+where;*/
-        cursor = MainActivity.db.getRawData("select _id, name, pgr,ed,ted, ost from (select _id, name,0 pgr, 0 ed, '-' ted, 0 ost from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted, sum(O.kol) as ost from tmc as T left join tmc_ed as E on T.ed=E._id left join ostat as O on T._id=O.id_tmc "
+        cursor = MainActivity.db.getRawData(
+        "select _id, name, pgr,ed,ted, ost, pos from (select -1 _id, name,0 pgr, 0 ed, '-' ted, 0 ost, -1 pos from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted, sum(O.kol) as ost, ifnull(T.pos,-1) as pos from tmc as T left join tmc_ed as E on T.ed=E._id left join ostat as O on T._id=O.id_tmc "
         //((tvIdPost.getText().equals("") )?"0":tvIdPost.getText())
-        +" group by T._id, T.name, T.pgr, T.ed, E.name) where pgr = "
+        +" group by T._id, T.name, T.pgr, T.ed, E.name, ifnull(T.pos,-1) ) where pgr = "
         +((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText())
         , null);    
     //Cursor cursor = MainActivity.db.getRawData("select _id, name sumka, null name from foo union all select _id, sumka, name from klient "+
     //where
     //, null);
-    
+       // 
       return cursor;
     }
      

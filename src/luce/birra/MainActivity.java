@@ -678,15 +678,17 @@ void saveSetting() {
 	if (v.getId() == R.id.btnKassa)
 	{intent = new Intent(this, OtchetActivity.class);
 		   startActivity(intent);}
+	if (v.getId() == R.id.btnExit) finish();
 	else
-		if (v.getId() == R.id.btnExit) finish();
-		else
-		{ 
-		if (access!=1)
+		
+		//else
+		//{ 
+		/*if (access!=1)
 		{but_menu=v.getId();
 		makeDialog(-2);}
 
-		else
+		else*/
+		if (access==1)
 		switch (v.getId()) {
 		   case R.id.btnProd:
 			   intent = new Intent(this, UserActivity.class);
@@ -728,6 +730,6 @@ void saveSetting() {
 		     break;*/
 		   }
 		
-		}
+		//}
 	}
 }

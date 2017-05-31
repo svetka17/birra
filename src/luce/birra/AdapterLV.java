@@ -73,6 +73,9 @@ public void bindView(View view, Context context, final Cursor cursor) {
 	//	R.id.tv_Kol_Pri_Oborotka,R.id.tv_Sum_Pri_Oborotka,R.id.tv_Price_Pri_Oborotka,
 		//R.id.tv_Kol_Ras_Oborotka,R.id.tv_Sum_Ras_Oborotka,R.id.tv_Price_Ras_Oborotka,
 		//R.id.tv_Kol_Kon_Oborotka,R.id.tv_Sum_Kon_Oborotka,R.id.tv_Price_Kon_Oborotka}
+		//if (MainActivity.access!=1) {
+			((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
+		//}
 		
         tv = (TextView) view.findViewById(R.id.tv_Price_Pri_Oborotka);  	
         float kol=cursor.getFloat(cursor.getColumnIndex("kol_pri"));
@@ -265,6 +268,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
                 tv.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             } 
         });*/
+    	if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
       tv = (TextView) view.findViewById(R.id.tvNamePostPrixod_); 
       //  tv = (TextView) view.findViewById(r[2]);
         tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
@@ -350,6 +354,9 @@ public void bindView(View view, Context context, final Cursor cursor) {
 		//for (i=0;i<r.length;i++) {
 			//tv = (TextView) view.findViewById(R.id.tvNamePostav);
 		//}
+    	//if (MainActivity.access!=1) {
+    		((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
+    	//}
     	break;
         }
 	//Button btn = (Button) view.findViewById(R.id.btnDelPgr );
@@ -453,7 +460,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
                     intent.putExtra("ProdVis", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("vis")));
                     contxt.startActivity(intent);
                     break;
-                case  3:
+                /*case  3:
              	    intent = new Intent(contxt, PrixodActivity.class);
              	    
              	    intent.putExtra("PrixodEd", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("ed")));
@@ -467,7 +474,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
                     intent.putExtra("PrixodDataIns", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("data_ins")));
                     
                     contxt.startActivity(intent);
-                    break;
+                    break;*/
                 case 9:
                 	intent = new Intent(contxt, UserEditActivity.class);
                     intent.putExtra("UserName", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("name")));
@@ -478,6 +485,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
                     intent.putExtra("UserDataIns", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("data_ins")));
                     contxt.startActivity(intent);
                    break;
+                case  3:
                 case  4:
                 case  5:
                 case 10:
@@ -487,7 +495,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
                     }
                 }
                 catch(Exception e){
-                	throw new ClassCastException("Table not found: " + namT);
+                	throw new ClassCastException("Table not found:_ " + namT);
                 }
 
         }

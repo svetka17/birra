@@ -25,7 +25,7 @@ public class DB {
 		
 	
   private static final String DB_NAME = "birraDB";
-  private static final int DB_VERSION = 12;
+  private static final int DB_VERSION = 13;
   //private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
   //private static final String DB_TABLE = "mytab";
    
@@ -137,12 +137,13 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("user", null, cv);
 		  }
 
-	  public void addRecPRIXOD(int id_tmc, float kol,byte ed, float price, int id_post, String prim, /*int data_del,*/ int data_ins, byte ok) {
+	  public void addRecPRIXOD(int id_tmc, float kol,byte ed, float price, float price_vendor, int id_post, String prim, /*int data_del,*/ int data_ins, byte ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("kol", kol);
 		    cv.put("ed", ed);
 		    cv.put("price", price);
+		    cv.put("price_vendor", price_vendor);
 		    cv.put("id_post", id_post);
 		    cv.put("prim", prim);
 		    //cv.put("data_del", data_del);
@@ -380,8 +381,21 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
               + "vis integer default 1,"
               + "pos integer default 1,"
               + "tara real default 0,"
-              + "ok integer default 0);");
+              + "ok integer default 0);");//ok=1 - ˝ÚÓ Ú‡‡
               
+    	
+    	db.execSQL("create table tmc_price ("
+                + "_id integer primary key autoincrement,"
+                + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+                + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+                + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+                + "price real not null CHECK (price>=0),"
+                + "data_ins integer,"
+                + "vis integer default 1,"
+                + "pos integer default 1,"
+                + "tara real default 0,"
+                + "ok integer default 0);"); //ok=1 - ˝ÚÓ Ú‡‡
+    	
               //+"FOREIGN KEY(pgr) REFERENCES tmc_pgr(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
               //+"FOREIGN KEY(ed) REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE);");
    
@@ -396,10 +410,11 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
           
           db.execSQL("create table prixod ("
                   + "_id integer primary key autoincrement,"
-                  + "id_tmc integer DEFAULT 0 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "kol real not null,"
                   + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "price real not null CHECK (price>=0),"
+                  + "price_vendor real not null CHECK (price>=0),"
                   + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "prim text,"
                   + "data_ins integer,"
@@ -413,6 +428,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "kol real not null,"
                   + "ed integer not null,"
                   + "price real not null,"
+                  + "price_vendor real not null,"
                   + "id_post integer,"
                   + "prim text,"
                   + "data_ins integer,"
@@ -421,7 +437,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
           
           db.execSQL("create table rasxod ("
                   + "_id integer primary key autoincrement,"
-                  + "id_tmc integer DEFAULT 0 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "kol real not null,"
                   + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "price real not null CHECK (price>=0),"
@@ -450,7 +466,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 
           db.execSQL("create table ostat ("
                   + "_id integer primary key autoincrement,"
-                  + "id_tmc integer DEFAULT 0 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "kol real not null,"
                   + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "price real not null,"
@@ -461,7 +477,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 
           db.execSQL("create table klient ("
                   + "_id integer primary key autoincrement,"
-                  + "name text not null,"
+                  + "name text not null UNIQUE ON CONFLICT IGNORE,"
                   + "sumka real,"
                   + "skidka real,"
                   + "prim text,"
@@ -471,7 +487,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     
           db.execSQL("create table postav ("
                   + "_id integer primary key autoincrement,"
-                  + "name text not null,"
+                  + "name text not null UNIQUE ON CONFLICT IGNORE,"
                   + "adres text,"
                   + "telef text,"
                   + "prim text,"
@@ -480,15 +496,17 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
           
           db.execSQL("INSERT or replace INTO karta_klient (_id,name,ok,sconto_sum,sconto_per) VALUES(0,'0%',0,0,0)");
           db.execSQL("INSERT or replace INTO user (_id,name,password,ok,admin) VALUES(0,'—¿ÿ¿','1',1,1)");
-          db.execSQL("INSERT or replace INTO foo (_id,name) VALUES(0,'-ÌÂÚ-')");
+          db.execSQL("INSERT or replace INTO foo (_id,name) VALUES(-1,'-ÌÂÚ-')");
           db.execSQL("INSERT or replace INTO postav (_id,name) VALUES(0,'-ÌÂÚ-')");
           db.execSQL("INSERT or replace INTO klient (_id,name) VALUES(0,'-ÌÂÚ-')");
+          db.execSQL("INSERT or replace INTO tmc_ed (_id,name) VALUES(0,'-ÌÂÚ-')");
           db.execSQL("INSERT or replace INTO tmc_ed (_id,name) VALUES(1,'À')");
           db.execSQL("INSERT or replace INTO tmc_ed (_id,name) VALUES(2,'ÿ“')");
           db.execSQL("INSERT or replace INTO tmc_ed (_id,name) VALUES(3,' √')");
           db.execSQL("INSERT or replace INTO tmc_ed (_id,name) VALUES(4,'√–Õ')");
           db.execSQL("INSERT or replace INTO tmc_pgr (_id,name) VALUES(0,'-ÌÂÚ-')");
           db.execSQL("INSERT or replace INTO tmc_pgr (_id,name) VALUES(1,'“¿–¿')");
+          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara) VALUES(-1,'-ÌÂÚ-',0,0,0,0,0,0)");
           db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara) VALUES(0,'— »ƒ ¿',0,4,0,0,0,0)");
           db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(1,'¡”“€À ¿ 0.5À',1,2,1,1,1,0.5,1)");
           db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(2,'¡”“€À ¿ 1À',1,2,1,1,1,1,2)");
@@ -522,6 +540,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
         		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
         		    " BEGIN "+
         		    " insert into ostat (id_tmc, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.kol, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+        		    " insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
         		    " END;");
           
           db.execSQL("CREATE TRIGGER pri_ins2 " +
@@ -530,36 +549,44 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
       		    " BEGIN "+
       		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.price*NEW.kol, data_ins=NEW.data_ins where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+      		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
       		    " END;");
-          
+          //update Ì‡ ÔËıÓ‰ Á‡ÔÂ˘ÂÌ 31.05.2107
           db.execSQL("CREATE TRIGGER pri_upd1 " +
         		    " AFTER UPDATE "+
         		    " ON prixod "+    	        		    
         		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
         		    " BEGIN "+
         		    " update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol, data_ins=OLD.data_ins where ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
-        		    " END;");
+        		    " update tmc_price set price=OLD.price_vendor, data_ins=OLD.data_ins, vis=1 where ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+  
+        		  " END;");
+          
           db.execSQL("CREATE TRIGGER pri_upd2 " +
       		    " AFTER UPDATE "+
       		    " ON prixod "+    	        		    
       		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
       		    " BEGIN "+
       		    " insert into ostat (id_tmc, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.kol, NEW.ed, NEW.price, NEW.price*New.kol, NEW.id_post, NEW.data_ins, 0); "+
+      		    " insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
       		    " END;");
+          
           db.execSQL("CREATE TRIGGER pri_upd3 " +
         		    " AFTER UPDATE "+
         		    " ON prixod "+    	        		    
         		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
         		    " BEGIN "+
         		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.kol*NEW.price, data_ins=NEW.data_ins where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
-        		    " END;");
+        		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+  
+        		  " END;");
+          
           db.execSQL("CREATE TRIGGER pri_del1 " +
         		    " BEFORE DELETE "+
         		    " ON prixod "+    	        		    
         		    " FOR EACH ROW "+
         		    " BEGIN "+
-        		    " insert into prixod_del (id_id, id_tmc, kol, ed, price, skidka, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.skidka, OLD.id_post, OLD.data_ins, OLD.ok); "+
+        		    " insert into prixod_del (id_id, id_tmc, kol, ed, price, price_vendor, skidka, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.skidka, OLD.id_post, OLD.data_ins, OLD.ok); "+
         		    " END;");
+          
           db.execSQL("CREATE TRIGGER pri_del2 " +
       		    " AFTER DELETE "+
       		    " ON prixod "+    	        		    
@@ -567,6 +594,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " BEGIN "+
       		    " update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol, data_ins=OLD.data_ins where ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
       		    " END;");
+          
           ////rasxod
           db.execSQL("CREATE TRIGGER ras_ins1 " +
       		    " AFTER INSERT "+
@@ -625,10 +653,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	Log.d("MyLog", " --- onUpgrade database --- ");
-    	if (newVersion == 12) {
+    	if (newVersion == 13) {
     	    db.beginTransaction();
     	    try {
-    	    	
     	    	  db.execSQL("DROP INDEX pri_tmc;");       
     	          db.execSQL("DROP INDEX pri_ed;");
     	          db.execSQL("DROP INDEX pri_post;");
@@ -644,7 +671,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      db.execSQL("drop table foo;");
     	      db.execSQL("drop table user;");
     	      db.execSQL("drop table tmc;");
-    	      
+    	      db.execSQL("drop table tmc_price;");
     	      db.execSQL("drop table tmc_ed;");
     	      
     	      db.execSQL("drop table tmc_pgr;");
@@ -700,8 +727,21 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	              + "vis integer default 1,"
     	              + "pos integer default 1,"
     	              + "tara real default 0,"
-    	              + "ok integer default 0);");
+    	              + "ok integer default 0);");//ok=1 - ˝ÚÓ Ú‡‡
     	              
+    	    	
+    	    	db.execSQL("create table tmc_price ("
+    	                + "_id integer primary key autoincrement,"
+    	                + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                + "price real not null CHECK (price>=0),"
+    	                + "data_ins integer,"
+    	                + "vis integer default 1,"
+    	                + "pos integer default 1,"
+    	                + "tara real default 0,"
+    	                + "ok integer default 0);"); //ok=1 - ˝ÚÓ Ú‡‡
+    	    	
     	              //+"FOREIGN KEY(pgr) REFERENCES tmc_pgr(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	              //+"FOREIGN KEY(ed) REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE);");
     	   
@@ -716,10 +756,11 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          
     	          db.execSQL("create table prixod ("
     	                  + "_id integer primary key autoincrement,"
-    	                  + "id_tmc integer DEFAULT 0 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "kol real not null,"
     	                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "price real not null CHECK (price>=0),"
+    	                  + "price_vendor real not null CHECK (price>=0),"
     	                  + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "prim text,"
     	                  + "data_ins integer,"
@@ -733,6 +774,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "kol real not null,"
     	                  + "ed integer not null,"
     	                  + "price real not null,"
+    	                  + "price_vendor real not null,"
     	                  + "id_post integer,"
     	                  + "prim text,"
     	                  + "data_ins integer,"
@@ -741,7 +783,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          
     	          db.execSQL("create table rasxod ("
     	                  + "_id integer primary key autoincrement,"
-    	                  + "id_tmc integer DEFAULT 0 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "kol real not null,"
     	                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "price real not null CHECK (price>=0),"
@@ -770,7 +812,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 
     	          db.execSQL("create table ostat ("
     	                  + "_id integer primary key autoincrement,"
-    	                  + "id_tmc integer DEFAULT 0 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "kol real not null,"
     	                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "price real not null,"
@@ -781,7 +823,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 
     	          db.execSQL("create table klient ("
     	                  + "_id integer primary key autoincrement,"
-    	                  + "name text not null,"
+    	                  + "name text not null UNIQUE ON CONFLICT IGNORE,"
     	                  + "sumka real,"
     	                  + "skidka real,"
     	                  + "prim text,"
@@ -791,23 +833,26 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	    
     	          db.execSQL("create table postav ("
     	                  + "_id integer primary key autoincrement,"
-    	                  + "name text not null,"
+    	                  + "name text not null UNIQUE ON CONFLICT IGNORE,"
     	                  + "adres text,"
     	                  + "telef text,"
     	                  + "prim text,"
     	                  + "data_ins integer,"
     	                  + "ok integer default 0);");
+    	          
     	          db.execSQL("INSERT or replace INTO karta_klient (_id,name,ok,sconto_sum,sconto_per) VALUES(0,'0%',0,0,0)");
     	          db.execSQL("INSERT or replace INTO user (_id,name,password,ok,admin) VALUES(0,'—¿ÿ¿','1',1,1)");
-    	          db.execSQL("INSERT or replace INTO foo (_id,name) VALUES(0,'-ÌÂÚ-')");
+    	          db.execSQL("INSERT or replace INTO foo (_id,name) VALUES(-1,'-ÌÂÚ-')");
     	          db.execSQL("INSERT or replace INTO postav (_id,name) VALUES(0,'-ÌÂÚ-')");
     	          db.execSQL("INSERT or replace INTO klient (_id,name) VALUES(0,'-ÌÂÚ-')");
+    	          db.execSQL("INSERT or replace INTO tmc_ed (_id,name) VALUES(0,'-ÌÂÚ-')");
     	          db.execSQL("INSERT or replace INTO tmc_ed (_id,name) VALUES(1,'À')");
     	          db.execSQL("INSERT or replace INTO tmc_ed (_id,name) VALUES(2,'ÿ“')");
     	          db.execSQL("INSERT or replace INTO tmc_ed (_id,name) VALUES(3,' √')");
     	          db.execSQL("INSERT or replace INTO tmc_ed (_id,name) VALUES(4,'√–Õ')");
     	          db.execSQL("INSERT or replace INTO tmc_pgr (_id,name) VALUES(0,'-ÌÂÚ-')");
     	          db.execSQL("INSERT or replace INTO tmc_pgr (_id,name) VALUES(1,'“¿–¿')");
+    	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara) VALUES(-1,'-ÌÂÚ-',0,0,0,0,0,0)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara) VALUES(0,'— »ƒ ¿',0,4,0,0,0,0)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(1,'¡”“€À ¿ 0.5À',1,2,1,1,1,0.5,1)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(2,'¡”“€À ¿ 1À',1,2,1,1,1,1,2)");
@@ -817,8 +862,8 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(6,'¡”“€À ¿ 3À',1,2,1,1,1,3,6)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(7,'—“¿ ¿Õ 0.5À',1,2,1,1,1,0.5,7)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(8,'—“¿ ¿Õ 0.2À',1,2,1,1,1,0.2,8)");
-    	          db.execSQL("CREATE INDEX pri_tmc ON prixod (id_tmc);");  
-    	          db.execSQL("CREATE INDEX klient_k ON klient (karta);");
+    	          db.execSQL("CREATE INDEX pri_tmc ON prixod (id_tmc);");
+    	          db.execSQL("CREATE INDEX klient_k ON klient (karta);"); 
     	          db.execSQL("CREATE INDEX pri_ed ON prixod (ed);");
     	          db.execSQL("CREATE INDEX pri_post ON prixod (id_post);");
     	          db.execSQL("CREATE INDEX ras_tmc ON rasxod (id_tmc);");       
@@ -841,6 +886,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	        		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	        		    " BEGIN "+
     	        		    " insert into ostat (id_tmc, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.kol, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+    	        		    " insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
     	        		    " END;");
     	          
     	          db.execSQL("CREATE TRIGGER pri_ins2 " +
@@ -849,36 +895,44 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	      		    " BEGIN "+
     	      		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.price*NEW.kol, data_ins=NEW.data_ins where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+    	      		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
     	      		    " END;");
-    	          
+    	          //update Ì‡ ÔËıÓ‰ Á‡ÔÂ˘ÂÌ 31.05.2107
     	          db.execSQL("CREATE TRIGGER pri_upd1 " +
     	        		    " AFTER UPDATE "+
     	        		    " ON prixod "+    	        		    
     	        		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
     	        		    " BEGIN "+
     	        		    " update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol, data_ins=OLD.data_ins where ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
-    	        		    " END;");
+    	        		    " update tmc_price set price=OLD.price_vendor, data_ins=OLD.data_ins, vis=1 where ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+  
+    	        		  " END;");
+    	          
     	          db.execSQL("CREATE TRIGGER pri_upd2 " +
     	      		    " AFTER UPDATE "+
     	      		    " ON prixod "+    	        		    
     	      		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	      		    " BEGIN "+
     	      		    " insert into ostat (id_tmc, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.kol, NEW.ed, NEW.price, NEW.price*New.kol, NEW.id_post, NEW.data_ins, 0); "+
+    	      		    " insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
     	      		    " END;");
+    	          
     	          db.execSQL("CREATE TRIGGER pri_upd3 " +
     	        		    " AFTER UPDATE "+
     	        		    " ON prixod "+    	        		    
     	        		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	        		    " BEGIN "+
     	        		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.kol*NEW.price, data_ins=NEW.data_ins where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
-    	        		    " END;");
+    	        		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+  
+    	        		  " END;");
+    	          
     	          db.execSQL("CREATE TRIGGER pri_del1 " +
     	        		    " BEFORE DELETE "+
     	        		    " ON prixod "+    	        		    
     	        		    " FOR EACH ROW "+
     	        		    " BEGIN "+
-    	        		    " insert into prixod_del (id_id, id_tmc, kol, ed, price, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.data_ins, OLD.ok); "+
+    	        		    " insert into prixod_del (id_id, id_tmc, kol, ed, price, price_vendor, skidka, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.skidka, OLD.id_post, OLD.data_ins, OLD.ok); "+
     	        		    " END;");
+    	          
     	          db.execSQL("CREATE TRIGGER pri_del2 " +
     	      		    " AFTER DELETE "+
     	      		    " ON prixod "+    	        		    
@@ -886,6 +940,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " BEGIN "+
     	      		    " update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol, data_ins=OLD.data_ins where ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
     	      		    " END;");
+    	          
     	          ////rasxod
     	          db.execSQL("CREATE TRIGGER ras_ins1 " +
     	      		    " AFTER INSERT "+
@@ -929,7 +984,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW "+
     	      		    " BEGIN "+
-    	      		    " insert into rasxod_del (id_id, id_tmc, kol, ed, price, skidka, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.skidka, OLD.id_post, OLD.data_ins, OLD.ok); "+
+    	      		    " insert into rasxod_del (id_id, id_tmc, kol, ed, price, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.data_ins, OLD.ok); "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_del2 " +
     	    		    " AFTER DELETE "+

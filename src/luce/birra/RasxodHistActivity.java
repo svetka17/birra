@@ -1,4 +1,5 @@
 package luce.birra;
+import android.R.string;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -39,7 +40,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     //final DialogFragment dlg = new DialogActivity();
     
     tvDataIns = (TextView) findViewById(R.id.tv_Data_RasHist);
-    tvDataIns.setText(MainActivity.getStringDataTime(MainActivity.getIntDataTime()));
+    tvDataIns.setText(MainActivity.getStringDataTime( Integer.parseInt( String.valueOf( MainActivity.getIntDataTime() ).substring(0,8).concat("00") ) ));
     tvDataIns.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	//showDialog(1);

@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 
+import luce.birra.AdapterLV.CambiareListener;
 import luce.birra.DialogScreen.DialogListener;
 import luce.birra.OpenFileDialog.OpenDialogListenerDir;
 
@@ -114,7 +115,14 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
     				R.id.tv_Kol_Ras_Oborotka,R.id.tv_Sum_Ras_Oborotka,R.id.tv_Price_Ras_Oborotka,
     				R.id.tv_Kol_Kon_Oborotka,R.id.tv_Sum_Kon_Oborotka,R.id.tv_Price_Kon_Oborotka};
 */
-    	    scAdapterO = new AdapterLV(R.id.btnDelOborotka, R.id.btnUpdOborotka, (byte)0, this, R.layout.oborotka_item, null, fromO, toO, 0);
+    	    scAdapterO = new AdapterLV(R.id.btnDelOborotka, R.id.btnUpdOborotka, (byte)0, this, R.layout.oborotka_item, null, fromO, toO, 0)
+    	    .setCamdiareListener(new CambiareListener() {
+    			@Override
+    			public void OnCambiare(byte flag, long id) {
+    				if (flag==1) {
+    				}
+    			}
+    		});
     lvData = (ListView) findViewById(R.id.lvOborotka);
     lvData.setAdapter(scAdapterO);
     

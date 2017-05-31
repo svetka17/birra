@@ -20,7 +20,7 @@
                 <TextView
                     android:id="@+id/tvIdPri"
                     style="@style/ww0"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
                 <TextView
                     android:id="@+id/tvIdPgrPri"
                     android:layout_width="wrap_content"
@@ -117,38 +117,77 @@
 
             <LinearLayout
                  style="@style/mw1">
-
-                <TextView
+				<TextView
                     style="@style/TV_h"
                 	android:layout_width="wrap_content"
                 	android:layout_height="match_parent"
-                    android:text="ПРИМЕЧАНИЕ  " />
+                    android:text="№ПОЗИЦИИ В ГРУППЕ" />
 
                 <EditText
-                    android:id="@+id/tvPrimPri"
-                    style="@style/ET_t"
-            		android:layout_weight="1"
+                    android:id="@+id/tvPosPri"
+                    style="@style/ET_n"
+            		android:layout_weight="0"
                 	android:layout_width="wrap_content"
                 	android:layout_height="match_parent"
-                    android:hint="ВВЕДИТЕ ПРИМЕЧАНИЕ (не обязательное поле)">
+                    android:hint="ВВЕДИТЕ № ПОЗИЦИИ (не обязательное поле)">
+                    <requestFocus>
+                </requestFocus>
+                </EditText>
+                
+                 <TextView
+                     style="@style/TV_h"
+                	android:layout_width="wrap_content"
+                	android:layout_height="match_parent"
+                    android:text="ЦЕНА ПРОДАЖИ" />
+
+                <EditText
+                    android:id="@+id/tvPricePriVendor"
+                     style="@style/ET_n"
+            		android:layout_weight="1"
+                	android:layout_width="match_parent"
+                	android:layout_height="match_parent"
+                    android:hint="ВВЕДИТЕ ЦЕНУ ПРОДАЖИ">
                     <requestFocus>
                 </requestFocus>
                 </EditText>
                 </LinearLayout>
 				<LinearLayout
                  style="@style/mw1">
+
                 <TextView
                     style="@style/TV_h"
-                	android:layout_width="wrap_content"
-                	android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
                     android:text="ДАТА ПОСТАВКИ" />
 
                 <EditText
                     android:id="@+id/tvDatInsPri"
                     style="@style/ET_t"
-                	android:layout_width="wrap_content"
-                	android:layout_height="match_parent"
-                    android:hint="ВВЕДИТЕ ДАТУ (ИЛИ БУДЕТ ПОДСТАВЛЕНО СЕГОДНЯШНЕЕ ЧИСЛО)" >
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="ВВЕДИТЕ ДАТУ" >
+
+                    <requestFocus>
+                </requestFocus>
+                </EditText>
+
+                <TextView
+                    style="@style/TV_h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:text="ПРИМЕЧАНИЕ" />
+
+                <EditText
+                    android:id="@+id/tvPrimPri"
+                    style="@style/ET_t"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="ВВЕДИТЕ ПРИМЕЧАНИЕ" >
+
                     <requestFocus>
                 </requestFocus>
                 </EditText>
@@ -169,7 +208,8 @@
     </LinearLayout>
 
     <LinearLayout
-        style="@style/mw0">
+        style="@style/mw0"
+        android:layout_weight="1" >
 
         <Button
             android:id="@+id/btnSprProdPri"
