@@ -210,8 +210,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("karta_klient", null, cv);
 		  }
 
-	  public void addRecKLIENT(String name, float sum, float skidka, String prim, int data_ins, int karta, byte ok) {
+	  public void addRecKLIENT(int num_id, String name, float sum, float skidka, String prim, int data_ins, int karta, byte ok) {
 		    ContentValues cv = new ContentValues();
+		    cv.put("num_id", num_id);
 		    cv.put("name", name);
 		    cv.put("sumka", sum);
 		    cv.put("skidka", skidka);
@@ -222,8 +223,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("klient", null, cv);
 		  }
 
-	  public long addRecKLIENTcount(String name, float sum, float skidka, String prim, int data_ins, int karta, byte ok) {
+	  public long addRecKLIENTcount(int num_id, String name, float sum, float skidka, String prim, int data_ins, int karta, byte ok) {
 		    ContentValues cv = new ContentValues();
+		    cv.put("num_id", num_id);
 		    cv.put("name", name);
 		    cv.put("sumka", sum);
 		    cv.put("skidka", skidka);
@@ -477,6 +479,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 
           db.execSQL("create table klient ("
                   + "_id integer primary key autoincrement,"
+                  + "num_id integer,"
                   + "name text not null UNIQUE ON CONFLICT IGNORE,"
                   + "sumka real,"
                   + "skidka real,"
@@ -692,7 +695,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 
     	      db.execSQL("drop table postav;");
     	      
-    	      db.execSQL("PRAGMA foreign_keys = ON;");
+    	    	db.execSQL("PRAGMA foreign_keys = ON;");
     	    	
     	    	db.execSQL("create table foo ("
     	                + "_id integer primary key,"
@@ -823,6 +826,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 
     	          db.execSQL("create table klient ("
     	                  + "_id integer primary key autoincrement,"
+    	                  + "num_id integer,"
     	                  + "name text not null UNIQUE ON CONFLICT IGNORE,"
     	                  + "sumka real,"
     	                  + "skidka real,"

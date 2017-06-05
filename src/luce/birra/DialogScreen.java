@@ -57,6 +57,8 @@ public class DialogScreen extends AlertDialog.Builder {
 			   return "¬ведите общий % скидки по умолчанию на весь чек";
 		   case R.id.cb_Kol_Ostat:
 			   return "¬ведите количество правильного остатка";
+		   case R.id.cb_Kol_Price:
+			   return "¬ведите правильную цену";
 		   default: return "";
 		   }
 	   }

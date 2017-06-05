@@ -65,6 +65,8 @@ static int blue2=50;
 static String usr = "";
 static byte access=0;
 static byte postlitr=0;
+static int num_id=1;
+static int day=1;
 int but_menu=0;
 static String my_pass="svetka";
 // SharedPreferences sPref;
@@ -141,6 +143,8 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 					file=Export2Excel.ostat((int) StrToFloat(pgrr), ""); break;
 				case 6:
 					file=Export2Excel.all_spr(""); break;
+				case 7:
+					file=Export2Excel.price((int) StrToFloat(pgrr), ""); break;
 				}
 				//u1  =  Uri.fromFile(file);
 				//intent = new Intent(Intent.);
@@ -446,6 +450,9 @@ void saveSetting() {
 	    ed.putInt("blue1", blue1 );
 	    ed.putInt("blue2", blue2 );
 	    ed.putInt("postlitr", postlitr );
+	    ed.putInt("num_id", num_id );
+	    day=Calendar.getInstance().get(Calendar.DATE);
+	    ed.putInt("day", day );
 	    ed.commit();
 	    //Toast.makeText(this, "настройки сохранены", Toast.LENGTH_SHORT).show();
 	  }
@@ -471,6 +478,13 @@ void saveSetting() {
     blue1 = sPref.getInt("blue1", 50);
     blue2 = sPref.getInt("blue2", 50);
     postlitr = (byte)sPref.getInt("postlitr", 1);
+    num_id = sPref.getInt("num_id", num_id);
+    day = sPref.getInt("day", day);
+    if (day!=Calendar.getInstance().get(Calendar.DATE))
+    {
+    	num_id=1;
+    	day=Calendar.getInstance().get(Calendar.DATE);
+    }
     //Toast.makeText(this, "настройки загружены", Toast.LENGTH_SHORT).show();
   }
   

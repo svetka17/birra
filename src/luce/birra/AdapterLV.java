@@ -49,6 +49,7 @@ public AdapterLV(/*int[] r,*/ int bD, int bU, byte nT, Context context, int layo
     case 8: namT="karta_klient"; break;
     case 9: namT="user"; break;
     case 10: namT=""; break;
+    case 11: namT="tmc_price"; break;
     }
 }
 
@@ -358,6 +359,14 @@ public void bindView(View view, Context context, final Cursor cursor) {
     		((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
     	//}
     	break;
+    case 11:
+    	if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
+    	tv = (TextView) view.findViewById(R.id.tvNamePost_Price);  	
+        tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
+    	tv = (TextView) view.findViewById(R.id.tvDataIns_Price);  	
+        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+
+    	break;
         }
 	//Button btn = (Button) view.findViewById(R.id.btnDelPgr );
 	((Button) view.findViewById(bD)).setOnClickListener(new View.OnClickListener() {
@@ -489,6 +498,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
                 case  4:
                 case  5:
                 case 10:
+                case 11:
                 case 0:
                 	listenerFlag.OnCambiare((byte)2, getItemId(position));
                     break;

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/price_item_tr"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvId_Price"
+        style="@style/lv_i"
+        android:layout_weight="0.5"/>
+
+    <TextView
+        android:id="@+id/tvNameTmc_Price"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    
+    <TextView
+        android:id="@+id/tvNamePgr_Price"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    
+    <TextView
+        android:id="@+id/tvNamePost_Price"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tvTed_Price"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvPrice_Price"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvDataIns_Price"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        style="@style/_m1"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnUpdPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="ИЗМЕНИТЬ" />
+
+        <Button
+            android:id="@+id/btnDelPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="ОБНУЛИТЬ" />
+    </LinearLayout>
+
+</TableRow>

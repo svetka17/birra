@@ -99,18 +99,25 @@
         android:layout_weight="1">
         <Button
             android:id="@+id/btnSprKlient"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             style="@style/B"
             android:text="СПРАВОЧНИК КЛИЕНТОВ (ДИСКОНТОВ)" />
          <Button
             android:id="@+id/btnSprPostav"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             style="@style/B"
             android:text="СПРАВОЧНИК ПОСТАВЩИКОВ" />
+         <Button
+            android:id="@+id/btnSprPrice"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="СПРАВОЧНИК ЦЕН" />
 
  </TableRow>     
  <TableRow

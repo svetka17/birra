@@ -614,6 +614,99 @@ e.printStackTrace();
 return file;
 }
 
+static File price (int pgr, String dirN) {
+	//String []str = {pgr==0?"":" TT._id="+pgr};
+			//String where=str[0].toString(); 
+			//Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
+			Cursor cc = MainActivity.db.getRawData (
+	    			"select O._id as _id, O.id_tmc as id_tmc, E.name as ted, O.price as price, O.id_post as id_post, O.data_ins as data_ins, "
+	    	    			+ "P.name as pname, T.name as tname, TP.name as pgr "
+	    	    			+ "from tmc_price as O "
+	    	    			+ "left join tmc as T "
+	    	    			+ "on O.id_tmc=T._id "
+	    	    			+ "left join postav as P "
+	    	    			+ "on O.id_post=P._id "
+	    	    			+ "left join tmc_ed as E "
+	    	    			+ "on O.ed=E._id "
+	    	    			+ "left join tmc_pgr as TP "
+	    	    			+ "on T.pgr=TP._id "
+	    	    			+ "where O.price<>0 "+((pgr==0)?"":(" and T.pgr="+pgr)) // +"? and ?"
+	    	    			, null);
+
+File file   = null, dir = null;
+File root   = Environment.getExternalStorageDirectory();
+if (dirN.length()!=0) {dir=new File(dirN); }
+else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
+if (root.canWrite()){
+dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
+}
+file   =   new File(dir, "PRICE"+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
+
+try {
+FileOutputStream out   =   null;
+out = new FileOutputStream(file);
+HSSFWorkbook workbook = new HSSFWorkbook();
+HSSFSheet sheet = workbook.createSheet("ÀËÒÚ1");
+HSSFDataFormat df2 = workbook.createDataFormat();
+HSSFDataFormat df3 = workbook.createDataFormat();
+HSSFCellStyle styleN2 = workbook.createCellStyle();
+styleN2.setDataFormat(df2.getFormat("0.00"));
+HSSFCellStyle styleN3 = workbook.createCellStyle();
+styleN3.setDataFormat(df3.getFormat("0.000"));
+HSSFFont font = workbook.createFont();
+font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+HSSFCellStyle style = workbook.createCellStyle();
+style.setFont(font);
+style.setWrapText(true);
+style.setAlignment(HSSFCellStyle.ALIGN_FILL );
+style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
+int rowNum = 0;
+HSSFRow row = sheet.createRow(rowNum);
+row.createCell(0).setCellValue("ÕŒÃ≈Õ À¿“”–¿"); //row.getCell(0).setCellStyle(style2);
+row.createCell(1).setCellValue("√–”œœ¿");
+row.createCell(2).setCellValue("Õ¿«¬¿Õ»≈");
+row.createCell(3).setCellValue("œŒ—“¿¬Ÿ» ");
+row.createCell(4).setCellValue("≈ƒ.»«Ã");
+row.createCell(5).setCellValue("÷≈Õ¿ œ–Œƒ¿∆»");
+row.createCell(6).setCellValue("»ƒπ");
+row.createCell(7).setCellValue("ƒ¿“¿ œŒ—À≈ƒÕ≈√Œ »«Ã≈Õ≈Õ»ﬂ");
+for (int i=0; i<8; i++) row.getCell(i).setCellStyle(style);
+row.setHeight((short)1000);
+sheet.createFreezePane(0, 1);
+if (cc.moveToFirst())  
+do {
+rowNum++;
+row = sheet.createRow(rowNum);
+row.createCell(0).setCellValue(cc.getInt(cc.getColumnIndex("id_tmc")));
+row.createCell(1).setCellValue(cc.getString(cc.getColumnIndex("pgr")));
+row.createCell(2).setCellValue(cc.getString(cc.getColumnIndex("tname")));
+row.createCell(3).setCellValue(cc.getString(cc.getColumnIndex("pname")));
+//row.createCell(4).setCellValue(cc.getFloat(cc.getColumnIndex("kol")));row.getCell(4).setCellStyle(styleN3);
+row.createCell(4).setCellValue(cc.getString(cc.getColumnIndex("ted")));
+row.createCell(5).setCellValue(cc.getFloat(cc.getColumnIndex("price")));row.getCell(5).setCellStyle(styleN2);
+//row.createCell(7).setCellValue(cc.getFloat(cc.getColumnIndex("sumka")));row.getCell(7).setCellStyle(styleN2);
+row.createCell(6).setCellValue(cc.getInt(cc.getColumnIndex("_id")));
+row.createCell(7).setCellValue(MainActivity.getStringDataTime( cc.getInt(cc.getColumnIndex("data_ins")) ));
+
+} while (cc.moveToNext());
+cc.close();
+rowNum++;
+row = sheet.createRow(rowNum);
+//FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+//row.createCell(4).setCellFormula("SUM(E2:E"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(4));row.getCell(4).setCellStyle(styleN3);
+//row.createCell(7).setCellFormula("SUM(H2:H"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(7));row.getCell(7).setCellStyle(styleN2);
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:K"+rowNum));
+workbook.write(out);// workbook.close();
+out.close();
+} catch (FileNotFoundException ef) {
+ef.printStackTrace();// out.close();
+}
+catch (IOException e) {
+e.printStackTrace();
+}
+return file;
+}
+
 static File all_spr (String dirN) {
 	//String []str = {pgr==0?"":" TT._id="+pgr};
 			//String where=str[0].toString(); 

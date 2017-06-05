@@ -560,7 +560,9 @@ void makeDialog() {
 	   llbut.removeAllViewsInLayout();
 	   svBut.removeAllViewsInLayout();
 	   int count_but=0;
-	   Cursor cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, T._id",null);
+	   Cursor cc = MainActivity.db.getRawData 
+("select T._id as _id, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
+		+ " from tmc T left join ostat S on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, T._id",null);
 	   //Cursor cc = MainActivity.db.getRawData ("select count(*) c from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
 	   if (cc.moveToFirst()) { 
 	        do {count_but++;
@@ -895,7 +897,7 @@ void makeDialog() {
 	   if (/*tvCombo.getText().equals("")*/data.size()==0) finish();
    	else
    	{//no klient
-   		long cou=MainActivity.db.addRecKLIENTcount("svetka", Float.parseFloat(tvSum.getText().toString()),0, "", MainActivity.getIntDataTime(), 0, (byte)0);
+   		long cou=MainActivity.db.addRecKLIENTcount(MainActivity.num_id,"svetka", Float.parseFloat(tvSum.getText().toString()),0, "", MainActivity.getIntDataTime(), 0, (byte)0);
    		
    	for (int i=0; i<tranz.size(); i++) {
    		//public void addRecRASXOD(int id_tmc, float kol, float price, int id_post, int id_klient, String prim, int data_del, int data_ins, byte ok)
@@ -907,7 +909,7 @@ void makeDialog() {
    	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
    	if (but.get(tranz.get(i).tagB).ost<=0)//если кол-во <0 то добавляем остаток по приходу
    	{
-   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
+   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
    		but.get(tranz.get(i).tagB).ost=1;
    	}
    	//Log.d("MyLog", "PtagB="+tranz.get(i).tagB+" ost="+but.get(tranz.get(i).tagB).ost);
@@ -943,8 +945,8 @@ void makeDialog() {
    	for (int i=0; i<data.size(); i++) 
    	{sChek=sChek+"\n"+data.get(i).get("name").toString()+" "+data.get(i).get("kol").toString()+" "+data.get(i).get("price").toString()+" "+data.get(i).get("tara").toString(); }	
    	
-   	showMessage("ЧЕК № "+cou+" НА СУММУ:"+tvSum.getText().toString()+"\n"+sChek, (byte)1);
-   		
+   	showMessage("ЧЕК № "+MainActivity.num_id+" НА СУММУ:"+tvSum.getText().toString()+"\n"+sChek, (byte)1);
+   	MainActivity.num_id++;	
    	data.clear();
    	sAdapter.notifyDataSetChanged();
    	tvSum.setText("");sumI=0;tranz.clear();
@@ -956,8 +958,8 @@ void makeDialog() {
 	   if (data.size()!=0)
    	{
 		// int klient=0; if (!=0) 
-    long cou=MainActivity.db.addRecKLIENTcount("чек", MainActivity.StrToFloat(tvDItogo.getText().toString()), MainActivity.StrToFloat(etSkidka.getText().toString()), "" , MainActivity.getIntDataTime(),(int) MainActivity.StrToFloat(tvIdKlient.getText().toString()) , (byte)0);
-
+    long cou=MainActivity.db.addRecKLIENTcount(MainActivity.num_id, "чек", MainActivity.StrToFloat(tvDItogo.getText().toString()), MainActivity.StrToFloat(etSkidka.getText().toString()), "" , MainActivity.getIntDataTime(),(int) MainActivity.StrToFloat(tvIdKlient.getText().toString()) , (byte)0);
+    MainActivity.num_id++;
     //это общая скидка, если она есть (суйчас она =0 не заполняется и invisible)
     /*if (MainActivity.StrToFloat(etSkidka.getText().toString())!=0)
    		MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat(etSkidka.getText().toString()), (byte)4, 0, 0, 0, (int)cou, "СКИДКА "+etSkidka.getText().toString()+"ГРН", MainActivity.getIntDataTime(), (byte)0);
@@ -985,7 +987,7 @@ void makeDialog() {
    	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
    	if (but.get(tranz.get(i).tagB).ost<=0)//если кол-во <0 то добавляем остаток по приходу
    	{
-   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
+   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
    		but.get(tranz.get(i).tagB).ost=1;
    	}
  

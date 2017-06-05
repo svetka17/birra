@@ -208,8 +208,7 @@
     </LinearLayout>
 
     <LinearLayout
-        style="@style/mw0"
-        android:layout_weight="1" >
+        style="@style/mw0">
 
         <Button
             android:id="@+id/btnSprProdPri"

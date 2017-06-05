@@ -168,7 +168,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         });
     spKlient.setAdapter(scaKlient);
     */
-    String[] fromKlient = new String[] {"_id","sumka"};
+    String[] fromKlient = new String[] {"num_id","sumka"};
     int[] toKlient = new int[] {R.id.spt1, R.id.spt2};
     scaKlient = new SimpleCursorAdapter(this, R.layout.spinner_dub, null, fromKlient, toKlient);   
     scaKlient.setDropDownViewResource(R.layout.spinner_dup_down); 
@@ -371,7 +371,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 	        if (where.equals("")||where.length()==0) where=str[1].toString(); else 
 	        	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
 	        if (!where.equals("")) where=" where "+where;
-	    Cursor cursor = MainActivity.db.getRawData("select _id, name sumka, null name from foo union all select _id, sumka, name from klient "+
+	    Cursor cursor = MainActivity.db.getRawData("select _id, 0 num_id, name sumka, null name from foo union all select _id, num_id, sumka, name from klient "+
 	    //((tvDataIns.getText().length()==0)?"":" where substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")")
 	    where
 	    , null);

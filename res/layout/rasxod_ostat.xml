@@ -82,6 +82,10 @@
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
+ 		    android:text="ЦЕНА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
  		    android:text="СКИДКА"/>
 <TextView
  		    style="@style/lv_h"
@@ -130,6 +134,10 @@
  		    android:id="@+id/itogRasxodOstSumma"
             android:layout_weight="1"
  		    android:text="0"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
 <TextView
  		    style="@style/lv_h"
  		    android:id="@+id/itogRasxodOstSkidka"

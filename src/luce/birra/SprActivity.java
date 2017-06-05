@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
  
 public class SprActivity extends FragmentActivity {
 
-  Button btnExit, btnProd, btnPgr, btnPostav, btnKlient, btnExport, btnImport;
+  Button btnExit, btnProd, btnPgr, btnPostav,btnPrice, btnKlient, btnExport, btnImport;
   //OpenFileDialog ofd;
   
   public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,14 @@ public class SprActivity extends FragmentActivity {
     btnPostav.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	Intent intent = new Intent(SprActivity.this, PostavActivity.class);
+			   startActivity(intent);
+        }
+      });
+    
+    btnPrice = (Button) findViewById(R.id.btnSprPrice);
+    btnPrice.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	Intent intent = new Intent(SprActivity.this, PriceActivity.class);
 			   startActivity(intent);
         }
       });
