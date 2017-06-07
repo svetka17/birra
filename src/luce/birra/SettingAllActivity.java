@@ -94,7 +94,7 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
         	DialogScreen getcol = new DialogScreen(SettingAllActivity.this,SettingAllActivity.this,-3)
        	 .setDialogScreenListener(new DialogListener() {
        		@Override
-       		public void OnSelectedKol(float k) {
+       		public void OnSelectedKol(double k) {
        			if (k!=0) btnColor1.setBackgroundColor(0xff000000 + MainActivity.red1 * 0x10000 + MainActivity.green1 * 0x100 + MainActivity.blue1);					
        		}
        	}) ;getcol.show();

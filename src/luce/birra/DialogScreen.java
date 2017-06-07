@@ -1,6 +1,5 @@
 package luce.birra;
 
-import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,7 +36,7 @@ public class DialogScreen extends AlertDialog.Builder {
 //	private DialogListenerData listenerData;
 	
 	public interface DialogListener {
-        public void OnSelectedKol(float kolichestvo);
+        public void OnSelectedKol(double kolichestvo);
         //public void OnSelectedData(String dat);
     }
 	
@@ -229,11 +228,17 @@ public class DialogScreen extends AlertDialog.Builder {
             setPositiveButton("√Œ“Œ¬Œ", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                	//Log.d("MyLog", "pass = "+psw.getText());
+                	//Log.d("MyLog", "hh = "+tp.getCurrentHour()+" mm="+tp.getCurrentMinute());
                     //if (tmp!=-1) listener.OnSelectedKol(1); else listener.OnSelectedKol(2);
                 	//MainActivity.red1=sbr.getProgress();
-                	int tmp= ((((dp.getYear()%2000)*100+dp.getMonth()+1)*100+dp.getDayOfMonth())*100
+                	int tmp= (
+                			(
+                			((dp.getYear()%2000)*100+dp.getMonth()+1)*100+dp.getDayOfMonth())*100
                 			+tp.getCurrentHour() )*100+tp.getCurrentMinute();
+                	//Log.d("MyLog", "tmp = "+tmp);
+                	//double t=(double)tmp;
+                	//Log.d("MyLog", "t = "+t+" "+String.format("%.10g%n", t));
+                	//Log.d("MyLog", "double t = "+((double)tmp)+" int "+((int)((double)tmp)));
                 	listener.OnSelectedKol(tmp);
                 }
             })

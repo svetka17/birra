@@ -55,7 +55,7 @@ SeekBar.OnSeekBarChangeListener
   Button /*btnExit,*/tbHist, tbXX, btnOk,btnOkOk, btnBack, bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
   TextView  // tvDKol, 
   tvIdPgr, tvNamePgr;//, tvCombo;
-  TextView titleD, tvNal, tvSkidka, tvIdKlient;
+  TextView titleD, tvNal, tvSkidka, tvIdKlient, etCheckCheck;
   SimpleCursorAdapter scaKlient;
   Spinner spKlient;
   ListView lvComboD;
@@ -187,8 +187,8 @@ void makeDialog() {
 	DialogScreen getkol = new DialogScreen(RasxodActivity.this,RasxodActivity.this,tvDialogN)
 	 .setDialogScreenListener(new DialogListener() {
 		@Override
-		public void OnSelectedKol(float k) {
-			if (k!=0) dialogNumOK(tvDialogN, k); else dialogNumCancel(tvDialogN);					
+		public void OnSelectedKol(double k) {
+			if (k!=0) dialogNumOK(tvDialogN, (float)k); else dialogNumCancel(tvDialogN);					
 		}
 	}) ;getkol.show();
 }
@@ -897,7 +897,8 @@ void makeDialog() {
 	   if (/*tvCombo.getText().equals("")*/data.size()==0) finish();
    	else
    	{//no klient
-   		long cou=MainActivity.db.addRecKLIENTcount(MainActivity.num_id,"svetka", Float.parseFloat(tvSum.getText().toString()),0, "", MainActivity.getIntDataTime(), 0, (byte)0);
+   		long cou=0; cou=MainActivity.db.addRecKLIENTcount(MainActivity.num_id,"чек№ "+MainActivity.num_id, MainActivity.StrToFloat(tvSum.getText().toString()), 
+   				0, "чек автозакрыт", MainActivity.getIntDataTime(), 0, (byte)0);
    		
    	for (int i=0; i<tranz.size(); i++) {
    		//public void addRecRASXOD(int id_tmc, float kol, float price, int id_post, int id_klient, String prim, int data_del, int data_ins, byte ok)
@@ -958,7 +959,8 @@ void makeDialog() {
 	   if (data.size()!=0)
    	{
 		// int klient=0; if (!=0) 
-    long cou=MainActivity.db.addRecKLIENTcount(MainActivity.num_id, "чек", MainActivity.StrToFloat(tvDItogo.getText().toString()), MainActivity.StrToFloat(etSkidka.getText().toString()), "" , MainActivity.getIntDataTime(),(int) MainActivity.StrToFloat(tvIdKlient.getText().toString()) , (byte)0);
+    long cou=0; cou=MainActivity.db.addRecKLIENTcount(MainActivity.num_id, "чек№ "+MainActivity.num_id, MainActivity.StrToFloat(tvSum.getText().toString()), 
+				MainActivity.StrToFloat((etSkidka.getText().toString()))+MainActivity.StrToFloat((etSkidkaPerSum.getText().toString())), "чек закрыт с проверкой" , MainActivity.getIntDataTime(),(int) MainActivity.StrToFloat(tvIdKlient.getText().toString()) , (byte)0);
     MainActivity.num_id++;
     //это общая скидка, если она есть (суйчас она =0 не заполняется и invisible)
     /*if (MainActivity.StrToFloat(etSkidka.getText().toString())!=0)
@@ -1239,6 +1241,7 @@ void makeDialog() {
        	etSkidkaPer = (TextView) Dview.findViewById(R.id.etCheckSkidkaPer);
       	tvIdKlient = (TextView) Dview.findViewById(R.id.tvIdKlientCheck);
       	tvDItogo = (TextView) Dview.findViewById(R.id.etItogSummaD);
+      	etCheckCheck = (TextView) Dview.findViewById(R.id.etCheckCheck);
         
         tvSdacha = (TextView) Dview.findViewById(R.id.tvCheckSdacha);
       	etNal = (TextView) Dview.findViewById(R.id.etCheckNal);
@@ -1394,7 +1397,7 @@ void makeDialog() {
     	 //tvIdKlient.setText("0"); 
     	 //etNal.setText("0"); 
     	 //tvSdacha.setText("0");
-    	 
+    	 etCheckCheck.setText(String.valueOf(MainActivity.num_id));
     	 //tvDItogo.setText(tvSum.getText());  
     	 tvDItogo.setText( String.valueOf( MainActivity.StrToFloat(tvSum.getText().toString()) - MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())
     			 ));

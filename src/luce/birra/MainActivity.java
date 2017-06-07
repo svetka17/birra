@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 import luce.birra.DialogScreen.DialogListener;
@@ -123,7 +125,7 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 	DialogScreen getkol = new DialogScreen(context,activity,0)
 	 	.setDialogScreenListener(new DialogListener() {
 	 	@Override
-		public void OnSelectedKol(float k) {
+		public void OnSelectedKol(double k) {
 			
 			File file = null; //Uri u1; 
 			Intent sendIntent;
@@ -145,6 +147,8 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 					file=Export2Excel.all_spr(""); break;
 				case 7:
 					file=Export2Excel.price((int) StrToFloat(pgrr), ""); break;
+				case 8:
+					file=Export2Excel.check(getIntData(dat11),getIntData(dat22), ""); break;
 				}
 				//u1  =  Uri.fromFile(file);
 				//intent = new Intent(Intent.);
@@ -216,7 +220,7 @@ static void excel_import(Context cntx, Activity act, byte metod )
 	DialogScreen getkol = new DialogScreen(context,activity,1)
 	 	.setDialogScreenListener(new DialogListener() {
 	 	@Override
-		public void OnSelectedKol(float k) {
+		public void OnSelectedKol(double k) {
 			
 			//File file = null; //Uri u1; 
 			//Intent sendIntent;
@@ -265,11 +269,13 @@ static void setSizeFontMain(ViewGroup mlayout) {
     		else
     		{ //int l=1; 
     		String[] n = ((TextView)alv.get(i)).getText().toString().split(" ");
+    		int nn=
+    				((TextView)alv.get(i)).getText().length();
         	//for (int ii=0; ii<n.length; ii++ )
         		//if (n[ii].length()>l) l=n[ii].length();
         	
     		//Log.d("MyLog", "text = "+((TextView)alv.get(i)).getText().toString()+" l="+n.length);
-        		if (n.length==1)
+        		if (n.length==1 || nn<10)
     			((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvH);
         		else
         			((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvH/2);
@@ -326,6 +332,20 @@ static ArrayList<View> getViewsByTag(ViewGroup root){
     return views;
 }
 
+static void setSpinnerItemById(Spinner spinner, int _id)
+{
+    int spinnerCount = spinner.getCount();
+    for (int i = 0; i < spinnerCount; i++)
+    {
+        Cursor value = (Cursor) spinner.getItemAtPosition(i);
+        long id = value.getLong(value.getColumnIndex("_id"));
+        if (id == _id)
+        {
+            spinner.setSelection(i);
+        }
+    }
+}
+
 float PxToDp(float px) {
 	return px
 			/ getApplicationContext().getResources().getDisplayMetrics().density;
@@ -367,11 +387,11 @@ static int getIntData(){
 		}
 }*/
 
-static float round(float number, int scale) {
+static float round(double number, int scale) {
     int pow = 10;
     for (int i = 1; i < scale; i++)
         pow *= 10;
-    float tmp = number * pow;
+    double tmp = number * pow;
     return (float) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / pow;
 }
 
@@ -493,7 +513,7 @@ void saveSetting() {
 		DialogScreen getkol = new DialogScreen(MainActivity.this,MainActivity.this,accs)
 		 .setDialogScreenListener(new DialogListener() {
 			@Override
-			public void OnSelectedKol(float k) {
+			public void OnSelectedKol(double k) {
 				//Log.d("MyLog", "acc = "+acc);
 				//Log.d("MyLog", "k = "+k);
 				if (acc==-2) 

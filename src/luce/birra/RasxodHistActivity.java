@@ -1,5 +1,6 @@
 package luce.birra;
-import android.R.string;
+import luce.birra.AdapterLV.CambiareListener;
+import luce.birra.DialogScreen.DialogListener;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -17,8 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import luce.birra.AdapterLV.CambiareListener;
-import luce.birra.DialogScreen.DialogListener;
  
 public class RasxodHistActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -40,14 +40,14 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     //final DialogFragment dlg = new DialogActivity();
     
     tvDataIns = (TextView) findViewById(R.id.tv_Data_RasHist);
-    tvDataIns.setText(MainActivity.getStringDataTime( Integer.parseInt( String.valueOf( MainActivity.getIntDataTime() ).substring(0,8).concat("00") ) ));
+    tvDataIns.setText(MainActivity.getStringDataTime( Integer.parseInt( String.valueOf( MainActivity.getIntDataTime() ).substring(0,6).concat("0000") ) ));
     tvDataIns.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	//showDialog(1);
         	DialogScreen getDT = new DialogScreen(RasxodHistActivity.this,RasxodHistActivity.this,-4)
 			 .setDialogScreenListener(new DialogListener() {
 				@Override
-				public void OnSelectedKol(float k) {
+				public void OnSelectedKol(double k) {
 					if (k!=0) 
 					{
 						tvDataIns.setText(MainActivity.getStringDataTime((int)k));
@@ -66,10 +66,10 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         	DialogScreen getDT = new DialogScreen(RasxodHistActivity.this,RasxodHistActivity.this,-4)
 			 .setDialogScreenListener(new DialogListener() {
 				@Override
-				public void OnSelectedKol(float k) {
+				public void OnSelectedKol(double k) {
 					if (k!=0) 
 					{
-						tvd1.setText(MainActivity.getStringDataTime((int)k));
+						tvDataIns.setText(MainActivity.getStringDataTime((int)k));
 						getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
 					}
@@ -86,7 +86,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         	DialogScreen getDT = new DialogScreen(RasxodHistActivity.this,RasxodHistActivity.this,-4)
 			 .setDialogScreenListener(new DialogListener() {
 				@Override
-				public void OnSelectedKol(float k) {
+				public void OnSelectedKol(double k) {
 					if (k!=0) 
 					{
 						tvDataIns2.setText(MainActivity.getStringDataTime((int)k));
@@ -105,10 +105,10 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         	DialogScreen getDT = new DialogScreen(RasxodHistActivity.this,RasxodHistActivity.this,-4)
 			 .setDialogScreenListener(new DialogListener() {
 				@Override
-				public void OnSelectedKol(float k) {
+				public void OnSelectedKol(double k) {
 					if (k!=0) 
 					{
-						tvd2.setText(MainActivity.getStringDataTime((int)k));
+						tvDataIns2.setText(MainActivity.getStringDataTime((int)k));
 						getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
 					}
@@ -228,10 +228,33 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     		});
     lvData = (ListView) findViewById(R.id.lvRasxodHist);
     lvData.setAdapter(scAdapter);
-     
+    
+
     // создаем лоадер для чтения данных
+    
+
+    
+   
+    	getSupportLoaderManager().initLoader(0, null, this);
     getSupportLoaderManager().initLoader(1, null, this);
-    getSupportLoaderManager().initLoader(0, null, this);
+    
+    if( getIntent().getExtras() != null)
+    {
+    	tvDataIns.setText(getIntent().getStringExtra("dat1"));
+    	tvDataIns2.setText(getIntent().getStringExtra("dat2"));
+    	//c.getInt(c.getColumnIndexOrThrow("_id"))
+    	getSupportLoaderManager().getLoader(1).forceLoad();
+    	tvIdKlient.setText(String.valueOf((int) MainActivity.StrToFloat(getIntent().getStringExtra("id_check"))));
+    	tvIdKlient.setTag((int) MainActivity.StrToFloat(getIntent().getStringExtra("id_check")));
+    	
+    	Log.d("MyLog", "id_klient="+String.valueOf((int) MainActivity.StrToFloat(getIntent().getStringExtra("id_check"))));
+    	Log.d("MyLog", "id_klient_="+tvIdKlient.getText());
+    	//MainActivity.setSpinnerItemById(spKlient, (int) MainActivity.StrToFloat(getIntent().getStringExtra("id_check")) );
+    	MainActivity.setSpinnerItemById(spKlient, Integer.parseInt(getIntent().getStringExtra("id_check")));
+    	getSupportLoaderManager().getLoader(0).forceLoad();
+    	//spPgr.setSelection(Integer.parseInt(getIntent().getStringExtra("ProdPgr")));
+    	//tvIdPgr.setText(getIntent().getStringExtra("ProdPgr"));
+    }
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.rasxod_hist_ll));
   }
@@ -341,7 +364,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
      
             	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join klient as K on T.id_klient = K._id", 
              			new String[] {"T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","round(T.kol,3)||' '||E.name as kol",
-            			 "E.name as ted", "T.ed as ed","T.price as price","T.prim as prim","TP.pgr as pgr","K.sumka as sumka","'№'||K._id as ch"}, 
+            			 "E.name as ted", "T.ed as ed","T.price as price","T.prim as prim","TP.pgr as pgr","K.sumka as sumka","'№'||K.num_id as ch"}, 
              			 //"TP.pgr = ?"
             			 where, null,null,null,null);
 
@@ -371,7 +394,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 	        if (where.equals("")||where.length()==0) where=str[1].toString(); else 
 	        	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
 	        if (!where.equals("")) where=" where "+where;
-	    Cursor cursor = MainActivity.db.getRawData("select _id, 0 num_id, name sumka, null name from foo union all select _id, num_id, sumka, name from klient "+
+	    Cursor cursor = MainActivity.db.getRawData("select 0 _id, 0 num_id, 0 sumka from foo union all select _id, num_id, sumka from klient "+
 	    //((tvDataIns.getText().length()==0)?"":" where substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")")
 	    where
 	    , null);

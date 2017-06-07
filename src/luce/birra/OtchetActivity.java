@@ -30,7 +30,7 @@ import android.widget.TextView;
 public class OtchetActivity extends FragmentActivity {
 
  // ListView lvData;
-  Button btnExit, btnAdd, btnO, btnOO, btnOOO, btnP, btnR;
+  Button btnExit, btnAdd, btnO, btnOO, btnOOO, btnP, btnR, btnCheck;
   AdapterLV scAdapterO;//scAdapterR, scAdapterP ;
   static TextView tvIdPgr; //tvIdKlient, 
   static TextView tvDataIns, tvDataIns2;
@@ -115,6 +115,15 @@ public class OtchetActivity extends FragmentActivity {
 			   startActivity(intent);
         }
       });
+    
+    btnCheck = (Button) findViewById(R.id.btnCheckOtchet);
+    btnCheck.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	Intent intent = new Intent(OtchetActivity.this, CheckActivity.class);
+			   startActivity(intent);
+        }
+      });
+    
     btnOOO = (Button) findViewById(R.id.btnOO);
     btnOOO.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {

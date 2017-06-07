@@ -203,11 +203,11 @@ public class ProdEditActivity extends FragmentActivity {
     	etName.setText(getIntent().getStringExtra("ProdName"));
     	etPrice.setText(getIntent().getStringExtra("ProdPrice"));
     	//c.getInt(c.getColumnIndexOrThrow("_id"))
-    	setSpinnerItemById(spPgr, Integer.parseInt(getIntent().getStringExtra("ProdPgr")));
+    	MainActivity.setSpinnerItemById(spPgr, Integer.parseInt(getIntent().getStringExtra("ProdPgr")));
     	//spPgr.setSelection(Integer.parseInt(getIntent().getStringExtra("ProdPgr")));
     	tvIdPgr.setText(getIntent().getStringExtra("ProdPgr"));
     	
-    	setSpinnerItemById(spEd, Integer.parseInt(getIntent().getStringExtra("ProdEd")));
+    	MainActivity.setSpinnerItemById(spEd, Integer.parseInt(getIntent().getStringExtra("ProdEd")));
     	tvEd.setText(getIntent().getStringExtra("ProdEd"));
     	//tvId.setText(getIntent().getIntExtra("ProdId",0));
     	tvId.setText(getIntent().getStringExtra("ProdId"));
@@ -218,7 +218,7 @@ public class ProdEditActivity extends FragmentActivity {
     }
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.prod_edit_ll));
   }
-  
+ /* 
   void setSpinnerItemById(Spinner spinner, int _id)
   {
       int spinnerCount = spinner.getCount();
@@ -232,7 +232,7 @@ public class ProdEditActivity extends FragmentActivity {
           }
       }
   }
-
+*/
   @Override
   protected void onRestart() {
     super.onRestart();

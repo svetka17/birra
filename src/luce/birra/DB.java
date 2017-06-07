@@ -335,6 +335,10 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 	  mDB.delete(namTable, "_id = " + id, null);
   }
    
+  public int delRecs(String namTable, String where) {
+		  int count=mDB.delete(namTable, where, null);
+		  return count;
+	  }
   // класс по созданию и управлению БД
   private class DBHelper extends SQLiteOpenHelper {
  
@@ -480,7 +484,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
           db.execSQL("create table klient ("
                   + "_id integer primary key autoincrement,"
                   + "num_id integer,"
-                  + "name text not null UNIQUE ON CONFLICT IGNORE,"
+                  + "name text not null,"
                   + "sumka real,"
                   + "skidka real,"
                   + "prim text,"
@@ -827,7 +831,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("create table klient ("
     	                  + "_id integer primary key autoincrement,"
     	                  + "num_id integer,"
-    	                  + "name text not null UNIQUE ON CONFLICT IGNORE,"
+    	                  + "name text not null,"
     	                  + "sumka real,"
     	                  + "skidka real,"
     	                  + "prim text,"

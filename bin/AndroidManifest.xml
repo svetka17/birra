@@ -158,6 +158,12 @@
             android:windowSoftInputMode="stateHidden"
             android:label="СПРАВОЧНИК ЦЕН"
             android:screenOrientation="landscape" />
+                                                <activity
+            android:name="luce.birra.CheckActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="ЧЕКИ"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

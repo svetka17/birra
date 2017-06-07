@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/check_klient_item_tr"
+    android:layout_height="wrap_content">
+<!--  
+    <TextView
+        android:id="@+id/tv_Id_Rasxod_Hist"
+        android:layout_width="0dp"
+    	android:layout_height="match_parent"
+    	android:layout_weight="0"
+ 		    android:visibility="invisible" />
+-->
+    <TextView
+        android:id="@+id/tv_id_check_klient"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+         <TextView
+        android:id="@+id/tv_num_id_check_klient"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />   
+    <TextView
+        android:id="@+id/tv_data_chek_klient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tv_summa_check_klient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tv_skidka_check_klient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tv_summa_skidka_check_klient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+  <TextView
+        android:id="@+id/tv_name_check_klient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+  <TextView
+        android:id="@+id/tv_prim_check_klient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+  <TextView
+        android:id="@+id/tv_karta_check_klient"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <LinearLayout
+        style="@style/_m1"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnUpdCheck_klient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"  
+        style="@style/B"
+            android:text="СМОТРЕТЬ" />
+
+        <Button
+            android:id="@+id/btnDelCheckKlient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+        style="@style/B"
+            android:text="УДАЛИТЬ" />
+    </LinearLayout>
+
+</TableRow>

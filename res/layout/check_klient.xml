@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/check_klient_ll"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+
+         <TextView
+             android:id="@+id/tv_data_check1"
+ 		    android:text="ДАТА С"
+ 		    style="@style/TV_h"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data_check11"
+ 		    style="@style/ET_t"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="1"/>
+                  <TextView
+                      android:id="@+id/tv_data_check2"
+ 		    android:text="ДАТА ПО"
+ 		    style="@style/TV_h"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data_check22"
+ 		    style="@style/ET_t"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="1"/>
+
+    </LinearLayout>
+<TableRow  style="@style/mw0">
+
+    <TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="ИД ЧЕКА"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="№ ЧЕКА"/>
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ДАТА-ВРЕМЯ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ВСЕГО СУММА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="СКИДКА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="СУММА ВЫРУЧКИ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ИМЯ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ПРИМ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="КАРТА"/>
+<TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+    </TableRow>
+    <ListView
+        android:id="@+id/lvCheck"
+            style="@style/mm1" />
+
+    <TableRow  style="@style/mw0">
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text=""/>
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text=""/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogCheckSumma"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogCheckSkidka"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogCheckSummaSkidka"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+
+    </TableRow>
+    
+    
+    <LinearLayout
+            style="@style/mw0"
+        android:orientation="horizontal" >
+	<Button
+            android:id="@+id/btnExcelCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="В EXCEL" />
+        <Button
+            android:id="@+id/btnExitCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            style="@style/B"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -332,6 +332,92 @@ e.printStackTrace();
 return file;
 }
 
+static File check (int dat1, int dat2, String dirN) {
+	String []str = {
+			dat1==0?"":" substr(K.data_ins,1,6)>=trim("+dat1+")",
+			dat2==0?"":" substr(K.data_ins,1,6)<=trim("+dat2+")"
+			};
+			String where=str[0].toString();
+			if (where.length()==0) where=str[1].toString(); else where=where+" and "+str[1].toString();
+			//if (where.length()==0) where=str[2].toString(); else where=where+" and "+str[2].toString();
+				//if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
+			//Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
+			Cursor cur = MainActivity.db.getQueryData("klient as K left join karta_klient KK on K.karta = KK._id", 
+         			new String[] {"K._id as _id","K.num_id as num_id","K.sumka as sumka", "K.skidka as skidka", "K.name as name","K.prim as prim","K.data_ins as data_ins","KK._id||' '||KK.name||'-'||KK.sconto_per as karta"}, 
+         			 //"TP.pgr = ?"
+        			 where, null,null,null,null);
+
+File file   = null, dir = null;
+File root   = Environment.getExternalStorageDirectory();
+if (dirN.length()!=0) {dir=new File(dirN); }
+else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
+if (root.canWrite()){
+dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
+}
+file   =   new File(dir, "CHECK"+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
+
+try {
+FileOutputStream out   =   null;
+out = new FileOutputStream(file);
+HSSFWorkbook workbook = new HSSFWorkbook();
+HSSFSheet sheet = workbook.createSheet("Ëèñò1");
+HSSFDataFormat df2 = workbook.createDataFormat();
+HSSFDataFormat df3 = workbook.createDataFormat();
+HSSFCellStyle styleN2 = workbook.createCellStyle();
+styleN2.setDataFormat(df2.getFormat("0.00"));
+HSSFCellStyle styleN3 = workbook.createCellStyle();
+styleN3.setDataFormat(df3.getFormat("0.000"));
+HSSFFont font = workbook.createFont();
+font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+HSSFCellStyle style = workbook.createCellStyle();
+style.setFont(font);
+style.setWrapText(true);
+style.setAlignment(HSSFCellStyle.ALIGN_FILL );
+style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
+int rowNum = 0;
+HSSFRow row = sheet.createRow(rowNum);
+row.createCell(0).setCellValue("ÈÄ ×ÅÊÀ"); //row.getCell(0).setCellStyle(style2);
+row.createCell(1).setCellValue("¹ ×ÅÊÀ");
+row.createCell(2).setCellValue("ÄÀÒÀ");
+row.createCell(3).setCellValue("ÑÓÌÌÀ");
+row.createCell(4).setCellValue("ÑÊÈÄÊÀ");
+row.createCell(5).setCellValue("ÈÌß");
+row.createCell(6).setCellValue("ÏĞÈÌÅ×ÀÍÈÅ");
+row.createCell(7).setCellValue("ÊÀĞÒÀ");
+for (int i=0; i<8; i++) row.getCell(i).setCellStyle(style);
+row.setHeight((short)1000);
+sheet.createFreezePane(0, 1);
+if (cur.moveToFirst())  
+do {
+rowNum++;
+row = sheet.createRow(rowNum);
+row.createCell(0).setCellValue(cur.getInt(cur.getColumnIndex("_id")));
+row.createCell(1).setCellValue(cur.getInt(cur.getColumnIndex("num_id")));
+row.createCell(2).setCellValue(MainActivity.getStringDataTime( cur.getInt(cur.getColumnIndex("data_ins")) ));
+row.createCell(3).setCellValue(cur.getFloat(cur.getColumnIndex("sumka")));row.getCell(3).setCellStyle(styleN2);
+row.createCell(4).setCellValue(cur.getFloat(cur.getColumnIndex("skidka")));row.getCell(4).setCellStyle(styleN2);
+row.createCell(5).setCellValue(cur.getString(cur.getColumnIndex("name")));
+row.createCell(6).setCellValue(cur.getString(cur.getColumnIndex("prim")));
+row.createCell(7).setCellValue(cur.getString(cur.getColumnIndex("karta")));
+} while (cur.moveToNext());
+cur.close();
+rowNum++;
+row = sheet.createRow(rowNum);
+FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+row.createCell(4).setCellFormula("SUM(E2:E"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(4));row.getCell(4).setCellStyle(styleN2);
+row.createCell(3).setCellFormula("SUM(D2:D"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(3));row.getCell(3).setCellStyle(styleN2);
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:M"+rowNum));
+workbook.write(out);// workbook.close();
+out.close();
+} catch (FileNotFoundException ef) {
+ef.printStackTrace();// out.close();
+}
+catch (IOException e) {
+e.printStackTrace();
+}
+return file;
+}
+
 static File rasxod_ostat (int dat1, int dat2, int pgr, String dirN) {
 	String []str = {pgr==0?"":" TT._id="+pgr,
 			dat1==0?"":" substr(T.data_ins,1,6)>=trim("+dat1+")",

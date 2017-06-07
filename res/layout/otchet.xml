@@ -84,6 +84,13 @@
             android:layout_weight="1"
             style="@style/B"
             android:text="ОБОРОТНАЯ ВЕДОМОСТЬ" />
+        <Button
+            android:id="@+id/btnCheckOtchet"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="ЧЕКИ" />
  </TableRow>   
  <TableRow
         android:layout_width="match_parent"

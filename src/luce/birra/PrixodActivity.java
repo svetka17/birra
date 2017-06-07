@@ -319,7 +319,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     	//setSpinnerItemById(spEd, Integer.parseInt(getIntent().getStringExtra("PrixodEd")));
     	
     	tvIdPost.setText(getIntent().getStringExtra("PrixodPost"));
-    	setSpinnerItemById(spPost, Integer.parseInt(getIntent().getStringExtra("PrixodPost")));
+    	MainActivity.setSpinnerItemById(spPost, Integer.parseInt(getIntent().getStringExtra("PrixodPost")));
     	//spPost.setSelection(Integer.parseInt(getIntent().getStringExtra("PrixodPost")));
     	tvPrice.setText(getIntent().getStringExtra("PrixodPrice"));
     	tvKol.setText(getIntent().getStringExtra("PrixodKol"));
@@ -332,7 +332,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     	tvId.setText(getIntent().getStringExtra("PrixodId"));
     	//Log.d("MyLog", "extra id_tmc="+getIntent().getStringExtra("PrixodProd"));
     	tvIdProd.setText(getIntent().getStringExtra("PrixodProd"));
-    	setSpinnerItemById(spProd, Integer.parseInt(getIntent().getStringExtra("PrixodProd")));
+    	MainActivity.setSpinnerItemById(spProd, Integer.parseInt(getIntent().getStringExtra("PrixodProd")));
     	
     	tvIdPgr.setText(getIntent().getStringExtra("PrixodPgr"));
     	//setSpinnerItemById(spPgr, Integer.parseInt(getIntent().getStringExtra("PrixodPgr")));
@@ -341,7 +341,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.prixod_ll));
   }
   
-
+/*
   void setSpinnerItemById(Spinner spinner, int _id)
   {
       int spinnerCount = spinner.getCount();
@@ -354,7 +354,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
               spinner.setSelection(i);
           }
       }
-  }
+  }*/
   
   @Override
   protected void onRestart() {

@@ -248,6 +248,11 @@ public void bindView(View view, Context context, final Cursor cursor) {
 		//}
         
     	break;
+    case 6:        
+	        tv = (TextView) view.findViewById(R.id.tv_data_chek_klient);
+	        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+        
+    	break;
     case 3:
     	/*tv = (TextView) view.findViewById(r[0]);
         viewTreeObserver = tv.getViewTreeObserver(); 
@@ -494,6 +499,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
                     intent.putExtra("UserDataIns", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("data_ins")));
                     contxt.startActivity(intent);
                    break;
+                case  6: //break;
                 case  3:
                 case  4:
                 case  5:
