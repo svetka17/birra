@@ -84,7 +84,10 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     tvKol = (EditText) findViewById(R.id.tvKolPri);
     tvEd = (TextView) findViewById(R.id.tvIdEdPri);
     tvPrice = (EditText) findViewById(R.id.tvPricePri);
+    tvPrice.setText("0");
     tvPriceVendor = (EditText) findViewById(R.id.tvPricePriVendor);
+    
+    //android:layout_height="?android:attr/listPreferredItemHeight"
     tvPrim = (EditText) findViewById(R.id.tvPrimPri);
     spProd = (Spinner) findViewById(R.id.spProdPri);
     spPost = (Spinner) findViewById(R.id.spPostPri);
@@ -436,7 +439,7 @@ static class PgrLoader extends CursorLoader {
         "select _id, name, pgr,ed,ted, ost, pos, price from (select -1 _id, name,0 pgr, 0 ed, '-' ted, 0 ost, -1 pos, 0 price from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted, sum(O.kol) as ost, ifnull(T.pos,-1) as pos, T.price as price from tmc as T left join tmc_ed as E on T.ed=E._id left join ostat as O on T._id=O.id_tmc "
         //((tvIdPost.getText().equals("") )?"0":tvIdPost.getText())
         +" group by T._id, T.name, T.pgr, T.ed, E.name, ifnull(T.pos,-1), T.price ) where pgr = "
-        +((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText())
+        +((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText())+" order by name"
         , null);    
     //Cursor cursor = MainActivity.db.getRawData("select _id, name sumka, null name from foo union all select _id, sumka, name from klient "+
     //where

@@ -908,7 +908,7 @@ void makeDialog() {
    	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i+" ost="+but.get(tranz.get(i).tagB).ost);
    	
    	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
-   	if (but.get(tranz.get(i).tagB).ost<=0)//если кол-во <0 то добавляем остаток по приходу
+   	if (but.get(tranz.get(i).tagB).ost<=0 && but.get(tranz.get(i).tagB).ed==1)//если кол-во <0 то добавляем остаток по приходу
    	{
    		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
    		but.get(tranz.get(i).tagB).ost=1;
@@ -951,6 +951,7 @@ void makeDialog() {
    	data.clear();
    	sAdapter.notifyDataSetChanged();
    	tvSum.setText("");sumI=0;tranz.clear();
+   	tbTara.setChecked(false);
    	}
    }
   
@@ -987,7 +988,7 @@ void makeDialog() {
    	//	MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() ), (byte)4, 0, 0, (int)cou, "СКИДКА ПО ПОЗИЦИИ "+tmp+":"+data.get(tranz.get(i).tag).get("skidka_sum").toString()+"ГРН", MainActivity.getIntDataTime(),(int)tmp);
   
    	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
-   	if (but.get(tranz.get(i).tagB).ost<=0)//если кол-во <0 то добавляем остаток по приходу
+   	if (but.get(tranz.get(i).tagB).ost<=0 && but.get(tranz.get(i).tagB).ed==1 )//если кол-во <0 то добавляем остаток по приходу
    	{
    		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
    		but.get(tranz.get(i).tagB).ost=1;
@@ -1027,6 +1028,7 @@ void makeDialog() {
 	etNal.setText("0"); 
 	 //tvSdacha.setText("0");
    	tvSum.setText("");sumI=0;tranz.clear();
+   	tbTara.setChecked(false);
    	}
 	   tvDialogN=0;
 	 //  sAdapter.notifyDataSetChanged();

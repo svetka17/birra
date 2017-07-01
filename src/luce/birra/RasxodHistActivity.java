@@ -9,7 +9,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -31,7 +31,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
   Spinner spPgr, spKlient;
   //Cursor cKlient;
   SimpleCursorAdapter scaKlient;
-  
+  static int tmp=0;
   //LinearLayout ll;
 
   public void onCreate(Bundle savedInstanceState) {
@@ -222,6 +222,18 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     			@Override
     			public void OnCambiare(byte flag, long id) {
     				if (flag==1) {
+    					//удаляем из чека
+    					Cursor cc = MainActivity.db.getRawData ("select R.id_klient as id_klient, ifnull(R.kol*R.price,0) as sumka, ifnull(R.skidka,0) as skidka, ifnull(K.skidka,0) as kskidka, ifnull(K.sumka,0) as ksumka from rasxod R left join klient as K on R.id_klient=K._id where R._id="+id,null);
+    					   if (cc.moveToFirst()) { 
+    					        do {MainActivity.db.updRec("klient", cc.getInt(cc.getColumnIndex("id_klient")),
+    					        		new String[] {"sumka","skidka"}, 
+    					        		new float[] {cc.getFloat(cc.getColumnIndex("ksumka"))-(cc.getFloat(cc.getColumnIndex("sumka"))-cc.getFloat(cc.getColumnIndex("skidka"))),
+    					        	cc.getFloat(cc.getColumnIndex("kskidka"))-cc.getFloat(cc.getColumnIndex("skidka"))});
+    					        	//countT=MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), MainActivity.round(cc.getFloat(cc.getColumnIndex("kol")),6), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 1);
+    					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
+    					        } while (cc.moveToNext());
+    					      };
+    					
     					MainActivity.db.delRec("rasxod",id);
     					getSupportLoaderManager().getLoader(0).forceLoad();}
     			}
@@ -232,29 +244,17 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 
     // создаем лоадер для чтения данных
     
-
-    
-   
-    	getSupportLoaderManager().initLoader(0, null, this);
-    getSupportLoaderManager().initLoader(1, null, this);
-    
+    tmp=0;
     if( getIntent().getExtras() != null)
     {
+    	
     	tvDataIns.setText(getIntent().getStringExtra("dat1"));
     	tvDataIns2.setText(getIntent().getStringExtra("dat2"));
-    	//c.getInt(c.getColumnIndexOrThrow("_id"))
-    	getSupportLoaderManager().getLoader(1).forceLoad();
-    	tvIdKlient.setText(String.valueOf((int) MainActivity.StrToFloat(getIntent().getStringExtra("id_check"))));
-    	tvIdKlient.setTag((int) MainActivity.StrToFloat(getIntent().getStringExtra("id_check")));
-    	
-    	Log.d("MyLog", "id_klient="+String.valueOf((int) MainActivity.StrToFloat(getIntent().getStringExtra("id_check"))));
-    	Log.d("MyLog", "id_klient_="+tvIdKlient.getText());
-    	//MainActivity.setSpinnerItemById(spKlient, (int) MainActivity.StrToFloat(getIntent().getStringExtra("id_check")) );
-    	MainActivity.setSpinnerItemById(spKlient, Integer.parseInt(getIntent().getStringExtra("id_check")));
-    	getSupportLoaderManager().getLoader(0).forceLoad();
-    	//spPgr.setSelection(Integer.parseInt(getIntent().getStringExtra("ProdPgr")));
-    	//tvIdPgr.setText(getIntent().getStringExtra("ProdPgr"));
+    	tmp=Integer.parseInt(getIntent().getStringExtra("id_check"));
     }
+    
+    getSupportLoaderManager().initLoader(1, null, this);
+    getSupportLoaderManager().initLoader(0, null, this);
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.rasxod_hist_ll));
   }
@@ -288,6 +288,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
       getSupportLoaderManager().getLoader(0).forceLoad();
     }
     };*/
+  
   @Override
   protected void onRestart() {
     super.onRestart();
@@ -304,7 +305,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
   public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
      // Log.d("Loader<Cursor> onCreateLoader", String.valueOf(i));
       if (i == 0 ) return new RasxodLoader(this, MainActivity.db);
-      if (i == 1 ) return new KlientLoader(this, MainActivity.db);
+      if (i == 1 )  return new KlientLoader(this, MainActivity.db);
       return null;
   }
   
@@ -383,18 +384,21 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 	     
 	    @Override
 	    public Cursor loadInBackground() {
+
 	    	String []str = {
 	    			//(tvDataIns.getText().length()==0)?"":" substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"
 	    			(tvDataIns.getText().length()==0)?"":" data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")"
 	    			,//(tvDataIns2.getText().length()==0)?"":" substr(data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")"
 	    			(tvDataIns2.getText().length()==0)?"":" data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")"
-	        				};
+	        		, (tmp==0)?"":" _id="+tmp	};
 	    	String where=str[0].toString();
 	        //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
 	        if (where.equals("")||where.length()==0) where=str[1].toString(); else 
-	        	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
+	        	if (!str[1].equals("")) where=where+" and "+str[1].toString();
+	        if (where.equals("")||where.length()==0) where=str[2].toString(); else 
+	        	if (!str[2].equals("")) where=where+" and "+str[2].toString();
 	        if (!where.equals("")) where=" where "+where;
-	    Cursor cursor = MainActivity.db.getRawData("select 0 _id, 0 num_id, 0 sumka from foo union all select _id, num_id, sumka from klient "+
+	    Cursor cursor = MainActivity.db.getRawData("select 0 _id, 0 num_id, 0 sumka from foo " +((tmp==0)?"":"where _id="+tmp) +" union all select _id, num_id, sumka from klient "+
 	    //((tvDataIns.getText().length()==0)?"":" where substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")")
 	    where
 	    , null);

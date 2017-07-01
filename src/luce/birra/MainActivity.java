@@ -14,6 +14,7 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
@@ -126,13 +127,13 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 	 	.setDialogScreenListener(new DialogListener() {
 	 	@Override
 		public void OnSelectedKol(double k) {
-			
+	 		//Log.d("MyLog", "k="+k+" met="+met);
 			File file = null; //Uri u1; 
 			Intent sendIntent;
 			switch((byte)k) {
 			//case 0: 
 			case 1:
-				switch(met){
+				switch(met) {
 				case 1:
 				file=Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), ""); break;
 				case 2:
@@ -183,9 +184,10 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 	        	fileDialog.show();
 	        	break;
 			case 3:
+				//Log.d("MyLog", "met="+met);
 				switch(met){
 				case 1:
-				file=Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), "");
+				file=Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), ""); break;
 				case 2:
 					file=Export2Excel.rasxod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
 				case 3:
