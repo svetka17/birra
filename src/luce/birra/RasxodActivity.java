@@ -559,6 +559,8 @@ void makeDialog() {
 	   //Log.d("MyLog", "setbut__count_tara="+CountTara+" but.size="+but.size()+" idPgr="+tvIdPgr.getText());
 	   llbut.removeAllViewsInLayout();
 	   svBut.removeAllViewsInLayout();
+	   //
+	   
 	   int count_but=0;
 	   Cursor cc = MainActivity.db.getRawData 
 ("select T._id as _id, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
@@ -616,7 +618,7 @@ void makeDialog() {
 	    	//llR_.setVisibility(LinearLayout.VISIBLE);
 	    }    
 	    
-	    //MinimumWidth((int)(display_w/6));
+	    
 	   byte ib;
 
 	   if (tranz.size()==0)
@@ -642,7 +644,39 @@ void makeDialog() {
 	   
 	   //Log.d("MyLog", "setBut id_pgr="+tvIdPgr.getText()+" cc.count="+cc.getCount()+" but.size="+but.size());
 	   //llbut.setMeasureWithLargestChildEnabled(true); 
-	   int w = (int)((4*MainActivity.h/5)/8);
+	   //кнопки дабавления и удаления кнопок меню 
+	   row = new TableRow(this);
+       //row.setMinimumHeight(w);
+       llbut.addView(row,
+       		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, /*TableLayout.LayoutParams.MATCH_PARENT*/0,1));
+       Button b = new Button(this);
+       b.setText("ДОБАВИТЬ ТОВАР");
+       b.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+	});
+       row.addView(b,
+   			new TableRow/*LinearLayout*/.LayoutParams(0,TableRow/*LinearLayout*/.LayoutParams.MATCH_PARENT,1) );
+      
+       b = new Button(this);
+       b.setText("УДАЛИТЬ ТОВАР");
+       b.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+	});
+       row.addView(b,
+      			new TableRow/*LinearLayout*/.LayoutParams(0,TableRow/*LinearLayout*/.LayoutParams.MATCH_PARENT,1) );
+       
+       int w = (int)((4*MainActivity.h/5)/8);
+	   
 	   int tmp_row=1;
 	   if (cc.moveToFirst()) { 
 		   
