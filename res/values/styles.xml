@@ -20,7 +20,8 @@
     <style name="ET_n" > 
 		<item name="android:cursorVisible">true</item>
         <item name="android:inputType">numberDecimal</item>
-        <item name="android:ems">10</item>
+<!--          <item name="android:ems">10</item>
+-->
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@drawable/edittext_style</item>
 <!--          <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
@@ -33,7 +34,8 @@
 	<style name="ET_t"> 
 		<item name="android:cursorVisible">true</item>
         <item name="android:inputType">textCapCharacters</item>
-        <item name="android:ems">100</item>
+<!--          <item name="android:ems">100</item>
+-->
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@drawable/edittext_style</item>
         <item name="android:paddingLeft">10dp</item>

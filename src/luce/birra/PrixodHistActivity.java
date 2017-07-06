@@ -14,6 +14,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -144,12 +145,12 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
     			@Override
     			public void OnCambiare(byte flag, long id) {
     				if (flag==1) {
-    					float kolo=0, kolp=0;
+    					double kolo=0, kolp=0;
     					Cursor cc = MainActivity.db.getRawData ("select O.kol kolo, P.kol kolp from ostat O left join prixod P on O.id_tmc=P.id_tmc and O.ed=P.ed and O.id_post=P.id_post where P._id="+id,null);
     					   if (cc.moveToFirst()) { 
-    					        do {kolo=cc.getFloat(cc.getColumnIndex("kolo"));
-    					        	kolp=cc.getFloat(cc.getColumnIndex("kolp"));
-    					        		//MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), -cc.getFloat(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 0);
+    					        do {kolo=cc.getDouble(cc.getColumnIndex("kolo"));
+    					        	kolp=cc.getDouble(cc.getColumnIndex("kolp"));
+    					        		//MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), -cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 0);
     					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
     					        } while (cc.moveToNext());
     					      };
@@ -176,6 +177,7 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
     // создаем лоадер для чтения данных
     getSupportLoaderManager().initLoader(0, null, this);
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.prixod_hist_ll));
+   // tvDataIns.setTextSize(TypedValue.COMPLEX_UNIT_PX , 50);
   }
   
   protected Dialog onCreateDialog(int id) {

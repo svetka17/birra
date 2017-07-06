@@ -1,6 +1,4 @@
 package luce.birra;
-import luce.birra.AdapterLV.CambiareListener;
-import luce.birra.DialogScreen.DialogListener;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,7 +7,6 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -19,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import luce.birra.AdapterLV.CambiareListener;
+import luce.birra.DialogScreen.DialogListener;
  
 public class RasxodHistActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -212,8 +211,8 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         	}
       });
     // формируем столбцы сопоставления
-    String[] from = new String[] { /*"_id",*/"id_tmc","name","kol","ch","sumka","price","prim"};
-    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Hist, R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist};
+    String[] from = new String[] { /*"_id",*/"id_tmc","name","kol","ch","sumka","price","prim","skidka","sum_no_skidka"};
+    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Hist, R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_Skidka_Rasxod_Hist,R.id.tv_Summa_Rasxod_Hist};
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
@@ -227,9 +226,9 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     					   if (cc.moveToFirst()) { 
     					        do {MainActivity.db.updRec("klient", cc.getInt(cc.getColumnIndex("id_klient")),
     					        		new String[] {"sumka","skidka"}, 
-    					        		new float[] {cc.getFloat(cc.getColumnIndex("ksumka"))-(cc.getFloat(cc.getColumnIndex("sumka"))-cc.getFloat(cc.getColumnIndex("skidka"))),
-    					        	cc.getFloat(cc.getColumnIndex("kskidka"))-cc.getFloat(cc.getColumnIndex("skidka"))});
-    					        	//countT=MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), MainActivity.round(cc.getFloat(cc.getColumnIndex("kol")),6), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 1);
+    					        		new double[] {cc.getDouble(cc.getColumnIndex("ksumka"))-(cc.getDouble(cc.getColumnIndex("sumka"))-cc.getDouble(cc.getColumnIndex("skidka"))),
+    					        	cc.getDouble(cc.getColumnIndex("kskidka"))-cc.getDouble(cc.getColumnIndex("skidka"))});
+    					        	//countT=MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), MainActivity.round(cc.getDouble(cc.getColumnIndex("kol")),6), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 1);
     					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
     					        } while (cc.moveToNext());
     					      };
@@ -365,7 +364,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
      
             	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join klient as K on T.id_klient = K._id", 
              			new String[] {"T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","round(T.kol,3)||' '||E.name as kol",
-            			 "E.name as ted", "T.ed as ed","T.price as price","T.prim as prim","TP.pgr as pgr","K.sumka as sumka","'№'||K.num_id as ch"}, 
+            			 "E.name as ted", "T.ed as ed","T.price as price","T.skidka as skidka","round((T.kol*T.price-T.skidka) ,2) as sum_no_skidka","T.prim as prim","TP.pgr as pgr","K.sumka as sumka","'№'||K.num_id as ch"}, 
              			 //"TP.pgr = ?"
             			 where, null,null,null,null);
 

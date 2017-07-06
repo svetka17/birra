@@ -40,7 +40,7 @@ public class KlientEditActivity extends FragmentActivity {
         			new String[] {"name","adres","telef","prim"},
         			new String[] {tvName.getText().toString(),tvAdres.getText().toString(),tvTel.getText().toString(),tvPrim.getText().toString()});	
         	MainActivity.db.updRec("karta_klient", Integer.parseInt(tvId.getText().toString()), "data_ins", MainActivity.getIntData()); 
-        	MainActivity.db.updRec("karta_klient", Integer.parseInt(tvId.getText().toString()),new String[] { "sconto_sum","sconto_per"}, new float[]{MainActivity.StrToFloat(tvScontoSum.getText().toString()),MainActivity.StrToFloat(tvScontoPer.getText().toString())});
+        	MainActivity.db.updRec("karta_klient", Integer.parseInt(tvId.getText().toString()),new String[] { "sconto_sum","sconto_per"}, new double[]{MainActivity.StrToFloat(tvScontoSum.getText().toString()),MainActivity.StrToFloat(tvScontoPer.getText().toString())});
   			 }
         	finish();
         }

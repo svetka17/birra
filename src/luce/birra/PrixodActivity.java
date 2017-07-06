@@ -94,6 +94,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     spPgr = (Spinner) findViewById(R.id.spPgrPri);
     spEd = (TextView) findViewById(R.id.spEdPri);
     tvPrim.setImeOptions(EditorInfo.IME_ACTION_DONE);
+    tvPrim.setText("ÍÎÂÛÉ ÒÎÂÀÐ");
     tvDataIns.setImeOptions(EditorInfo.IME_ACTION_DONE);
     tvPrice.setImeOptions(EditorInfo.IME_ACTION_DONE);
     tvPriceVendor.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -155,19 +156,20 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         	tvIdProd.setText(String.valueOf(id));
         	s=/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("name"));
         	tvEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ed")) );
-        	//String ss=String.valueOf( cursor.getFloat(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
+        	//String ss=String.valueOf( cursor.getDouble(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
         	tvOst.setText(cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
         	//tvPos.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("pos")) );
         	//Log.d("MyLog", "cursor pos="+ position+ " "+id + " ost="+tvOst.getText());
         	//String ss=cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("pos"));
         	String ss="-";
         	int tmpi=-1; 
-        	float pr=0;
+        	double pr=0;
         	try {
         	ss=cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ted"));
         	tmpi=cursor.getInt(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("pos"));
-        	pr=cursor.getFloat(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("price"));
-        	//Log.d("MyLog", "try_tved=" );
+        	pr=cursor.getDouble(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("price"));
+        	//if (ss.equals("Ë")) tvPrim.setText("ÍÎÂÀß ÊÅÃÀ"); 
+        	//else if (tvPrim.getText().equals("ÍÎÂÀß ÊÅÃÀ") ) tvPrim.setText("");
         	}
         	catch (Exception e) {
         		//Log.d("MyLog", "catch tved=" );
@@ -240,12 +242,12 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         		//MainActivity.db.addRecPRIXOD(id_tmc, kol, price, id_post, prim, data_del, data_ins, ok);
         		{MainActivity.db.addRecPRIXOD(
         				Integer.parseInt(tvIdProd.getText().toString()), 
-        				Float.parseFloat(tvKol.getText().toString()), 
+        				MainActivity.round( Float.parseFloat(tvKol.getText().toString()) ,3), 
         				Byte.parseByte(tvEd.getText().toString()),
-        				Float.parseFloat(tvPrice.getText().toString()), 
-        				Float.parseFloat(tvPriceVendor.getText().toString()), 
+        				MainActivity.round( Float.parseFloat(tvPrice.getText().toString()) ,2), 
+        				MainActivity.round( Float.parseFloat(tvPriceVendor.getText().toString()) ,2), 
         				Integer.parseInt(tvIdPost.getText().toString()), 
-        				tvPrim.getText().toString(), 
+        				MainActivity.usr+" "+tvPrim.getText().toString(), 
         				//0, 
         				(tvDataIns.getText().toString().length()==0)?MainActivity.getIntDataTime():MainActivity.getIntDataTime(tvDataIns.getText().toString()) , 
         				(byte)0); 
@@ -254,13 +256,14 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         				//(Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("_id"))
         		//Log.d("MyLog", "datatime "+MainActivity.getIntDataTime()+" ddd"+tvDataIns.getText() );
         		//Toast.makeText(PrixodActivity.this, "ÏÐÈÕÎÄ "+s+" ÊÎË-ÂÎ:"+tvKol.getText().toString()+" ÖÅÍÀ:"+tvPrice.getText().toString(), Toast.LENGTH_LONG).show();
-        		tvOst.setText(String.valueOf(MainActivity.StrToFloat(tvOst.getText().toString())+Float.parseFloat(tvKol.getText().toString())));
+        		tvOst.setText(String.valueOf(MainActivity.StrToFloat(tvOst.getText().toString())+MainActivity.round(Float.parseFloat(tvKol.getText().toString()),3) ));
         		showMessage("ÏÐÈÕÎÄ "+s+" ÊÎË-ÂÎ:"+tvKol.getText().toString()+" ÖÅÍÀ:"+tvPrice.getText().toString(), (byte)0);
+        		tvPrim.setText("");
         		}
   			 else
   			 {
   				MainActivity.db.updRec("prixod", Integer.parseInt(tvId.getText().toString()), 
-  	        			"prim", tvPrim.getText().toString());	
+  	        			"prim", MainActivity.usr+" "+tvPrim.getText().toString());	
   	        	MainActivity.db.updRec("prixod", Integer.parseInt(tvId.getText().toString()), 
   	        			new String[] {"data_ins","id_tmc","id_post","ed"}, 
   	        			new int[] { (tvDataIns.getText().toString().length()==0)?MainActivity.getIntDataTime():MainActivity.getIntDataTime(tvDataIns.getText().toString()),
@@ -268,7 +271,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   	        				Integer.parseInt(tvIdPost.getText().toString()),
   	        				Integer.parseInt(tvEd.getText().toString())}); 
   	        	MainActivity.db.updRec("prixod", Integer.parseInt(tvId.getText().toString()), 
-  	        			new String[] {"price","price_vendor","kol"}, new float[] {Float.parseFloat(tvPrice.getText().toString()),Float.parseFloat(tvPriceVendor.getText().toString()),Float.parseFloat(tvKol.getText().toString())});  				 
+  	        			new String[] {"price","price_vendor","kol"}, new double[] {MainActivity.round(Float.parseFloat(tvPrice.getText().toString()),2),MainActivity.round(Float.parseFloat(tvPriceVendor.getText().toString()),2),MainActivity.round(Float.parseFloat(tvKol.getText().toString()),3)});  				 
   				//Toast.makeText(PrixodActivity.this, "ÏÐÈÕÎÄ ÈÇÌÅÍÅÍ "+s+" ÊÎË-ÂÎ:"+tvKol.getText().toString()+" ÖÅÍÀ:"+tvPrice.getText().toString(), Toast.LENGTH_LONG).show();
   	        	if ( MainActivity.StrToFloat(tvPos.getText().toString())!=0 ) 
         			MainActivity.db.updRec("tmc", Integer.parseInt(tvIdProd.getText().toString()), "pos", (int)MainActivity.StrToFloat(tvPos.getText().toString()) );
@@ -363,8 +366,9 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   protected void onRestart() {
     super.onRestart();
     getSupportLoaderManager().getLoader(0).forceLoad();
+    //spPost.setAdapter(scaPost);
     //spPost.getAdapter().notify();
-    //scaPost.swapCursor(cPost);
+    //scaPost.changeCursor(cPost);// swapCursor(cPost);
   } 
   
   protected void onDestroy() {
@@ -382,6 +386,7 @@ public Loader<Cursor> onCreateLoader(int i, Bundle arg1) {
 public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
 	scaProd.swapCursor(cursor);
+	
 	/*	switch(loader.getId())
     {
     case 0:
@@ -406,10 +411,10 @@ void setPrice () {
         			 , null,null,null,null);
         	 if (cursor.moveToFirst())  
       		   
-     	        do {//tmpKol=cursor.getFloat(cursor.getColumnIndex("kol"));
-     	        	//tmpSum=cursor.getFloat(cursor.getColumnIndex("s"));
-     	        	if ( cursor.getFloat(cursor.getColumnIndex("price")) != 0 )
-     	        	tvPriceVendor.setText(String.valueOf( cursor.getFloat(cursor.getColumnIndex("price")) ) );
+     	        do {//tmpKol=cursor.getDouble(cursor.getColumnIndex("kol"));
+     	        	//tmpSum=cursor.getDouble(cursor.getColumnIndex("s"));
+     	        	if ( cursor.getDouble(cursor.getColumnIndex("price")) != 0 )
+     	        	tvPriceVendor.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("price")) ) );
      	        	
      	        } while (cursor.moveToNext());
      	      

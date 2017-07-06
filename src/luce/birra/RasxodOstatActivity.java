@@ -1,8 +1,6 @@
 package luce.birra;
 import java.util.Calendar;
 
-import luce.birra.AdapterLV.CambiareListener;
-
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -24,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import luce.birra.AdapterLV.CambiareListener;
  
 public class RasxodOstatActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -278,17 +277,17 @@ void setItog () {
       //  float tmpKol=0, tmpSum=0;
         	 Cursor cursor = MainActivity.db.getQueryData
 ("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed left join postav as KK on T.id_post=KK._id",
-         			new String[] {"sum(T.kol) as kol","sum(T.price*T.kol) as sumka","round(sum(T.skidka),2) as skidka"}, 
+         			new String[] {"round(sum(T.kol),3) as kol","round(sum(T.price*T.kol),2) as sumka","round(sum(T.skidka),2) as skidka"}, 
          			 //"TP.pgr = ?"
         			 where, null,null,null,null);
         	 if (cursor.moveToFirst())  
       		   
-     	        do {//tmpKol=cursor.getFloat(cursor.getColumnIndex("kol"));
-     	        	//tmpSum=cursor.getFloat(cursor.getColumnIndex("s"));
-     	        	itogKol.setText(String.valueOf( cursor.getFloat(cursor.getColumnIndex("kol")) ) );
-     	        	itogSum.setText(String.valueOf( cursor.getFloat(cursor.getColumnIndex("sumka")) ) );
-     	        	itogSkidka.setText(String.valueOf( cursor.getFloat(cursor.getColumnIndex("skidka")) ) );
-     	        	itogNoSkidka.setText(String.valueOf( cursor.getFloat(cursor.getColumnIndex("sumka"))-cursor.getFloat(cursor.getColumnIndex("skidka") )) );
+     	        do {//tmpKol=cursor.getDouble(cursor.getColumnIndex("kol"));
+     	        	//tmpSum=cursor.getDouble(cursor.getColumnIndex("s"));
+     	        	itogKol.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("kol")) ) );
+     	        	itogSum.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("sumka")) ) );
+     	        	itogSkidka.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("skidka")) ) );
+     	        	itogNoSkidka.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("sumka"))-cursor.getDouble(cursor.getColumnIndex("skidka") )) );
      	        } while (cursor.moveToNext());
      	      
         	        cursor.close();

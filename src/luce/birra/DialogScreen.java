@@ -30,7 +30,8 @@ public class DialogScreen extends AlertDialog.Builder {
 	
 	String strDialog = "";
 	//static TextView tvDKol;
-	String regexp_numb = "\\-?\\d+(\\.\\d{0,})?";
+	//String regexp_numb = "\\-?\\d+(\\.\\d{0,})?";
+	String regexp_numb = "\\-?\\d+(\\.\\d{0,3})?";
 	//float kol;
 	private DialogListener listener;
 //	private DialogListenerData listenerData;
@@ -258,6 +259,51 @@ public class DialogScreen extends AlertDialog.Builder {
 				}
 			})
 			.setTitle("бшахпюире дюрс х бпелъ");
+            break;
+        case -5:
+            setPositiveButton("дю", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                	//kol=MainActivity.StrToFloat(tvDKol.getText().toString());
+                	listener.OnSelectedKol(1);
+                }
+            })
+            .setNegativeButton("мер", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					listener.OnSelectedKol(0);
+				}
+			})
+			.setOnDismissListener(new OnDismissListener() {	
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					listener.OnSelectedKol(0);						
+				}
+			})
+			.setTitle("сдюкхрэ ймнойс?");
+            break;
+        case -6:
+            setPositiveButton("дю", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                	listener.OnSelectedKol(1);
+                }
+            })
+            .setNegativeButton("мер", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					listener.OnSelectedKol(0);
+				}
+			})
+			.setOnDismissListener(new OnDismissListener() {	
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					listener.OnSelectedKol(0);						
+				}
+			})
+			.setTitle("мнбши рнбюп?");
             break;
         case 0: 
 			/*OnDateSetListener myCallBack = new OnDateSetListener() {

@@ -179,7 +179,7 @@ public class ProdEditActivity extends FragmentActivity {
         					Integer.parseInt(tvEd.getText().toString()),
         					cbOk.isChecked()?(byte)1:(byte)0}); 
         	MainActivity.db.updRec("tmc", Integer.parseInt(tvId.getText().toString()), 
-        			new String[] {"price","tara"}, new float[] {Float.parseFloat(etPrice.getText().toString()),Float.parseFloat(tvTara.getText().toString())});
+        			new String[] {"price","tara"}, new double[] {Float.parseFloat(etPrice.getText().toString()),Float.parseFloat(tvTara.getText().toString())});
         	//Toast.makeText(ProdEditActivity.this, "рнбюп хглемем: "+etName.getText().toString()+" жемю опндюфх:"+etPrice.getText().toString(), Toast.LENGTH_LONG).show();
         	showMessage("рнбюп хглемем: "+etName.getText().toString()+" жемю опндюфх:"+etPrice.getText().toString(), (byte)0);
 				finish();

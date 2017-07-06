@@ -239,8 +239,7 @@ static void excel_import(Context cntx, Activity act, byte metod )
 							case 1:
 							Import2Excel.load_tmc(fileName, context); break;
 							case 2:
-								//Import2Excel.load_tmc_pgr(fileName); break; 
-								break;
+								Import2Excel.load_ost(fileName,context); break; 
 							}
 					}
 				});

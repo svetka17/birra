@@ -24,7 +24,7 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
   //static TextView //tvIdPgr, 
   //tvIdKlient; 
   //static EditText tvDataIns;
-  static TextView tvDataIns,tvDataIns2, tvd1, tvd2;
+  static TextView tvDataIns,tvDataIns2, tvd1, tvd2, sumCh, sumSkid, sumWithSkid;
   //Spinner //spPgr, 
   //spKlient;
   //Cursor cKlient;
@@ -36,6 +36,10 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
     super.onCreate(savedInstanceState);
     setContentView(R.layout.check_klient);
     //final DialogFragment dlg = new DialogActivity();
+    
+    sumCh = (TextView) findViewById(R.id.itogCheckSumma);
+    sumSkid = (TextView) findViewById(R.id.itogCheckSkidka);
+    sumWithSkid = (TextView) findViewById(R.id.itogCheckSummaSkidka);
     
     tvDataIns = (TextView) findViewById(R.id.tv_Data_check11);
     tvDataIns.setText(MainActivity.getStringDataTime( Integer.parseInt( String.valueOf( MainActivity.getIntDataTime() ).substring(0,6).concat("0000") ) ));
@@ -52,6 +56,7 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
 						tvDataIns.setText(MainActivity.getStringDataTime((int)k));
 						//getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
+					      setItog();
 					}
 					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
 				}
@@ -71,6 +76,7 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
 						tvDataIns.setText(MainActivity.getStringDataTime((int)k));
 						//getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
+					      setItog();
 					}
 					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
 				}
@@ -91,6 +97,7 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
 						tvDataIns2.setText(MainActivity.getStringDataTime((int)k));
 						//getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
+					      setItog();
 					}
 					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
 				}
@@ -110,6 +117,7 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
 						tvDataIns2.setText(MainActivity.getStringDataTime((int)k));
 						//getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
+					      setItog();
 					}
 					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
 				}
@@ -223,7 +231,8 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
     				if (flag==1) {
     					int count=MainActivity.db.delRecs("rasxod","id_klient="+id);
     					MainActivity.db.delRec("klient",id);
-    					getSupportLoaderManager().getLoader(0).forceLoad();}
+    					getSupportLoaderManager().getLoader(0).forceLoad();
+    					setItog();}
     				if (flag==2) {
     					//Log.d("MyLog", "view id="+id);
     					Intent intent = new Intent(CheckActivity.this, RasxodHistActivity.class);
@@ -241,6 +250,7 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
     // создаем лоадер для чтения данных
     //getSupportLoaderManager().initLoader(1, null, this);
     getSupportLoaderManager().initLoader(0, null, this);
+    setItog();
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.check_klient_ll));
   }
@@ -279,6 +289,7 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
     super.onRestart();
     //getSupportLoaderManager().getLoader(1).forceLoad();
     getSupportLoaderManager().getLoader(0).forceLoad();
+    setItog();
   }
   
   protected void onDestroy() {
@@ -358,37 +369,35 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
     }
      
   }
-  /*
-  static class KlientLoader extends CursorLoader {
-	  
-	    DB db;
-	    public KlientLoader(Context context, DB db) {
-	      super(context);
-	      this.db = db;
-	    }
-	     
-	    @Override
-	    public Cursor loadInBackground() {
-	    	String []str = {
-	    			//(tvDataIns.getText().length()==0)?"":" substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"
-	    			(tvDataIns.getText().length()==0)?"":" data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")"
-	    			,//(tvDataIns2.getText().length()==0)?"":" substr(data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")"
-	    			(tvDataIns2.getText().length()==0)?"":" data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")"
-	        				};
-	    	String where=str[0].toString();
-	        //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
-	        if (where.equals("")||where.length()==0) where=str[1].toString(); else 
-	        	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
-	        if (!where.equals("")) where=" where "+where;
-	    Cursor cursor = MainActivity.db.getRawData("select _id, 0 num_id, name sumka, null name from foo union all select _id, num_id, sumka, name from klient "+
-	    //((tvDataIns.getText().length()==0)?"":" where substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")")
-	    where
-	    , null);
-	    
-	      return cursor;
-	    }
-	     
-	  }*/
+  
+  void setItog () {
+	  String []str = {(tvDataIns.getText().length()==0)?"":" K.data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")",
+      				//(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")",
+  					(tvDataIns2.getText().length()==0)?"":" K.data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")"//,
+      				//(tvIdKlient.getText().toString().equals("0")||tvIdKlient.getText().length()==0)?"":" K._id="+tvIdKlient.getText().toString()
+      						};
+      String where=str[0].toString();
+      //Log.d("MyLog", "dt="+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString())));
+      if (where.equals("")||where.length()==0) where=str[1].toString(); else 
+      	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
+      
+	        	 Cursor cursor = MainActivity.db.getQueryData("klient as K left join karta_klient KK on K.karta = KK._id", 
+	             			new String[] {"round(sum(K.sumka),2) as sumka", "round(sum(K.skidka),2) as skidka","round(sum(K.sumka-K.skidka),2) as no_skidka"}, 
+	             			 //"TP.pgr = ?"
+	            			 where, null,null,null,null);
+	        	 
+	        	 if (cursor.moveToFirst())  
+	      		   
+	     	        do {
+	     	        	//itogKol.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("kol")) ) );
+	     	        	sumCh.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("sumka")) ) );
+	     	        	sumSkid.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("skidka")) ) );
+	     	        	sumWithSkid.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("no_skidka")) ) );
+	     	        } while (cursor.moveToNext());
+	     	      
+	        	        cursor.close();
+	     	     
+	}
 
 }
 

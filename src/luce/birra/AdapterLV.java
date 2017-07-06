@@ -50,6 +50,7 @@ public AdapterLV(/*int[] r,*/ int bD, int bU, byte nT, Context context, int layo
     case 9: namT="user"; break;
     case 10: namT=""; break;
     case 11: namT="tmc_price"; break;
+    case 12: namT=""; break;
     }
 }
 
@@ -74,30 +75,31 @@ public void bindView(View view, Context context, final Cursor cursor) {
 	//	R.id.tv_Kol_Pri_Oborotka,R.id.tv_Sum_Pri_Oborotka,R.id.tv_Price_Pri_Oborotka,
 		//R.id.tv_Kol_Ras_Oborotka,R.id.tv_Sum_Ras_Oborotka,R.id.tv_Price_Ras_Oborotka,
 		//R.id.tv_Kol_Kon_Oborotka,R.id.tv_Sum_Kon_Oborotka,R.id.tv_Price_Kon_Oborotka}
-		//if (MainActivity.access!=1) {
+		
+		if (MainActivity.access!=1) {
 			((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
-		//}
+		}
 		
         tv = (TextView) view.findViewById(R.id.tv_Price_Pri_Oborotka);  	
-        float kol=cursor.getFloat(cursor.getColumnIndex("kol_pri"));
+        double kol=cursor.getDouble(cursor.getColumnIndex("kol_pri"));
         if (kol!=0)
-        tv.setText( String.format("%.2f",cursor.getFloat(cursor.getColumnIndex("sum_pri"))/kol ) ); else tv.setText("");
+        tv.setText( String.format("%.2f",cursor.getDouble(cursor.getColumnIndex("sum_pri"))/kol ) ); else tv.setText("");
         
         tv = (TextView) view.findViewById(R.id.tv_Price_Ras_Oborotka);  	
-        kol=cursor.getFloat(cursor.getColumnIndex("kol_ras"));
+        kol=cursor.getDouble(cursor.getColumnIndex("kol_ras"));
         if (kol!=0)
-        tv.setText( String.format("%.2f",cursor.getFloat(cursor.getColumnIndex("sum_ras"))/kol ) ); else tv.setText("");
+        tv.setText( String.format("%.2f",cursor.getDouble(cursor.getColumnIndex("sum_ras"))/kol ) ); else tv.setText("");
 
         tv = (TextView) view.findViewById(R.id.tv_Price_Kon_Oborotka);  	
-        kol=cursor.getFloat(cursor.getColumnIndex("kol_k"));
+        kol=cursor.getDouble(cursor.getColumnIndex("kol_k"));
         if (kol!=0)
-        tv.setText( String.format("%.2f",cursor.getFloat(cursor.getColumnIndex("sum_k"))/kol ) ); else tv.setText("");
+        tv.setText( String.format("%.2f",cursor.getDouble(cursor.getColumnIndex("sum_k"))/kol ) ); else tv.setText("");
 
         tv = (TextView) view.findViewById(R.id.tv_Sum_Nach_Oborotka);  	
-        tv.setText( String.format("%.2f",cursor.getFloat(cursor.getColumnIndex("sum_k"))+cursor.getFloat(cursor.getColumnIndex("sum_ras"))-cursor.getFloat(cursor.getColumnIndex("sum_pri")) ) );
+        tv.setText( String.format("%.2f",cursor.getDouble(cursor.getColumnIndex("sum_k"))+cursor.getDouble(cursor.getColumnIndex("sum_ras"))-cursor.getDouble(cursor.getColumnIndex("sum_pri")) ) );
         
         tv = (TextView) view.findViewById(R.id.tv_Kol_Nach_Oborotka);  	
-        tv.setText( String.format("%.2f",cursor.getFloat(cursor.getColumnIndex("kol_k"))+cursor.getFloat(cursor.getColumnIndex("kol_ras"))-cursor.getFloat(cursor.getColumnIndex("kol_pri")) ) );
+        tv.setText( String.format("%.2f",cursor.getDouble(cursor.getColumnIndex("kol_k"))+cursor.getDouble(cursor.getColumnIndex("kol_ras"))-cursor.getDouble(cursor.getColumnIndex("kol_pri")) ) );
         
         tv = (TextView) view.findViewById(R.id.tv_Price_Nach_Oborotka);
         String s=((TextView) view.findViewById(R.id.tv_Kol_Nach_Oborotka)).getText().toString().replace(",", ".");
@@ -105,7 +107,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
         //s=((TextView) view.findViewById(R.id.tv_Sum_Nach_Oborotka)).getText().toString();
         //Log.d("MyLog","sum="+s );
         if (s.equals("")||s.length()==0||s.equals("0,00")) kol=0; else
-        kol=Float.parseFloat(s);//  cursor.getFloat(cursor.getColumnIndex("kol_k"));
+        kol=Float.parseFloat(s);//  cursor.getDouble(cursor.getColumnIndex("kol_k"));
         s=((TextView) view.findViewById(R.id.tv_Sum_Nach_Oborotka)).getText().toString().replace(",", ".");
         float sum;
         if (s.equals("")||s.length()==0||s.equals("0,00")) sum=0; else
@@ -371,6 +373,10 @@ public void bindView(View view, Context context, final Cursor cursor) {
     	tv = (TextView) view.findViewById(R.id.tvDataIns_Price);  	
         tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
 
+    	break;
+    case 12:
+    	tv = (TextView) view.findViewById(R.id.tv_DataIns_Dvig);
+        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
     	break;
         }
 	//Button btn = (Button) view.findViewById(R.id.btnDelPgr );

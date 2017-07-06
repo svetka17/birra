@@ -31,19 +31,19 @@ public class OtchetActivity extends FragmentActivity {
 
  // ListView lvData;
   Button btnExit, btnAdd, btnO, btnOO, btnOOO, btnP, btnR, btnCheck;
-  AdapterLV scAdapterO;//scAdapterR, scAdapterP ;
-  static TextView tvIdPgr; //tvIdKlient, 
-  static TextView tvDataIns, tvDataIns2;
-  Spinner spPgr;//, spKlient;
+  //AdapterLV scAdapterO;//scAdapterR, scAdapterP ;
+  //static TextView tvIdPgr; //tvIdKlient, 
+  //static TextView tvDataIns, tvDataIns2;
+  //Spinner spPgr;//, spKlient;
   //Cursor cKlient;
   //SimpleCursorAdapter scaKlient;
-  TextView d1,d2;
+  //TextView d1,d2;
   
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.otchet);
     //final DialogFragment dlg = new DialogActivity();
-    d1 = (TextView) findViewById(R.id.tv_otchetD1);
+  /*  d1 = (TextView) findViewById(R.id.tv_otchetD1);
     d1.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	showDialog(1);
@@ -99,7 +99,7 @@ public class OtchetActivity extends FragmentActivity {
         	//getSupportLoaderManager().getLoader(0).forceLoad();
         }
         });
-
+*/
     
     btnExit = (Button) findViewById(R.id.btnExitOtchet);
     btnExit.setOnClickListener(new OnClickListener() {
@@ -160,6 +160,7 @@ public class OtchetActivity extends FragmentActivity {
 }
   //intent = new Intent(this, OtchetActivity.class);
   //startActivity(intent);
+  /*
 void oborotka () {
 //////////////////////////////////////
 String dataStr="";
@@ -204,23 +205,23 @@ out.write(columnString.getBytes());
 if (cc.moveToFirst()) { 
 
 do {
-float koln=0, sumn=0, pricen=0, kolp=0, sump=0, pricep=0, kolr=0, sumr=0, pricer=0, kolk=0, sumk=0, pricek=0;
-koln = cc.getFloat(cc.getColumnIndex("kol_k"))+cc.getFloat(cc.getColumnIndex("kol_ras"))-cc.getFloat(cc.getColumnIndex("kol_pri")) ;
-sumn = cc.getFloat(cc.getColumnIndex("sum_k"))+cc.getFloat(cc.getColumnIndex("sum_ras"))-cc.getFloat(cc.getColumnIndex("sum_pri")) ;
+double koln=0, sumn=0, pricen=0, kolp=0, sump=0, pricep=0, kolr=0, sumr=0, pricer=0, kolk=0, sumk=0, pricek=0;
+koln = cc.getDouble(cc.getColumnIndex("kol_k"))+cc.getDouble(cc.getColumnIndex("kol_ras"))-cc.getDouble(cc.getColumnIndex("kol_pri")) ;
+sumn = cc.getDouble(cc.getColumnIndex("sum_k"))+cc.getDouble(cc.getColumnIndex("sum_ras"))-cc.getDouble(cc.getColumnIndex("sum_pri")) ;
 if (koln!=0) pricen=Math.round((sumn/koln)*100)/100.0f;
-kolp = cc.getFloat(cc.getColumnIndex("kol_pri")) ;
-sump = cc.getFloat(cc.getColumnIndex("sum_pri")) ;
+kolp = cc.getDouble(cc.getColumnIndex("kol_pri")) ;
+sump = cc.getDouble(cc.getColumnIndex("sum_pri")) ;
 //if (kolp!=0) pricep=Math.round((sump/kolp)*100)/100.0f;
-kolr = cc.getFloat(cc.getColumnIndex("kol_ras")) ;
-sumr = cc.getFloat(cc.getColumnIndex("sum_ras")) ;
+kolr = cc.getDouble(cc.getColumnIndex("kol_ras")) ;
+sumr = cc.getDouble(cc.getColumnIndex("sum_ras")) ;
 //if (kolr!=0) pricep=Math.round((sumr/kolr)*100)/100.0f;
-kolk = cc.getFloat(cc.getColumnIndex("kol_k")) ;
-sumk = cc.getFloat(cc.getColumnIndex("sum_k")) ;
+kolk = cc.getDouble(cc.getColumnIndex("kol_k")) ;
+sumk = cc.getDouble(cc.getColumnIndex("sum_k")) ;
 if (kolk!=0) pricep=Math.round((sumr/kolk)*100)/100.0f;
 
-//dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +koln+ "\",\""+sumn+ "\",\"" + cc.getFloat(cc.getColumnIndex("price_n"))+"\",\"" 
-		//+ cc.getFloat(cc.getColumnIndex("kol_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("kol_ras"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_ras"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_ras"))+"\",\""
-		//+ cc.getFloat(cc.getColumnIndex("kol_k"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_k"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_k"))+ "\"" ;
+//dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +koln+ "\",\""+sumn+ "\",\"" + cc.getDouble(cc.getColumnIndex("price_n"))+"\",\"" 
+		//+ cc.getDouble(cc.getColumnIndex("kol_pri"))+"\",\""+ cc.getDouble(cc.getColumnIndex("sum_pri"))+"\",\""+ cc.getDouble(cc.getColumnIndex("price_pri"))+"\",\""+ cc.getDouble(cc.getColumnIndex("kol_ras"))+"\",\""+ cc.getDouble(cc.getColumnIndex("sum_ras"))+"\",\""+ cc.getDouble(cc.getColumnIndex("price_ras"))+"\",\""
+		//+ cc.getDouble(cc.getColumnIndex("kol_k"))+"\",\""+ cc.getDouble(cc.getColumnIndex("sum_k"))+"\",\""+ cc.getDouble(cc.getColumnIndex("price_k"))+ "\"" ;
 dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +koln+ "\",\""+sumn+ "\",\"" + pricen+"\",\"" 
 		+ kolp+"\",\""+ sump+"\",\""+ kolr+"\",\""+ sumr+"\",\""
 		+ kolk+"\",\""+ sumk+"\",\""+ pricek+ "\"" ;
@@ -293,14 +294,14 @@ out.write(columnString.getBytes());
 if (cc.moveToFirst()) { 
 
 do {
-float 
-sumka = cc.getFloat(cc.getColumnIndex("kol"))*cc.getFloat(cc.getColumnIndex("price")) ;
+double 
+sumka = cc.getDouble(cc.getColumnIndex("kol"))*cc.getDouble(cc.getColumnIndex("price")) ;
 sumka=Math.round(sumka*100)/100.0f;
 
-//dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +koln+ "\",\""+sumn+ "\",\"" + cc.getFloat(cc.getColumnIndex("price_n"))+"\",\"" 
-//+ cc.getFloat(cc.getColumnIndex("kol_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("kol_ras"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_ras"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_ras"))+"\",\""
-//+ cc.getFloat(cc.getColumnIndex("kol_k"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_k"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_k"))+ "\"" ;
-dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\""+ cc.getString(cc.getColumnIndex("namet")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +cc.getFloat(cc.getColumnIndex("kol"))+ "\",\""+cc.getFloat(cc.getColumnIndex("price"))+ "\",\"" 
+//dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +koln+ "\",\""+sumn+ "\",\"" + cc.getDouble(cc.getColumnIndex("price_n"))+"\",\"" 
+//+ cc.getDouble(cc.getColumnIndex("kol_pri"))+"\",\""+ cc.getDouble(cc.getColumnIndex("sum_pri"))+"\",\""+ cc.getDouble(cc.getColumnIndex("price_pri"))+"\",\""+ cc.getDouble(cc.getColumnIndex("kol_ras"))+"\",\""+ cc.getDouble(cc.getColumnIndex("sum_ras"))+"\",\""+ cc.getDouble(cc.getColumnIndex("price_ras"))+"\",\""
+//+ cc.getDouble(cc.getColumnIndex("kol_k"))+"\",\""+ cc.getDouble(cc.getColumnIndex("sum_k"))+"\",\""+ cc.getDouble(cc.getColumnIndex("price_k"))+ "\"" ;
+dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\""+ cc.getString(cc.getColumnIndex("namet")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +cc.getDouble(cc.getColumnIndex("kol"))+ "\",\""+cc.getDouble(cc.getColumnIndex("price"))+ "\",\"" 
 +sumka+ "\",\""
 +MainActivity.getStringData( cc.getInt(cc.getColumnIndex("data_ins")) )+ "\"" ;
 out.write(dataStr.getBytes());
@@ -371,14 +372,14 @@ out.write(columnString.getBytes());
 if (cc.moveToFirst()) { 
 
 do {
-float 
-sumka = cc.getFloat(cc.getColumnIndex("kol"))*cc.getFloat(cc.getColumnIndex("price")) ;
+double 
+sumka = cc.getDouble(cc.getColumnIndex("kol"))*cc.getDouble(cc.getColumnIndex("price")) ;
 sumka=Math.round(sumka*100)/100.0f;
 
-//dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +koln+ "\",\""+sumn+ "\",\"" + cc.getFloat(cc.getColumnIndex("price_n"))+"\",\"" 
-//+ cc.getFloat(cc.getColumnIndex("kol_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_pri"))+"\",\""+ cc.getFloat(cc.getColumnIndex("kol_ras"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_ras"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_ras"))+"\",\""
-//+ cc.getFloat(cc.getColumnIndex("kol_k"))+"\",\""+ cc.getFloat(cc.getColumnIndex("sum_k"))+"\",\""+ cc.getFloat(cc.getColumnIndex("price_k"))+ "\"" ;
-dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\""+ cc.getString(cc.getColumnIndex("namet")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +cc.getFloat(cc.getColumnIndex("kol"))+ "\",\""+cc.getFloat(cc.getColumnIndex("price"))+ "\",\"" 
+//dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +koln+ "\",\""+sumn+ "\",\"" + cc.getDouble(cc.getColumnIndex("price_n"))+"\",\"" 
+//+ cc.getDouble(cc.getColumnIndex("kol_pri"))+"\",\""+ cc.getDouble(cc.getColumnIndex("sum_pri"))+"\",\""+ cc.getDouble(cc.getColumnIndex("price_pri"))+"\",\""+ cc.getDouble(cc.getColumnIndex("kol_ras"))+"\",\""+ cc.getDouble(cc.getColumnIndex("sum_ras"))+"\",\""+ cc.getDouble(cc.getColumnIndex("price_ras"))+"\",\""
+//+ cc.getDouble(cc.getColumnIndex("kol_k"))+"\",\""+ cc.getDouble(cc.getColumnIndex("sum_k"))+"\",\""+ cc.getDouble(cc.getColumnIndex("price_k"))+ "\"" ;
+dataStr   =  "\n" + "\"" + cc.getInt(cc.getColumnIndex("id_tmc")) +"\",\"" + cc.getString(cc.getColumnIndex("name")) + "\",\""+ cc.getString(cc.getColumnIndex("namet")) + "\",\"" + cc.getString(cc.getColumnIndex("ted")) + "\",\"" +cc.getDouble(cc.getColumnIndex("kol"))+ "\",\""+cc.getDouble(cc.getColumnIndex("price"))+ "\",\"" 
 		+sumka+ "\",\""
 		+MainActivity.getStringDataTime( cc.getInt(cc.getColumnIndex("data_ins")) )+ "\"" ;
 out.write(dataStr.getBytes());
@@ -431,7 +432,7 @@ protected Dialog onCreateDialog(int id) {
           tvDataIns2.setText(String.valueOf(100+dayOfMonth).substring(1) + "." + String.valueOf(100+(monthOfYear+1)).substring(1) + "." + String.valueOf(100+(year%2000)).substring(1));
         }
         };
-    
+*/    
   @Override
   protected void onRestart() {
     super.onRestart();

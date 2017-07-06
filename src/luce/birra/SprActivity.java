@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
  
 public class SprActivity extends FragmentActivity {
 
-  Button btnExit, btnProd, btnPgr, btnPostav,btnPrice, btnKlient, btnExport, btnImport;
+  Button btnExit, btnProd, btnPgr, btnPostav,btnPrice, btnKlient, btnExport, btnImport, btnImportOst;
   //OpenFileDialog ofd;
   
   public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,14 @@ public class SprActivity extends FragmentActivity {
     btnImport.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	MainActivity.excel_import(SprActivity.this, SprActivity.this,(byte)1);
+
+        }
+      });
+    
+    btnImportOst = (Button) findViewById(R.id.btnOstImport);
+    btnImportOst.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	MainActivity.excel_import(SprActivity.this, SprActivity.this,(byte)2);
 
         }
       });

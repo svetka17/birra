@@ -79,7 +79,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 }
    	  
 	  // добавить запись в DB_TABLE
-	  public void addRecTMC(String name, int pgr, int ed, float price, byte vis, byte pos, float tara, int data_ins, byte ok) {
+	  public void addRecTMC(String name, int pgr, int ed, double price, byte vis, byte pos, float tara, int data_ins, byte ok) {
 	    ContentValues cv = new ContentValues();
 	    cv.put("name", name);
 	    cv.put("pgr", pgr);
@@ -93,7 +93,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 	    mDB.insert("tmc", null, cv);
 	  }
 	  
-	  public long addRecTMCcount(String name, int pgr, int ed, float price, byte vis, byte pos, float tara, int data_ins, byte ok) {
+	  public long addRecTMCcount(String name, int pgr, int ed, double price, byte vis, byte pos, double tara, int data_ins, byte ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("name", name);
 		    cv.put("pgr", pgr);
@@ -137,7 +137,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("user", null, cv);
 		  }
 
-	  public void addRecPRIXOD(int id_tmc, float kol,byte ed, float price, float price_vendor, int id_post, String prim, /*int data_del,*/ int data_ins, byte ok) {
+	  public void addRecPRIXOD(int id_tmc, double kol, byte ed, double price, double price_vendor, int id_post, String prim, /*int data_del,*/ int data_ins, byte ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("kol", kol);
@@ -152,7 +152,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("prixod", null, cv);
 		  }
 
-	  public void addRecRASXOD(int id_tmc, float kol, byte ed, float price, float skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
+	  public void addRecRASXOD(int id_tmc, double kol, byte ed, double price, double skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("kol", kol);
@@ -168,7 +168,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("rasxod", null, cv);
 		  }
 	  
-	  public long addRecRASXODcount(int id_tmc, float kol, byte ed, float price, float skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
+	  public long addRecRASXODcount(int id_tmc, double kol, byte ed, double price, double skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("kol", kol);
@@ -184,7 +184,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    return mDB.insert("rasxod", null, cv);
 		  }
 	  
-	  public void addRecOSTAT(int id_tmc, float kol, byte ed, float price, float sumka, int id_post, int data_ins, byte ok) {
+	  public void addRecOSTAT(int id_tmc, double kol, byte ed, double price, double sumka, int id_post, int data_ins, byte ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("kol", kol);
@@ -197,7 +197,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("ostat", null, cv);
 		  }
 
-	  public void addRecKARTA_KLIENT(String name, String adres, String telef, String prim,  int data_ins, byte ok, float sconto_sum, float sconto_per) {
+	  public void addRecKARTA_KLIENT(String name, String adres, String telef, String prim,  int data_ins, byte ok, double sconto_sum, double sconto_per) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("name", name);
 		    cv.put("adres", adres);
@@ -210,7 +210,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("karta_klient", null, cv);
 		  }
 
-	  public void addRecKLIENT(int num_id, String name, float sum, float skidka, String prim, int data_ins, int karta, byte ok) {
+	  public void addRecKLIENT(int num_id, String name, double sum, double skidka, String prim, int data_ins, int karta, byte ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("num_id", num_id);
 		    cv.put("name", name);
@@ -223,7 +223,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("klient", null, cv);
 		  }
 
-	  public long addRecKLIENTcount(int num_id, String name, float sum, float skidka, String prim, int data_ins, int karta, byte ok) {
+	  public long addRecKLIENTcount(int num_id, String name, double sum, double skidka, String prim, int data_ins, int karta, byte ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("num_id", num_id);
 		    cv.put("name", name);
@@ -247,6 +247,17 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("postav", null, cv);
 		  }
 	  
+	  public long addRecPOSTAVcount(String name, String adres, String telef, String prim, int data_ins, byte ok) {
+		    ContentValues cv = new ContentValues();
+		    cv.put("name", name);
+		    cv.put("adres", adres);
+		    cv.put("telef", telef);
+		    cv.put("prim", prim);
+		    cv.put("data_ins", data_ins);
+		    cv.put("ok", ok);
+		    return mDB.insert("postav", null, cv);
+		  }
+	  
 	  /*public void updMyltyRecTMC_PGR(String name, int data_ins) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("name", name);
@@ -267,7 +278,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.update(namT, cv, "_id = "+id, null);
 		  }
 	  
-	  public void updRec(String namT, long id, String[] name_f, float[] val) {
+	  public void updRec(String namT, long id, String[] name_f, double[] val) {
 		    ContentValues cv = new ContentValues();
 		    for (int i=0; i<name_f.length; i++)
 			    cv.put(name_f[i], val[i]);
@@ -285,7 +296,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.update(namT, cv, "_id = "+id, null);
 		  }
 	  
-	  public void updRec(String namT, long id, String name_f, float val) {
+	  public void updRec(String namT, long id, String name_f, double val) {
 		    ContentValues cv = new ContentValues();
 			    cv.put(name_f, val);
 		    mDB.update(namT, cv, "_id = "+id, null);
@@ -301,7 +312,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 			    cv.put(name_f[i], val[i]);
 		    return mDB.update(namT, cv, "_id = "+id, null);
 		  }
-	  public int updRecCount(String namT, long id, String[] name_f, float[] val) {
+	  public int updRecCount(String namT, long id, String[] name_f, double[] val) {
 		    ContentValues cv = new ContentValues();
 		    for (int i=0; i<name_f.length; i++)
 			    cv.put(name_f[i], val[i]);
@@ -318,7 +329,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 			    cv.put(name_f, val);
 		    return mDB.update(namT, cv, "_id = "+id, null);
 		  }
-	  public int updRecCount(String namT, long id, String name_f, float val) {
+	  public int updRecCount(String namT, long id, String name_f, double val) {
 		    ContentValues cv = new ContentValues();
 			    cv.put(name_f, val);
 		    return mDB.update(namT, cv, "_id = "+id, null);

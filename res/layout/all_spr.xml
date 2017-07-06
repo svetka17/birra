@@ -138,6 +138,13 @@
             android:layout_weight="1"
             style="@style/B"
             android:text="ЗАГРУЗИТЬ НОМЕНКЛАТУРЫ ИЗ EXCEL" />
+        <Button
+            android:id="@+id/btnOstImport"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="ЗАГРУЗИТЬ ОСТАТКИ ИЗ EXCEL" />
 
  </TableRow> 
     </TableLayout>

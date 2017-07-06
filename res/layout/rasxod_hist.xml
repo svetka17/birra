@@ -86,7 +86,14 @@
  		    style="@style/lv_h"
             android:layout_weight="1"
  		    android:text="ЦЕНА"/>
-
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="СКИДКА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="СУММА"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"

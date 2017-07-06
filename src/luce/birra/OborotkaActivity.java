@@ -1,29 +1,19 @@
 package luce.birra;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
 
-import luce.birra.AdapterLV.CambiareListener;
-import luce.birra.DialogScreen.DialogListener;
-import luce.birra.OpenFileDialog.OpenDialogListenerDir;
-
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+//import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -35,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import luce.birra.AdapterLV.CambiareListener;
  
 public class OborotkaActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -119,7 +110,40 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
     	    .setCamdiareListener(new CambiareListener() {
     			@Override
     			public void OnCambiare(byte flag, long id) {
-    				if (flag==1) {
+    				
+    				if (flag==1 || flag==2) {
+    					
+    					Cursor cc = MainActivity.db.getRawData ("select O._id as id, O.id_tmc as id_tmc, T.name as name_tmc, O.kol as kol, O.ed as ed, E.name as name_ed, O.id_post as id_post, P.name as name_post from ostat as O left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join postav as P on O.id_post=P._id where O._id="+id,null);
+    					
+    					Intent intent = new Intent(OborotkaActivity.this, DvigActivity.class);
+    					
+    					if (cc.moveToFirst()) { 
+    					        do {
+    					        	
+    			                    intent.putExtra("dvigTmc", String.valueOf(cc.getInt(cc.getColumnIndex("id_tmc"))) );
+    			                    //Log.d("MyLog", "dvigTmc "+cc.getInt(cc.getColumnIndex("id_tmc")));
+    			                    intent.putExtra("dvigNameTmc", cc.getString(cc.getColumnIndex("name_tmc")));
+    			                    //Log.d("MyLog", "dvigNameTmc "+cc.getString(cc.getColumnIndex("name_tmc")));
+    			                    intent.putExtra("dvigEd", String.valueOf(cc.getInt(cc.getColumnIndex("ed"))));
+    			                    //Log.d("MyLog", "dvigEd "+cc.getInt(cc.getColumnIndex("ed")));
+    			                    intent.putExtra("dvigNameEd", cc.getString(cc.getColumnIndex("name_ed")));
+    			                    //Log.d("MyLog", "dvigNameEd "+cc.getString(cc.getColumnIndex("name_ed")));
+    			                    
+    			                    intent.putExtra("dvigPost", String.valueOf(cc.getInt(cc.getColumnIndex("id_post"))));
+    			                    //Log.d("MyLog", "dvigPost "+cc.getInt(cc.getColumnIndex("id_post")));
+    			                    intent.putExtra("dvigNamePost", cc.getString(cc.getColumnIndex("name_post")));
+    			                    //Log.d("MyLog", "dvigNamePost "+cc.getString(cc.getColumnIndex("name_post")));
+    			                    intent.putExtra("dvigKol", String.valueOf(cc.getDouble(cc.getColumnIndex("kol"))));
+    			                    //Log.d("MyLog", "dvigKol "+cc.getDouble(cc.getColumnIndex("kol")));
+    			                    intent.putExtra("dvigID", String.valueOf(cc.getInt(cc.getColumnIndex("id"))));
+    			                    //Log.d("MyLog", "dvigID "+cc.getInt(cc.getColumnIndex("id")));
+    			        
+    			                    } 
+    					        while (cc.moveToNext());
+    					      };
+    					      //Log.d("MyLog", "id="+id);
+    					      startActivity(intent);
+
     				}
     			}
     		});
