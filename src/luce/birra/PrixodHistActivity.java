@@ -1,7 +1,6 @@
 package luce.birra;
 import java.util.Calendar;
 
-import luce.birra.AdapterLV.CambiareListener;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -14,7 +13,6 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +26,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import luce.birra.AdapterLV.CambiareListener;
+import luce.birra.DialogScreen.DialogListener;
  
 public class PrixodHistActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -38,7 +38,7 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
   //static EditText tvDataIns, tvDataIns2;
   static TextView tvDataIns, tvDataIns2, tv_data1_pri, tv_data2_pri;
   Spinner spPgr;
-  
+  static long idd=0;
   //LinearLayout ll;
   void showMessage(String s, byte dur){
 	  LayoutInflater inflater = getLayoutInflater();
@@ -144,22 +144,33 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
     		.setCamdiareListener(new CambiareListener() {
     			@Override
     			public void OnCambiare(byte flag, long id) {
+    				idd=id;
     				if (flag==1) {
-    					double kolo=0, kolp=0;
-    					Cursor cc = MainActivity.db.getRawData ("select O.kol kolo, P.kol kolp from ostat O left join prixod P on O.id_tmc=P.id_tmc and O.ed=P.ed and O.id_post=P.id_post where P._id="+id,null);
-    					   if (cc.moveToFirst()) { 
-    					        do {kolo=cc.getDouble(cc.getColumnIndex("kolo"));
-    					        	kolp=cc.getDouble(cc.getColumnIndex("kolp"));
-    					        		//MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), -cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 0);
-    					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
-    					        } while (cc.moveToNext());
-    					      };
-    					if (kolp<=kolo)      
-    					{MainActivity.db.delRec("prixod",id);
-    					getSupportLoaderManager().getLoader(0).forceLoad();
-    					}
-    					else 
-    						showMessage("Нельзя удалять, возникнет отрицательный остаток", (byte)1);    					
+    				DialogScreen getYes = new DialogScreen(PrixodHistActivity.this,PrixodHistActivity.this,-5).setDialogScreenListener(new DialogListener() {
+						
+						@Override
+						public void OnSelectedKol(double k) {
+							if (k==1) {
+								double kolo=0, kolp=0;
+		    					Cursor cc = MainActivity.db.getRawData ("select O.kol kolo, P.kol kolp from ostat O left join prixod P on O.id_tmc=P.id_tmc and O.ed=P.ed and O.id_post=P.id_post where P._id="+idd,null);
+		    					   if (cc.moveToFirst()) { 
+		    					        do {kolo=cc.getDouble(cc.getColumnIndex("kolo"));
+		    					        	kolp=cc.getDouble(cc.getColumnIndex("kolp"));
+		    					        		//MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), -cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 0);
+		    					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
+		    					        } while (cc.moveToNext());
+		    					      };
+		    					if (kolp<=kolo)      
+		    					{MainActivity.db.delRec("prixod",idd);
+		    					getSupportLoaderManager().getLoader(0).forceLoad();
+		    					}
+		    					else 
+		    						showMessage("Нельзя удалять, возникнет отрицательный остаток", (byte)1); 
+							}
+							
+						}
+					}); getYes.show();
+	   					
     				}
     			}
     		});

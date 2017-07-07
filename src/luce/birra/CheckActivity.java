@@ -1,6 +1,4 @@
 package luce.birra;
-import luce.birra.AdapterLV.CambiareListener;
-import luce.birra.DialogScreen.DialogListener;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,6 +13,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import luce.birra.AdapterLV.CambiareListener;
+import luce.birra.DialogScreen.DialogListener;
  
 public class CheckActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -29,7 +29,7 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
   //spKlient;
   //Cursor cKlient;
   //SimpleCursorAdapter scaKlient;
-  
+  static long idd=0;
   //LinearLayout ll;
 
   public void onCreate(Bundle savedInstanceState) {
@@ -228,11 +228,25 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
     		.setCamdiareListener(new CambiareListener() {
     			@Override
     			public void OnCambiare(byte flag, long id) {
+    				idd=id;
     				if (flag==1) {
-    					int count=MainActivity.db.delRecs("rasxod","id_klient="+id);
-    					MainActivity.db.delRec("klient",id);
-    					getSupportLoaderManager().getLoader(0).forceLoad();
-    					setItog();}
+    					DialogScreen getYes = new DialogScreen(CheckActivity.this,CheckActivity.this,-5).setDialogScreenListener(new DialogListener() {
+							
+							@Override
+							public void OnSelectedKol(double k) {
+								if (k==1) {
+									int count=MainActivity.db.delRecs("rasxod","id_klient="+idd);
+			    					MainActivity.db.delRec("klient",idd);
+			    					getSupportLoaderManager().getLoader(0).forceLoad();
+			    					setItog();
+								}
+								
+							}
+						}); getYes.show();
+    					
+    					
+    					
+    					}
     				if (flag==2) {
     					//Log.d("MyLog", "view id="+id);
     					Intent intent = new Intent(CheckActivity.this, RasxodHistActivity.class);

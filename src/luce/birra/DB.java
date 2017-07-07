@@ -25,7 +25,7 @@ public class DB {
 		
 	
   private static final String DB_NAME = "birraDB";
-  private static final int DB_VERSION = 13;
+  private static final int DB_VERSION = 14;
   //private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
   //private static final String DB_TABLE = "mytab";
    
@@ -120,10 +120,10 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    return mDB.insert("tmc_pgr", null, cv);
 		  }
 	  
-	  public long addRecTMC_EDcount(String name, int data_ins) {
+	  public long addRecTMC_EDcount(String name/*, int data_ins*/) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("name", name);
-		    cv.put("data_ins", data_ins);
+		   // cv.put("data_ins", data_ins);
 		    return mDB.insert("tmc_ed", null, cv);
 		  }
 	  
@@ -602,7 +602,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
         		    " ON prixod "+    	        		    
         		    " FOR EACH ROW "+
         		    " BEGIN "+
-        		    " insert into prixod_del (id_id, id_tmc, kol, ed, price, price_vendor, skidka, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.skidka, OLD.id_post, OLD.data_ins, OLD.ok); "+
+        		    " insert into prixod_del (id_id, id_tmc, kol, ed, price, price_vendor, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.id_post, OLD.data_ins, OLD.ok); "+
         		    " END;");
           
           db.execSQL("CREATE TRIGGER pri_del2 " +
@@ -671,7 +671,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	Log.d("MyLog", " --- onUpgrade database --- ");
-    	if (newVersion == 13) {
+    	if (newVersion == 14) {
     	    db.beginTransaction();
     	    try {
     	    	  db.execSQL("DROP INDEX pri_tmc;");       
@@ -949,7 +949,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	        		    " ON prixod "+    	        		    
     	        		    " FOR EACH ROW "+
     	        		    " BEGIN "+
-    	        		    " insert into prixod_del (id_id, id_tmc, kol, ed, price, price_vendor, skidka, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.skidka, OLD.id_post, OLD.data_ins, OLD.ok); "+
+    	        		    " insert into prixod_del (id_id, id_tmc, kol, ed, price, price_vendor, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.id_post, OLD.data_ins, OLD.ok); "+
     	        		    " END;");
     	          
     	          db.execSQL("CREATE TRIGGER pri_del2 " +

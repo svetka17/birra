@@ -1,6 +1,4 @@
 package luce.birra;
-import luce.birra.AdapterLV.CambiareListener;
-import luce.birra.DialogScreen.DialogListener;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -24,6 +22,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import luce.birra.AdapterLV.CambiareListener;
+import luce.birra.DialogScreen.DialogListener;
  
 public class OstatActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -222,9 +222,11 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
 
     	
     	Cursor cursor = db.getRawData (
-    			"select O._id as _id, O.id_tmc as id_tmc, O.kol as kol, E.name as ted, O.price as price, O.id_post as id_post, O.data_ins as data_ins, "
+    			"select O._id as _id, O.id_tmc as id_tmc, O.kol as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, "
     			+ "P.name as pname, T.name as tname, TP.name as pgr "
     			+ "from ostat as O "
+    			+ "left join tmc_price as TT "
+    			+ "on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed "
     			+ "left join tmc as T "
     			+ "on O.id_tmc=T._id "
     			+ "left join postav as P "

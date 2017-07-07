@@ -3,7 +3,6 @@ package luce.birra;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -18,27 +17,7 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
 import android.database.Cursor;
 import android.os.Environment;
-/*
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.Row;
-*/
 
-//import android.os.AsyncTask;
-/*import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import android.app.ProgressDialog;
-
-import android.os.Environment;
-import android.provider.SyncStateContract.Constants;
-import android.util.Log;*/
 //http://stackoverflow.com/questions/5401104/android-exporting-to-csv-and-sending-as-email-attachment
 //http://stackoverflow.com/questions/4632501/android-generate-csv-file-from-table-values
 public class /*ExportDatabaseCSVTask*/ Export2Excel //extends AsyncTask<String, String, Boolean> 
@@ -431,9 +410,9 @@ static File rasxod_ostat (int dat1, int dat2, int pgr, String dirN) {
 			//Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
 			Cursor cc = MainActivity.db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed left join postav as KK on T.id_post=KK._id", 
          			new String[] {"TP._id as _id","TT.name as pgr","TP.name as name",/*"T.data_ins as data_ins",*/"KK.name as post","sum(T.kol) as kol","E.name as ed",
-        			 "sum(T.price*T.kol-T.skidka) as sumka","K.kol as ostat","TP.price as price", "round(sum(skidka),2) as skidka"}, 
+        			 "sum(T.price*T.kol-T.skidka) as sumka","K.kol as ostat","T.price as price", "round(sum(T.skidka),2) as skidka"}, 
          			 //"TP.pgr = ?"
-        			 where, null,"TP._id, TT.name, TP.name, TP.price, KK.name, E.name, K.kol",null,null);
+        			 where, null,"TP._id, TT.name, TP.name, T.price, KK.name, E.name, K.kol",null,null);
 
 File file   = null, dir = null;
 File root   = Environment.getExternalStorageDirectory();
@@ -610,9 +589,11 @@ static File ostat (int pgr, String dirN) {
 			//String where=str[0].toString(); 
 			//Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
 			Cursor cc = MainActivity.db.getRawData (
-	    			"select O._id as _id, O.id_tmc as id_tmc, O.kol as kol, E.name as ted, T.price as price, O.id_post as id_post, O.data_ins as data_ins, "
-	    	    			+ "P.name as pname, T.name as tname, TP.name as pgr, O.kol*T.price as sumka "
+	    			"select O._id as _id, O.id_tmc as id_tmc, O.kol as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, "
+	    	    			+ "P.name as pname, T.name as tname, TP.name as pgr, O.kol*TT.price as sumka "
 	    	    			+ "from ostat as O "
+	    	    			+ "left join tmc_price as TT "
+	    	    			+ "on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed "
 	    	    			+ "left join tmc as T "
 	    	    			+ "on O.id_tmc=T._id "
 	    	    			+ "left join postav as P "

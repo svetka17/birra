@@ -1,6 +1,5 @@
 package luce.birra;
 
-import luce.birra.DialogScreen.DialogListener;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -27,6 +26,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 //import android.support.annotation.ColorInt;
+import luce.birra.DialogScreen.DialogListener;
  
 public class SettingAllActivity extends FragmentActivity implements OnClickListener {
 

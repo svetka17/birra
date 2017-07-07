@@ -281,7 +281,7 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(0);						
 				}
 			})
-			.setTitle("сдюкхрэ ймнойс?");
+			.setTitle("сдюкхрэ?");
             break;
         case -6:
             setPositiveButton("дю", new DialogInterface.OnClickListener() {

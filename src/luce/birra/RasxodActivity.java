@@ -1,7 +1,5 @@
 package luce.birra;
 
-//import java.text.DecimalFormat;
-//import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +11,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -25,7 +23,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
-
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,10 +47,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import luce.birra.DialogScreen.DialogListener;
+
 public class RasxodActivity extends FragmentActivity implements OnCheckedChangeListener,
 SeekBar.OnSeekBarChangeListener
 {
-  Button /*btnExit,*/tbHist, tbXX, btnOk,btnOkOk, btnBack, bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
+  Button butAdd, butDel, tbHist, tbXX, btnOk,btnOkOk, btnBack, bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
   TextView  // tvDKol, 
   tvIdPgr, tvNamePgr;//, tvCombo;
   TextView titleD, tvNal, tvSkidka, tvIdKlient, etCheckCheck;
@@ -422,6 +420,58 @@ void makeDialog() {
         }
       });
     
+    butAdd = (Button) findViewById(R.id.btnAddNewButton);
+    butAdd.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	DialogScreen getYes = new DialogScreen(RasxodActivity.this,RasxodActivity.this,-6).setDialogScreenListener(new DialogListener() {
+				
+				@Override
+				public void OnSelectedKol(double k) {
+					if (k==1) {
+						Intent intent = new Intent(RasxodActivity.this, PrixodActivity.class);
+    					      //Log.d("MyLog", "id="+id);
+    					      startActivity(intent);
+    					      
+						btnBack.setTag(-1);
+		        		tvNamePgr.setText("");
+		        		setPgr();
+					}	
+				}
+			}); 
+			getYes.show();
+        }
+      });
+    
+    butDel = (Button) findViewById(R.id.btnDeleteButton);
+    butDel.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	if (Btovar!=-1) {
+				DialogScreen getYes = new DialogScreen(RasxodActivity.this,RasxodActivity.this,-5).setDialogScreenListener(new DialogListener() {
+					
+					@Override
+					public void OnSelectedKol(double k) {
+						if (k==1) {
+						
+							long countT=0;
+							Cursor cc = MainActivity.db.getRawData ("select id_tmc, kol, ed, id_post from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and ed="+but.get(Btovar).ed , null);
+							   if (cc.moveToFirst()) { 
+							        do {countT=
+							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка из меню "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+							        } while (cc.moveToNext());
+							      };
+							if (countT!=0) showMessage("Остаток обнулен", (byte)1);
+							btnBack.setTag(-1);
+			        		tvNamePgr.setText("");
+			        		setPgr();
+						}	
+					}
+				}); 
+				getYes.show();
+
+			}
+        }
+      });
+    
     btnOk = (Button) findViewById(R.id.btnOkRasxod_ok);
     btnOk.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
@@ -532,7 +582,7 @@ void makeDialog() {
 			tvIdPgr.setText(matcher.find()?matcher.group():"-1");
 			btnBack.setTag(matcher.find()?matcher.group():"-1");
 			//Log.d("MyLog", matcher.find()?matcher.group()+" starting at index "+matcher.start()+" and ending at index "+matcher.end()+".":"no");
-			regexp="-([а-яА-ЯёЁa-zA-Z0-9 \\.,-]+)$";
+			regexp="-([а-яА-ЯёЁa-zA-Z0-9 \\.\\(\\),-]+)$";
 			pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
 			matcher = pattern.matcher(v.getTag().toString());
 			//Log.d("MyLog", matcher.find()?matcher.group()+" starting at index "+matcher.start()+" and ending at index "+matcher.end()+".":"no");
@@ -646,10 +696,10 @@ void makeDialog() {
 	   //Log.d("MyLog", "setBut id_pgr="+tvIdPgr.getText()+" cc.count="+cc.getCount()+" but.size="+but.size());
 	   //llbut.setMeasureWithLargestChildEnabled(true); 
 	   //кнопки дабавления и удаления кнопок меню 
-	   row = new TableRow(this);
+	   /*row = new TableRow(this);
        //row.setMinimumHeight(w);
        llbut.addView(row,
-       		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT/*0*/,/*1*/0));
+       		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT,0));
        Button b = new Button(this);
        b.setText("ДОБАВИТЬ ТОВАР");
        b.setOnClickListener(new OnClickListener() {
@@ -678,7 +728,7 @@ void makeDialog() {
        
        
        row.addView(b,
-   			new TableRow/*LinearLayout*/.LayoutParams(0,TableRow/*LinearLayout*/.LayoutParams.MATCH_PARENT,1) );
+   			new TableRow.LayoutParams(0,TableRow.LayoutParams.MATCH_PARENT,1) );
       
        b = new Button(this);
        b.setText("УДАЛИТЬ ТОВАР");
@@ -713,8 +763,8 @@ void makeDialog() {
 		}
 	});
        row.addView(b,
-      			new TableRow/*LinearLayout*/.LayoutParams(0,TableRow/*LinearLayout*/.LayoutParams.MATCH_PARENT,1) );
-       
+      			new TableRow.LayoutParams(0,TableRow.LayoutParams.MATCH_PARENT,1) );
+       */
        int w = (int)((4*MainActivity.h/5)/8);
 	   
 	   int tmp_row=1;

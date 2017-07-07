@@ -32,7 +32,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
   SimpleCursorAdapter scaKlient;
   static int tmp=0;
   //LinearLayout ll;
-
+ static long idd=0;
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.rasxod_hist);
@@ -220,21 +220,33 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     		.setCamdiareListener(new CambiareListener() {
     			@Override
     			public void OnCambiare(byte flag, long id) {
+    				idd=id;
     				if (flag==1) {
-    					//удаляем из чека
-    					Cursor cc = MainActivity.db.getRawData ("select R.id_klient as id_klient, ifnull(R.kol*R.price,0) as sumka, ifnull(R.skidka,0) as skidka, ifnull(K.skidka,0) as kskidka, ifnull(K.sumka,0) as ksumka from rasxod R left join klient as K on R.id_klient=K._id where R._id="+id,null);
-    					   if (cc.moveToFirst()) { 
-    					        do {MainActivity.db.updRec("klient", cc.getInt(cc.getColumnIndex("id_klient")),
-    					        		new String[] {"sumka","skidka"}, 
-    					        		new double[] {cc.getDouble(cc.getColumnIndex("ksumka"))-(cc.getDouble(cc.getColumnIndex("sumka"))-cc.getDouble(cc.getColumnIndex("skidka"))),
-    					        	cc.getDouble(cc.getColumnIndex("kskidka"))-cc.getDouble(cc.getColumnIndex("skidka"))});
-    					        	//countT=MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), MainActivity.round(cc.getDouble(cc.getColumnIndex("kol")),6), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 1);
-    					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
-    					        } while (cc.moveToNext());
-    					      };
+    					DialogScreen getYes = new DialogScreen(RasxodHistActivity.this,RasxodHistActivity.this,-5).setDialogScreenListener(new DialogListener() {
+							
+							@Override
+							public void OnSelectedKol(double k) {
+								if (k==1) {
+									//удаляем из чека
+			    					Cursor cc = MainActivity.db.getRawData ("select R.id_klient as id_klient, ifnull(R.kol*R.price,0) as sumka, ifnull(R.skidka,0) as skidka, ifnull(K.skidka,0) as kskidka, ifnull(K.sumka,0) as ksumka from rasxod R left join klient as K on R.id_klient=K._id where R._id="+idd,null);
+			    					   if (cc.moveToFirst()) { 
+			    					        do {MainActivity.db.updRec("klient", cc.getInt(cc.getColumnIndex("id_klient")),
+			    					        		new String[] {"sumka","skidka"}, 
+			    					        		new double[] {cc.getDouble(cc.getColumnIndex("ksumka"))-(cc.getDouble(cc.getColumnIndex("sumka"))-cc.getDouble(cc.getColumnIndex("skidka"))),
+			    					        	cc.getDouble(cc.getColumnIndex("kskidka"))-cc.getDouble(cc.getColumnIndex("skidka"))});
+			    					        	//countT=MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), MainActivity.round(cc.getDouble(cc.getColumnIndex("kol")),6), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 1);
+			    					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
+			    					        } while (cc.moveToNext());
+			    					      };
+			    					
+			    					MainActivity.db.delRec("rasxod",idd);
+			    					getSupportLoaderManager().getLoader(0).forceLoad();
+								}
+								
+							}
+						}); getYes.show();
     					
-    					MainActivity.db.delRec("rasxod",id);
-    					getSupportLoaderManager().getLoader(0).forceLoad();}
+    					}
     			}
     		});
     lvData = (ListView) findViewById(R.id.lvRasxodHist);

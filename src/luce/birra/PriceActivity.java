@@ -1,6 +1,4 @@
 package luce.birra;
-import luce.birra.AdapterLV.CambiareListener;
-import luce.birra.DialogScreen.DialogListener;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -24,6 +22,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import luce.birra.AdapterLV.CambiareListener;
+import luce.birra.DialogScreen.DialogListener;
  
 public class PriceActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 

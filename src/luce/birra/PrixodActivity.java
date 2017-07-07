@@ -8,7 +8,6 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-//import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -441,7 +440,7 @@ static class PgrLoader extends CursorLoader {
         	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
         if (!where.equals("")) where=" where "+where;*/
         cursor = MainActivity.db.getRawData(
-        "select _id, name, pgr,ed,ted, ost, pos, price from (select -1 _id, name,0 pgr, 0 ed, '-' ted, 0 ost, -1 pos, 0 price from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted, sum(O.kol) as ost, ifnull(T.pos,-1) as pos, T.price as price from tmc as T left join tmc_ed as E on T.ed=E._id left join ostat as O on T._id=O.id_tmc "
+        "select _id, name, pgr,ed,ted, ost, pos, price from (select -1 _id, name,0 pgr, 0 ed, '-' ted, 0 ost, -1 pos, 0 price from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted, sum(O.kol) as ost, ifnull(T.pos,-1) as pos, T.price as price from tmc as T left join tmc_ed as E on T.ed=E._id left join ostat as O on T._id=O.id_tmc where T.vis=1 "
         //((tvIdPost.getText().equals("") )?"0":tvIdPost.getText())
         +" group by T._id, T.name, T.pgr, T.ed, E.name, ifnull(T.pos,-1), T.price ) where pgr = "
         +((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText())+" order by name"

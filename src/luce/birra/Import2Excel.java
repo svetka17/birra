@@ -14,10 +14,6 @@ import org.apache.poi.ss.usermodel.Row;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class Import2Excel {
@@ -35,7 +31,7 @@ try {
 	            while(rowIter.hasNext()) {
 	                HSSFRow myRow = (HSSFRow) rowIter.next();
 	                Iterator<Cell> cellIter = myRow.cellIterator();
-	                Cursor c; int id=0, idtmc=-1; String n="";  int id_pgr=-1; int ed=-1; String ted=""; String n_pgr="";
+	                Cursor c; int id=0, idtmc=-1; String n="";  int id_pgr=-1; int ed=-1; //String ted=""; String n_pgr="";
 	                float price=0; byte vis=0; byte ok=0; byte pos=0; float tara=0; int i=0;
 	                while(cellIter.hasNext()) {
 	                    HSSFCell cell = (HSSFCell) cellIter.next();
@@ -59,15 +55,15 @@ try {
 							case 0: id = (int) MainActivity.StrToFloat(value);
 								break;
 							case 1: //n_pgr = value.trim();
-							c = MainActivity.db.getRawData ("select _id from tmc_pgr where trim(name)=trim('"+value+"')", null);
+							c = MainActivity.db.getRawData ("select _id from tmc_pgr where trim(name)=trim('"+value.replace("'", "") +"')", null);
 							if (c.moveToFirst()) {   
 						        do { id_pgr = c.getInt(c.getColumnIndex("_id"));} 
 						        while (c.moveToNext());
 						      }
-							if (id_pgr==-1) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
+							if (id_pgr==-1 && id!=0) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 								break;
 							case 2: n = value.trim();
-							c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value+"')", null);
+							c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value.replace("'", "")+"')", null);
 							if (c.moveToFirst()) {   
 						        do { idtmc = c.getInt(c.getColumnIndex("_id"));} 
 						        while (c.moveToNext());
@@ -80,7 +76,7 @@ try {
 						        do { ed = (int)c.getInt(c.getColumnIndex("_id"));} 
 						        while (c.moveToNext());
 						      }
-							if (ed==-1) ed = (int) MainActivity.db.addRecTMC_EDcount(value, MainActivity.getIntDataTime());
+							if (ed==-1 && !value.equals("")) ed = (int) MainActivity.db.addRecTMC_EDcount(value/*, MainActivity.getIntDataTime()*/);
 								break;
 							case 4: price = (int) MainActivity.StrToFloat(value);
 							break;
@@ -98,8 +94,8 @@ try {
 	                      }
 	                    i++;
 	                }
-	             if (idtmc==-1)
-	                idtmc=(int) MainActivity.db.addRecTMCcount(n, id_pgr, ed, price, vis, pos, tara, MainActivity.getIntDataTime(), ok);
+	             if (idtmc==-1 && !n.equals(""))
+	            	 idtmc=(int) MainActivity.db.addRecTMCcount(n, id_pgr, ed, price, vis, pos, tara, MainActivity.getIntDataTime(), ok);
 	             else {
 	            	 if (id==idtmc) Toast.makeText(cnt , "наименование " +n+" уже есть" , Toast.LENGTH_SHORT).show();
 	            	 //Log.d("MyLog", "exists equal "+n);}
@@ -150,10 +146,11 @@ catch(IOException e) {};
 			                HSSFRow myRow = (HSSFRow) rowIter.next();
 			                Iterator<Cell> cellIter = myRow.cellIterator();
 			                Cursor c; 
-			                int id=0, idtmc=-1; String n="";  int id_pgr=-1; int ed=-1; String ted=""; String n_pgr="";
-			                int idpost=-1; String n_post="";
-			                long ID_ost=-1;
-			                float price=0, kol=0, sumka=0; byte vis=0; byte ok=0; byte pos=0; float tara=0; int i=0;
+			                int id=0, idtmc=-1; String n="";  int id_pgr=-1; int ed=-1; //String ted=""; String n_pgr="";
+			                int idpost=-1;// String n_post="";
+			                //long ID_ost=-1;
+			                float price=0, kol=0;//, sumka=0; //byte vis=0; byte ok=0; byte pos=0; float tara=0; 
+			                int i=0;
 			                while(cellIter.hasNext()) {
 			                    HSSFCell cell = (HSSFCell) cellIter.next();
 			                //for ( short c = myRow.getFirstCellNum(); c <= myRow.getLastCellNum(); c++ ) {
@@ -176,15 +173,15 @@ catch(IOException e) {};
 									case 0: id = (int) MainActivity.StrToFloat(value);
 										break;
 									case 1: //n_pgr = value.trim();
-									c = MainActivity.db.getRawData ("select _id from tmc_pgr where trim(name)=trim('"+value+"')", null);
+									c = MainActivity.db.getRawData ("select _id from tmc_pgr where trim(name)=trim('"+value.replace("'", "") +"')", null);
 									if (c.moveToFirst()) {   
 								        do { id_pgr = c.getInt(c.getColumnIndex("_id"));} 
 								        while (c.moveToNext());
 								      }
-									if (id_pgr==-1) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
+									if (id_pgr==-1 && id!=0) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 										break;
 									case 2: n = value.trim();
-									c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value+"')", null);
+									c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value.replace("'", "")+"')", null);
 									if (c.moveToFirst()) {   
 								        do { idtmc = c.getInt(c.getColumnIndex("_id"));} 
 								        while (c.moveToNext());
@@ -206,29 +203,38 @@ catch(IOException e) {};
 								        do { ed = (int)c.getInt(c.getColumnIndex("_id"));} 
 								        while (c.moveToNext());
 								      }
-									if (ed==-1) ed = (int) MainActivity.db.addRecTMC_EDcount(value, MainActivity.getIntDataTime());
+									if (ed==-1) ed = (int) MainActivity.db.addRecTMC_EDcount(value/*, MainActivity.getIntDataTime()*/);
 										break;
 									case 6: price = MainActivity.StrToFloat(value);
 									break;
-									case 7: sumka = MainActivity.StrToFloat(value);
+									/*case 7: sumka = MainActivity.StrToFloat(value);
 									break;
 									case 8: ID_ost = (long)MainActivity.StrToFloat(value);
-									break;
+									break;*/
 									default:
 										break;
 									}
 			                      }
 			                    i++;
 			                }
+			                
 			             if (idtmc==-1)
-			                idtmc=(int) MainActivity.db.addRecTMCcount(n, id_pgr, ed, price, vis, pos, tara, MainActivity.getIntDataTime(), ok);
-			             else {
+			                { if (!n.equals(""))
+			            	{idtmc=(int) MainActivity.db.addRecTMCcount(n, id_pgr, ed, price, /*vis*/(byte)1, /*pos*/(byte)1, /*tara*/0, MainActivity.getIntDataTime(), /*ok*/(byte)0);
+			                Toast.makeText(cnt , "добавлено наименование " +n, Toast.LENGTH_SHORT).show();
+				            }
+			                }
+			                /*else {
 			            	 if (id==idtmc) Toast.makeText(cnt , "наименование " +n+" уже есть" , Toast.LENGTH_SHORT).show();
 			            	 //Log.d("MyLog", "exists equal "+n);}
 			            	 else Toast.makeText(cnt , "наименование " +n+" уже есть с другим номенклатурным номером" , Toast.LENGTH_SHORT).show();
 			            	 //Log.d("MyLog", "exists other "+n);}
-			            	 }
-			             }
+			            	 }*/
+			            if (kol>0 && idtmc!=-1 && idpost!=-1 && ed!=-1 && id_pgr!=-1) {
+			             MainActivity.db.addRecPRIXOD(idtmc, kol, (byte)ed, price, price, idpost, "загрузка остатка из файла "+file, MainActivity.getIntDataTime(), (byte)0); 
+			            Toast.makeText(cnt , "загрузка остатка " +n+" кол-во:"+kol+" цена продажи:"+price , Toast.LENGTH_SHORT).show();
+			            }
+			            }
 			                //Log.d("MyLog", "idtmc: " +idtmc+" "+n+" "+id+" "+id_pgr+" "+n_pgr+" "+ed+" "+ted+" "+price);
 				        /*		        
 				        if(row.getCell(1).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
