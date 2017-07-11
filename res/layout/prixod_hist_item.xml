@@ -34,6 +34,10 @@
               android:id="@+id/tvPricePrixod_"
               style="@style/lv_i"
         android:layout_weight="1" />
+                    <TextView
+              android:id="@+id/tvSummaPrixod_"
+              style="@style/lv_i"
+        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/tvDataInsPrixod_"

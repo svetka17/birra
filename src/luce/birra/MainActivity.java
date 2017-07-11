@@ -332,13 +332,15 @@ static ArrayList<View> getViewsByTag(ViewGroup root){
     return views;
 }
 
-static void setSpinnerItemById(Spinner spinner, int _id)
+static void setSpinnerItemById(Spinner spinner, long _id)
 {
     int spinnerCount = spinner.getCount();
+    //Log.d("MyLog", "spinercount="+spinnerCount );
     for (int i = 0; i < spinnerCount; i++)
     {
         Cursor value = (Cursor) spinner.getItemAtPosition(i);
         long id = value.getLong(value.getColumnIndex("_id"));
+        //Log.d("MyLog", "id="+id+" _id="+_id );
         if (id == _id)
         {
             spinner.setSelection(i);

@@ -14,7 +14,9 @@
             android:orientation="vertical" >
 
             <LinearLayout
-                style="@style/mw1"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -63,7 +65,9 @@
             </LinearLayout>
 
             <LinearLayout
-                style="@style/mw1"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -95,7 +99,22 @@
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
+				<TextView
+                     style="@style/TV_h"
+                	android:layout_width="wrap_content"
+                	android:layout_height="match_parent"
+                    android:text="ОБЩАЯ СУММА" />
 
+                <EditText
+                    android:id="@+id/tvSummaPri"
+                     style="@style/ET_n"
+            		android:layout_weight="1"
+                	android:layout_width="match_parent"
+                	android:layout_height="match_parent"
+                    android:hint="ВВЕДИТЕ СУММУ ЗАКУПКИ">
+                    <requestFocus>
+                </requestFocus>
+                </EditText>
                 <TextView
                      style="@style/TV_h"
                 	android:layout_width="wrap_content"
@@ -116,18 +135,21 @@
             </LinearLayout>
 
             <LinearLayout
-                 style="@style/mw1">
+                 android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
 				<TextView
                     style="@style/TV_h"
-                	android:layout_width="wrap_content"
+                	android:layout_width="0dp"
                 	android:layout_height="match_parent"
+                	android:layout_weight="0.5"
                     android:text="№ПОЗИЦИИ В ГРУППЕ" />
 
                 <EditText
                     android:id="@+id/tvPosPri"
                     style="@style/ET_n"
-            		android:layout_weight="0"
-                	android:layout_width="wrap_content"
+            		android:layout_weight="1"
+                	android:layout_width="0dp"
                 	android:layout_height="match_parent"
                     android:hint="ВВЕДИТЕ № ПОЗИЦИИ (не обязательное поле)">
                     <requestFocus>
@@ -136,15 +158,16 @@
                 
                  <TextView
                      style="@style/TV_h"
-                	android:layout_width="wrap_content"
+                	android:layout_width="0dp"
                 	android:layout_height="match_parent"
+                	android:layout_weight="0.5"
                     android:text="ЦЕНА ПРОДАЖИ" />
 
                 <EditText
                     android:id="@+id/tvPricePriVendor"
                      style="@style/ET_n"
             		android:layout_weight="1"
-                	android:layout_width="match_parent"
+                	android:layout_width="0dp"
                 	android:layout_height="match_parent"
                     android:hint="ВВЕДИТЕ ЦЕНУ ПРОДАЖИ">
                     <requestFocus>
@@ -152,7 +175,9 @@
                 </EditText>
                 </LinearLayout>
 				<LinearLayout
-                 style="@style/mw1">
+                 android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
 
                 <TextView
                     style="@style/TV_h"

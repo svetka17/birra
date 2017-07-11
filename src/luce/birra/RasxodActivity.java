@@ -428,7 +428,28 @@ void makeDialog() {
 				@Override
 				public void OnSelectedKol(double k) {
 					if (k==1) {
+						//intent = new Intent(contxt, PrixodActivity.class);
+	                    //contxt.startActivity(intent);
+						
 						Intent intent = new Intent(RasxodActivity.this, PrixodActivity.class);
+						if (Btovar!=-1) {
+						intent.putExtra("PrixodEd", String.valueOf( but.get(Btovar).ed ) );
+						//Log.d("MyLog", "ed="+String.valueOf( but.get(Btovar).ed ));
+	             	    intent.putExtra("PrixodPgr", "0");
+	             	    //intent.putExtra("PrixodId", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("_id")));
+	                    intent.putExtra("PrixodProd", String.valueOf(but.get(Btovar).id_tmc));
+	                    //Log.d("MyLog", "id_tmc="+String.valueOf( but.get(Btovar).id_tmc ));
+	                    intent.putExtra("PrixodPrice", String.valueOf(but.get(Btovar).price) );
+	                   // Log.d("MyLog", "price="+String.valueOf( but.get(Btovar).price ));
+	                    if (but.get(Btovar).ed==1)
+	                    intent.putExtra("PrixodKol", String.valueOf(50));
+	                    else 
+	                    	intent.putExtra("PrixodKol", String.valueOf(1));
+	                    intent.putExtra("PrixodPrim", "ƒŒ¡¿¬À≈Õ»≈ “Œ¬¿–¿ »« Ã≈Õﬁ "+MainActivity.usr);
+	                    intent.putExtra("PrixodPost", String.valueOf(but.get(Btovar).post));
+	                   // Log.d("MyLog", "post="+String.valueOf( but.get(Btovar).post ));
+	                    intent.putExtra("PrixodDataIns", String.valueOf( MainActivity.getIntDataTime() ));
+						}
     					      //Log.d("MyLog", "id="+id);
     					      startActivity(intent);
     					      
@@ -456,7 +477,7 @@ void makeDialog() {
 							Cursor cc = MainActivity.db.getRawData ("select id_tmc, kol, ed, id_post from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and ed="+but.get(Btovar).ed , null);
 							   if (cc.moveToFirst()) { 
 							        do {countT=
-							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "Ó·ÌÛÎÂÌËÂ ÓÒÚ‡ÚÍ‡ ËÁ ÏÂÌ˛ "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "Œ¡Õ”À≈Õ»≈ Œ—“¿“ ¿ »« Ã≈Õﬁ "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
 							        } while (cc.moveToNext());
 							      };
 							if (countT!=0) showMessage("ŒÒÚ‡ÚÓÍ Ó·ÌÛÎÂÌ", (byte)1);

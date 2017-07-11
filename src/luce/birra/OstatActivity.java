@@ -121,7 +121,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     					Cursor cc = MainActivity.db.getRawData ("select id_tmc, kol, ed, id_post from ostat where kol<>0 and _id="+id,null);
     					   if (cc.moveToFirst()) { 
     					        do {countT=
-    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+id, MainActivity.getIntDataTime(), 1);
+    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "ОБНУЛЕНИЕ ОСТАТКА ID="+id, MainActivity.getIntDataTime(), 1);
     					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
     					        } while (cc.moveToNext());
     					      };
@@ -146,8 +146,8 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     				    					Cursor cc = MainActivity.db.getRawData ("select O.id_tmc as id_tmc, O.kol as kol, O.ed as ed, O.id_post as id_post, TP.price as price from ostat O left join tmc_price as TP on O.id_tmc=TP.id_tmc and O.id_post=TP.id_post where O.kol<>0 and O._id="+idd,null);
     				    					   if (cc.moveToFirst()) { 
     				    					        do {countT=
-    				    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "изменение расход остатка id="+idd, MainActivity.getIntDataTime(), 1);
-    				    					        		MainActivity.db.addRecPRIXOD(cc.getInt(cc.getColumnIndex("id_tmc")), k, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,cc.getDouble(cc.getColumnIndex("price")), cc.getInt(cc.getColumnIndex("id_post")), "изменение приход остатка id="+idd, MainActivity.getIntDataTime(), (byte)1);
+    				    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "ИЗМЕНЕНИЕ ОСТАТКА РАСХОД ID="+idd, MainActivity.getIntDataTime(), 1);
+    				    					        		MainActivity.db.addRecPRIXOD(cc.getInt(cc.getColumnIndex("id_tmc")), k, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,cc.getDouble(cc.getColumnIndex("price")), cc.getInt(cc.getColumnIndex("id_post")), "ИЗМЕНЕНИЕ ОСТАТКА ПРИХОД ID="+idd, MainActivity.getIntDataTime(), (byte)1);
     				    					        } while (cc.moveToNext());
     				    					      };
     				    					if (countT!=0)      
@@ -235,7 +235,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     			+ "on O.ed=E._id "
     			+ "left join tmc_pgr as TP "
     			+ "on T.pgr=TP._id "
-    			+ "where "+(cbVis.isChecked()?" O.kol>0 ":" O.kol<=0")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString()) // +"? and ?"
+    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" O.kol=0")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString()) // +"? and ?"
     			, null);//new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"T.pgr ":tvIdPgr.getText().toString()});// new String[] {,});
       return cursor;
     }

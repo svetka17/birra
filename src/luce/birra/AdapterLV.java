@@ -480,7 +480,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
                     intent.putExtra("ProdVis", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("vis")));
                     contxt.startActivity(intent);
                     break;
-                /*case  3:
+                case  3:
              	    intent = new Intent(contxt, PrixodActivity.class);
              	    
              	    intent.putExtra("PrixodEd", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("ed")));
@@ -494,7 +494,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
                     intent.putExtra("PrixodDataIns", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("data_ins")));
                     
                     contxt.startActivity(intent);
-                    break;*/
+                    break;
                 case 9:
                 	intent = new Intent(contxt, UserEditActivity.class);
                     intent.putExtra("UserName", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("name")));
@@ -506,7 +506,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
                     contxt.startActivity(intent);
                    break;
                 case  6: //break;
-                case  3:
+                //case  3:
                 case  4:
                 case  5:
                 case 10:

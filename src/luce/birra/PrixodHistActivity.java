@@ -135,8 +135,8 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
         }
       });
     // формируем столбцы сопоставления
-    String[] from = new String[] { /*"_id",*/"id_tmc","name",/*"id_post","pname",*/"kol","ted","price"/*, "data_ins" */};
-    int[] to = new int[] {/*R.id.tvIdPrixod_,*/ R.id.tvNnomPrixod_, R.id.tvNamePrixod_,/*R.id.tvIdPostPrixod_,R.id.tvNamePostPrixod_,*/R.id.tvKolPrixod_,R.id.tvEdPrixod_,R.id.tvPricePrixod_/*, R.id.tvDataInsPrixod_ */};
+    String[] from = new String[] { /*"_id",*/"id_tmc","name",/*"id_post","pname",*/"kol","ted","price", "sumka" };
+    int[] to = new int[] {/*R.id.tvIdPrixod_,*/ R.id.tvNnomPrixod_, R.id.tvNamePrixod_,/*R.id.tvIdPostPrixod_,R.id.tvNamePostPrixod_,*/R.id.tvKolPrixod_,R.id.tvEdPrixod_,R.id.tvPricePrixod_,R.id.tvSummaPrixod_/*, R.id.tvDataInsPrixod_ */};
     //int[] toH = new int[] {R.id.tvNnomPrixod_,R.id.tvNamePrixod_,R.id.tvNamePostPrixod_,R.id.tvKolPrixod_,R.id.tvEdPrixod_,R.id.tvPricePrixod_,R.id.tvDataInsPrixod_};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
@@ -217,6 +217,7 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
           getSupportLoaderManager().getLoader(0).forceLoad();
         }
         };
+        
   @Override
   protected void onRestart() {
     super.onRestart();
@@ -266,7 +267,7 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
         	if (!str[2].equals("")) where=where+" and "+str[2].toString(); 
     	 Cursor cursor = db.getQueryData("prixod as T left join tmc as TP on T.id_tmc = TP._id left join postav as P on T.id_post = P._id left join tmc_ed as E on T.ed = E._id", 
      			new String[] {"T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","T.kol as kol",
-    			 "E.name as ted", "T.ed as ed","T.price as price","P.name as pname","T.prim as prim","T.id_post as id_post","TP.pgr as pgr"}, 
+    			 "E.name as ted", "T.ed as ed","T.price as price","round(T.kol*T.price,2) as sumka","P.name as pname","T.prim as prim","T.id_post as id_post","TP.pgr as pgr"}, 
      			 where,//"TP.pgr = ?",// and ?",
      			null,//new String[] {tvIdPgr.getText().toString().equals("0")?"TP.pgr":tvIdPgr.getText().toString() //, 
     					//(tvDataIns.getText().length()==0)?"1=1":"substr(T.data_ins,1,6)=trim("+MainActivity.getIntData(tvDataIns.getText().toString())+")"
