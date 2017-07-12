@@ -92,13 +92,19 @@
                     android:id="@+id/tvIdEdPri"
                     style="@style/ww0"
                     android:visibility="invisible" />
-
+<!-- 
                 <TextView
                      style="@style/TV_h"
                     android:id="@+id/spEdPri"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
+-->
+<Spinner
+                    android:id="@+id/spEdPri"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>                
 				<TextView
                      style="@style/TV_h"
                 	android:layout_width="wrap_content"

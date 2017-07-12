@@ -636,7 +636,7 @@ void makeDialog() {
 	   int count_but=0;
 	   Cursor cc = MainActivity.db.getRawData 
 ("select T._id as _id, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
-		+ " from tmc T left join ostat S on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, T._id",null);
+		+ " from tmc T left join ostat S on T._id=S.id_tmc and T.ed=S.ed left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, T._id",null);
 	   //Cursor cc = MainActivity.db.getRawData ("select count(*) c from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
 	   if (cc.moveToFirst()) { 
 	        do {count_but++;
