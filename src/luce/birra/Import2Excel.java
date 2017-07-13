@@ -60,7 +60,7 @@ try {
 						        do { id_pgr = c.getInt(c.getColumnIndex("_id"));} 
 						        while (c.moveToNext());
 						      }
-							if (id_pgr==-1 && id!=0) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
+							if (id_pgr==-1 && id!=0 && !value.replace("'", "").equals("")) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 								break;
 							case 2: n = value.trim();
 							c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value.replace("'", "")+"')", null);
@@ -78,7 +78,7 @@ try {
 						      }
 							if (ed==-1 && !value.equals("")) ed = (int) MainActivity.db.addRecTMC_EDcount(value/*, MainActivity.getIntDataTime()*/);
 								break;
-							case 4: price = (int) MainActivity.StrToFloat(value);
+							case 4: price = MainActivity.StrToFloat2(value);
 							break;
 							case 5: vis = (byte) MainActivity.StrToFloat(value);
 							break;
@@ -178,7 +178,7 @@ catch(IOException e) {};
 								        do { id_pgr = c.getInt(c.getColumnIndex("_id"));} 
 								        while (c.moveToNext());
 								      }
-									if (id_pgr==-1 && id!=0) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
+									if (id_pgr==-1 && id!=0 && !value.replace("'", "").equals("") ) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 										break;
 									case 2: n = value.trim();
 									c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value.replace("'", "")+"')", null);
@@ -194,7 +194,7 @@ catch(IOException e) {};
 									        do { idpost = c.getInt(c.getColumnIndex("_id"));} 
 									        while (c.moveToNext());
 									      }
-										if (idpost==-1) idpost = (int) MainActivity.db.addRecPOSTAVcount(value,"","","загружено с остатками", MainActivity.getIntDataTime(),(byte)0);
+										if (idpost==-1 && !value.equals("")) idpost = (int) MainActivity.db.addRecPOSTAVcount(value,"","","загружено с остатками", MainActivity.getIntDataTime(),(byte)0);
 											break;
 									case 4: kol = MainActivity.StrToFloat(value);
 									case 5: //ted = value.trim();
@@ -203,9 +203,9 @@ catch(IOException e) {};
 								        do { ed = (int)c.getInt(c.getColumnIndex("_id"));} 
 								        while (c.moveToNext());
 								      }
-									if (ed==-1) ed = (int) MainActivity.db.addRecTMC_EDcount(value/*, MainActivity.getIntDataTime()*/);
+									if (ed==-1 && !value.equals("")) ed = (int) MainActivity.db.addRecTMC_EDcount(value/*, MainActivity.getIntDataTime()*/);
 										break;
-									case 6: price = MainActivity.StrToFloat(value);
+									case 6: price = MainActivity.StrToFloat2(value);
 									break;
 									/*case 7: sumka = MainActivity.StrToFloat(value);
 									break;

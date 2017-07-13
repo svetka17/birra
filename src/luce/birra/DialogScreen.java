@@ -442,8 +442,9 @@ public class DialogScreen extends AlertDialog.Builder {
 	   	
 	   	btDD.setOnClickListener(new OnClickListener() {
 	           public void onClick(View v) {
-	           	tvDKol.setText((tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0"))?"":
-	           		tvDKol.getText().subSequence(0, tvDKol.getText().length()-1) );
+	        	   String s=""; s.trim();
+	           	tvDKol.setText((tvDKol.getText().length()==1||tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0"))?"":
+	           	tvDKol.getText().subSequence(0, tvDKol.getText().length()-1) );
 	           }
 	         });
         

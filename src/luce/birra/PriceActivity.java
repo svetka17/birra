@@ -147,7 +147,8 @@ public class PriceActivity extends FragmentActivity implements LoaderCallbacks<C
     				    					Cursor cc = MainActivity.db.getRawData ("select id_tmc, ed, id_post, price from tmc_price where _id="+idd,null);
     				    					   if (cc.moveToFirst()) { 
     				    					        do {countT=1;
-    				    					        	MainActivity.db.updRec("tmc_price", idd, "price", (float)k);
+    				    					        //Log.d("MyLog", "price="+MainActivity.round2(k) );
+    				    					        	MainActivity.db.updRec("tmc_price", idd, "price", MainActivity.round2(k));
     				    					        		//MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка id="+idd, MainActivity.getIntDataTime(), 1);
     				    					        		//MainActivity.db.addRecPRIXOD(cc.getInt(cc.getColumnIndex("id_tmc")), k, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), "изменение остатка id="+idd, MainActivity.getIntDataTime(), (byte)1);
     				    					        } while (cc.moveToNext());

@@ -389,12 +389,34 @@ static int getIntData(){
 		}
 }*/
 
-static float round(double number, int scale) {
+private static float round(double number, int scale) {
     int pow = 10;
     for (int i = 1; i < scale; i++)
         pow *= 10;
     double tmp = number * pow;
     return (float) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / pow;
+}
+
+static float round2(double number/*, int scale*/) {
+    /*int pow = 10;
+    for (int i = 1; i < scale; i++)
+        pow *= 10;
+    double tmp = number * pow;
+    return (float) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / pow;
+    */
+	double tmp = number * 100;
+	return (float) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / 100;
+}
+
+static float round3(double number/*, int scale*/) {
+    /*int pow = 10;
+    for (int i = 1; i < scale; i++)
+        pow *= 10;
+    double tmp = number * pow;
+    return (float) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / pow;
+    */
+	double tmp = number * 1000;
+	return (float) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / 1000;
 }
 
 static int getIntData(String dat){
@@ -436,7 +458,28 @@ static float StrToFloat(String s) {
 	     if(n != null)
 	         total = n.floatValue();
 	 }
-	 return total;
+	 return round(total,3);
+};
+
+static float StrToFloat2(String s) {
+	   Float total = Float.valueOf(0);
+	 try
+	 {
+	     total = Float.valueOf(s);
+	 }
+	 catch(NumberFormatException ex)
+	 {
+	     DecimalFormat df = new DecimalFormat();
+	     Number n = null;
+	     try
+	     {
+	         n = df.parse(s);// parse(s);
+	     } 
+	     catch(ParseException ex2){ }
+	     if(n != null)
+	         total = n.floatValue();
+	 }
+	 return round(total,2);
 };
 /*static int getIntDataTime(String dat){
 	try{

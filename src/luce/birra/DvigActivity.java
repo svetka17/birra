@@ -190,7 +190,7 @@ public class DvigActivity extends FragmentActivity implements LoaderCallbacks<Cu
     	//Log.d("MyLog", "start create8 "+tvIdEd.getText());
     	nameEd.setText(getIntent().getStringExtra("dvigNameEd"));
     	//Log.d("MyLog", "start create9 "+nameEd.getText());
-    	tvKol.setText(String.valueOf( MainActivity.round( MainActivity.StrToFloat(getIntent().getStringExtra("dvigKol")),3) ) );
+    	tvKol.setText(String.valueOf( MainActivity.StrToFloat(getIntent().getStringExtra("dvigKol")) ) );
     	//Log.d("MyLog", "start create10 "+tvKol.getText());
     	tvID.setText(getIntent().getStringExtra("dvigID"));
     	//Log.d("MyLog", "start create11 "+tvID.getText());

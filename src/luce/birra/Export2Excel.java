@@ -145,10 +145,10 @@ do {
 koln=0; sumn=0; pricen=0; pricek=0; sumk=0; kolk=0;
 koln = cc.getDouble(cc.getColumnIndex("kol_k"))+cc.getDouble(cc.getColumnIndex("kol_ras"))-cc.getDouble(cc.getColumnIndex("kol_pri")) ;
 sumn = cc.getDouble(cc.getColumnIndex("sum_k"))+cc.getDouble(cc.getColumnIndex("sum_ras"))-cc.getDouble(cc.getColumnIndex("sum_pri")) ;
-if (koln!=0) pricen= MainActivity.round(sumn/koln,2);
+if (koln!=0) pricen= MainActivity.round2(sumn/koln);
 kolk=cc.getDouble(cc.getColumnIndex("kol_k"));
 sumk=cc.getDouble(cc.getColumnIndex("sum_k"));
-if (kolk!=0) pricek=MainActivity.round(sumk/kolk,2);
+if (kolk!=0) pricek=MainActivity.round2(sumk/kolk);
 rowNum++;
 row = sheet.createRow(rowNum);
 row.createCell(0).setCellValue(cc.getInt(cc.getColumnIndex("id_tmc")));
