@@ -181,17 +181,18 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         	s=/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("name"));
         	tvEd.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ed")) );
         	//String ss=String.valueOf( cursor.getDouble(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
-        	tvOst.setText(cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
+        	
+        	//tvOst.setText(cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
         	//tvPos.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("pos")) );
         	//Log.d("MyLog", "cursor pos="+ position+ " "+id + " ost="+tvOst.getText());
         	//String ss=cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("pos"));
         	//String ss="-";
         	int tmpi=-1; 
-        	double pr=0;
+        	//double pr=0;
         	try {
         	//ss=cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ted"));
         	tmpi=cursor.getInt(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("pos"));
-        	pr=cursor.getDouble(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("price"));
+        	//pr=cursor.getDouble(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("price"));
         	//if (ss.equals("Ë")) tvPrim.setText("ÍÎÂÀß ÊÅÃÀ"); 
         	//else if (tvPrim.getText().equals("ÍÎÂÀß ÊÅÃÀ") ) tvPrim.setText("");
         	}
@@ -209,9 +210,10 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     		tvPos.setText("");
     	}
         	
-        	if (tvIdPost.getText().equals("0"))
-        	if (pr!=0) tvPriceVendor.setText(String.valueOf(pr)); else tvPriceVendor.setText(""); 
+        	//if (tvIdPost.getText().equals("0"))
+        	//if (pr!=0) tvPriceVendor.setText(String.valueOf(pr)); else tvPriceVendor.setText(""); 
         	setPrice();
+        	setOst();
         	//Log.d("MyLog", "end itemselect" );
         	//Log.d("MyLog", "cursor pos="+ position+ " "+id + " ted="+spEd.getText()+" pos="+ss);
         	
@@ -221,24 +223,34 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         public void onNothingSelected(AdapterView<?> parent) {
         	spProd.setTag(0);
         	tvIdProd.setText(String.valueOf("0"));
-        	tvOst.setText("0");
+        	//tvOst.setText("0");
         	tvPos.setText("");
         	tvPriceVendor.setText("");
+        	setPrice();
+        	setOst();
         }
         });
     
     spPost.setOnItemSelectedListener(new OnItemSelectedListener() {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
             //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
+        	
         	spPost.setTag(id);
         	tvIdPost.setText(String.valueOf(id));
+        	
         	setPrice();
+        	setOst();
+
         	//getSupportLoaderManager().getLoader(0).forceLoad();
         	//tvOst.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(position)).getColumnIndex("ost")) );
         }
         public void onNothingSelected(AdapterView<?> parent) {
         	spPost.setTag(0);
         	tvIdPost.setText(String.valueOf("0"));
+
+        	setPrice();
+        	setOst();
+
         	//getSupportLoaderManager().getLoader(0).forceLoad();
         	//tvOst.setText(/*cProd*/cursor.getString(((Cursor)spProd.getItemAtPosition(1)).getColumnIndex("ost")) );
         }
@@ -250,11 +262,13 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         	spEd.setTag(id);
         	tvEd.setText(String.valueOf(id));
         	setPrice();
+        	setOst();
         }
         public void onNothingSelected(AdapterView<?> parent) {
         	spEd.setTag(1);
         	tvEd.setText(String.valueOf("1"));
         	setPrice();
+        	setOst();
         }
         });
     
@@ -267,7 +281,17 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         			&& !(MainActivity.postlitr==1 && Integer.parseInt(tvIdPost.getText().toString())==0 && Byte.parseByte(tvEd.getText().toString())==1 ))
   			 {if ((tvId.getText().toString().length()==0)) 
         		//MainActivity.db.addRecPRIXOD(id_tmc, kol, price, id_post, prim, data_del, data_ins, ok);
-        		{MainActivity.db.addRecPRIXOD(
+        		{
+  				long countT=0;
+				Cursor cc = MainActivity.db.getRawData ("select id_tmc, kol, ed, id_post from ostat where kol<0 and id_tmc="+tvIdProd.getText().toString()+" and id_post="+tvIdPost.getText().toString()+" and ed="+tvEd.getText().toString() , null);
+				   if (cc.moveToFirst()) { 
+				        do {if (cc.getDouble(cc.getColumnIndex("kol"))<0)
+				        	countT=
+				        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "ÎÁÍÓËÅÍÈÅ ÎÑÒÀÒÊÀ ÈÇ ÌÅÍÞ "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+				        } while (cc.moveToNext());
+				      };
+				      if (countT!=0) showMessage("Îòðèöàòåëüíûé îñòàòîê îáíóëåí", (byte)1);
+  				 MainActivity.db.addRecPRIXOD(
         				Integer.parseInt(tvIdProd.getText().toString()), 
         				MainActivity.StrToFloat(tvKol.getText().toString()), 
         				Byte.parseByte(tvEd.getText().toString()),
@@ -432,12 +456,12 @@ public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 	MainActivity.setSpinnerItemById(spProd, tmp/*(long) MainActivity.StrToFloat(getIntent().getStringExtra("PrixodProd"))*/ /*Integer.parseInt(getIntent().getStringExtra("PrixodProd"))*/);
 	tmp=0;
 	
-	/*if (tmp_ed!=-1) {
-		Log.d("MyLog", "tmp_ed="+tmp_ed);
+	if (tmp_ed!=-1) {
+	//	Log.d("MyLog", "tmp_ed="+tmp_ed);
 	tvEd.setText(String.valueOf(tmp_ed));
 	MainActivity.setSpinnerItemById(spEd, tmp_ed);
 	tmp_ed=-1;
-	}*/
+	}
 	
 	/*	switch(loader.getId())
     {
@@ -473,6 +497,27 @@ void setPrice () {
         	        cursor.close();    	     
 }
 
+void setOst () {
+
+	 Cursor cursor = MainActivity.db.getQueryData
+("ostat as T ",
+			new String[] {"ifnull(T.kol,0) as kol", "count() as c"}, 
+			 //"TP.pgr = ?"
+			" T.id_tmc="+tvIdProd.getText().toString()+" and T.ed="+tvEd.getText().toString()+" and T.id_post="+tvIdPost.getText().toString()
+			 , null,null,null,null);
+	 if (cursor.moveToFirst())  
+		   
+        do {//tmpKol=cursor.getDouble(cursor.getColumnIndex("kol"));
+        	//tmpSum=cursor.getDouble(cursor.getColumnIndex("s"));
+        	//if ( cursor.getDouble(cursor.getColumnIndex("price")) != 0 )
+        	//Log.d("MyLog", "ost="+String.valueOf(MainActivity.round3( cursor.getDouble(cursor.getColumnIndex("kol")) )) );
+        	tvOst.setText(String.valueOf(MainActivity.round3( cursor.getDouble(cursor.getColumnIndex("kol")) )) );
+        	
+        } while (cursor.moveToNext());
+      
+	        cursor.close();    	     
+}
+
 static class ProdLoader extends CursorLoader {
 	  
     DB db;
@@ -493,9 +538,9 @@ static class ProdLoader extends CursorLoader {
         	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
         if (!where.equals("")) where=" where "+where;*/
         cursor = MainActivity.db.getRawData(
-        "select _id, name, pgr,ed,ted, ost, pos, price from (select -1 _id, name, 0 pgr, 0 ed, '-' ted, 0 ost, -1 pos, 0 price from foo union all select T._id as _id, T.name||' ('||E.name||')' as name, T.pgr as pgr, ifnull(O.ed,T.ed) as ed, E.name as ted, sum(O.kol) as ost, ifnull(T.pos,-1) as pos, T.price as price from tmc as T left join ostat as O on T._id=O.id_tmc left join tmc_ed as E on ifnull(O.ed,T.ed)=E._id where T.vis=1 "
-        //((tvIdPost.getText().equals("") )?"0":tvIdPost.getText())
-        +" group by T._id, T.name, T.pgr, ifnull(O.ed,T.ed), E.name, ifnull(T.pos,-1), T.price ) where pgr = "
+        "select _id, post, name, pgr,ed,ted, ost, pos, price from (select -1 _id, 0 post, name, 0 pgr, 0 ed, '-' ted, 0 ost, -1 pos, 0 price from foo union all select T._id as _id, O.id_post as post, T.name||' ('||E.name||')' as name, T.pgr as pgr, ifnull(O.ed,T.ed) as ed, E.name as ted, sum(O.kol) as ost, ifnull(T.pos,-1) as pos, T.price as price from tmc as T left join ostat as O on T._id=O.id_tmc left join tmc_ed as E on ifnull(O.ed,T.ed)=E._id where T.vis=1 "
+        
+        +" group by T._id, O.id_post, T.name, T.pgr, ifnull(O.ed,T.ed), E.name, ifnull(T.pos,-1), T.price ) where pgr = "
         +((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText())//+((tmp==0)?"":" and _id="+tmp)
         +" order by name"
         , null);    
@@ -506,13 +551,7 @@ static class ProdLoader extends CursorLoader {
     	        +" group by T._id, T.name, T.pgr, T.ed, E.name, ifnull(T.pos,-1), T.price" //+((tmp==0)?"":" and _id="+tmp)
     	        //+" order by T.name"
     	        , null); */
-    /*07-11 19:16:53.841: E/AndroidRuntime(9814): Caused by: android.database.sqlite.SQLiteException: near "where": 
-     * syntax error (code 1): , while compiling: 
-     * select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted, sum(O.kol) as ost, ifnull(T.pos,-1) as pos, 
-     * T.price as price from tmc as T left join tmc_ed as E on T.ed=E._id 
-     * left join ostat as O on T._id=O.id_tmc where T.vis=1  
-     * group by T._id, T.name, T.pgr, T.ed, E.name, ifnull(T.pos,-1), T.price where T.pgr = T.pgr order by T.name
- */ 
+    /*  */ 
       return cursor;
     }
      

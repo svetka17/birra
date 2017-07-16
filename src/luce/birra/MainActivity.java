@@ -758,6 +758,11 @@ void saveSetting() {
 	{intent = new Intent(this, OtchetActivity.class);
 		   startActivity(intent);}
 	if (v.getId() == R.id.btnExit) finish();
+	if (v.getId() == R.id.btnPrixod)
+	{  
+		intent = new Intent(this, PrixodActivity.class);
+		   startActivity(intent);
+	}
 	else
 		
 		//else
@@ -773,10 +778,7 @@ void saveSetting() {
 			   intent = new Intent(this, UserActivity.class);
 			   startActivity(intent);
 		     break;
-		   case R.id.btnPrixod:
-			   intent = new Intent(this, PrixodActivity.class);
-			   startActivity(intent);
-		     break;
+		   
 		   case R.id.btnOstat:
 			   intent = new Intent(this, OstatActivity.class);
 			   startActivity(intent);
