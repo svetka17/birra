@@ -483,7 +483,7 @@ void setPrice () {
 ("tmc_price as T",
          			new String[] {"T.price as price"}, 
          			 //"TP.pgr = ?"
-         			" T.id_tmc="+tvIdProd.getText().toString()+" and T.ed="+tvEd.getText().toString()+" and T.id_post="+tvIdPost.getText().toString()
+         			" T.id_tmc="+tvIdProd.getText().toString()+" and T.ed="+((int)MainActivity.StrToFloat2(tvEd.getText().toString()))+" and T.id_post="+tvIdPost.getText().toString()
         			 , null,null,null,null);
         	 if (cursor.moveToFirst())  
       		   
@@ -503,7 +503,7 @@ void setOst () {
 ("ostat as T ",
 			new String[] {"ifnull(T.kol,0) as kol", "count() as c"}, 
 			 //"TP.pgr = ?"
-			" T.id_tmc="+tvIdProd.getText().toString()+" and T.ed="+tvEd.getText().toString()+" and T.id_post="+tvIdPost.getText().toString()
+			" T.id_tmc="+tvIdProd.getText().toString()+" and T.ed="+((int)MainActivity.StrToFloat2(tvEd.getText().toString()))+" and T.id_post="+tvIdPost.getText().toString()
 			 , null,null,null,null);
 	 if (cursor.moveToFirst())  
 		   
