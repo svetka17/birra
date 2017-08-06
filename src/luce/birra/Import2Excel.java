@@ -133,9 +133,7 @@ catch(IOException e) {};
 	}
 	
 	static void load_ost (String file, Context cnt) {
-		 
 		try {
-			
 						HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(file));
 				        HSSFSheet sheet = wb.getSheetAt(0);
 				        //HSSFRow row = sheet.getRow(1);        
