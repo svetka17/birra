@@ -179,6 +179,16 @@
                     <requestFocus>
                 </requestFocus>
                 </EditText>
+                <TextView
+                    android:id="@+id/tvKegPri"
+                    style="@style/TV_h"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checked="true"
+                    android:editable="true"
+                    android:visibility="gone"
+                    android:text="НОВАЯ КЕГА" />
                 </LinearLayout>
 				<LinearLayout
                  android:layout_weight="1"

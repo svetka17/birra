@@ -39,6 +39,10 @@
         android:id="@+id/tvDataIns_Ostat"
         style="@style/lv_i"
         android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvKeg_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
 
     <LinearLayout
         style="@style/_m1"

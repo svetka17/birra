@@ -222,7 +222,6 @@ static void excel_import(Context cntx, Activity act, byte metod )
 	 	.setDialogScreenListener(new DialogListener() {
 	 	@Override
 		public void OnSelectedKol(double k) {
-			
 			//File file = null; //Uri u1; 
 			//Intent sendIntent;
 			switch((byte)k) {

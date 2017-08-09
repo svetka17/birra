@@ -51,13 +51,13 @@ String []str = {pgr==0?"":" TP._id="+pgr, dat==0?"":" where substr(data_ins,1,6)
 //String where=str[0].toString();
 //if (str[0].length()!=0) where=where+" and "+str[0];
 Cursor cc = MainActivity.db.getQueryData( 
-"ostat as O left join (select id_tmc, id_post, ed, sum(round(kol,3)) as sumkr, sum(round(kol,3)*round(price,2)-round(skidka,2)) as sumsr from rasxod " + str[1].toString() + 
-" group by id_tmc, id_post, ed) as R on O.id_tmc=R.id_tmc and O.id_post=R.id_post and O.ed=R.ed "
-+ " left join (select id_tmc, id_post, ed, sum(round(kol,3)) as sumkp, sum(round(kol,3)*round(price,2)) as sumsp from prixod " + str[1].toString() +
-" group by id_tmc, id_post, ed) as P on O.id_tmc=P.id_tmc and O.id_post=P.id_post and O.ed=P.ed"
+"ostat as O left join (select id_tmc, keg, id_post, ed, sum(round(kol,3)) as sumkr, sum(round(kol,3)*round(price,2)-round(skidka,2)) as sumsr from rasxod " + str[1].toString() + 
+" group by id_tmc, keg, id_post, ed) as R on O.id_tmc=R.id_tmc and O.keg=R.keg and O.id_post=R.id_post and O.ed=R.ed "
++ " left join (select id_tmc, keg, id_post, ed, sum(round(kol,3)) as sumkp, sum(round(kol,3)*round(price,2)) as sumsp from prixod " + str[1].toString() +
+" group by id_tmc, keg, id_post, ed) as P on O.id_tmc=P.id_tmc and O.keg=P.keg and O.id_post=P.id_post and O.ed=P.ed"
 + " left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id left join postav as POS on O.id_post=POS._id",
 new String[] {"O._id as _id",
-"O.id_tmc as id_tmc","T.name as name","E.name as ted", "POS.name as pname", "TP.name as pgrname", "T.price as price",
+"O.id_tmc as id_tmc","O.keg as keg","T.name as name","E.name as ted", "POS.name as pname", "TP.name as pgrname", "T.price as price",
 //"O.sumka+R.sumkr-P.sumkp as kol_n","O.sumka+R.sumsr-P.sumsp as sum_n","0 as price_n",
 "sumkp as kol_pri","sumsp sum_pri",//"0 as price_pri",
 "sumkr kol_ras","sumsr as sum_ras",//"0 as price_ras",
@@ -72,7 +72,7 @@ else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
 if (root.canWrite()){
 dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
 }
-file   =   new File(dir, "O"+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
+file   =   new File(dir, "Œ·ÓÓÚÌ‡ˇ ‚Â‰ÓÏÓÒÚ¸ "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
 
 try {
 FileOutputStream out   =   null;
@@ -136,7 +136,8 @@ row.createCell(12).setCellValue(" ŒÀ-¬Œ Õ¿ "+Calendar.getInstance().get(Calendar
 row.createCell(13).setCellValue("—”ÃÃ¿ Õ¿ "+Calendar.getInstance().get(Calendar.DATE)+"."+(Calendar.getInstance().get(Calendar.MONTH)+1)+"."+Calendar.getInstance().get(Calendar.YEAR));
 row.createCell(14).setCellValue("—–≈ƒÕﬂﬂ ÷≈Õ¿ Õ¿ "+Calendar.getInstance().get(Calendar.DATE)+"."+(Calendar.getInstance().get(Calendar.MONTH)+1)+"."+Calendar.getInstance().get(Calendar.YEAR));
 row.createCell(15).setCellValue("÷≈Õ¿ œ–Œƒ¿∆» Õ¿ "+Calendar.getInstance().get(Calendar.DATE)+"."+(Calendar.getInstance().get(Calendar.MONTH)+1)+"."+Calendar.getInstance().get(Calendar.YEAR));
-for (int i=0; i<16; i++) row.getCell(i).setCellStyle(style);
+row.createCell(16).setCellValue(" ≈√¿");
+for (int i=0; i<17; i++) row.getCell(i).setCellStyle(style);
 row.setHeight((short)1000);
 sheet.createFreezePane(0, 1);
 double koln=0, sumn=0, pricen=0, pricek=0, sumk=0,kolk=0;
@@ -167,7 +168,7 @@ row.createCell(12).setCellValue(kolk);row.getCell(12).setCellStyle(styleN3);
 row.createCell(13).setCellValue(sumk);row.getCell(13).setCellStyle(styleN2);
 row.createCell(14).setCellValue(pricek);row.getCell(14).setCellStyle(styleN2);
 row.createCell(15).setCellValue(cc.getDouble(cc.getColumnIndex("price")));row.getCell(15).setCellStyle(styleN2);
-//out.write(dataStr.getBytes());
+row.createCell(16).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
 } while (cc.moveToNext());
 
 cc.close();
@@ -186,7 +187,7 @@ row.createCell(11).setCellFormula("SUM(L2:L"+rowNum+")");evaluator.evaluateFormu
 row.createCell(12).setCellFormula("SUM(M2:M"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(12));
 row.createCell(13).setCellFormula("SUM(N2:N"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(13));
 //rowNum++;
-sheet.setAutoFilter(CellRangeAddress.valueOf("A1:P"+rowNum));
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:Q"+rowNum));
 //sheet.setAutoFilter(new CellRangeAddress(firstCell.getRow(), lastCell.getRow(), firstCell.getCol(), lastCell.getCol()));
 //sheet.autoSizeColumn(2);
      //workbook.close();
@@ -217,7 +218,7 @@ static File rasxod (int dat1, int dat2, int pgr, String dirN) {
 			"rasxod as R "
 			+ " left join tmc as T on R.id_tmc=T._id left join tmc_ed as E on R.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id left join postav as POS on R.id_post=POS._id left join klient as K on R.id_klient=K._id",
 			new String[] {"R._id as _id",
-			"R.id_tmc as id_tmc","T.name as name","E.name as ted","TP.name namet","POS.name as namep",
+			"R.id_tmc as id_tmc","R.keg as keg","T.name as name","E.name as ted","TP.name namet","POS.name as namep",
 			//"O.sumka+R.sumkr-P.sumkp as kol_n","O.sumka+R.sumsr-P.sumsp as sum_n","0 as price_n",
 			"R.prim as prim", "'˜ÂÍπ'||K._id||' Ì‡ ÒÛÏÏÛ '||K.sumka as chek",//"0 as price_pri",
 			"R.kol*R.price as sumka","R.data_ins as data_ins",//"0 as price_ras",
@@ -232,7 +233,7 @@ else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
 if (root.canWrite()){
 dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
 }
-file   =   new File(dir, "R"+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
+file   =   new File(dir, "–‡ÒıÓ‰ ÔÓ‰Ó·ÌÓ "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
 
 try {
 FileOutputStream out   =   null;
@@ -268,7 +269,8 @@ row.createCell(10).setCellValue("œ–»Ã≈◊¿Õ»≈");
 row.createCell(11).setCellValue("»ƒπ");
 row.createCell(12).setCellValue("◊≈ ");
 row.createCell(13).setCellValue("ƒ¿“¿");
-for (int i=0; i<14; i++) row.getCell(i).setCellStyle(style);
+row.createCell(14).setCellValue(" ≈√¿");
+for (int i=0; i<15; i++) row.getCell(i).setCellStyle(style);
 row.setHeight((short)1000);
 sheet.createFreezePane(0, 1);
 if (cc.moveToFirst())  
@@ -289,7 +291,7 @@ row.createCell(10).setCellValue(cc.getString(cc.getColumnIndex("prim")));
 row.createCell(11).setCellValue(cc.getInt(cc.getColumnIndex("_id")));
 row.createCell(12).setCellValue(cc.getString(cc.getColumnIndex("chek")));
 row.createCell(13).setCellValue(MainActivity.getStringDataTime( cc.getInt(cc.getColumnIndex("data_ins")) ));
-
+row.createCell(14).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
 } while (cc.moveToNext());
 cc.close();
 rowNum++;
@@ -299,7 +301,7 @@ row.createCell(4).setCellFormula("SUM(E2:E"+rowNum+")");evaluator.evaluateFormul
 row.createCell(6).setCellFormula("SUM(G2:G"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(6));row.getCell(6).setCellStyle(styleN2);
 row.createCell(7).setCellFormula("SUM(H2:H"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(7));row.getCell(7).setCellStyle(styleN2);
 row.createCell(8).setCellFormula("SUM(I2:I"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(8));row.getCell(8).setCellStyle(styleN2);
-sheet.setAutoFilter(CellRangeAddress.valueOf("A1:M"+rowNum));
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:N"+rowNum));
 workbook.write(out);// workbook.close();
 out.close();
 } catch (FileNotFoundException ef) {
@@ -333,7 +335,7 @@ else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
 if (root.canWrite()){
 dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
 }
-file   =   new File(dir, "CHECK"+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
+file   =   new File(dir, "◊ÂÍË "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
 
 try {
 FileOutputStream out   =   null;
@@ -408,11 +410,11 @@ static File rasxod_ostat (int dat1, int dat2, int pgr, String dirN) {
 			if (where.equals("")||where.length()==0) where=" T.ok=0 "; else where=where+" and T.ok=0 ";
 				//if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
 			//Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
-			Cursor cc = MainActivity.db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed left join postav as KK on T.id_post=KK._id", 
-         			new String[] {"TP._id as _id","TT.name as pgr","TP.name as name",/*"T.data_ins as data_ins",*/"KK.name as post","sum(T.kol) as kol","E.name as ed",
+			Cursor cc = MainActivity.db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.keg=K.keg and T.ed=K.ed left join postav as KK on T.id_post=KK._id", 
+         			new String[] {"TP._id as _id","T.keg as keg","TT.name as pgr","TP.name as name",/*"T.data_ins as data_ins",*/"KK.name as post","sum(T.kol) as kol","E.name as ed",
         			 "sum(T.price*T.kol-T.skidka) as sumka","K.kol as ostat","T.price as price", "round(sum(T.skidka),2) as skidka"}, 
          			 //"TP.pgr = ?"
-        			 where, null,"TP._id, TT.name, TP.name, T.price, KK.name, E.name, K.kol",null,null);
+        			 where, null,"TP._id, T.keg, TT.name, TP.name, T.price, KK.name, E.name, K.kol",null,null);
 
 File file   = null, dir = null;
 File root   = Environment.getExternalStorageDirectory();
@@ -421,7 +423,7 @@ else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
 if (root.canWrite()){
 dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
 }
-file   =   new File(dir, "RO"+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
+file   =   new File(dir, "–‡ÒıÓ‰ Ë ÓÒÚ‡ÚÓÍ "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
 
 try {
 FileOutputStream out   =   null;
@@ -453,7 +455,8 @@ row.createCell(6).setCellValue("œ–Œƒ¿ÕŒ —”ÃÃ¿ «¿ œ≈–»Œƒ");
 row.createCell(7).setCellValue("Œ—“¿“Œ  Õ¿ "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR));
 row.createCell(8).setCellValue("—”ÃÃ¿ — »ƒ »");
 row.createCell(9).setCellValue("÷≈Õ¿ œ–Œƒ¿∆»");
-for (int i=0; i<10; i++) row.getCell(i).setCellStyle(style);
+row.createCell(10).setCellValue(" ≈√¿");
+for (int i=0; i<11; i++) row.getCell(i).setCellStyle(style);
 row.setHeight((short)1000);
 sheet.createFreezePane(0, 1);
 if (cc.moveToFirst())  
@@ -470,6 +473,7 @@ row.createCell(6).setCellValue(cc.getDouble(cc.getColumnIndex("sumka")));row.get
 row.createCell(7).setCellValue(cc.getDouble(cc.getColumnIndex("ostat")));row.getCell(7).setCellStyle(styleN3);
 row.createCell(8).setCellValue(cc.getDouble(cc.getColumnIndex("skidka")));row.getCell(8).setCellStyle(styleN2);
 row.createCell(9).setCellValue(cc.getDouble(cc.getColumnIndex("price")));row.getCell(9).setCellStyle(styleN2);
+row.createCell(10).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
 } while (cc.moveToNext());
 cc.close();
 rowNum++;
@@ -478,7 +482,7 @@ FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator
 row.createCell(4).setCellFormula("SUM(E2:E"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(4));row.getCell(4).setCellStyle(styleN3);
 row.createCell(6).setCellFormula("SUM(G2:G"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(6));row.getCell(6).setCellStyle(styleN2);
 row.createCell(8).setCellFormula("SUM(I2:I"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(8));row.getCell(8).setCellStyle(styleN2);
-sheet.setAutoFilter(CellRangeAddress.valueOf("A1:J"+rowNum));
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:K"+rowNum));
 workbook.write(out);// workbook.close();
 out.close();
 } catch (FileNotFoundException ef) {
@@ -501,7 +505,7 @@ static File prixod (int dat1, int dat2, int pgr, String dirN) {
 				//if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
 			//Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
 			Cursor cc = MainActivity.db.getQueryData("prixod as T left join tmc as TP on T.id_tmc = TP._id left join postav as P on T.id_post = P._id left join tmc_ed as E on T.ed = E._id left join tmc_pgr as TT on TP.pgr=TT._id", 
-	     			new String[] {"T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","T.kol as kol","T.kol*T.price as sumka",
+	     			new String[] {"T._id as _id","T.id_tmc as id_tmc","T.keg as keg","TP.name as name","T.data_ins as data_ins","T.kol as kol","T.kol*T.price as sumka",
 	    			 "E.name as ted", "T.ed as ed","T.price as price","P.name as pname","T.prim as prim","T.id_post as id_post","TT.name as pgr"}, 
 	     			 where,//"TP.pgr = ?",// and ?",
 	     			null,null,null,null);
@@ -513,7 +517,7 @@ else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
 if (root.canWrite()){
 dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
 }
-file   =   new File(dir, "P"+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
+file   =   new File(dir, "œËıÓ‰ "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
 
 try {
 FileOutputStream out   =   null;
@@ -546,7 +550,8 @@ row.createCell(7).setCellValue("—”ÃÃ¿");
 row.createCell(8).setCellValue("œ–»Ã≈◊¿Õ»≈");
 row.createCell(9).setCellValue("»ƒπ");
 row.createCell(10).setCellValue("ƒ¿“¿");
-for (int i=0; i<11; i++) row.getCell(i).setCellStyle(style);
+row.createCell(11).setCellValue(" ≈√¿");
+for (int i=0; i<12; i++) row.getCell(i).setCellStyle(style);
 row.setHeight((short)1000);
 sheet.createFreezePane(0, 1);
 if (cc.moveToFirst())  
@@ -564,7 +569,7 @@ row.createCell(7).setCellValue(cc.getDouble(cc.getColumnIndex("sumka")));row.get
 row.createCell(8).setCellValue(cc.getString(cc.getColumnIndex("prim")));
 row.createCell(9).setCellValue(cc.getInt(cc.getColumnIndex("_id")));
 row.createCell(10).setCellValue(MainActivity.getStringDataTime( cc.getInt(cc.getColumnIndex("data_ins")) ));
-
+row.createCell(11).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
 } while (cc.moveToNext());
 cc.close();
 rowNum++;
@@ -572,7 +577,7 @@ row = sheet.createRow(rowNum);
 FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 row.createCell(4).setCellFormula("SUM(E2:E"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(4));row.getCell(4).setCellStyle(styleN3);
 row.createCell(7).setCellFormula("SUM(H2:H"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(7));row.getCell(7).setCellStyle(styleN2);
-sheet.setAutoFilter(CellRangeAddress.valueOf("A1:K"+rowNum));
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:L"+rowNum));
 workbook.write(out);// workbook.close();
 out.close();
 } catch (FileNotFoundException ef) {
@@ -589,7 +594,7 @@ static File ostat (int pgr, String dirN) {
 			//String where=str[0].toString(); 
 			//Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
 			Cursor cc = MainActivity.db.getRawData (
-	    			"select O._id as _id, O.id_tmc as id_tmc, O.kol as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, "
+	    			"select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, O.kol as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, "
 	    	    			+ "P.name as pname, T.name as tname, TP.name as pgr, O.kol*TT.price as sumka "
 	    	    			+ "from ostat as O "
 	    	    			+ "left join tmc_price as TT "
@@ -612,7 +617,7 @@ else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
 if (root.canWrite()){
 dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
 }
-file   =   new File(dir, "OST"+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
+file   =   new File(dir, "ŒÒÚ‡ÚÓÍ Ì‡ "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
 
 try {
 FileOutputStream out   =   null;
@@ -644,7 +649,8 @@ row.createCell(6).setCellValue("÷≈Õ¿ œ–Œƒ¿∆»");
 row.createCell(7).setCellValue("—”ÃÃ¿");
 row.createCell(8).setCellValue("»ƒπ");
 row.createCell(9).setCellValue("ƒ¿“¿ œŒ—À≈ƒÕ≈√Œ »«Ã≈Õ≈Õ»ﬂ");
-for (int i=0; i<10; i++) row.getCell(i).setCellStyle(style);
+row.createCell(10).setCellValue(" ≈√¿");
+for (int i=0; i<11; i++) row.getCell(i).setCellStyle(style);
 row.setHeight((short)1000);
 sheet.createFreezePane(0, 1);
 if (cc.moveToFirst())  
@@ -661,7 +667,7 @@ row.createCell(6).setCellValue(cc.getDouble(cc.getColumnIndex("price")));row.get
 row.createCell(7).setCellValue(cc.getDouble(cc.getColumnIndex("sumka")));row.getCell(7).setCellStyle(styleN2);
 row.createCell(8).setCellValue(cc.getInt(cc.getColumnIndex("_id")));
 row.createCell(9).setCellValue(MainActivity.getStringDataTime( cc.getInt(cc.getColumnIndex("data_ins")) ));
-
+row.createCell(10).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
 } while (cc.moveToNext());
 cc.close();
 rowNum++;
@@ -669,7 +675,7 @@ row = sheet.createRow(rowNum);
 FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 row.createCell(4).setCellFormula("SUM(E2:E"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(4));row.getCell(4).setCellStyle(styleN3);
 row.createCell(7).setCellFormula("SUM(H2:H"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(7));row.getCell(7).setCellStyle(styleN2);
-sheet.setAutoFilter(CellRangeAddress.valueOf("A1:K"+rowNum));
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:L"+rowNum));
 workbook.write(out);// workbook.close();
 out.close();
 } catch (FileNotFoundException ef) {
@@ -707,7 +713,7 @@ else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
 if (root.canWrite()){
 dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
 }
-file   =   new File(dir, "PRICE"+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
+file   =   new File(dir, "÷ÂÌ˚ Ì‡ "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
 
 try {
 FileOutputStream out   =   null;
@@ -795,7 +801,7 @@ else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
 if (root.canWrite()){
 dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
 }
-file   =   new File(dir, "SPR"+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
+file   =   new File(dir, "—Ô‡‚Ó˜ÌËÍ ÚÓ‚‡Ó‚ Ì‡ "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
 
 try {
 FileOutputStream out   =   null;

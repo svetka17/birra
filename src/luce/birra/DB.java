@@ -25,7 +25,7 @@ public class DB {
 		
 	
   private static final String DB_NAME = "birraDB";
-  private static final int DB_VERSION = 15;
+  private static final int DB_VERSION = 16;
   //private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
   //private static final String DB_TABLE = "mytab";
    
@@ -437,7 +437,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	db.execSQL("create table tmc_price ("
                 + "_id integer primary key autoincrement,"
                 + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
-                + "keg integer DEFAULT 0,"
+                //+ "keg integer DEFAULT 0,"
                 + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                 + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                 + "price real not null CHECK (price>=0),"
@@ -597,8 +597,16 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
         		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
         		    " BEGIN "+
         		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
-        		    " insert into tmc_price (id_tmc, keg, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.keg, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
+        		    //" insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
         		    " END;");
+          db.execSQL("CREATE TRIGGER pri_ins_price1 " +
+      		    " AFTER INSERT "+
+      		    " ON prixod "+    	        		    
+      		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM tmc_price WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
+      		    " BEGIN "+
+      		    //" insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+      		    " insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
+      		    " END;");
           
           db.execSQL("CREATE TRIGGER pri_ins2 " +
       		    " AFTER INSERT "+
@@ -606,8 +614,16 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
       		    " BEGIN "+
       		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.price*NEW.kol, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
-      		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+      		    //" update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
       		    " END;");
+          db.execSQL("CREATE TRIGGER pri_ins_price2 " +
+        		    " AFTER INSERT "+
+        		    " ON prixod "+    	        		    
+        		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM tmc_price WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
+        		    " BEGIN "+
+        		    //" update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.price*NEW.kol, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+        		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+        		    " END;");
           //update на приход запрещен 31.05.2107
           db.execSQL("CREATE TRIGGER pri_upd1 " +
         		    " AFTER UPDATE "+
@@ -615,8 +631,16 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
         		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
         		    " BEGIN "+
         		    " update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol, data_ins=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
-        		    " update tmc_price set price=OLD.price_vendor, data_ins=OLD.data_ins, vis=1 where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+  
+        		    //" update tmc_price set price=OLD.price_vendor, data_ins=OLD.data_ins, vis=1 where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+  
         		  " END;");
+          db.execSQL("CREATE TRIGGER pri_upd_price1 " +
+      		    " AFTER UPDATE "+
+      		    " ON prixod "+    	        		    
+      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM tmc_price WHERE ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
+      		    " BEGIN "+
+      		    //" update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol, data_ins=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
+      		    " update tmc_price set price=OLD.price_vendor, data_ins=OLD.data_ins, vis=1 where ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+  
+      		  " END;");
           
           db.execSQL("CREATE TRIGGER pri_upd2 " +
       		    " AFTER UPDATE "+
@@ -624,8 +648,17 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
       		    " BEGIN "+
       		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.ed, NEW.price, NEW.price*New.kol, NEW.id_post, NEW.data_ins, 0); "+
-      		    " insert into tmc_price (id_tmc, keg, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.keg, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
+      		    //" insert into tmc_price (id_tmc, keg, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.keg, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
       		    " END;");
+          
+          db.execSQL("CREATE TRIGGER pri_upd_price2 " +
+        		    " AFTER UPDATE "+
+        		    " ON prixod "+    	        		    
+        		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM tmc_price WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
+        		    " BEGIN "+
+        		    //" insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.ed, NEW.price, NEW.price*New.kol, NEW.id_post, NEW.data_ins, 0); "+
+        		    " insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
+        		    " END;");
           
           db.execSQL("CREATE TRIGGER pri_upd3 " +
         		    " AFTER UPDATE "+
@@ -633,8 +666,17 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
         		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
         		    " BEGIN "+
         		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.kol*NEW.price, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
-        		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+  
+        		    //" update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+  
         		  " END;");
+          
+          db.execSQL("CREATE TRIGGER pri_upd_price3 " +
+      		    " AFTER UPDATE "+
+      		    " ON prixod "+    	        		    
+      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM tmc_price WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
+      		    " BEGIN "+
+      		    //" update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.kol*NEW.price, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+      		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+  
+      		  " END;");
           
           db.execSQL("CREATE TRIGGER pri_del1 " +
         		    " BEFORE DELETE "+
@@ -710,7 +752,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	Log.d("MyLog", " --- onUpgrade database --- ");
-    	if (newVersion == 15) {
+    	if (newVersion == 16) {
     	    db.beginTransaction();
     	    try {
     	    	  db.execSQL("DROP INDEX pri_tmc;");       
@@ -798,6 +840,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	    	db.execSQL("create table tmc_price ("
     	                + "_id integer primary key autoincrement,"
     	                + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                //+ "keg integer DEFAULT 0,"
     	                + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                + "price real not null CHECK (price>=0),"
@@ -822,6 +865,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("create table prixod ("
     	                  + "_id integer primary key autoincrement,"
     	                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                  + "keg integer DEFAULT 0,"
     	                  + "kol real not null,"
     	                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "price real not null CHECK (price>=0),"
@@ -836,6 +880,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "_id integer primary key autoincrement,"
     	                  + "id_id integer,"
     	                  + "id_tmc integer not null,"
+    	                  + "keg integer,"
     	                  + "kol real not null,"
     	                  + "ed integer not null,"
     	                  + "price real not null,"
@@ -849,6 +894,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("create table rasxod ("
     	                  + "_id integer primary key autoincrement,"
     	                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                  + "keg integer DEFAULT 0,"
     	                  + "kol real not null,"
     	                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "price real not null CHECK (price>=0),"
@@ -864,6 +910,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "_id integer primary key autoincrement,"
     	                  + "id_id integer,"
     	                  + "id_tmc integer not null,"
+    	                  + "keg integer,"
     	                  + "kol real not null,"
     	                  + "ed integer not null,"
     	                  + "price real not null,"
@@ -878,6 +925,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("create table ostat ("
     	                  + "_id integer primary key autoincrement,"
     	                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                  + "keg integer DEFAULT 0,"
     	                  + "kol real not null,"
     	                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "price real not null,"
@@ -944,7 +992,6 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("CREATE INDEX tmc_pos ON tmc (pos);");
     	          db.execSQL("CREATE INDEX tmcpgr ON tmc (pgr);");
     	          db.execSQL("CREATE INDEX tmc_vis ON tmc (vis);");
-    	          Log.d("MyLog", " --- onUpgrade create all table --- ");
     	          //////prixod
     	          db.execSQL("CREATE TRIGGER pri_ins1 " +
     	        		    " AFTER INSERT "+
@@ -952,8 +999,16 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	        		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	        		    " BEGIN "+
     	        		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
-    	        		    " insert into tmc_price (id_tmc, keg, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.keg, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
+    	        		    //" insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
     	        		    " END;");
+    	          db.execSQL("CREATE TRIGGER pri_ins_price1 " +
+    	      		    " AFTER INSERT "+
+    	      		    " ON prixod "+    	        		    
+    	      		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM tmc_price WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
+    	      		    " BEGIN "+
+    	      		    //" insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+    	      		    " insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
+    	      		    " END;");
     	          
     	          db.execSQL("CREATE TRIGGER pri_ins2 " +
     	      		    " AFTER INSERT "+
@@ -961,8 +1016,16 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	      		    " BEGIN "+
     	      		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.price*NEW.kol, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
-    	      		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+    	      		    //" update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
     	      		    " END;");
+    	          db.execSQL("CREATE TRIGGER pri_ins_price2 " +
+    	        		    " AFTER INSERT "+
+    	        		    " ON prixod "+    	        		    
+    	        		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM tmc_price WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
+    	        		    " BEGIN "+
+    	        		    //" update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.price*NEW.kol, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+    	        		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+    	        		    " END;");
     	          //update на приход запрещен 31.05.2107
     	          db.execSQL("CREATE TRIGGER pri_upd1 " +
     	        		    " AFTER UPDATE "+
@@ -970,8 +1033,16 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	        		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
     	        		    " BEGIN "+
     	        		    " update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol, data_ins=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
-    	        		    " update tmc_price set price=OLD.price_vendor, data_ins=OLD.data_ins, vis=1 where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+  
+    	        		    //" update tmc_price set price=OLD.price_vendor, data_ins=OLD.data_ins, vis=1 where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+  
     	        		  " END;");
+    	          db.execSQL("CREATE TRIGGER pri_upd_price1 " +
+    	      		    " AFTER UPDATE "+
+    	      		    " ON prixod "+    	        		    
+    	      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM tmc_price WHERE ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
+    	      		    " BEGIN "+
+    	      		    //" update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol, data_ins=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
+    	      		    " update tmc_price set price=OLD.price_vendor, data_ins=OLD.data_ins, vis=1 where ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+  
+    	      		  " END;");
     	          
     	          db.execSQL("CREATE TRIGGER pri_upd2 " +
     	      		    " AFTER UPDATE "+
@@ -979,8 +1050,17 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	      		    " BEGIN "+
     	      		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.ed, NEW.price, NEW.price*New.kol, NEW.id_post, NEW.data_ins, 0); "+
-    	      		    " insert into tmc_price (id_tmc, keg, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.keg, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
+    	      		    //" insert into tmc_price (id_tmc, keg, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.keg, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
     	      		    " END;");
+    	          
+    	          db.execSQL("CREATE TRIGGER pri_upd_price2 " +
+    	        		    " AFTER UPDATE "+
+    	        		    " ON prixod "+    	        		    
+    	        		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM tmc_price WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
+    	        		    " BEGIN "+
+    	        		    //" insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.ed, NEW.price, NEW.price*New.kol, NEW.id_post, NEW.data_ins, 0); "+
+    	        		    " insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
+    	        		    " END;");
     	          
     	          db.execSQL("CREATE TRIGGER pri_upd3 " +
     	        		    " AFTER UPDATE "+
@@ -988,8 +1068,17 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	        		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	        		    " BEGIN "+
     	        		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.kol*NEW.price, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
-    	        		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+  
+    	        		    //" update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+  
     	        		  " END;");
+    	          
+    	          db.execSQL("CREATE TRIGGER pri_upd_price3 " +
+    	      		    " AFTER UPDATE "+
+    	      		    " ON prixod "+    	        		    
+    	      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM tmc_price WHERE ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
+    	      		    " BEGIN "+
+    	      		    //" update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.kol*NEW.price, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+    	      		    " update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+  
+    	      		  " END;");
     	          
     	          db.execSQL("CREATE TRIGGER pri_del1 " +
     	        		    " BEFORE DELETE "+

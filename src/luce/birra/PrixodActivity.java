@@ -28,7 +28,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   Button btnExit, btnAdd, btnSProd, btnSPost, btnHist;
   Spinner spProd, spPost, spPgr;
   Spinner spEd;
-  TextView tvId,  tvEd, tvIdProd, tvOst;
+  TextView tvId,  tvEd, tvIdProd, tvOst, tvKeg;
   static TextView tvIdPgr, tvIdPost;
   EditText tvKol, tvPrice, tvSumma, tvPriceVendor, tvDataIns,tvPrim, tvPos;
   Cursor// cProd, 
@@ -61,6 +61,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     MainActivity.db.delRecs("tmc_ed", "_id>4");
     
     tvId = (TextView) findViewById(R.id.tvIdPri);
+    tvKeg = (TextView) findViewById(R.id.tvKegPri);
     tvOst = (TextView) findViewById(R.id.tvOstatokPri);
     //etPgr = (EditText) findViewById(R.id.etEditIdPgrProd);
     tvIdProd = (TextView) findViewById(R.id.tvIdProdPri);
@@ -283,16 +284,22 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         		//MainActivity.db.addRecPRIXOD(id_tmc, kol, price, id_post, prim, data_del, data_ins, ok);
         		{
   				long countT=0;
-				Cursor cc = MainActivity.db.getRawData ("select id_tmc, kol, ed, id_post from ostat where kol<0 and id_tmc="+tvIdProd.getText().toString()+" and id_post="+tvIdPost.getText().toString()+" and ed="+tvEd.getText().toString() , null);
+				Cursor cc = MainActivity.db.getRawData ("select id_tmc, kol, ed, id_post, keg from ostat where kol<0 and id_tmc="+tvIdProd.getText().toString()+" and id_post="+tvIdPost.getText().toString()+" and ed="+tvEd.getText().toString() , null);
 				   if (cc.moveToFirst()) { 
-				        do {if (cc.getDouble(cc.getColumnIndex("kol"))<0)
+				        do {if (cc.getDouble(cc.getColumnIndex("kol"))<0) //<0 %)
 				        	countT=
-				        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "ÎÁÍÓËÅÍÈÅ ÎÑÒÀÒÊÀ ÈÇ ÌÅÍÞ "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+				        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "ÎÁÍÓËÅÍÈÅ ÎÒÐÈÖÀÒÅËÜÍÎÃÎ ÎÑÒÀÒÊÀ Â ÏÐÈÕÎÄÅ "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
 				        } while (cc.moveToNext());
 				      };
+				      
 				      if (countT!=0) showMessage("Îòðèöàòåëüíûé îñòàòîê îáíóëåí", (byte)1);
-  				 MainActivity.db.addRecPRIXOD(
+				      if (Byte.parseByte(tvEd.getText().toString())!=1) tvKeg.setText("0");
+				      else 
+				      {tvKeg.setText(String.valueOf(MainActivity.db.addRecKEGSCount("new keg", MainActivity.StrToFloat(tvKol.getText().toString()), MainActivity.getStringDataTime(MainActivity.getIntDataTime()), MainActivity.getIntDataTime(), (byte)0)) ); };
+				      
+				      MainActivity.db.addRecPRIXOD(
         				Integer.parseInt(tvIdProd.getText().toString()), 
+        				Integer.parseInt(tvKeg.getText().toString()),
         				MainActivity.StrToFloat(tvKol.getText().toString()), 
         				Byte.parseByte(tvEd.getText().toString()),
         				MainActivity.StrToFloat2(tvPrice.getText().toString() ), 
