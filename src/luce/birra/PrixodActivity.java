@@ -91,9 +91,9 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     tvKol = (EditText) findViewById(R.id.tvKolPri);
     tvEd = (TextView) findViewById(R.id.tvIdEdPri);
     tvPrice = (EditText) findViewById(R.id.tvPricePri);
-    tvPrice.setText("0");
+    //tvPrice.setText("0");
     tvSumma = (EditText) findViewById(R.id.tvSummaPri);
-    tvSumma.setText("0");
+    //tvSumma.setText("0");
     tvSumma.setOnFocusChangeListener(new OnFocusChangeListener() {
 		
 		@Override

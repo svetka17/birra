@@ -23,6 +23,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
+//import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -977,6 +978,7 @@ void makeDialog() {
    		      sAdapter.notifyDataSetChanged();
    		   if (Btara!=-2)	
    	{
+   			//Log.d("MyLog", "Btovar1="+Btovar);
    	tranz.add(new tranDB(
    			(byte)(data.size()-1),
    			(byte)(data.size()-1), 
@@ -990,7 +992,8 @@ void makeDialog() {
    			0, "своя тара"));
    	sumI=sumI+but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/);}
    		   else
-   		{tranz.add(new tranDB(
+   		{//Log.d("MyLog", "Btovar2="+Btovar);
+   			   tranz.add(new tranDB(
    				(byte)(data.size()-1),
    				(byte)(data.size()-1), 
    				Btovar, 
@@ -1004,7 +1007,7 @@ void makeDialog() {
    	   			;}
    	}
    	else
-   	{
+   	{//Log.d("MyLog", "Btovar fixV1="+Btovar);
    	  m = new HashMap<String, Object>();
    	  	m.put("skidka_sum", 0);
 		m.put("skidka_but", 0);
@@ -1034,15 +1037,17 @@ void makeDialog() {
 		      sAdapter.notifyDataSetChanged();
 		      if (Btara!=-2) {	
 		    	 // Log.d("MyLog", "tara1="+(byte)(data.size()-1));
-   	tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc,but.get(Btovar).keg, but.get(Btara).val,but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "с тарой"));	
-   	
+		    	 // Log.d("MyLog", "Btovar3="+Btovar);
+	tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar, but.get(Btovar).id_tmc, but.get(Btovar).keg, but.get(Btara).val,but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "с тарой"));	
+	//Log.d("MyLog", "Btovar4="+Btovar+" "+Btara);
    	tranz.add(new tranDB((byte)(data.size()-1),(byte) -1 /*если тара, то позиция в чеке -1*/, Btara,but.get(Btara).id_tmc, but.get(Btara).keg, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "тара"));
    	  
    	sumI=sumI+(but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/)+but.get(Btara).price);
 		      }
 		      else
 			      
-		    	   	{tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc,but.get(Btovar).keg, MainActivity.StrToFloat(tvKol.getText().toString()),but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "пакет"));	
+		    	   	{//Log.d("MyLog", "Btovar5="+Btovar);
+		    	  tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc,but.get(Btovar).keg, MainActivity.StrToFloat(tvKol.getText().toString()),but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "пакет"));	
 		    	      // tranz.add(new tranDB((byte)(data.size()-1), Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "tara"));
 		    	       sumI=sumI+(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
 		    	    		   +0);}
@@ -1068,6 +1073,7 @@ void makeDialog() {
    }
   
    void getCheck() {
+	  
 	   if (/*tvCombo.getText().equals("")*/data.size()==0) finish();
    	else
    	{//no klient
@@ -1075,13 +1081,18 @@ void makeDialog() {
    				0, "чек автозакрыт", MainActivity.getIntDataTime(), 0, (byte)0);
    		
    	for (int i=0; i<tranz.size(); i++) {
+   		//Log.d("MyLog", "Btovar="+Btovar);//+" keg="+but.get(Btovar).keg);
    		//public void addRecRASXOD(int id_tmc, float kol, float price, int id_post, int id_klient, String prim, int data_del, int data_ins, byte ok)
-   	MainActivity.db.addRecRASXOD(but.get(Btovar).id_tmc,but.get(Btovar).keg,
+   	//MainActivity.db.addRecRASXOD(but.get(Btovar).id_tmc,but.get(Btovar).keg,
+   		//	tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
+   	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
    			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
+   	   	
+   	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
    	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i);
    	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i+" ost="+but.get(tranz.get(i).tagB).ost);
    	
-   	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
+   	//but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
    	/*if (but.get(tranz.get(i).tagB).ost<=0 && but.get(tranz.get(i).tagB).ed==1)//если кол-во <0 то добавляем остаток по приходу
    	{
    		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+0.1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "автоувеличение+1 остатка "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
@@ -1160,16 +1171,17 @@ void makeDialog() {
    	//if (tranz.get(i).tagL!=-1 /*&& MainActivity.StrToFloat( data.get(tranz.get(i).tagL).get("skidka_sum").toString() )!=0*/ )
    	// if (MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() )!=0)
    	//	MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() ), (byte)4, 0, 0, (int)cou, "СКИДКА ПО ПОЗИЦИИ "+tmp+":"+data.get(tranz.get(i).tag).get("skidka_sum").toString()+"ГРН", MainActivity.getIntDataTime(),(int)tmp);
-  /*
+  
    	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
-   	if (but.get(tranz.get(i).tagB).ost<=0 && but.get(tranz.get(i).tagB).ed==1 )//если кол-во <0 то добавляем остаток по приходу
+   	/*if (but.get(tranz.get(i).tagB).ost<=0 && but.get(tranz.get(i).tagB).ed==1 )//если кол-во <0 то добавляем остаток по приходу
    	{
    		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+0.1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
    		but.get(tranz.get(i).tagB).ost=0.1;
    	}*/
  
    	if (tranz.get(i).tagB>CountTara-1) {
-   		int l1=(but.get(tranz.get(i).tagB).tmc_name+"\n").length(), l2=(but.get(tranz.get(i).tagB).tmc_name+"\n"+MainActivity.round3(but.get(tranz.get(i).tagB).ost)+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)).length();
+   		int l1=(but.get(tranz.get(i).tagB).tmc_name+"\n").length(), 
+   			l2=(but.get(tranz.get(i).tagB).tmc_name+"\n"+MainActivity.round3(but.get(tranz.get(i).tagB).ost)+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)).length();
        	final SpannableStringBuilder text = new SpannableStringBuilder(but.get(tranz.get(i).tagB).tmc_name+"\n"+MainActivity.round3(but.get(tranz.get(i).tagB).ost)+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)); 
        	//final ForegroundColorSpan style = new ForegroundColorSpan(Color.rgb(255, 0, 0)); 
        	final StyleSpan style2 = new StyleSpan(Typeface.BOLD); 

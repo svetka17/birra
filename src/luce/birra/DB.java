@@ -25,7 +25,7 @@ public class DB {
 		
 	
   private static final String DB_NAME = "birraDB";
-  private static final int DB_VERSION = 16;
+  private static final int DB_VERSION = 17;
   //private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
   //private static final String DB_TABLE = "mytab";
    
@@ -752,7 +752,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	Log.d("MyLog", " --- onUpgrade database --- ");
-    	if (newVersion == 16) {
+    	if (newVersion == 17) {
     	    db.beginTransaction();
     	    try {
     	    	  db.execSQL("DROP INDEX pri_tmc;");       
