@@ -199,7 +199,7 @@ void makeDialog() {
    
    //ArrayList<ToggleButton> tbut = new ArrayList<ToggleButton>();
    //ArrayList<LinearLayout> ll = new ArrayList<LinearLayout>();
-   Cursor c = MainActivity.db.getRawData ("select distinct T._id as _id, T.name as name from tmc_pgr T left join tmc as TM on T._id=TM.pgr left join ostat as O on O.id_tmc=TM._id where O.kol>0 and TM.vis=1 ",null); 
+   Cursor c = MainActivity.db.getRawData ("select distinct T._id as _id, T.name as name from tmc_pgr T left join tmc as TM on T._id=TM.pgr left join ostat as O on O.id_tmc=TM._id where O.kol>0 and TM.vis=1 order by T.name",null); 
    
    public void onCreate(Bundle savedInstanceState) {
 

@@ -5,12 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -22,33 +22,33 @@ public class Import2Excel {
 				 
 try {
 	
-				HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(file));
-		        HSSFSheet sheet = wb.getSheetAt(0);
-		        //HSSFRow row = sheet.getRow(1);        
+				XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(file));
+		        XSSFSheet sheet = wb.getSheetAt(0);
+		        //XSSFRow row = sheet.getRow(1);        
 		        Iterator<Row> rowIter = sheet.rowIterator();
 		        String value="";
 		        if (rowIter.hasNext()) rowIter.next();
 	            while(rowIter.hasNext()) {
-	                HSSFRow myRow = (HSSFRow) rowIter.next();
+	                XSSFRow myRow = (XSSFRow) rowIter.next();
 	                Iterator<Cell> cellIter = myRow.cellIterator();
 	                Cursor c; int id=0, idtmc=-1; String n="";  int id_pgr=-1; int ed=-1; //String ted=""; String n_pgr="";
 	                float price=0; byte vis=0; byte ok=0; byte pos=0; float tara=0; int i=0;
 	                while(cellIter.hasNext()) {
-	                    HSSFCell cell = (HSSFCell) cellIter.next();
+	                    XSSFCell cell = (XSSFCell) cellIter.next();
 	                //for ( short c = myRow.getFirstCellNum(); c <= myRow.getLastCellNum(); c++ ) {
-	                	//HSSFCell cell = myRow.getCell( c );
+	                	//XSSFCell cell = myRow.getCell( c );
 	                	if ( cell != null ) {
-	                        if ( cell.getCellType() == HSSFCell.CELL_TYPE_BLANK ) {
+	                        if ( cell.getCellType() == XSSFCell.CELL_TYPE_BLANK ) {
 	                          value = "";
-	                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN ) {
+	                        } else if ( cell.getCellType() == XSSFCell.CELL_TYPE_BOOLEAN ) {
 	                          value = Boolean.toString( cell.getBooleanCellValue() );
-	                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_ERROR ) {
+	                        } else if ( cell.getCellType() == XSSFCell.CELL_TYPE_ERROR ) {
 	                          value = Byte.toString( cell.getErrorCellValue() );
-	                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_FORMULA ) {
+	                        } else if ( cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA ) {
 	                          value = cell.getCellFormula().toString();
-	                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC ) {
+	                        } else if ( cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC ) {
 	                          value = Double.toString( cell.getNumericCellValue() );
-	                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_STRING ) {
+	                        } else if ( cell.getCellType() == XSSFCell.CELL_TYPE_STRING ) {
 	                          value = cell.getStringCellValue();
 	                        }
 	                		switch (i) {
@@ -105,7 +105,7 @@ try {
 	             }
 	                //Log.d("MyLog", "idtmc: " +idtmc+" "+n+" "+id+" "+id_pgr+" "+n_pgr+" "+ed+" "+ted+" "+price);
 		        /*		        
-		        if(row.getCell(1).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+		        if(row.getCell(1).getCellType() == XSSFCell.CELL_TYPE_NUMERIC){
 		            Date birthdate = row.getCell(1).getDateCellValue();
 		        }*/
 	           // }	        
@@ -134,14 +134,14 @@ catch(IOException e) {};
 	
 	static void load_ost (String file, Context cnt) {
 		try {
-						HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(file));
-				        HSSFSheet sheet = wb.getSheetAt(0);
-				        //HSSFRow row = sheet.getRow(1);        
+						XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(file));
+				        XSSFSheet sheet = wb.getSheetAt(0);
+				        //XSSFRow row = sheet.getRow(1);        
 				        Iterator<Row> rowIter = sheet.rowIterator();
 				        String value="";
 				        if (rowIter.hasNext()) rowIter.next();
 			            while(rowIter.hasNext()) {
-			                HSSFRow myRow = (HSSFRow) rowIter.next();
+			                XSSFRow myRow = (XSSFRow) rowIter.next();
 			                Iterator<Cell> cellIter = myRow.cellIterator();
 			                Cursor c; 
 			                int id=0, idtmc=-1; String n="";  int id_pgr=-1; int ed=-1; //String ted=""; String n_pgr="";
@@ -150,21 +150,21 @@ catch(IOException e) {};
 			                float price=0, kol=0;//, sumka=0; //byte vis=0; byte ok=0; byte pos=0; float tara=0; 
 			                int i=0;
 			                while(cellIter.hasNext()) {
-			                    HSSFCell cell = (HSSFCell) cellIter.next();
+			                    XSSFCell cell = (XSSFCell) cellIter.next();
 			                //for ( short c = myRow.getFirstCellNum(); c <= myRow.getLastCellNum(); c++ ) {
-			                	//HSSFCell cell = myRow.getCell( c );
+			                	//XSSFCell cell = myRow.getCell( c );
 			                	if ( cell != null ) {
-			                        if ( cell.getCellType() == HSSFCell.CELL_TYPE_BLANK ) {
+			                        if ( cell.getCellType() == XSSFCell.CELL_TYPE_BLANK ) {
 			                          value = "";
-			                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN ) {
+			                        } else if ( cell.getCellType() == XSSFCell.CELL_TYPE_BOOLEAN ) {
 			                          value = Boolean.toString( cell.getBooleanCellValue() );
-			                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_ERROR ) {
+			                        } else if ( cell.getCellType() == XSSFCell.CELL_TYPE_ERROR ) {
 			                          value = Byte.toString( cell.getErrorCellValue() );
-			                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_FORMULA ) {
+			                        } else if ( cell.getCellType() == XSSFCell.CELL_TYPE_FORMULA ) {
 			                          value = cell.getCellFormula().toString();
-			                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC ) {
+			                        } else if ( cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC ) {
 			                          value = Double.toString( cell.getNumericCellValue() );
-			                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_STRING ) {
+			                        } else if ( cell.getCellType() == XSSFCell.CELL_TYPE_STRING ) {
 			                          value = cell.getStringCellValue();
 			                        }
 			                		switch (i) {
@@ -237,7 +237,7 @@ catch(IOException e) {};
 			            }
 			                //Log.d("MyLog", "idtmc: " +idtmc+" "+n+" "+id+" "+id_pgr+" "+n_pgr+" "+ed+" "+ted+" "+price);
 				        /*		        
-				        if(row.getCell(1).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+				        if(row.getCell(1).getCellType() == XSSFCell.CELL_TYPE_NUMERIC){
 				            Date birthdate = row.getCell(1).getDateCellValue();
 				        }*/
 			           // }	        

@@ -485,7 +485,7 @@ public void onLoaderReset(Loader<Cursor> arg0) {
 }
 
 void setPrice () {
-	
+	byte tmp=0;
         	 Cursor cursor = MainActivity.db.getQueryData
 ("tmc_price as T",
          			new String[] {"T.price as price"}, 
@@ -497,18 +497,40 @@ void setPrice () {
      	        do {//tmpKol=cursor.getDouble(cursor.getColumnIndex("kol"));
      	        	//tmpSum=cursor.getDouble(cursor.getColumnIndex("s"));
      	        	if ( cursor.getDouble(cursor.getColumnIndex("price")) != 0 )
+     	        	{tmp=1;
      	        	tvPriceVendor.setText(String.valueOf(MainActivity.round2( cursor.getDouble(cursor.getColumnIndex("price")) )) );
-     	        	
+     	        	}
      	        } while (cursor.moveToNext());
      	      
-        	        cursor.close();    	     
+        	        cursor.close(); 
+        	        
+        	        if (tmp==0)
+        	        {
+        	        	cursor = MainActivity.db.getQueryData
+        	        			("tmc as T",
+        	        			         			new String[] {"T.price as price"}, 
+        	        			         			 //"TP.pgr = ?"
+        	        			         			" T._id="+tvIdProd.getText().toString()
+        	        			        			 , null,null,null,null);
+        	        			        	 if (cursor.moveToFirst())  
+        	        			      		   
+        	        			     	        do {//tmpKol=cursor.getDouble(cursor.getColumnIndex("kol"));
+        	        			     	        	//tmpSum=cursor.getDouble(cursor.getColumnIndex("s"));
+        	        			     	        	if ( cursor.getDouble(cursor.getColumnIndex("price")) != 0 )
+        	        			     	        	{tmp=1;
+        	        			     	        	tvPriceVendor.setText(String.valueOf(MainActivity.round2( cursor.getDouble(cursor.getColumnIndex("price")) )) );
+        	        			     	        	}
+        	        			     	        } while (cursor.moveToNext());
+        	        			     	      
+        	        			        	        cursor.close();	
+        	        }
 }
 
 void setOst () {
 
 	 Cursor cursor = MainActivity.db.getQueryData
 ("ostat as T ",
-			new String[] {"ifnull(T.kol,0) as kol", "count() as c"}, 
+			new String[] {"sum(ifnull(T.kol,0)) as kol", "count() as c"}, 
 			 //"TP.pgr = ?"
 			" T.id_tmc="+tvIdProd.getText().toString()+" and T.ed="+((int)MainActivity.StrToFloat2(tvEd.getText().toString()))+" and T.id_post="+tvIdPost.getText().toString()
 			 , null,null,null,null);
@@ -545,9 +567,26 @@ static class ProdLoader extends CursorLoader {
         	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
         if (!where.equals("")) where=" where "+where;*/
         cursor = MainActivity.db.getRawData(
-        "select _id, post, name, pgr,ed,ted, ost, pos, price from (select -1 _id, 0 post, name, 0 pgr, 0 ed, '-' ted, 0 ost, -1 pos, 0 price from foo union all select T._id as _id, O.id_post as post, T.name||' ('||E.name||')' as name, T.pgr as pgr, ifnull(O.ed,T.ed) as ed, E.name as ted, sum(O.kol) as ost, ifnull(T.pos,-1) as pos, T.price as price from tmc as T left join ostat as O on T._id=O.id_tmc left join tmc_ed as E on ifnull(O.ed,T.ed)=E._id where T.vis=1 "
+        "select _id, "
+        //+ "post, "
+        + "name, pgr,ed,ted, ost, pos, price from "
+        + "(select -1 _id, "
+        //+ "0 post, "
+        + "name, 0 pgr, 0 ed, '-' ted, 0 ost, -1 pos, 0 price from foo union all "
+        + "select T._id as _id, "
+        //+ "O.id_post as post, "
+        + "T.name||' ('||E.name||')' as name, T.pgr as pgr, ifnull(O.ed,T.ed) as ed, E.name as ted, sum(O.kol) as ost, ifnull(T.pos,-1) as pos, T.price as price "
+        + "from tmc as T left join "
+        + "(select id_tmc, ed, "
+        //+ "id_post, "
+        + "sum(kol) kol from ostat where kol!=0 group by id_tmc, ed"
+        //+ ", id_post "
+        + ") as O on T._id=O.id_tmc left join tmc_ed as E on ifnull(O.ed,T.ed)=E._id where T.vis=1 "
         
-        +" group by T._id, O.id_post, T.name, T.pgr, ifnull(O.ed,T.ed), E.name, ifnull(T.pos,-1), T.price ) where pgr = "
+        +" group by T._id, "
+        //+ "O.id_post, "
+        + "T.name, T.pgr, ifnull(O.ed,T.ed), E.name, ifnull(T.pos,-1), T.price "
+        + ") where pgr = "
         +((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText())//+((tmp==0)?"":" and _id="+tmp)
         +" order by name"
         , null);    
@@ -565,12 +604,6 @@ static class ProdLoader extends CursorLoader {
   }
  
 }
-/*
- near ")": 
-select _id, name, pgr,ed,ted, ost from 
-(select _id, name,0 pgr, 0 ed, '-' ted, 0 ost from foo 
-		union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted, O.kol as ost 
-		from tmc as T left join tmc_ed as E on T.ed=E._id left join ostat as O on T._id=O.id_tmc and T.id_post=) where pgr = pgr*/
 
 
 
