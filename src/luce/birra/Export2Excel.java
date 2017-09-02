@@ -791,7 +791,7 @@ static File all_spr (String dirN) {
 	    	    			+ "left join tmc_ed as E "
 	    	    			+ "on O.ed=E._id "
 	    	    			+ "left join tmc_pgr as TP "
-	    	    			+ "on O.pgr=TP._id "
+	    	    			+ "on O.pgr=TP._id order by TP._id, O.name"
 	    	    			, null);
 
 File file   = null, dir = null;

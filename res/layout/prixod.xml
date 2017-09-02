@@ -117,6 +117,7 @@
             		android:layout_weight="1"
                 	android:layout_width="match_parent"
                 	android:layout_height="match_parent"
+                	android:selectAllOnFocus="true"
                     android:hint="ВВЕДИТЕ СУММУ ЗАКУПКИ">
                     <requestFocus>
                 </requestFocus>
@@ -133,6 +134,7 @@
             		android:layout_weight="1"
                 	android:layout_width="match_parent"
                 	android:layout_height="match_parent"
+                	android:selectAllOnFocus="true"
                     android:hint="ВВЕДИТЕ ЦЕНУ ЗАКУПКИ">
                     <requestFocus>
                 </requestFocus>
@@ -157,6 +159,7 @@
             		android:layout_weight="1"
                 	android:layout_width="0dp"
                 	android:layout_height="match_parent"
+                	android:selectAllOnFocus="true"
                     android:hint="ВВЕДИТЕ № ПОЗИЦИИ (не обязательное поле)">
                     <requestFocus>
                 </requestFocus>
@@ -175,6 +178,7 @@
             		android:layout_weight="1"
                 	android:layout_width="0dp"
                 	android:layout_height="match_parent"
+                	android:selectAllOnFocus="true"
                     android:hint="ВВЕДИТЕ ЦЕНУ ПРОДАЖИ">
                     <requestFocus>
                 </requestFocus>

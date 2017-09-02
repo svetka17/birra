@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import luce.birra.DialogScreen.DialogListener;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -23,7 +24,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
-//import android.util.Log;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,10 +35,13 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
@@ -47,7 +51,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import luce.birra.DialogScreen.DialogListener;
+//import android.util.Log;
 
 public class RasxodActivity extends FragmentActivity implements OnCheckedChangeListener,
 SeekBar.OnSeekBarChangeListener
@@ -70,6 +74,7 @@ SeekBar.OnSeekBarChangeListener
   //TableRow.LayoutParams params;
   
   LinearLayout /*lltara,*/ llL, llR, llRR;
+  LinearLayout svPgr;
   LinearLayout.LayoutParams llLP;
   LinearLayout.LayoutParams llRP;
   SeekBar sbar;
@@ -111,7 +116,8 @@ SeekBar.OnSeekBarChangeListener
 	  Btara=ii;
 	  for (int i=0; i<CountTara; i++) 
 		  if (Byte.parseByte(but.get(i).tb.getTag().toString())!=ii) 
-		  {but.get(i).tb.setChecked(false);but.get(i).tb.setTextColor(clrNoCheck); but.get(i).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
+		  {but.get(i).tb.setChecked(false);but.get(i).tb.setTextColor(clrNoCheck); 
+		  but.get(i).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
 	  if (Byte.parseByte(tbnKol.getTag().toString())!=ii) 
 	  {tbnKol.setChecked(false);tbnKol.setTextColor(clrNoCheck);tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
   }
@@ -260,7 +266,7 @@ void makeDialog() {
     llL = (LinearLayout) findViewById(R.id.llL);
     llR = (LinearLayout) findViewById(R.id.llR);
     llRR = (LinearLayout) findViewById(R.id.llRR);
-    //llr = (LinearLayout) findViewById(R.id.llR);
+    svPgr = (LinearLayout) findViewById(R.id.svPgr);
     llLP = (LinearLayout.LayoutParams) llL.getLayoutParams();
     llRP = (LinearLayout.LayoutParams) llRR.getLayoutParams();
     
@@ -396,8 +402,8 @@ void makeDialog() {
 	} );
  
    lvCombo = (ListView) findViewById(R.id.lvCombo);
-   String[] from = { "name", "kol","price", "tara","itog", "summa", "button","summa2","skidka_but_text","skidka_sum_itog"};
-   int[] to = { R.id.comboName, R.id.comboKol,R.id.comboPrice, R.id.comboTara,R.id.comboItog, R.id.comboSumma, R.id.comboX,R.id.comboSumma2,R.id.comboSkidka, R.id.comboSkidkaSum };
+   String[] from = { "name", "kol","price","summakp","summa", "tara","itog",  /*"button",*/"summa2","skidka_but_text","skidka_sum_itog"};
+   int[] to = {  R.id.comboName, R.id.comboKol,R.id.comboPrice,R.id.comboSummaKP, R.id.comboSumma, R.id.comboTara,R.id.comboItog,  /*R.id.comboX,*/R.id.comboSumma2,R.id.comboSkidka, R.id.comboSkidkaSum };
         // создаем адаптер
         sAdapter = new MySimpleAdapter(this, data, R.layout.combo_item, from, to);
         // определяем список и присваиваем ему адаптер
@@ -522,8 +528,8 @@ void makeDialog() {
   }
    
    void setPgr() {
-	   llbut.removeAllViewsInLayout();
-	   svBut.removeAllViewsInLayout();
+	   //llbut.removeAllViewsInLayout();
+	   //svBut.removeAllViewsInLayout();
 	   
 	   /*int l=1;
 	   if (c.moveToFirst()) { 
@@ -537,9 +543,9 @@ void makeDialog() {
 	      }*/
 	   //float sText=((display_w)/(4*scale*scale*l))+scale*5;
 	   //float sText=MainActivity.sizeSmallButton;
-	    if (count_but_pgr<16)
-	    {  /* llbut = new TableLayout(this);
-	    	llbut.setOrientation(TableLayout.HORIZONTAL);*/
+	    /*if (count_but_pgr<16)
+	    {  // llbut = new TableLayout(this);
+	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
 	    	llR.removeView(llbut);
 	    	llR.removeView(svBut);	    	
 
@@ -548,8 +554,8 @@ void makeDialog() {
 	    	}
 	    else
 	    {
-	    	/*llbut = new TableLayout(this);
-	    	llbut.setOrientation(TableLayout.HORIZONTAL);*/
+	    	//llbut = new TableLayout(this);
+	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
 	    	
 	    	llR.removeView(llbut);
 	    	llR.removeView(svBut);
@@ -560,7 +566,13 @@ void makeDialog() {
 				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1));
 	    	svBut.addView(llbut,
 	    			new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.MATCH_PARENT,1));
-	    }
+	    }*/
+	   /*
+	    
+*/
+	//llR.removeView(llbut);
+   	//llR.removeView(svBut);
+   	svPgr.removeAllViewsInLayout();
 	   
 	   //byte ib=CountTara;
 	   //llbut.removeAllViewsInLayout();
@@ -571,15 +583,15 @@ void makeDialog() {
 	        	//TableLayout.LayoutParams params = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT);
  	    		//params.weight=1;
  	    		
-	        	if (i%2==1) {
+	        	/*if (i%2==1) {
 	        		row = new TableRow(this);
 	                //row.setGravity(Gravity.CENTER);
 	                //row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,1.0f));
     		 
 	                llbut.addView(row,
-	                		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, /*TableLayout.LayoutParams.MATCH_PARENT*/0,1));
+	                		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 0,1));
 	                //row.addView(llbut, params);
-	        	}
+	        	}*/
 	        	//LinearLayout.LayoutParams PL = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT );
 	    		//PL.weight=1;
 	        	//LinearLayout.LayoutParams PB = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -592,21 +604,22 @@ void makeDialog() {
 	        		il++;
 	        	}*/
 	        	//but.add(new chB(byte indBT, int id_tmc, String tmc_name, float val, float ost, int post, float kol, float price, byte ed, String ted, ToggleButton tb))
+////////////////////
 	        	
 	        	Button btnPgr = new Button(this);
 	        	
 	        	btnPgr.setText(c.getString(c.getColumnIndex("name")));
+	        	//Log.d("MyLog", "pgr="+btnPgr.getText());
 	        	btnPgr.setTag(c.getInt(c.getColumnIndex("_id"))+"-"+c.getString(c.getColumnIndex("name")));
 	        	btnPgr.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butPgr);
 	        	btnPgr.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
-	        	btnPgr.setMinimumWidth((int)(MainActivity.w / 4));
+	        	btnPgr.setMinimumHeight((int)(MainActivity.h / 5));
+	        	
+		    	
 	        	btnPgr.setOnClickListener(new OnClickListener() {
 	                public void onClick(View v) {
-/////////////////////////////////////
 			String regexp = "^([0-9]+)";
-			//String goodIp = v.getTag().toString();
 			Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
-
 			Matcher matcher = pattern.matcher(v.getTag().toString());
 			tvIdPgr.setText(matcher.find()?matcher.group():"-1");
 			btnBack.setTag(matcher.find()?matcher.group():"-1");
@@ -617,7 +630,22 @@ void makeDialog() {
 			//Log.d("MyLog", matcher.find()?matcher.group()+" starting at index "+matcher.start()+" and ending at index "+matcher.end()+".":"no");
 			tvNamePgr.setText(matcher.find()?matcher.group():"-1" /*c.getString(c.getColumnIndex("name"))*/);
 	                	
-	                	//Log.d("MyLog", "v.tag="+v.getTag()+" id_pgr="+tvIdPgr.getText()+" namePgr="+tvNamePgr.getText());
+			/*for (int i=0; i<CountTara; i++) 
+				  if (Byte.parseByte(but.get(i).tb.getTag().toString())!=ii) 
+				  {but.get(i).tb.setChecked(false);but.get(i).tb.setTextColor(clrNoCheck); 
+				  but.get(i).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}*/
+			ArrayList<View> alv = MainActivity.getViewsByTag(svPgr);//(LinearLayout)findViewById(R.id.svPgr));
+			for (int i=0; i<alv.size(); i++)
+		    {
+			//if (!(alv.get(i) instanceof SeekBar || alv.get(i) instanceof NumberPicker))
+		    	((Button)alv.get(i)).setBackground(getResources().getDrawable(R.drawable.edittexth_style));
+		    	((Button)alv.get(i)).setTextColor(clrNoCheck);
+		    }
+	        
+			v.setBackground(getResources().getDrawable(R.drawable.btn_chek));
+	    	((Button)v).setTextColor(clrCheck);
+			
+			//Log.d("MyLog", "v.tag="+v.getTag()+" id_pgr="+tvIdPgr.getText()+" namePgr="+tvNamePgr.getText());
 	                	setBut();
 	                	//data.clear();
 	                	//sAdapter.notifyDataSetChanged();
@@ -625,10 +653,11 @@ void makeDialog() {
 	                }
 	              });
 	        	
-	        	//llbut.addView(btnPgr/*,PB*/);
-	        	row.addView(btnPgr,
-	        			new TableRow.LayoutParams(/*TableRow.LayoutParams.MATCH_PARENT*/0,TableRow.LayoutParams.MATCH_PARENT,1));
+	        	svPgr.addView(btnPgr, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0) );
+	        	
 	        	i++;//ib++;
+	        	
+///////////////////////////////////	        	
 	        } while (c.moveToNext());
 	        
 	      } 
@@ -954,11 +983,13 @@ void makeDialog() {
    		m.put("skidka_sum", 0);
    		m.put("skidka_but", 0);
    		m.put("skidka_but_text", "0%");
-   		   m.put("name", but.get(Btovar).tmc_name);
+   		  m.put("name", but.get(Btovar).tmc_name+" (СВОЯ ТАРА)");
+   		//m.put("name", but.get(Btovar).tmc_name);
    		   m.put("price", MainActivity.round2(but.get(Btovar).price));
    		   if (Btara!=-2) 
    		   {m.put("kol", MainActivity.round3(but.get(Btara).val)+" "+but.get(Btovar).ted); 
    		   m.put("summa", but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
+   		m.put("summakp", but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
    		m.put("summa2", but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
    		m.put("skidka_sum_itog", but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
    		   m.put("itog", MainActivity.round3(but.get(Btara).val)+" * "+MainActivity.round2(but.get(Btovar).price)+" = ");} 
@@ -967,6 +998,7 @@ void makeDialog() {
    		   tmp = MainActivity.round2(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()));
    		   m.put("summa", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
    				   );
+   		m.put("summakp", tmp );
    		m.put("summa2", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
 				   );
    		m.put("skidka_sum_itog", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
@@ -1012,20 +1044,24 @@ void makeDialog() {
    	  	m.put("skidka_sum", 0);
 		m.put("skidka_but", 0);
 		m.put("skidka_but_text", "0%");
-   	  	m.put("name", but.get(Btovar).tmc_name);
+   	  	//m.put("name", but.get(Btovar).tmc_name);
    	 m.put("price", MainActivity.round2(but.get(Btovar).price));
    	 if (Btara!=-2) {m.put("kol", MainActivity.round3(but.get(Btara).val)+" "+but.get(Btovar).ted);
 		      m.put("tara", " + ТАРА "+but.get(Btara).tmc_name);
+		      m.put("name", but.get(Btovar).tmc_name+" (ТАРА "+but.get(Btara).tmc_name+")");
 		      tmp = MainActivity.round2(but.get(Btovar).price*(but.get(Btara).val/*/0.5*/)+but.get(Btara).price);
 		      //Log.d("MyLog", "price="+but.get(Btara).price);
 		      m.put("summa", tmp);
+		      m.put("summakp", tmp);
 		      m.put("summa2", tmp);
 		      m.put("skidka_sum_itog", tmp);
 		      m.put("itog", MainActivity.round3(but.get(Btara).val)+" * "+MainActivity.round2(but.get(Btovar).price)+" + "+MainActivity.round2(but.get(Btara).price)+" = ");}
    	 else
    	{m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted);
     m.put("tara", /*" + ПАКЕТ "*/"");
+    m.put("name", but.get(Btovar).tmc_name);
     tmp = MainActivity.round2(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()));
+    m.put("summakp", tmp);
     m.put("summa", tmp);
     m.put("summa2", tmp);
     m.put("skidka_sum_itog", tmp);
@@ -1741,11 +1777,11 @@ void makeDialog() {
 	      // метод супер-класса, который вставляет текст
 	      super.setViewText(v, text);
 	      // если нужный нам TextView, то разрисовываем 
-	      if (v.getId() == R.id.comboSumma) {
+	      //if (v.getId() == R.id.comboSumma) {
 	        //float i = Float.parseFloat(text);
 	        //if (i < 0) v.setTextColor(Color.RED); else
 	          //if (i > 100) v.setTextColor(Color.RED);
-	      }
+	      //}
 	    }
 	 
 	    @Override
@@ -1776,6 +1812,8 @@ void makeDialog() {
             tvS.setTextColor(Color.WHITE);*/
             	LinearLayout llHide=(LinearLayout)v.findViewById(R.id.comboHideLL);
                 llHide.setVisibility(LinearLayout.GONE);
+                final TextView tSumKP=(TextView)v.findViewById(R.id.comboSummaKP);   
+                tSumKP.setVisibility(TextView.GONE);
                 final TextView tSum=(TextView)v.findViewById(R.id.comboSumma2);   
                 tSum.setVisibility(TextView.VISIBLE);
                 final TextView tSkidka=(TextView)v.findViewById(R.id.comboSkidkaSum);   
@@ -1853,9 +1891,9 @@ void makeDialog() {
 	    @Override
 	    public boolean setViewValue(View view, Object data,
 	        String textRepresentation) {
-	      int i = 0;
+//	      int i = 0;
 	      //MainActivity.setSizeFontItem((LinearLayout)/*findViewById(R.id.oborotka_item_tr)*/view);
-	      switch (view.getId()) {
+//	      switch (view.getId()) {
 	      // LinearLayout
 	      /*case R.id.llLoad:
 	        i = ((Integer) data).intValue();
@@ -1868,7 +1906,7 @@ void makeDialog() {
 	        i = ((Integer) data).intValue();
 	        ((ProgressBar)view).setProgress(i);
 	        return true;*/
-	      case R.id.comboX:
+//	      case R.id.comboX:
 		        //i = ((Integer) data).intValue();
 		        //((ProgressBar)view).setProgress(i);
 	    	  /*((Button)view).setOnClickListener(new OnClickListener() {
@@ -1880,8 +1918,8 @@ void makeDialog() {
 					sAdapter.notifyDataSetChanged();
 				}
 			});*/
-		        return true;
-	      }
+//		        return true;
+//	      }
 	      return false;
 	    }
 	  }

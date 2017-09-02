@@ -312,7 +312,7 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
      			null,//new String[] {tvIdPgr.getText().toString().equals("0")?"TP.pgr":tvIdPgr.getText().toString() //, 
     					//(tvDataIns.getText().length()==0)?"1=1":"substr(T.data_ins,1,6)=trim("+MainActivity.getIntData(tvDataIns.getText().toString())+")"
     					//		},
-    					null,null,"T.name");
+    					null,null,"T.pgr, T.name");
     	 
       return cursor;
     }
