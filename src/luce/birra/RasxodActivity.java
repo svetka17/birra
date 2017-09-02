@@ -85,6 +85,7 @@ SeekBar.OnSeekBarChangeListener
   int Bpost=0,btnK=0,clrCheck=Color.WHITE;
   
   byte CountTara=0;
+  byte tmp_minus=0;
   //float otherVal=0;
   String tmcV;
   String kol_skidka="";
@@ -284,12 +285,12 @@ void makeDialog() {
     btnBack.setTag(-1);
     btnBack.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	if (Integer.parseInt(v.getTag().toString())!=-1) {
+        	/*if (Integer.parseInt(v.getTag().toString())!=-1) {
         		v.setTag(-1);
         		tvNamePgr.setText("");
-        		setPgr();
+        		setBut();
         	}
-        	else
+        	else*/
         		finish();
         }
       });
@@ -367,6 +368,13 @@ void makeDialog() {
     
     tvKol = (TextView) findViewById(R.id.tvOtherKol_);
     tvKol.setTextSize(TypedValue.COMPLEX_UNIT_PX, MainActivity.butTara );
+    tvKol.setOnClickListener(new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			tbnKol.setChecked(true);			
+		}
+	});
     tbnKol = (ToggleButton) findViewById(R.id.btnOtherKolRasxod);
     tbnKol.setTextSize(TypedValue.COMPLEX_UNIT_PX, MainActivity.butTara );
     tbnKol.setTag(-2);
@@ -446,6 +454,7 @@ void makeDialog() {
 						
 						Intent intent = new Intent(RasxodActivity.this, PrixodActivity.class);
 						if (Btovar!=-1) {
+							intent.putExtra("PrixodClose", "1" );
 						intent.putExtra("PrixodEd", String.valueOf( but.get(Btovar).ed ) );
 						//Log.d("MyLog", "ed="+String.valueOf( but.get(Btovar).ed ));
 	             	    intent.putExtra("PrixodPgr", "0");
@@ -467,9 +476,10 @@ void makeDialog() {
     					      //Log.d("MyLog", "id="+id);
     					      startActivity(intent);
     					      
-						btnBack.setTag(-1);
-		        		tvNamePgr.setText("");
+						//btnBack.setTag(-1);
+		        		//tvNamePgr.setText("");
 		        		setPgr();
+    					//setBut();
 					}	
 				}
 			}); 
@@ -495,9 +505,10 @@ void makeDialog() {
 							        } while (cc.moveToNext());
 							      };
 							if (countT!=0) showMessage("Остаток обнулен", (byte)1);
-							btnBack.setTag(-1);
-			        		tvNamePgr.setText("");
-			        		setPgr();
+							//btnBack.setTag(-1);
+			        		//tvNamePgr.setText("");
+			        		//setPgr();
+			        		setBut();
 						}	
 					}
 				}); 
@@ -526,6 +537,51 @@ void makeDialog() {
       });
     
   }
+   void setKeg() {
+	   llbut.removeAllViewsInLayout();
+	   svBut.removeAllViewsInLayout();
+	   
+	   /*int l=1;
+	   if (c.moveToFirst()) { 
+		   
+	        do {	        	
+	        	String[] n = (c.getString(c.getColumnIndex("name"))).split(" ");
+	        	for (int i=0; i<n.length; i++ )
+	        		if (n[i].length()>l) l=n[i].length();
+	        } while (c.moveToNext());
+	        
+	      }*/
+	   //float sText=((display_w)/(4*scale*scale*l))+scale*5;
+	   //float sText=MainActivity.sizeSmallButton;
+	    if (count_but_pgr<16)
+	    {  // llbut = new TableLayout(this);
+	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
+	    	llR.removeView(llbut);
+	    	llR.removeView(svBut);	    	
+
+	    	llR.addView(llbut,
+				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1)); 
+	    	}
+	    else
+	    {
+	    	//llbut = new TableLayout(this);
+	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
+	    	
+	    	llR.removeView(llbut);
+	    	llR.removeView(svBut);
+	    	
+	    	//svBut = new ScrollView(this);
+	    	//hll_tara_button.setHorizontalScrollBarEnabled(true); //setScrollBarStyle(HorizontalScrollView. HORIZONTAL);
+	    	llR.addView(svBut,
+				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1));
+	    	svBut.addView(llbut,
+	    			new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.MATCH_PARENT,1));
+	    }
+	   //Cursor cc = MainActivity.db.getRawData 
+		//	   ("select S.id_tmc as _id, S.keg as keg, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
+			// 						+ " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol!=0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, S.id_tmc",null);
+
+	  } 
    
    void setPgr() {
 	   //llbut.removeAllViewsInLayout();
@@ -622,14 +678,14 @@ void makeDialog() {
 			Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(v.getTag().toString());
 			tvIdPgr.setText(matcher.find()?matcher.group():"-1");
-			btnBack.setTag(matcher.find()?matcher.group():"-1");
+			/*btnBack.setTag(matcher.find()?matcher.group():"-1");
 			//Log.d("MyLog", matcher.find()?matcher.group()+" starting at index "+matcher.start()+" and ending at index "+matcher.end()+".":"no");
 			regexp="-([а-яА-ЯёЁa-zA-Z0-9 \\.\\(\\),-]+)$";
 			pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
 			matcher = pattern.matcher(v.getTag().toString());
 			//Log.d("MyLog", matcher.find()?matcher.group()+" starting at index "+matcher.start()+" and ending at index "+matcher.end()+".":"no");
-			tvNamePgr.setText(matcher.find()?matcher.group():"-1" /*c.getString(c.getColumnIndex("name"))*/);
-	                	
+			tvNamePgr.setText(matcher.find()?matcher.group():"-1");
+	         */       	
 			/*for (int i=0; i<CountTara; i++) 
 				  if (Byte.parseByte(but.get(i).tb.getTag().toString())!=ii) 
 				  {but.get(i).tb.setChecked(false);but.get(i).tb.setTextColor(clrNoCheck); 
@@ -915,16 +971,54 @@ void makeDialog() {
 	        		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 	        			byte tmp=0;
 	        			if (isChecked)
-	        			{ buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
+	        			{
+	        			//buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 	        			Btovar=Byte.parseByte(buttonView.getTag().toString());
-	        			for (int i=CountTara; i<but.size(); i++) {
+	        			/*for (int i=CountTara; i<but.size(); i++) {
 	        		    	if ((i)!= Integer.parseInt(buttonView.getTag().toString())) 
 	        		    	{but.get(i).tb.setChecked(false); but.get(i).tb.setTextColor(clrNoCheck) ; but.get(i).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
 	        		    	else tmp=but.get(i).ed ;
-	        				}
+	        				}*/
 	        				
 	        			//06.04!! if (Btara!=-1) fixV();// buttonView.setChecked(false);}
-	        			
+	        			///проверка остатка по кнопке на 0 или <0
+	        			tmp_minus=0;
+	        			if (but.get(Btovar).ost<0.2)
+	        			{
+	        			DialogScreen getYes = new DialogScreen(RasxodActivity.this,RasxodActivity.this,-7).setDialogScreenListener(new DialogListener() {
+	    					
+	    					@Override
+	    					public void OnSelectedKol(double k) {
+	    						if (k==0) {
+	    						
+	    						//удаляем кнопку спрашиваем нужно ли оприходовать
+	    						long countT=0;
+								Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
+								   if (cc.moveToFirst()) { 
+								        do {countT=
+								        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка - из меню "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+								        } while (cc.moveToNext());
+								      };
+								if (countT!=0) {showMessage("Остаток обнулен", (byte)1);
+	    			        		tmp_minus=(byte)1;
+									butAdd.callOnClick();
+									//setBut();
+	    			        		}
+	    						}	
+	    					}
+	    				}); 
+	    				getYes.show();
+	        			}
+	        			///
+	        			if (tmp_minus==0)
+	        			{
+	        				buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
+		        			//Btovar=Byte.parseByte(buttonView.getTag().toString());
+		        			for (int i=CountTara; i<but.size(); i++) {
+		        		    	if ((i)!= Integer.parseInt(buttonView.getTag().toString())) 
+		        		    	{but.get(i).tb.setChecked(false); but.get(i).tb.setTextColor(clrNoCheck) ; but.get(i).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
+		        		    	else tmp=but.get(i).ed ;
+		        				}
 	        			if (Btara!=-1) 
 	        				{if (!(tmp!=1 && Btara!=-2 ))
 	        				fixV();// buttonView.setChecked(false);}
@@ -947,6 +1041,7 @@ void makeDialog() {
    					    //showDialog(1);
    					makeDialog();
    					    }
+	        			} else setBut();
 	        			}
 	        			else
 	        				{buttonView.setTextColor(clrNoCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
@@ -1121,19 +1216,21 @@ void makeDialog() {
    		//public void addRecRASXOD(int id_tmc, float kol, float price, int id_post, int id_klient, String prim, int data_del, int data_ins, byte ok)
    	//MainActivity.db.addRecRASXOD(but.get(Btovar).id_tmc,but.get(Btovar).keg,
    		//	tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
-   	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
+   		but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
+   	   	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i);
+   	   	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i+" ost="+but.get(tranz.get(i).tagB).ost);
+   	   	
+   	   	//but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
+   	   	if (but.get(tranz.get(i).tagB).ost==0 && but.get(tranz.get(i).tagB).ed==1)//если кол-во =0 то добавляем остаток по приходу
+   	   	{
+   	   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, tranz.get(i).keg, -but.get(tranz.get(i).tagB).ost+0.1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "автоувеличение+1 остатка "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
+   	   		but.get(tranz.get(i).tagB).ost=0.1;
+   	   		tranz.get(i).prim="из отрицательного остатка! "+tranz.get(i).prim;
+   	   	}
+   		MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
    			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
    	   	
-   	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
-   	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i);
-   	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i+" ost="+but.get(tranz.get(i).tagB).ost);
    	
-   	//but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
-   	/*if (but.get(tranz.get(i).tagB).ost<=0 && but.get(tranz.get(i).tagB).ed==1)//если кол-во <0 то добавляем остаток по приходу
-   	{
-   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+0.1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "автоувеличение+1 остатка "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
-   		but.get(tranz.get(i).tagB).ost=0.1;
-   	}*/
    	//Log.d("MyLog", "PtagB="+tranz.get(i).tagB+" ost="+but.get(tranz.get(i).tagB).ost);
    	if (tranz.get(i).tagB>CountTara-1) {
    		
@@ -1196,7 +1293,15 @@ void makeDialog() {
     skid=0;	
     if (tranz.get(i).tagL!=-1) skid=MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() );
 	
-   	//long tmp = MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc,
+    but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
+   	if (but.get(tranz.get(i).tagB).ost==0 && but.get(tranz.get(i).tagB).ed==1 )//если кол-во =0 то добавляем остаток по приходу
+   	{
+   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, tranz.get(i).keg, -but.get(tranz.get(i).tagB).ost+0.1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
+   		but.get(tranz.get(i).tagB).ost=0.1;
+   		tranz.get(i).prim="из отрицательного остатка! "+tranz.get(i).prim;
+   	}
+    
+    //long tmp = MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc,
    		//	tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
     	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
        			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
@@ -1207,14 +1312,7 @@ void makeDialog() {
    	//if (tranz.get(i).tagL!=-1 /*&& MainActivity.StrToFloat( data.get(tranz.get(i).tagL).get("skidka_sum").toString() )!=0*/ )
    	// if (MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() )!=0)
    	//	MainActivity.db.addRecRASXOD(0, -MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() ), (byte)4, 0, 0, (int)cou, "СКИДКА ПО ПОЗИЦИИ "+tmp+":"+data.get(tranz.get(i).tag).get("skidka_sum").toString()+"ГРН", MainActivity.getIntDataTime(),(int)tmp);
-  
-   	but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
-   	/*if (but.get(tranz.get(i).tagB).ost<=0 && but.get(tranz.get(i).tagB).ed==1 )//если кол-во <0 то добавляем остаток по приходу
-   	{
-   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, -but.get(tranz.get(i).tagB).ost+0.1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
-   		but.get(tranz.get(i).tagB).ost=0.1;
-   	}*/
- 
+
    	if (tranz.get(i).tagB>CountTara-1) {
    		int l1=(but.get(tranz.get(i).tagB).tmc_name+"\n").length(), 
    			l2=(but.get(tranz.get(i).tagB).tmc_name+"\n"+MainActivity.round3(but.get(tranz.get(i).tagB).ost)+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)).length();

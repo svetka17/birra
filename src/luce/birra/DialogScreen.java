@@ -303,8 +303,30 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(0);						
 				}
 			})
-			.setTitle("ÍÎÂÛÉ ÒÎÂÀĞ?");
+			.setTitle("ÑÄÅËÀÒÜ ÍÎÂÛÉ ÏĞÈÕÎÄ İÒÎÃÎ ÒÎÂÀĞÀ?");
             break;
+        case -7:
+            setPositiveButton("ÄÀ", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                	listener.OnSelectedKol(1);
+                }
+            })
+            .setNegativeButton("ÍÅÒ", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					listener.OnSelectedKol(0);
+				}
+			})
+			.setOnDismissListener(new OnDismissListener() {	
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					listener.OnSelectedKol(-1);						
+				}
+			})
+			.setTitle("ÒÎÂÀĞ ÅÑÒÜ Â ÍÀËÈ×ÈÈ?");
+            break;    
         case 0: 
 			/*OnDateSetListener myCallBack = new OnDateSetListener() {
 			    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) 
@@ -453,7 +475,7 @@ public class DialogScreen extends AlertDialog.Builder {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     	//kol=MainActivity.StrToFloat(tvDKol.getText().toString());
-                    	listener.OnSelectedKol(MainActivity.StrToFloat(tvDKol.getText().toString()));
+                    	listener.OnSelectedKol((double)MainActivity.StrToFloat(tvDKol.getText().toString()));
                     }
                 })
                 .setNegativeButton("ÎÒÌÅÍÀ", new DialogInterface.OnClickListener() {

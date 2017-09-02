@@ -34,7 +34,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   Cursor// cProd, 
   cPost,  cPgr, cEd;
   static Cursor cursor;
-  static byte flagFocus=0, tmp_ed=-1;
+  static byte flagFocus=0, tmp_ed=-1, tmp_close=0;
   static int tmp=0;
   SimpleCursorAdapter scaProd, scaPost, scaPgr, scaEd;
   String[] fromProd, fromPost, fromPgr, fromEd;
@@ -317,6 +317,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         		tvOst.setText(String.valueOf(MainActivity.StrToFloat(tvOst.getText().toString())+MainActivity.StrToFloat(tvKol.getText().toString()) ));
         		showMessage("опхунд "+s+" йнк-бн:"+tvKol.getText().toString()+" жемю:"+tvPrice.getText().toString(), (byte)0);
         		tvPrim.setText("");
+        		if (tmp_close==1) finish();
         		}
   			 else
   			 {
@@ -394,7 +395,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     	tmp=((int) MainActivity.StrToFloat(getIntent().getStringExtra("PrixodProd")));
     	//tvEd.setText(getIntent().getStringExtra("PrixodEd"));
     	tmp_ed=(byte) (MainActivity.StrToFloat(getIntent().getStringExtra("PrixodEd")));
-    	
+    	tmp_close=(byte) (MainActivity.StrToFloat(getIntent().getStringExtra("PrixodClose")));
     	//MainActivity.setSpinnerItemById(spProd, tmp/*(long) MainActivity.StrToFloat(getIntent().getStringExtra("PrixodProd"))*/ /*Integer.parseInt(getIntent().getStringExtra("PrixodProd"))*/);
 
     	//spPost.setSelection(Integer.parseInt(getIntent().getStringExtra("PrixodPost")));
