@@ -119,8 +119,8 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
         	}
       });
     // формируем столбцы сопоставления
-    String[] from = new String[] { /*"_id",*/"_id","pgr","name","post","kol","ed","sumka","price","skidka","ostat"};
-    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Ost, R.id.tv_Pgr_Rasxod_Ost, R.id.tv_Name_Rasxod_Ost,R.id.tv_Post_Rasxod_Ost,R.id.tv_Kol_Rasxod_Ost,R.id.tv_Ed_Rasxod_Ost,R.id.tv_Sumka_Rasxod_Ost,R.id.tv_Price_Rasxod_Ost,R.id.tv_Skidka_Rasxod_Ost,R.id.tv_Ostat_Rasxod_Ost};
+    String[] from = new String[] { /*"_id",*/"_id","pgr","name","post","kol","ed","sumka","price","skidka","ostat","keg"};
+    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Ost, R.id.tv_Pgr_Rasxod_Ost, R.id.tv_Name_Rasxod_Ost,R.id.tv_Post_Rasxod_Ost,R.id.tv_Kol_Rasxod_Ost,R.id.tv_Ed_Rasxod_Ost,R.id.tv_Sumka_Rasxod_Ost,R.id.tv_Price_Rasxod_Ost,R.id.tv_Skidka_Rasxod_Ost,R.id.tv_Ostat_Rasxod_Ost,R.id.tv_Keg_Rasxod_Ost};
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
@@ -250,11 +250,11 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
         	if (!str[3].equals("")) where=where+" and "+str[3].toString();
 "id_tmc","pgr","name","post","kol","ed","sumka","ostat"
 */     
-            	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed left join postav as KK on T.id_post=KK._id", 
-             			new String[] {"TP._id as _id","TT.name as pgr","TP.name as name",/*"T.data_ins as data_ins",*/"KK.name as post","sum(T.kol) as kol","E.name as ed",
+            	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on T.id_post=KK._id", 
+             			new String[] {"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg","TP._id as _id","TT.name as pgr","TP.name as name",/*"T.data_ins as data_ins",*/"KK.name as post","sum(T.kol) as kol","E.name as ed",
             			 "sum(T.price*T.kol) as sumka","round(sum(T.price*T.kol)/sum(T.kol),2) as price","round(sum(T.skidka),2) as skidka","K.kol as ostat"}, 
              			 //"TP.pgr = ?"
-            			 where, null,"TP._id, TT.name, TP.name, KK.name, E.name, K.kol",null,null);
+            			 where, null,"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, K.kol",null,null);
 
       return cursor;
     }

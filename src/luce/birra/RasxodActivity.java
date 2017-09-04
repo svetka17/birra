@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import luce.birra.DialogScreen.DialogListener;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -24,7 +23,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,13 +33,10 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
@@ -51,15 +46,15 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-//import android.util.Log;
+import luce.birra.DialogScreen.DialogListener;
 
 public class RasxodActivity extends FragmentActivity implements OnCheckedChangeListener,
 SeekBar.OnSeekBarChangeListener
 {
   Button butAdd, butDel, tbHist, tbXX, btnOk,btnOkOk, btnBack, bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
-  TextView  // tvDKol, 
+  static TextView  // tvDKol, 
   tvIdPgr, tvNamePgr;//, tvCombo;
-  TextView titleD, tvNal, tvSkidka, tvIdKlient, etCheckCheck;
+  TextView titleD, tvNal, tvSkidka, tvIdKlient, etCheckCheck;//, tvComboName;
   SimpleCursorAdapter scaKlient;
   Spinner spKlient;
   ListView lvComboD;
@@ -112,7 +107,7 @@ SeekBar.OnSeekBarChangeListener
   ListView lvCombo;
   //DialogScreen getkol;
   int count_but_tara=0, count_but=0, count_but_pgr=0;
-  
+ // static int tmp_pgr=0;
   void tara(byte ii) {
 	  Btara=ii;
 	  for (int i=0; i<CountTara; i++) 
@@ -296,6 +291,8 @@ void makeDialog() {
       });
     
     tvIdPgr = (TextView) findViewById(R.id.tvIdPgrBack);
+    
+    //Log.d("MyLog", " Create ");
     tvIdPgr.setText("-1");
     tvIdPgr.setTag(-1);
       
@@ -414,6 +411,7 @@ void makeDialog() {
    int[] to = {  R.id.comboName, R.id.comboKol,R.id.comboPrice,R.id.comboSummaKP, R.id.comboSumma, R.id.comboTara,R.id.comboItog,  /*R.id.comboX,*/R.id.comboSumma2,R.id.comboSkidka, R.id.comboSkidkaSum };
         // создаем адаптер
         sAdapter = new MySimpleAdapter(this, data, R.layout.combo_item, from, to);
+        
         // определяем список и присваиваем ему адаптер
         //Button bSkidka=(Button)findViewById(R.id.comboSkidka);
  		//bSkidka.setText("CКИДКА");
@@ -453,37 +451,62 @@ void makeDialog() {
 	                    //contxt.startActivity(intent);
 						
 						Intent intent = new Intent(RasxodActivity.this, PrixodActivity.class);
+						intent.putExtra("PrixodClose", /*tvIdPgr.getText()*/"1" );
+						intent.putExtra("PrixodPgr", "0");
+						intent.putExtra("PrixodPrice", "0" );
+						intent.putExtra("PrixodPriceVendor", "0" );
+						intent.putExtra("PrixodKol", "1");
+						intent.putExtra("PrixodProd", "-1");
+						intent.putExtra("PrixodEd", "1");
+						intent.putExtra("PrixodPost","-1");
+						intent.putExtra("PrixodPrim", "ДОБАВЛЕНИЕ ТОВАРА ИЗ МЕНЮ "+MainActivity.usr);
+						intent.putExtra("PrixodDataIns", String.valueOf( MainActivity.getIntDataTime() ));
 						if (Btovar!=-1) {
-							intent.putExtra("PrixodClose", "1" );
+							//Log.d("MyLog", "_IdPgr="+String.valueOf( tvIdPgr.getTag() ));
+						//intent.putExtra("PrixodPgr", tvIdPgr.getText() );							
+						//intent.putExtra("PrixodClose", /*tvIdPgr.getText()*/"1" );
 						intent.putExtra("PrixodEd", String.valueOf( but.get(Btovar).ed ) );
 						//Log.d("MyLog", "ed="+String.valueOf( but.get(Btovar).ed ));
-	             	    intent.putExtra("PrixodPgr", "0");
+	             	    
 	             	    //intent.putExtra("PrixodId", ((Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("_id")));
 	                    intent.putExtra("PrixodProd", String.valueOf(but.get(Btovar).id_tmc));
-	                    intent.putExtra("PrixodKeg", String.valueOf(but.get(Btovar).keg));
-	                    intent.putExtra("PrixodPrice", "0" );
+	                    //intent.putExtra("PrixodKeg", String.valueOf(but.get(Btovar).keg));
+	                    
 	                    intent.putExtra("PrixodPriceVendor", String.valueOf(but.get(Btovar).price) );
 	                   // Log.d("MyLog", "price="+String.valueOf( but.get(Btovar).price ));
 	                    if (but.get(Btovar).ed==1)
-	                    intent.putExtra("PrixodKol", String.valueOf(50));
+	                    intent.putExtra("PrixodKol", "50");
 	                    else 
-	                    	intent.putExtra("PrixodKol", String.valueOf(1));
-	                    intent.putExtra("PrixodPrim", "ДОБАВЛЕНИЕ ТОВАРА ИЗ МЕНЮ "+MainActivity.usr);
+	                    	intent.putExtra("PrixodKol", "1");
+	                    
 	                    intent.putExtra("PrixodPost", String.valueOf(but.get(Btovar).post));
 	                   // Log.d("MyLog", "post="+String.valueOf( but.get(Btovar).post ));
-	                    intent.putExtra("PrixodDataIns", String.valueOf( MainActivity.getIntDataTime() ));
+	                    
 						}
     					      //Log.d("MyLog", "id="+id);
     					      startActivity(intent);
     					      
 						//btnBack.setTag(-1);
 		        		//tvNamePgr.setText("");
-		        		setPgr();
-    					//setBut();
-					}	
+		        		//setPgr();
+    					      //tvIdPgr.setText(matcher.find()?matcher.group():"-1");
+    					      //Log.d("MyLog", tmp_pgr+" IdPgr="+String.valueOf( tvIdPgr.getText() ));
+    					      /*ArrayList<View> alv = MainActivity.getViewsByTag(svPgr);//(LinearLayout)findViewById(R.id.svPgr));
+    							for (int i=0; i<alv.size(); i++)
+    						    //{
+    							//if (!(alv.get(i) instanceof SeekBar || alv.get(i) instanceof NumberPicker))
+    						    	if (((Button)alv.get(i)).getTag().equals(tvIdPgr.getTag()) )
+    								{
+    						    	((Button)alv.get(i)).setBackground(getResources().getDrawable(R.drawable.btn_chek));
+    						    	((Button)alv.get(i)).setTextColor(clrCheck);
+    								}*/
+    					      //tvIdPgr.setText(tmp_pgr);  
+    					      //setBut();
+					} else setBut();
 				}
 			}); 
 			getYes.show();
+			//setBut();
         }
       });
     
@@ -666,11 +689,11 @@ void makeDialog() {
 	        	
 	        	btnPgr.setText(c.getString(c.getColumnIndex("name")));
 	        	//Log.d("MyLog", "pgr="+btnPgr.getText());
-	        	btnPgr.setTag(c.getInt(c.getColumnIndex("_id"))+"-"+c.getString(c.getColumnIndex("name")));
+	        	btnPgr.setTag(c.getInt(c.getColumnIndex("_id")));//+"-"+c.getString(c.getColumnIndex("name")));
 	        	btnPgr.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butPgr);
 	        	btnPgr.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
-	        	btnPgr.setMinimumHeight((int)(MainActivity.h / 5));
-	        	
+	        	btnPgr.setMinimumHeight((int)(MainActivity.h / 7));
+	        	//btnPgr.setMinimumWidth((int)(MainActivity.w / 8));
 		    	
 	        	btnPgr.setOnClickListener(new OnClickListener() {
 	                public void onClick(View v) {
@@ -678,6 +701,7 @@ void makeDialog() {
 			Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(v.getTag().toString());
 			tvIdPgr.setText(matcher.find()?matcher.group():"-1");
+			//tmp_pgr=(int)MainActivity.StrToFloat2(matcher.find()?matcher.group():"-1");
 			/*btnBack.setTag(matcher.find()?matcher.group():"-1");
 			//Log.d("MyLog", matcher.find()?matcher.group()+" starting at index "+matcher.start()+" and ending at index "+matcher.end()+".":"no");
 			regexp="-([а-яА-ЯёЁa-zA-Z0-9 \\.\\(\\),-]+)$";
@@ -720,7 +744,7 @@ void makeDialog() {
 	    //c.close();   
    }
    
-   void setBut() {
+  void setBut() {
 	   //Log.d("MyLog", "setbut__count_tara="+CountTara+" but.size="+but.size()+" idPgr="+tvIdPgr.getText());
 	   llbut.removeAllViewsInLayout();
 	   svBut.removeAllViewsInLayout();
@@ -731,13 +755,8 @@ void makeDialog() {
 //("select T._id as _id, S.keg as keg, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
 	//	+ " from tmc T left join ostat S on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol!=0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, T._id",null);
 			   ("select S.id_tmc as _id, S.keg as keg, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
-						+ " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol!=0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, S.id_tmc",null);
+				+ " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.pgr="+tvIdPgr.getText()+" and T.vis=1 and S.kol!=0 order by T.pos, S.id_tmc",null);
 
-	   if (cc.moveToFirst()) { 
-	        do {count_but++;
-	        	//count_but=cc.getInt(cc.getColumnIndex("c"));
-	        } while (cc.moveToNext());
-	      }; 
 	     //cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
 	   // scale size font
 	      /*int l=1;
@@ -754,11 +773,16 @@ void makeDialog() {
 	    	//float sText=MainActivity.sizeSmallButton;
 	    llR.removeView(llbut);
 	    llR.removeView(svBut);
+	    if (cc.moveToFirst()) { 
+	        do {count_but++;
+	        	//count_but=cc.getInt(cc.getColumnIndex("c"));
+	        } while (cc.moveToNext());
+	      };
 	    if (count_but<16)
-	    {  /* llbut = new TableLayout(this);
-	    	llbut.setOrientation(TableLayout.HORIZONTAL);
-	    	llbut.setStretchAllColumns(true);
-	        llbut.setShrinkAllColumns(true);*/
+	    {  // llbut = new TableLayout(this);
+	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
+	    	//llbut.setStretchAllColumns(true);
+	        //llbut.setShrinkAllColumns(true);
 	    	//llR.removeView(llbut);
 	    	//llR.removeView(svBut);
 	    
@@ -768,10 +792,10 @@ void makeDialog() {
 	    }
 	    else
 	    {
-	    	/*llbut = new TableLayout(this);
-	    	llbut.setOrientation(TableLayout.HORIZONTAL);
-	    	llbut.setStretchAllColumns(true);
-	        llbut.setShrinkAllColumns(true);*/
+	    	//llbut = new TableLayout(this);
+	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
+	    	//llbut.setStretchAllColumns(true);
+	        //llbut.setShrinkAllColumns(true);
 	    	//llR.removeView(llbut);
 	    	//llR.removeView(svBut);
 	    	
@@ -784,8 +808,7 @@ void makeDialog() {
 	    			new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.MATCH_PARENT,1));
 	    	//llR_.setVisibility(LinearLayout.VISIBLE);
 	    }    
-	    
-	    
+	   
 	   byte ib;
 
 	   if (tranz.size()==0)
@@ -1223,8 +1246,8 @@ void makeDialog() {
    	   	//but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
    	   	if (but.get(tranz.get(i).tagB).ost==0 && but.get(tranz.get(i).tagB).ed==1)//если кол-во =0 то добавляем остаток по приходу
    	   	{
-   	   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, tranz.get(i).keg, -but.get(tranz.get(i).tagB).ost+0.1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "автоувеличение+1 остатка "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
-   	   		but.get(tranz.get(i).tagB).ost=0.1;
+   	   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, tranz.get(i).keg, -but.get(tranz.get(i).tagB).ost+0.0001, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "автоувеличение+1 остатка "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
+   	   		but.get(tranz.get(i).tagB).ost=0.0001;
    	   		tranz.get(i).prim="из отрицательного остатка! "+tranz.get(i).prim;
    	   	}
    		MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
@@ -1296,8 +1319,8 @@ void makeDialog() {
     but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
    	if (but.get(tranz.get(i).tagB).ost==0 && but.get(tranz.get(i).tagB).ed==1 )//если кол-во =0 то добавляем остаток по приходу
    	{
-   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, tranz.get(i).keg, -but.get(tranz.get(i).tagB).ost+0.1, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
-   		but.get(tranz.get(i).tagB).ost=0.1;
+   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, tranz.get(i).keg, -but.get(tranz.get(i).tagB).ost+0.0001, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
+   		but.get(tranz.get(i).tagB).ost=0.0001;
    		tranz.get(i).prim="из отрицательного остатка! "+tranz.get(i).prim;
    	}
     
@@ -1845,6 +1868,11 @@ void makeDialog() {
 	  super.onStart();
   }
   
+  protected void onResume() {
+	  super.onResume();
+	  setBut();
+  }
+  
   @Override
   protected void onRestart() {
     super.onRestart();
@@ -1948,7 +1976,8 @@ void makeDialog() {
 
             }
             
-            
+          TextView tvComboName = (TextView) v.findViewById(R.id.comboName);
+            tvComboName.setTextSize(TypedValue.COMPLEX_UNIT_PX , MainActivity.tabI);
             Button b=(Button)v.findViewById(R.id.comboX);
              b.setOnClickListener(new OnClickListener() {
 

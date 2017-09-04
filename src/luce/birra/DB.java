@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+//import android.util.Log;
 //import android.util.Log;
  
 public class DB {
@@ -25,7 +25,7 @@ public class DB {
 		
 	
   private static final String DB_NAME = "birraDB";
-  private static final int DB_VERSION = 17;
+  private static final int DB_VERSION = 18;
   //private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
   //private static final String DB_TABLE = "mytab";
    
@@ -386,7 +386,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     // создаем и заполняем БД
     @Override
     public void onCreate(SQLiteDatabase db) {
-    	Log.d("MyLog", " --- onCreate tmc --- ");
+    	//Log.d("MyLog", " --- onCreate tmc --- ");
     	//PRAGMA foreign_keys = ON;
     	db.execSQL("PRAGMA foreign_keys = ON;");
     	
@@ -529,6 +529,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "sumka real,"
                   + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "data_ins integer,"
+                  + "data_upd integer,"
                   + "ok integer default 0);");
 
           db.execSQL("create table klient ("
@@ -589,7 +590,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
           db.execSQL("CREATE INDEX tmc_pos ON tmc (pos);");
           db.execSQL("CREATE INDEX tmcpgr ON tmc (pgr);");
           db.execSQL("CREATE INDEX tmc_vis ON tmc (vis);");
-          Log.d("MyLog", " --- onCreate create all table --- ");
+          //Log.d("MyLog", " --- onCreate create all table --- ");
           //////prixod
           db.execSQL("CREATE TRIGGER pri_ins1 " +
         		    " AFTER INSERT "+
@@ -700,7 +701,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
       		    " BEGIN "+
-      		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+      		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_upd, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
       		    " END;");
         
         db.execSQL("CREATE TRIGGER ras_ins2 " +
@@ -708,7 +709,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     		    " ON rasxod "+    	        		    
     		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     		    " BEGIN "+
-    		    " update ostat set kol=kol-NEW.kol, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+    		    " update ostat set kol=kol-NEW.kol, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_upd=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
     		    " END;");
         
         db.execSQL("CREATE TRIGGER ras_upd1 " +
@@ -716,43 +717,43 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
       		    " BEGIN "+
-      		    " update ostat set kol=kol+OLD.kol, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_ins=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
+      		    " update ostat set kol=kol+OLD.kol, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_upd=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
       		    " END;");
         db.execSQL("CREATE TRIGGER ras_upd2 " +
     		    " AFTER UPDATE "+
     		    " ON rasxod "+    	        		    
     		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     		    " BEGIN "+
-    		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.ed, NEW.price, -NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+    		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_upd, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.ed, NEW.price, -NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
     		    " END;");
         db.execSQL("CREATE TRIGGER ras_upd3 " +
       		    " AFTER UPDATE "+
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
       		    " BEGIN "+
-      		    " update ostat set kol=kol-NEW.kol, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+      		    " update ostat set kol=kol-NEW.kol, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_upd=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
       		    " END;");
         db.execSQL("CREATE TRIGGER ras_del1 " +
       		    " BEFORE DELETE "+
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW "+
       		    " BEGIN "+
-      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.data_ins, OLD.ok); "+
+      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, data_upd, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.data_ins, OLD.ok); "+
       		    " END;");
         db.execSQL("CREATE TRIGGER ras_del2 " +
     		    " AFTER DELETE "+
     		    " ON rasxod "+    	        		    
     		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
     		    " BEGIN "+
-    		    " update ostat set kol=kol+OLD.kol, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_ins=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
+    		    " update ostat set kol=kol+OLD.kol, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_upd=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
     		    " END;");
-          Log.d("MyLog", " --- onCreate create all trigger --- ");
+          //Log.d("MyLog", " --- onCreate create all trigger --- ");
     }
  
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    	Log.d("MyLog", " --- onUpgrade database --- ");
-    	if (newVersion == 17) {
+    	//Log.d("MyLog", " --- onUpgrade database --- ");
+    	if (newVersion == 18) {
     	    db.beginTransaction();
     	    try {
     	    	  db.execSQL("DROP INDEX pri_tmc;");       
@@ -932,6 +933,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "sumka real,"
     	                  + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "data_ins integer,"
+    	                  + "data_upd integer,"
     	                  + "ok integer default 0);");
 
     	          db.execSQL("create table klient ("
@@ -992,7 +994,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("CREATE INDEX tmc_pos ON tmc (pos);");
     	          db.execSQL("CREATE INDEX tmcpgr ON tmc (pgr);");
     	          db.execSQL("CREATE INDEX tmc_vis ON tmc (vis);");
-    	          //////prixod
+    	    //////prixod
     	          db.execSQL("CREATE TRIGGER pri_ins1 " +
     	        		    " AFTER INSERT "+
     	        		    " ON prixod "+    	        		    
@@ -1102,7 +1104,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	      		    " BEGIN "+
-    	      		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+    	      		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_upd, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
     	      		    " END;");
     	        
     	        db.execSQL("CREATE TRIGGER ras_ins2 " +
@@ -1110,7 +1112,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	    		    " ON rasxod "+    	        		    
     	    		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	    		    " BEGIN "+
-    	    		    " update ostat set kol=kol-NEW.kol, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+    	    		    " update ostat set kol=kol-NEW.kol, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_upd=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
     	    		    " END;");
     	        
     	        db.execSQL("CREATE TRIGGER ras_upd1 " +
@@ -1118,37 +1120,37 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
     	      		    " BEGIN "+
-    	      		    " update ostat set kol=kol+OLD.kol, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_ins=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
+    	      		    " update ostat set kol=kol+OLD.kol, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_upd=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_upd2 " +
     	    		    " AFTER UPDATE "+
     	    		    " ON rasxod "+    	        		    
     	    		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	    		    " BEGIN "+
-    	    		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.ed, NEW.price, -NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+    	    		    " insert into ostat (id_tmc, keg, kol, ed, price, sumka, id_post, data_upd, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.ed, NEW.price, -NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
     	    		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_upd3 " +
     	      		    " AFTER UPDATE "+
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	      		    " BEGIN "+
-    	      		    " update ostat set kol=kol-NEW.kol, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_ins=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+    	      		    " update ostat set kol=kol-NEW.kol, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_upd=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_del1 " +
     	      		    " BEFORE DELETE "+
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW "+
     	      		    " BEGIN "+
-    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.data_ins, OLD.ok); "+
+    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, data_upd, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.data_ins, OLD.ok); "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_del2 " +
     	    		    " AFTER DELETE "+
     	    		    " ON rasxod "+    	        		    
     	    		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
     	    		    " BEGIN "+
-    	    		    " update ostat set kol=kol+OLD.kol, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_ins=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
+    	    		    " update ostat set kol=kol+OLD.kol, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_upd=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
     	    		    " END;");
-    	          Log.d("MyLog", " --- onUpgrade create all trigger --- ");
+    	         //Log.d("MyLog", " --- onUpgrade create all trigger --- ");
     	          
 /*"CREATE TRIGGER update_customer_address UPDATE OF address ON customers 
   BEGIN

@@ -5,7 +5,7 @@
     android:id="@+id/combo_item_ll"
     android:orientation="vertical" >
 
-<LinearLayout
+<TableRow
     style="@style/mw1"
     android:orientation="horizontal" >
 <Button
@@ -66,7 +66,7 @@
         android:visibility="gone"
         android:layout_weight="1"
         android:text="" />
-</LinearLayout>
+</TableRow>
 
 <LinearLayout
     style="@style/mw0"

@@ -92,6 +92,10 @@
             android:layout_weight="1"
  		    android:text="ОСТАТОК"/>
 <TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="КЕГА"/>
+<TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

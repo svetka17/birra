@@ -125,7 +125,10 @@
  		    style="@style/lv_h"
             android:layout_weight="0.5"
  		    android:text="СУММА ЧЕКА"/>
-
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="КЕГА"/>
 <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"

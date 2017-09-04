@@ -53,6 +53,10 @@
         android:id="@+id/tv_Ostat_Rasxod_Ost"
         style="@style/lv_i"
         android:layout_weight="1" />    
+            <TextView
+        android:id="@+id/tv_Keg_Rasxod_Ost"
+        style="@style/lv_i"
+        android:layout_weight="1" />
     <LinearLayout
         style="@style/_m1"
         android:orientation="vertical" >

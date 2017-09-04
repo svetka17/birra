@@ -239,8 +239,8 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         	}
       });
     // формируем столбцы сопоставления
-    String[] from = new String[] { /*"_id",*/"id_tmc","name","kol","ch","sumka","price","prim","skidka","sum_no_skidka"};
-    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Hist, R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_Skidka_Rasxod_Hist,R.id.tv_Summa_Rasxod_Hist};
+    String[] from = new String[] { /*"_id",*/"id_tmc","name","kol","ch","sumka","price","prim","skidka","sum_no_skidka","keg"};
+    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Hist, R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_Skidka_Rasxod_Hist,R.id.tv_Summa_Rasxod_Hist,R.id.tv_Keg_Rasxod_Hist};
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
@@ -412,7 +412,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         	if (!str[4].equals("")) where=where+" and "+str[4].toString();
      
             	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join klient as K on T.id_klient = K._id", 
-             			new String[] {"T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","round(T.kol,3)||' '||E.name as kol",
+             			new String[] {"T.keg as keg","T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","round(T.kol,3)||' '||E.name as kol",
             			 "E.name as ted", "T.ed as ed","T.price as price","T.skidka as skidka","round((T.kol*T.price-T.skidka) ,2) as sum_no_skidka","T.prim as prim","TP.pgr as pgr","K.sumka as sumka","'№'||K.num_id as ch"}, 
              			 //"TP.pgr = ?"
             			 where, null,null,null,null);
