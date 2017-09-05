@@ -465,6 +465,7 @@ void makeDialog() {
 							//Log.d("MyLog", "_IdPgr="+String.valueOf( tvIdPgr.getTag() ));
 						//intent.putExtra("PrixodPgr", tvIdPgr.getText() );							
 						//intent.putExtra("PrixodClose", /*tvIdPgr.getText()*/"1" );
+							intent.putExtra("PrixodPost", String.valueOf(but.get(Btovar).post));
 						intent.putExtra("PrixodEd", String.valueOf( but.get(Btovar).ed ) );
 						//Log.d("MyLog", "ed="+String.valueOf( but.get(Btovar).ed ));
 	             	    
@@ -479,7 +480,6 @@ void makeDialog() {
 	                    else 
 	                    	intent.putExtra("PrixodKol", "1");
 	                    
-	                    intent.putExtra("PrixodPost", String.valueOf(but.get(Btovar).post));
 	                   // Log.d("MyLog", "post="+String.valueOf( but.get(Btovar).post ));
 	                    
 						}
@@ -560,6 +560,7 @@ void makeDialog() {
       });
     
   }
+   
    void setKeg() {
 	   llbut.removeAllViewsInLayout();
 	   svBut.removeAllViewsInLayout();
@@ -752,23 +753,21 @@ void makeDialog() {
 	   
 	   int count_but=0;
 	   Cursor cc = MainActivity.db.getRawData 
-//("select T._id as _id, S.keg as keg, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
-	//	+ " from tmc T left join ostat S on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol!=0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, T._id",null);
-			   ("select S.id_tmc as _id, S.keg as keg, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
-				+ " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.pgr="+tvIdPgr.getText()+" and T.vis=1 and S.kol!=0 order by T.pos, S.id_tmc",null);
+//			   ("select S.id_tmc as _id, S.keg as keg, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
+	//			+ " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.pgr="+tvIdPgr.getText()+" and T.vis=1 and S.kol!=0 order by T.pos, S.id_tmc",null);
+
+("select G._id as _id, min(O.keg) as keg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, G.minkol as kol, G.ed as ed, G.ted as ted, G.pos as pos from (" +
+		"select S.id_tmc as _id, T.pos as pos, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.ed as ed, E.name as ted " 
+		//+",min(S.kol) over (partition by S.id_tmc, S.id_post, S.ed order by S.kol rows between unbounded preceding and current row) as minkol"
+		+",min(S.kol) as minkol"
++ " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.pgr="+tvIdPgr.getText()+" and T.vis=1 and S.kol!=0 " +
+" group by S.id_tmc, T.pos, T.name, P.name, TP.price, S.id_post, S.ed, E.name) as G left join ostat as O on G._id=O.id_tmc and G.id_post=O.id_post and G.ed=O.ed and G.minkol=O.kol " +
+" group by G._id, G.name, G.namep, G.price, G.id_post, G.minkol, G.ed, G.ted, G.pos order by G.pos, G._id",null);
 
 	     //cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
 	   // scale size font
-	      /*int l=1;
-		   if (cc.moveToFirst()) { 
-			   
-		        do {	        	
-		        	String[] n = (cc.getString(cc.getColumnIndex("name"))).split(" ");
-		        	for (int i=0; i<n.length; i++ )
-		        		if (n[i].length()>l) l=n[i].length();
-		        } while (cc.moveToNext());
-		        
-		      }*/
+/*
+*/
 		   //float sText=((display_w)/(6*scale*scale*l))+scale*5;
 	    	//float sText=MainActivity.sizeSmallButton;
 	    llR.removeView(llbut);

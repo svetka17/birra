@@ -35,7 +35,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   cPost,  cPgr, cEd;
   static Cursor cursor;
   static byte flagFocus=0, tmp_ed=-1, tmp_close=0;
-  static int tmp=0;
+  static int tmp=0, tmp_post=0;
   SimpleCursorAdapter scaProd, scaPost, scaPgr, scaEd;
   String[] fromProd, fromPost, fromPgr, fromEd;
   int[] toProd, toPost, toPgr, toEd;
@@ -376,11 +376,14 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
       });
     
     getSupportLoaderManager().initLoader(0, null, this);
+    
     if( getIntent().getExtras() != null)
     {
     tvIdPgr.setText(getIntent().getStringExtra("PrixodPgr"));
   	
 tvIdPost.setText(getIntent().getStringExtra("PrixodPost"));
+tmp_post = ((int) MainActivity.StrToFloat(getIntent().getStringExtra("PrixodPost")));
+MainActivity.setSpinnerItemById(spPost, tmp_post);
 tmp=((int) MainActivity.StrToFloat(getIntent().getStringExtra("PrixodProd")));
 
 tmp_ed=(byte) (MainActivity.StrToFloat(getIntent().getStringExtra("PrixodEd")));
