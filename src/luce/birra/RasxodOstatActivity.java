@@ -276,7 +276,7 @@ void setItog () {
     if (where.equals("")||where.length()==0) where=" T.ok=0 "; else where=where+" and T.ok=0 ";
       //  float tmpKol=0, tmpSum=0;
         	 Cursor cursor = MainActivity.db.getQueryData
-("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed left join postav as KK on T.id_post=KK._id",
+("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.keg=K.keg and T.ed=K.ed left join postav as KK on T.id_post=KK._id",
          			new String[] {"round(sum(T.kol),3) as kol","round(sum(T.price*T.kol),2) as sumka","round(sum(T.skidka),2) as skidka"}, 
          			 //"TP.pgr = ?"
         			 where, null,null,null,null);

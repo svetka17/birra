@@ -1,12 +1,14 @@
 package luce.birra;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import luce.birra.DialogScreen.DialogListener;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -46,7 +48,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import luce.birra.DialogScreen.DialogListener;
 
 public class RasxodActivity extends FragmentActivity implements OnCheckedChangeListener,
 SeekBar.OnSeekBarChangeListener
@@ -224,7 +225,6 @@ void makeDialog() {
  	      }; 
  	      c_pgr.close();
     	
-    	
     	lltarabutton = (LinearLayout) findViewById(R.id.llbuttontara);
     if (count_but_tara<9)
     {  //showMessage("30SP = "+DpToPx(30)+"; W = "+((int)display_w/8)+"; W_DP = "+PxToDp(display_w/8)+"; W_PX = "+DpToPx(display_w/8)+"; S = "+scale+"; W = "+display_w+"; H = "+display_h, (byte)1);
@@ -244,7 +244,7 @@ void makeDialog() {
     	lltarabutton.addView(hll_tara_button,
 			new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
     	hll_tara_button.addView(ll_tara_button,
-    			new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+    		new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
     }
     
     ///////////////
@@ -465,7 +465,7 @@ void makeDialog() {
 							//Log.d("MyLog", "_IdPgr="+String.valueOf( tvIdPgr.getTag() ));
 						//intent.putExtra("PrixodPgr", tvIdPgr.getText() );							
 						//intent.putExtra("PrixodClose", /*tvIdPgr.getText()*/"1" );
-							intent.putExtra("PrixodPost", String.valueOf(but.get(Btovar).post));
+						intent.putExtra("PrixodPost", String.valueOf(but.get(Btovar).post));
 						intent.putExtra("PrixodEd", String.valueOf( but.get(Btovar).ed ) );
 						//Log.d("MyLog", "ed="+String.valueOf( but.get(Btovar).ed ));
 	             	    
@@ -501,7 +501,7 @@ void makeDialog() {
     						    	((Button)alv.get(i)).setTextColor(clrCheck);
     								}*/
     					      //tvIdPgr.setText(tmp_pgr);  
-    					      //setBut();
+    					      setBut();
 					} else setBut();
 				}
 			}); 
@@ -524,7 +524,7 @@ void makeDialog() {
 							Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
 							   if (cc.moveToFirst()) { 
 							        do {countT=
-							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка - из меню "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка - из меню продаж"+MainActivity.usr, MainActivity.getIntDataTime(), 1);
 							        } while (cc.moveToNext());
 							      };
 							if (countT!=0) showMessage("Остаток обнулен", (byte)1);
@@ -698,6 +698,7 @@ void makeDialog() {
 		    	
 	        	btnPgr.setOnClickListener(new OnClickListener() {
 	                public void onClick(View v) {
+	        //Log.d("MyLog", String.valueOf((new Date()).getTime()) );
 			String regexp = "^([0-9]+)";
 			Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(v.getTag().toString());
@@ -726,11 +727,9 @@ void makeDialog() {
 			v.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 	    	((Button)v).setTextColor(clrCheck);
 			
-			//Log.d("MyLog", "v.tag="+v.getTag()+" id_pgr="+tvIdPgr.getText()+" namePgr="+tvNamePgr.getText());
+	    	//Log.d("MyLog", String.valueOf((new Date()).getTime()) );
 	                	setBut();
-	                	//data.clear();
-	                	//sAdapter.notifyDataSetChanged();
-	                	//tvSum.setText("");sumI=0;tranz.clear();
+	                	//Log.d("MyLog", String.valueOf((new Date()).getTime()) );
 	                }
 	              });
 	        	
@@ -746,7 +745,7 @@ void makeDialog() {
    }
    
   void setBut() {
-	   //Log.d("MyLog", "setbut__count_tara="+CountTara+" but.size="+but.size()+" idPgr="+tvIdPgr.getText());
+	   //Log.d("MyLog", "start "+String.valueOf((new Date()).getTime()) );
 	   llbut.removeAllViewsInLayout();
 	   svBut.removeAllViewsInLayout();
 	   //
@@ -906,6 +905,9 @@ void makeDialog() {
        int w = (int)((4*MainActivity.h/5)/8);
 	   
 	   int tmp_row=1;
+	   
+	   //Log.d("MyLog", "start while "+String.valueOf((new Date()).getTime()) );
+	   
 	   if (cc.moveToFirst()) { 
 		   
 	        do {
@@ -996,44 +998,147 @@ void makeDialog() {
 	        			{
 	        			//buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 	        			Btovar=Byte.parseByte(buttonView.getTag().toString());
-	        			/*for (int i=CountTara; i<but.size(); i++) {
+	        			
+	        			buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
+	        			//Btovar=Byte.parseByte(buttonView.getTag().toString());
+	        			for (int i=CountTara; i<but.size(); i++) {
 	        		    	if ((i)!= Integer.parseInt(buttonView.getTag().toString())) 
 	        		    	{but.get(i).tb.setChecked(false); but.get(i).tb.setTextColor(clrNoCheck) ; but.get(i).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
 	        		    	else tmp=but.get(i).ed ;
-	        				}*/
-	        				
+	        				}
 	        			//06.04!! if (Btara!=-1) fixV();// buttonView.setChecked(false);}
 	        			///проверка остатка по кнопке на 0 или <0
+	        			//tmp_minus=0 - ost>0; tmp_minus=2 - ost<0 && yes; tmp_minus=1 - ost<0 && no
 	        			tmp_minus=0;
+	        			//Log.d("MyLog", "tmp_minus=0 "+but.get(Btovar).keg+" "+String.valueOf((new Date()).getTime()) );
+	        			
 	        			if (but.get(Btovar).ost<0.2)
-	        			{
-	        			DialogScreen getYes = new DialogScreen(RasxodActivity.this,RasxodActivity.this,-7).setDialogScreenListener(new DialogListener() {
-	    					
+	        			{tmp_minus=2;
+	        			if (Btara!=-1) {
+	        			if (Btara!=-2)
+	        		   	{but.get(Btara).tb.setChecked(false);
+	        		   	but.get(Btara).tb.setTextColor(clrNoCheck);
+	        		   	but.get(Btara).tb.setBackground(tvSum.getContext().getResources().getDrawable(R.drawable.edittexth_style));
+	        		   	}
+	        		   	else
+	        		   	{tbnKol.setChecked(false);
+	        		   	tbnKol.setTextColor(clrNoCheck);
+	        		   	tbnKol.setBackground(tvSum.getContext().getResources().getDrawable(R.drawable.edittexth_style));
+	        		   	tvKol.setText("");}
+	        		   	Btara=-1;}
+	        			// проверяем есть ли другая кега
+	        			long countT=0;
+						Cursor cc = MainActivity.db.getRawData ("select count(*) c from ostat where kol>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and ed="+but.get(Btovar).ed , null);
+					   if (cc.moveToFirst()) { 
+					        do {countT=cc.getInt(cc.getColumnIndex("c"));
+					        } while (cc.moveToNext());
+					      };
+					cc.close();
+					//Log.d("MyLog", "new keg countT="+countT+" "+String.valueOf((new Date()).getTime()) );
+					    if (countT>1) {
+					    	//перейти на новую кегу
+					    	DialogScreen getYes = new DialogScreen(RasxodActivity.this,RasxodActivity.this,-8).setDialogScreenListener(new DialogListener() {
+	        					
+		    					@Override
+		    					public void OnSelectedKol(double k) {
+		    						//1-да 0-нет -1-дисмис
+		    						if (k==1) {
+		    						long countT=0;
+		    							Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<0.01 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
+		 							   if (cc.moveToFirst()) { 
+		 							        do {countT=
+		 							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка с 0 кол-ом - обнуление из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+		 							        showMessage("Кнопка с текущей кегой обнулена", (byte)1);
+		 							        //Log.d("MyLog", "countT="+countT+" "+String.valueOf((new Date()).getTime()) );
+		 							        } while (cc.moveToNext());
+		 							      };
+		 							cc.close();
+		 					    	setBut();
+		    						} // else {tmp_minus=2;}
+		    						
+		    					}
+		    				}); 
+		    				getYes.show();
+///////////////////////dialog					    	
+					    	/**/
+					    } 
+					    else
+					    {
+	        				DialogScreen getYes = new DialogScreen(RasxodActivity.this,RasxodActivity.this,-7).setDialogScreenListener(new DialogListener() {
+	        					
 	    					@Override
 	    					public void OnSelectedKol(double k) {
+	    						//tmp_minus=2;
+	    						byte upd=0;
+	    						//Log.d("MyLog", "tmp_minus="+tmp_minus+" "+String.valueOf((new Date()).getTime()) );
 	    						if (k==0) {
 	    						
 	    						//удаляем кнопку спрашиваем нужно ли оприходовать
 	    						long countT=0;
-								Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
+								Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<0.01 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
 								   if (cc.moveToFirst()) { 
 								        do {countT=
-								        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка - из меню "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+								        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка с 0 кол-ом - обнуление из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+								        //Log.d("MyLog", "countT="+countT+" "+String.valueOf((new Date()).getTime()) );
 								        } while (cc.moveToNext());
 								      };
+								cc.close();
 								if (countT!=0) {showMessage("Остаток обнулен", (byte)1);
-	    			        		tmp_minus=(byte)1;
-									butAdd.callOnClick();
+								
+								upd=1;
 									//setBut();
 	    			        		}
-	    						}	
+	    						} // else {tmp_minus=2;}
+	    						
+	    						///////////////////
+	    						if (upd!=1)
+	    						{ //да-продолжаем продавать с отрицательного
+	    							tmp_minus=3;
+								    } else {butAdd.callOnClick(); //setBut();
+								    }
+	    						//////////////////
+	    						
 	    					}
 	    				}); 
 	    				getYes.show();
 	        			}
-	        			///
-	        			if (tmp_minus==0)
+	        			}
+	        			
+	        			/*if  (tmp_minus==2) 
 	        			{
+	        				Log.d("MyLog", "!!!tmp_minus=2"+tmp_minus+" "+String.valueOf((new Date()).getTime()) );
+	    				Cursor cc = MainActivity.db.getRawData ("select count(*) c from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and ed="+but.get(Btovar).ed , null);
+						long countT=0;   
+	    				if (cc.moveToFirst()) { 
+						        do {countT=cc.getInt(cc.getColumnIndex("c"));
+						        } while (cc.moveToNext());
+						      };
+						cc.close();
+						    if (countT>1) {
+						    	ArrayList<View> alv = MainActivity.getViewsByTag(svPgr);
+						    	for (int i=0; i<alv.size(); i++)
+						        {
+						    		if (((Button)alv.get(i)).getTag().toString()==tvIdPgr.getText()) 
+						    		{
+						    		tmp_minus=1;
+						    		Log.d("MyLog", "tmp_minus="+tmp_minus+" "+String.valueOf((new Date()).getTime()) );
+						    		cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
+									   if (cc.moveToFirst()) { 
+									        do {countT=
+									        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "да, в наличии другая кега, кпнопка - обнуление из меню "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+									        } while (cc.moveToNext());
+									      };
+									cc.close();
+									Log.d("MyLog", "tmp=2 update countT="+countT+" "+String.valueOf((new Date()).getTime()) );
+						    		((Button)alv.get(i)).callOnClick();
+						    		}
+						        }
+						    }
+	    				//////////
+	        			}*/
+
+	        			if (tmp_minus==0 || tmp_minus==3)
+	        			{//Log.d("MyLog", "tmp_minus!=1 "+but.get(Btovar).keg+" "+String.valueOf((new Date()).getTime()) );
 	        				buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 		        			//Btovar=Byte.parseByte(buttonView.getTag().toString());
 		        			for (int i=CountTara; i<but.size(); i++) {
@@ -1042,28 +1147,29 @@ void makeDialog() {
 		        		    	else tmp=but.get(i).ed ;
 		        				}
 	        			if (Btara!=-1) 
-	        				{if (!(tmp!=1 && Btara!=-2 ))
-	        				fixV();// buttonView.setChecked(false);}
+	        				{if (!(tmp!=1 && Btara!=-2 )) fixV();
+	        				//{if (tmp_minus!=2) fixV();}// buttonView.setChecked(false);}
 	        				else //
 	        					{//tara(-2);
-	        					tbnKol.setTextColor(clrCheck); 
+	        					tbnKol.setTextColor(clrCheck);
 	        					 tbnKol.setBackground(getResources().getDrawable(R.drawable.btn_chek));
-	        					 tara((byte)-2); 
+	        					 tara((byte)-2);
 	        					 tvDialogN=R.id.tvOtherKol_;
-	        					 
 	        					    //showDialog(1);
 	        					 makeDialog();
 	        					}	
 	        				}
-	        			else if (tmp!=1) {tbnKol.setTextColor(clrCheck); 
-   					 tbnKol.setBackground(getResources().getDrawable(R.drawable.btn_chek));
-   					 tara((byte)-2); 
-   					 tvDialogN=R.id.tvOtherKol_;
+	        			else if (tmp!=1) 
+	        			{tbnKol.setTextColor(clrCheck); 
+   					 	tbnKol.setBackground(getResources().getDrawable(R.drawable.btn_chek));
+   					 	tara((byte)-2); 
+   					 	tvDialogN=R.id.tvOtherKol_;
    					
    					    //showDialog(1);
-   					makeDialog();
+   					 	makeDialog();
    					    }
-	        			} else setBut();
+	        			
+	        			} //else setBut();//{if (tmp_minus==0) setBut(); {Log.d("MyLog", "tmp_minus=0 setBut"+but.get(Btovar).keg+" "+String.valueOf((new Date()).getTime()) ); setBut();}}
 	        			}
 	        			else
 	        				{buttonView.setTextColor(clrNoCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
@@ -1077,7 +1183,7 @@ void makeDialog() {
 	        	//Log.d("MyLog", "add button");
 	        	ib++;
 	        	tmp_row++;
-	        
+	        	//Log.d("MyLog", "ib="+ib+" "+String.valueOf((new Date()).getTime()) );
 	        } while (cc.moveToNext());
 	        
 	      } //else c.close();
@@ -1503,7 +1609,7 @@ void makeDialog() {
 	     break;
 	   case R.id.tvOtherKol_:
         	 tvKol.setText(/*tvDKol.getText()*/String.valueOf(k));
-        	 if (Btovar!=-1) fixV();
+        	 if (Btovar!=-1 && tmp_minus!=2) fixV();
 		   tvDialogN=0;
 	     break;
 	   case R.id.etCheckNal:

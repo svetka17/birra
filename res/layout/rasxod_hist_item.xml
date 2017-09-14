@@ -20,6 +20,10 @@
         android:id="@+id/tv_Name_Rasxod_Hist"
         style="@style/lv_i"
         android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tv_Postav_Rasxod_Hist"
+        style="@style/lv_i"
+        android:layout_weight="1" />
 <!--  
     <TextView
         android:id="@+id/tvIdPostPrixod_"

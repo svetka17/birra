@@ -238,7 +238,7 @@ from ostat as O left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT
     			+ "on O.ed=E._id "
     			+ "left join tmc_pgr as TP "
     			+ "on T.pgr=TP._id "
-    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" O.kol=0")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString()) // +"? and ?"
+    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" O.kol=0")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString())  +" order by T.pgr, T.name, O.id_post, O.kol"
     			, null);//new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"T.pgr ":tvIdPgr.getText().toString()});// new String[] {,});
       return cursor;
     }

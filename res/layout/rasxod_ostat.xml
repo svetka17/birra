@@ -152,6 +152,10 @@
             android:layout_weight="1"
  		    android:text=""/>
 <TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
             android:layout_width="0dp"
             android:id="@+id/itogRasxodOstNoSkidka"
             android:layout_height="match_parent"

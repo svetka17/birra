@@ -326,7 +326,29 @@ public class DialogScreen extends AlertDialog.Builder {
 				}
 			})
 			.setTitle("рнбюп еярэ б мюкхвхх?");
-            break;    
+            break;   
+        case -8:
+            setPositiveButton("дю", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                	listener.OnSelectedKol(1);
+                }
+            })
+            .setNegativeButton("мер", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					listener.OnSelectedKol(0);
+				}
+			})
+			.setOnDismissListener(new OnDismissListener() {	
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					listener.OnSelectedKol(-1);						
+				}
+			})
+			.setTitle("оепеирх мю мнбсч йецс?");
+            break;
         case 0: 
 			/*OnDateSetListener myCallBack = new OnDateSetListener() {
 			    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) 

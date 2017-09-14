@@ -26,7 +26,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
   AdapterLV scAdapter;
   static TextView tvIdPgr, tvIdProd, tvIdKlient; 
   //static EditText tvDataIns;
-  static TextView tvDataIns,tvDataIns2, tvd1, tvd2;
+  static TextView tvDataIns,tvDataIns2, tvd1, tvd2, itogKol, itogSum, itogSkidka, itogNoSkidka;
   Spinner spPgr, spProd, spKlient;
   //Cursor cKlient;
   SimpleCursorAdapter scaKlient, scaProd;
@@ -37,6 +37,10 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     super.onCreate(savedInstanceState);
     setContentView(R.layout.rasxod_hist);
     //final DialogFragment dlg = new DialogActivity();
+    itogKol = (TextView) findViewById(R.id.itogRasxodKol);
+    itogSum = (TextView) findViewById(R.id.itogRasxodSumma);
+    itogSkidka = (TextView) findViewById(R.id.itogRasxodSkidka);
+    itogNoSkidka = (TextView) findViewById(R.id.itogRasxodNoSkidka);
     
     tvDataIns = (TextView) findViewById(R.id.tv_Data_RasHist);
     tvDataIns.setText(MainActivity.getStringDataTime( Integer.parseInt( String.valueOf( MainActivity.getIntDataTime() ).substring(0,6).concat("0000") ) ));
@@ -52,6 +56,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 						tvDataIns.setText(MainActivity.getStringDataTime((int)k));
 						getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
+					      setItog();
 					}
 					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
 				}
@@ -71,6 +76,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 						tvDataIns.setText(MainActivity.getStringDataTime((int)k));
 						getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
+					      setItog();
 					}
 					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
 				}
@@ -91,6 +97,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 						tvDataIns2.setText(MainActivity.getStringDataTime((int)k));
 						getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
+					      setItog();
 					}
 					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
 				}
@@ -110,6 +117,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 						tvDataIns2.setText(MainActivity.getStringDataTime((int)k));
 						getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
+					      setItog();
 					}
 					//else dialogNumCancel(R.id.cb_Kol_Ostat);					
 				}
@@ -140,12 +148,14 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         	tvIdPgr.setText(String.valueOf(id));
         	getSupportLoaderManager().getLoader(0).forceLoad();
         	getSupportLoaderManager().getLoader(2).forceLoad();
+        	setItog();
         }
         public void onNothingSelected(AdapterView<?> parent) {
         	spPgr.setTag(0);
         	tvIdPgr.setText("0");
         	getSupportLoaderManager().getLoader(0).forceLoad();
         	getSupportLoaderManager().getLoader(2).forceLoad();
+        	setItog();
         }
         });
     
@@ -186,11 +196,13 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         	spKlient.setTag(id);
         	tvIdKlient.setText(String.valueOf(id));
         	getSupportLoaderManager().getLoader(0).forceLoad();
+        	setItog();
         }
         public void onNothingSelected(AdapterView<?> parent) {
         	spKlient.setTag(0);
         	tvIdKlient.setText("0");
         	getSupportLoaderManager().getLoader(0).forceLoad();
+        	setItog();
         }
         });
     spKlient.setAdapter(scaKlient);
@@ -206,11 +218,13 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         	spProd.setTag(id);
         	tvIdProd.setText(String.valueOf(id));
         	getSupportLoaderManager().getLoader(0).forceLoad();
+        	setItog();
         }
         public void onNothingSelected(AdapterView<?> parent) {
         	spProd.setTag(0);
         	tvIdProd.setText("-1");
         	getSupportLoaderManager().getLoader(0).forceLoad();
+        	setItog();
         }
         });
     spProd.setAdapter(scaProd);
@@ -239,8 +253,8 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         	}
       });
     // формируем столбцы сопоставления
-    String[] from = new String[] { /*"_id",*/"id_tmc","name","kol","ch","sumka","price","prim","skidka","sum_no_skidka","keg"};
-    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Hist, R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_Skidka_Rasxod_Hist,R.id.tv_Summa_Rasxod_Hist,R.id.tv_Keg_Rasxod_Hist};
+    String[] from = new String[] { /*"_id",*/"id_tmc","name","pname","kol","ch","sumka","price","prim","skidka","sum_no_skidka","keg"};
+    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Hist, R.id.tv_Name_Rasxod_Hist, R.id.tv_Postav_Rasxod_Hist, R.id.tv_Kol_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_Skidka_Rasxod_Hist,R.id.tv_Summa_Rasxod_Hist,R.id.tv_Keg_Rasxod_Hist};
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
@@ -269,6 +283,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 			    					
 			    					MainActivity.db.delRec("rasxod",idd);
 			    					getSupportLoaderManager().getLoader(0).forceLoad();
+			    					setItog();
 								}
 								
 							}
@@ -295,6 +310,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     getSupportLoaderManager().initLoader(1, null, this);
     getSupportLoaderManager().initLoader(2, null, this);
     getSupportLoaderManager().initLoader(0, null, this);
+    setItog();
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.rasxod_hist_ll));
   }
@@ -334,6 +350,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     super.onRestart();
     getSupportLoaderManager().getLoader(1).forceLoad();
     getSupportLoaderManager().getLoader(0).forceLoad();
+    setItog();
   }
   
   protected void onDestroy() {
@@ -411,8 +428,8 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         if (where.equals("")||where.length()==0) where=str[4].toString(); else 
         	if (!str[4].equals("")) where=where+" and "+str[4].toString();
      
-            	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join klient as K on T.id_klient = K._id", 
-             			new String[] {"T.keg as keg","T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","round(T.kol,3)||' '||E.name as kol",
+            	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join klient as K on T.id_klient = K._id left join postav as P on T.id_post=P._id", 
+             			new String[] {"T.keg as keg","P.name as pname","T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","round(T.kol,3)||' '||E.name as kol",
             			 "E.name as ted", "T.ed as ed","T.price as price","T.skidka as skidka","round((T.kol*T.price-T.skidka) ,2) as sum_no_skidka","T.prim as prim","TP.pgr as pgr","K.sumka as sumka","'№'||K.num_id as ch"}, 
              			 //"TP.pgr = ?"
             			 where, null,null,null,null);
@@ -421,6 +438,47 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     }
      
   }
+  
+  void setItog () {
+	  String []str = {(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":" TP.pgr="+tvIdPgr.getText().toString(),
+      		//(tvDataIns.getText().length()==0)?"":" substr(T.data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")",
+  			(tvDataIns.getText().length()==0)?"":" T.data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")",
+      				//(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")",
+  					(tvDataIns2.getText().length()==0)?"":" T.data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")",
+      				(tvIdKlient.getText().toString().equals("0")||tvIdKlient.getText().length()==0)?"":" K._id="+tvIdKlient.getText().toString(),
+      						(tvIdProd.getText().toString().equals("-1")||/*tvIdProd.getText().toString().equals("0")||*/tvIdProd.getText().length()==0)?"":" T.id_tmc="+tvIdProd.getText().toString()};
+      String where=str[0].toString();
+      //Log.d("MyLog", "dt="+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString())));
+      if (where.equals("")||where.length()==0) where=str[1].toString(); else 
+      	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
+   
+      if (where.equals("")||where.length()==0) where=str[2].toString(); else 
+      	if (!str[2].equals("")) where=where+" and "+str[2].toString();
+      
+      if (where.equals("")||where.length()==0) where=str[3].toString(); else 
+      	if (!str[3].equals("")) where=where+" and "+str[3].toString();
+      
+      if (where.equals("")||where.length()==0) where=str[4].toString(); else 
+      	if (!str[4].equals("")) where=where+" and "+str[4].toString();
+
+	        	 Cursor cursor = MainActivity.db.getQueryData
+	("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join klient as K on T.id_klient = K._id",
+	         			new String[] {"round(sum(T.kol),3) as kol","round(sum(T.price*T.kol),2) as sumka","round(sum(T.skidka),2) as skidka"}, 
+	         			 //"TP.pgr = ?"
+	        			 where, null,null,null,null);
+	        	 if (cursor.moveToFirst())  
+	      		   
+	     	        do {//tmpKol=cursor.getDouble(cursor.getColumnIndex("kol"));
+	     	        	//tmpSum=cursor.getDouble(cursor.getColumnIndex("s"));
+	     	        	itogKol.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("kol")) ) );
+	     	        	itogSum.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("sumka")) ) );
+	     	        	itogSkidka.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("skidka")) ) );
+	     	        	itogNoSkidka.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("sumka"))-cursor.getDouble(cursor.getColumnIndex("skidka") )) );
+	     	        } while (cursor.moveToNext());
+	     	      
+	        	        cursor.close();
+	     	     
+	}
   
   static class KlientLoader extends CursorLoader {
 	  
