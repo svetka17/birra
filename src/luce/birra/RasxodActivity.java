@@ -1012,7 +1012,7 @@ void makeDialog() {
 	        			tmp_minus=0;
 	        			//Log.d("MyLog", "tmp_minus=0 "+but.get(Btovar).keg+" "+String.valueOf((new Date()).getTime()) );
 	        			
-	        			if (but.get(Btovar).ost<0.2)
+	        			if (but.get(Btovar).ost<=0.0001)
 	        			{tmp_minus=2;
 	        			if (Btara!=-1) {
 	        			if (Btara!=-2)
@@ -1069,7 +1069,7 @@ void makeDialog() {
 	    					@Override
 	    					public void OnSelectedKol(double k) {
 	    						//tmp_minus=2;
-	    						byte upd=0;
+	    						//byte upd=0;
 	    						//Log.d("MyLog", "tmp_minus="+tmp_minus+" "+String.valueOf((new Date()).getTime()) );
 	    						if (k==0) {
 	    						
@@ -1084,18 +1084,20 @@ void makeDialog() {
 								      };
 								cc.close();
 								if (countT!=0) {showMessage("Остаток обнулен", (byte)1);
-								
-								upd=1;
+								butAdd.callOnClick();
+								//upd=1;
 									//setBut();
 	    			        		}
 	    						} // else {tmp_minus=2;}
 	    						
 	    						///////////////////
-	    						if (upd!=1)
-	    						{ //да-продолжаем продавать с отрицательного
-	    							tmp_minus=3;
-								    } else {butAdd.callOnClick(); //setBut();
-								    }
+	    						//if (upd!=1)
+	    						//{ //да-продолжаем продавать с отрицательного
+	    							//&52W;Ej7
+	    							//tmp_minus=3;
+								   // } else {
+								  //  	butAdd.callOnClick(); //setBut();
+								    //}
 	    						//////////////////
 	    						
 	    					}
@@ -1137,7 +1139,7 @@ void makeDialog() {
 	    				//////////
 	        			}*/
 
-	        			if (tmp_minus==0 || tmp_minus==3)
+	        			if (tmp_minus==0 /*|| tmp_minus==3*/)
 	        			{//Log.d("MyLog", "tmp_minus!=1 "+but.get(Btovar).keg+" "+String.valueOf((new Date()).getTime()) );
 	        				buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 		        			//Btovar=Byte.parseByte(buttonView.getTag().toString());
@@ -1609,7 +1611,7 @@ void makeDialog() {
 	     break;
 	   case R.id.tvOtherKol_:
         	 tvKol.setText(/*tvDKol.getText()*/String.valueOf(k));
-        	 if (Btovar!=-1 && tmp_minus!=2) fixV();
+        	 if (Btovar!=-1 /*&& tmp_minus!=2*/) fixV();
 		   tvDialogN=0;
 	     break;
 	   case R.id.etCheckNal:

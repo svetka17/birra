@@ -25,7 +25,7 @@ public class DB {
 		
 	
   private static final String DB_NAME = "birraDB";
-  private static final int DB_VERSION = 18;
+  private static final int DB_VERSION = 19;
   //private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
   //private static final String DB_TABLE = "mytab";
    
@@ -588,6 +588,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
           db.execSQL("CREATE INDEX ost_kol ON ostat (kol);");
           db.execSQL("CREATE INDEX ost_sumka ON ostat (sumka);");
           db.execSQL("CREATE INDEX tmc_pos ON tmc (pos);");
+          db.execSQL("CREATE INDEX tmc_price_ed ON tmc_price (ed);");
           db.execSQL("CREATE INDEX tmcpgr ON tmc (pgr);");
           db.execSQL("CREATE INDEX tmc_vis ON tmc (vis);");
           //Log.d("MyLog", " --- onCreate create all table --- ");
@@ -738,7 +739,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW "+
       		    " BEGIN "+
-      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, data_upd, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.data_ins, OLD.ok); "+
+      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.ok); "+
       		    " END;");
         db.execSQL("CREATE TRIGGER ras_del2 " +
     		    " AFTER DELETE "+
@@ -753,7 +754,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	//Log.d("MyLog", " --- onUpgrade database --- ");
-    	if (newVersion == 18) {
+    	if (newVersion == 19) {
     	    db.beginTransaction();
     	    try {
     	    	  db.execSQL("DROP INDEX pri_tmc;");       
@@ -767,7 +768,13 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("DROP INDEX ost_ed;");
     	          db.execSQL("DROP INDEX ost_post;");
     	          db.execSQL("DROP INDEX ost_kol;");
+    	          db.execSQL("DROP INDEX ost_sumka;");
+    	          db.execSQL("DROP INDEX tmc_pos;");
+    	          db.execSQL("DROP INDEX tmc_price_ed;");
+    	          db.execSQL("DROP INDEX tmcpgr;");
+    	          db.execSQL("DROP INDEX tmc_vis;");
     	          db.execSQL("DROP INDEX klient_k;");
+    	          
     	      db.execSQL("drop table foo;");
     	      db.execSQL("drop table user;");
     	      db.execSQL("drop table tmc;");
@@ -992,6 +999,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("CREATE INDEX ost_kol ON ostat (kol);");
     	          db.execSQL("CREATE INDEX ost_sumka ON ostat (sumka);");
     	          db.execSQL("CREATE INDEX tmc_pos ON tmc (pos);");
+    	          db.execSQL("CREATE INDEX tmc_price_ed ON tmc_price (ed);");
     	          db.execSQL("CREATE INDEX tmcpgr ON tmc (pgr);");
     	          db.execSQL("CREATE INDEX tmc_vis ON tmc (vis);");
     	    //////prixod
@@ -1141,7 +1149,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW "+
     	      		    " BEGIN "+
-    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, data_upd, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.data_ins, OLD.ok); "+
+    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.ok); "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_del2 " +
     	    		    " AFTER DELETE "+

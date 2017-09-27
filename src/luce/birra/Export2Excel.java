@@ -414,7 +414,7 @@ static File rasxod_ostat (int dat1, int dat2, int pgr, String dirN) {
          			new String[] {"TP._id as _id","T.keg as keg","TT.name as pgr","TP.name as name",/*"T.data_ins as data_ins",*/"KK.name as post","sum(T.kol) as kol","E.name as ed",
         			 "sum(T.price*T.kol-T.skidka) as sumka","K.kol as ostat","T.price as price", "round(sum(T.skidka),2) as skidka"}, 
          			 //"TP.pgr = ?"
-        			 where, null,"TP._id, T.keg, TT.name, TP.name, T.price, KK.name, E.name, K.kol",null,null);
+        			 where, null,"TP._id, T.keg, TT.name, TP.name, T.price, KK.name, E.name, K.kol",null,"TP.name,K.keg");
 
 File file   = null, dir = null;
 File root   = Environment.getExternalStorageDirectory();
@@ -508,7 +508,7 @@ static File prixod (int dat1, int dat2, int pgr, String dirN) {
 	     			new String[] {"T._id as _id","T.id_tmc as id_tmc","T.keg as keg","TP.name as name","T.data_ins as data_ins","T.kol as kol","T.kol*T.price as sumka",
 	    			 "E.name as ted", "T.ed as ed","T.price as price","P.name as pname","T.prim as prim","T.id_post as id_post","TT.name as pgr"}, 
 	     			 where,//"TP.pgr = ?",// and ?",
-	     			null,null,null,null);
+	     			null,null,null,"TP.name,T.keg");
 
 File file   = null, dir = null;
 File root   = Environment.getExternalStorageDirectory();
