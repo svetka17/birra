@@ -94,8 +94,8 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
     		//R.id.tv_Kol_Kon_Oborotka,R.id.tv_Sum_Kon_Oborotka,R.id.tv_Price_Kon_Oborotka};
     //String[] fromP = new String[] {"_id", "kol_pri","sum_pri"};
     //int[] toP = new int[] {R.id.tv_Id_OstatP_oborotka, R.id.tv_Kol_Pri_Oborotka,R.id.tv_Sum_Pri_Oborotka};
-    		String[] fromO = new String[] {/*"_id",*/ "id_tmc","name","ted",/*"kol_n",*/"sum_n","price_n","kol_pri","sum_pri","price_pri","kol_ras","sum_ras",/*"price_ras",*/"kol_k","sum_k","price_k"};
-    	    int[] toO = new int[] {/*R.id.tv_Id_OstatR_oborotka,*/ R.id.tv_Nnom_Oborotka, R.id.tv_Name_Oborotka,R.id.tv_Ted_Oborotka, /*R.id.tv_Kol_Nach_Oborotka,*/R.id.tv_Sum_Nach_Oborotka,R.id.tv_Price_Nach_Oborotka,
+    		String[] fromO = new String[] {/*"_id",*/ "id_tmc","keg","name","ted",/*"kol_n",*/"sum_n","price_n","kol_pri","sum_pri","price_pri","kol_ras","sum_ras",/*"price_ras",*/"kol_k","sum_k","price_k"};
+    	    int[] toO = new int[] {/*R.id.tv_Id_OstatR_oborotka,*/ R.id.tv_Nnom_Oborotka, R.id.tv_Keg_Oborotka, R.id.tv_Name_Oborotka,R.id.tv_Ted_Oborotka, /*R.id.tv_Kol_Nach_Oborotka,*/R.id.tv_Sum_Nach_Oborotka,R.id.tv_Price_Nach_Oborotka,
     	    		R.id.tv_Kol_Pri_Oborotka,R.id.tv_Sum_Pri_Oborotka,R.id.tv_Price_Pri_Oborotka,
     	    		R.id.tv_Kol_Ras_Oborotka,R.id.tv_Sum_Ras_Oborotka,/*R.id.tv_Price_Ras_Oborotka,*/
     	    		R.id.tv_Kol_Kon_Oborotka,R.id.tv_Sum_Kon_Oborotka,R.id.tv_Price_Kon_Oborotka};
@@ -112,7 +112,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
     				
     				if (flag==1 || flag==2) {
     					
-    					Cursor cc = MainActivity.db.getRawData ("select O._id as id, O.id_tmc as id_tmc, T.name as name_tmc, O.kol as kol, O.ed as ed, E.name as name_ed, O.id_post as id_post, P.name as name_post from ostat as O left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join postav as P on O.id_post=P._id where O._id="+id,null);
+    					Cursor cc = MainActivity.db.getRawData ("select O._id as id, O.keg as keg, O.id_tmc as id_tmc, T.name as name_tmc, O.kol as kol, O.ed as ed, E.name as name_ed, O.id_post as id_post, P.name as name_post from ostat as O left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join postav as P on O.id_post=P._id where O._id="+id,null);
     					
     					Intent intent = new Intent(OborotkaActivity.this, DvigActivity.class);
     					
@@ -120,6 +120,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
     					        do {
     					        	
     			                    intent.putExtra("dvigTmc", String.valueOf(cc.getInt(cc.getColumnIndex("id_tmc"))) );
+    			                    intent.putExtra("dvigKeg", String.valueOf(cc.getInt(cc.getColumnIndex("keg"))) );
     			                    //Log.d("MyLog", "dvigTmc "+cc.getInt(cc.getColumnIndex("id_tmc")));
     			                    intent.putExtra("dvigNameTmc", cc.getString(cc.getColumnIndex("name_tmc")));
     			                    //Log.d("MyLog", "dvigNameTmc "+cc.getString(cc.getColumnIndex("name_tmc")));
@@ -259,12 +260,12 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
              			//"ostat as O left join rasxod as R on O.id_tmc=R.id_tmc and O.id_post=R.id_post and O.ed=R.ed "
              			//+ " left join prixod as P on O.id_tmc=P.id_tmc and O.id_post=P.id_post and O.ed=P.ed"
              			//+ " left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id",
-            			 "ostat as O left join (select id_tmc, id_post, ed, sum(round(kol,3)) as sumkr, sum(round(kol,3)*round(price,2)-round(skidka,2)) as sumsr from rasxod " + str[1].toString() + 
-            			 " group by id_tmc, id_post, ed) as R on O.id_tmc=R.id_tmc and O.id_post=R.id_post and O.ed=R.ed "
-              			+ " left join (select id_tmc, id_post, ed, sum(round(kol,3)) as sumkp, sum(round(kol,3)*round(price,2)) as sumsp from prixod " + str[1].toString() +
-              			" group by id_tmc, id_post, ed) as P on O.id_tmc=P.id_tmc and O.id_post=P.id_post and O.ed=P.ed"
+            			 "ostat as O left join (select id_tmc, keg, id_post, ed, sum(round(kol,3)) as sumkr, sum(round(kol,3)*round(price,2)-round(skidka,2)) as sumsr from rasxod " + str[1].toString() + 
+            			 " group by id_tmc, keg, id_post, ed) as R on O.id_tmc=R.id_tmc and O.keg=R.keg and O.id_post=R.id_post and O.ed=R.ed "
+              			+ " left join (select id_tmc, keg, id_post, ed, sum(round(kol,3)) as sumkp, sum(round(kol,3)*round(price,2)) as sumsp from prixod " + str[1].toString() +
+              			" group by id_tmc, keg, id_post, ed) as P on O.id_tmc=P.id_tmc and O.keg=P.keg and O.id_post=P.id_post and O.ed=P.ed"
               			+ " left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id left join postav as POS on O.id_post=POS._id",
-            			 new String[] {"O._id as _id",
+            			 new String[] {"O._id as _id", "O.keg as keg",
             			"O.id_tmc as id_tmc","T.name||' '||POS.name as name","E.name as ted",
             			//"0 as kol_n","0 as sum_n","0 as price_n","sum(round(P.kol,3)) as kol_pri","sum(round(P.kol,3)*round(P.price,2)) sum_pri","0 as price_pri","sum(round(R.kol,3)) kol_ras","sum(round(R.kol,3)*round(R.price,2)) as sum_ras","0 as price_ras",
             			"0 as kol_n","0 as sum_n","0 as price_n","sumkp as kol_pri","sumsp sum_pri","0 as price_pri","sumkr kol_ras","sumsr as sum_ras","0 as price_ras",

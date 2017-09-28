@@ -489,6 +489,7 @@ public class DialogScreen extends AlertDialog.Builder {
 	        	   String s=""; s.trim();
 	           	tvDKol.setText((tvDKol.getText().length()==1||tvDKol.getText().length()==0||tvDKol.getText().equals("")||tvDKol.getText().equals("0"))?"":
 	           	tvDKol.getText().subSequence(0, tvDKol.getText().length()-1) );
+	           	strDialog=tvDKol.getText().toString();
 	           }
 	         });
         

@@ -21,7 +21,10 @@
         android:id="@+id/tv_Nnom_Oborotka"
         style="@style/lv_i"
         android:layout_weight="0.5" />
-    
+    <TextView
+        android:id="@+id/tv_Keg_Oborotka"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
     <TextView
         android:id="@+id/tv_Name_Oborotka"
         style="@style/lv_i"

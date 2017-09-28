@@ -152,7 +152,7 @@
                     style="@style/TV_h"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="ЦЕНА" />
+                    android:text="ЦЕНА ПОСТАВЩИКА" />
 
             <EditText
                 android:id="@+id/tvEditPriceProd"

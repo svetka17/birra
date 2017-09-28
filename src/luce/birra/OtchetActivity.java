@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 public class OtchetActivity extends FragmentActivity {
 
  // ListView lvData;
-  Button btnExit, btnAdd, btnO, btnOO, btnOOO, btnP, btnR, btnCheck;
+  Button btnExit, btnAdd, btnO, btnOO, btnOOO, btnP, btnR, btnCheck, btnDel;
   //AdapterLV scAdapterO;//scAdapterR, scAdapterP ;
   //static TextView tvIdPgr; //tvIdKlient, 
   //static TextView tvDataIns, tvDataIns2;
@@ -119,7 +119,13 @@ public class OtchetActivity extends FragmentActivity {
 			   startActivity(intent);
         }
       });
-    
+    btnDel = (Button) findViewById(R.id.btnDeleteOtchet);
+    btnDel.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	Intent intent = new Intent(OtchetActivity.this, DelOtchetActivity.class);
+			   startActivity(intent);
+        }
+      });
     btnP = (Button) findViewById(R.id.btnPrihodOtchet);
     btnP.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {

@@ -91,6 +91,13 @@
             android:layout_weight="1"
             style="@style/B"
             android:text="ЧЕКИ" />
+        <Button
+            android:id="@+id/btnDeleteOtchet"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="УДАЛЕННЫЕ" />
  </TableRow>   
  <TableRow
         android:layout_width="match_parent"

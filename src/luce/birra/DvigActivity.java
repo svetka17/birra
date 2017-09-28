@@ -20,7 +20,7 @@ public class DvigActivity extends FragmentActivity implements LoaderCallbacks<Cu
   ListView lvData;
   Button btnExit, btnAdd;
   AdapterLV scAdapter;
-  static TextView tvIdTmc, tvIdPost, tvIdEd; 
+  static TextView tvIdTmc, tvKeg, tvIdPost, tvIdEd; 
   TextView nameTmc, namePost, nameEd, tvKol, tvID; 
   //static EditText tvDataIns;
   static TextView tvDataIns,tvDataIns2, tvd1, tvd2;
@@ -35,6 +35,7 @@ public class DvigActivity extends FragmentActivity implements LoaderCallbacks<Cu
     setContentView(R.layout.dvig);
 
     tvIdTmc = (TextView) findViewById(R.id.tv_id_tmc_dvig);
+    tvKeg = (TextView) findViewById(R.id.tv_keg_dvig);
     nameTmc = (TextView) findViewById(R.id.tv_name_tmc_dvig);
     tvIdPost = (TextView) findViewById(R.id.tv_post_dvig);
     namePost = (TextView) findViewById(R.id.tv_name_post_dvig);
@@ -179,6 +180,7 @@ public class DvigActivity extends FragmentActivity implements LoaderCallbacks<Cu
     	//tmp=Integer.parseInt(getIntent().getStringExtra("id_check"));
 
     	tvIdTmc.setText(getIntent().getStringExtra("dvigTmc"));
+    	tvKeg.setText(getIntent().getStringExtra("dvigKeg"));
     	//Log.d("MyLog", "start create4 "+tvIdTmc.getText()+" "+getIntent().getStringExtra("dvigTmc"));
     	nameTmc.setText(getIntent().getStringExtra("dvigNameTmc"));
     	//Log.d("MyLog", "start create5 "+nameTmc.getText());
@@ -261,7 +263,7 @@ public class DvigActivity extends FragmentActivity implements LoaderCallbacks<Cu
     	String []str = {(tvDataIns.getText().length()==0)?"":" R.data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")",
         				//(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")",
     					(tvDataIns2.getText().length()==0)?"":" R.data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")"};
-        String where=" where R.id_tmc="+MainActivity.StrToFloat(tvIdTmc.getText().toString())+" and R.id_post="+MainActivity.StrToFloat(tvIdPost.getText().toString())+" and R.ed="+MainActivity.StrToFloat(tvIdEd.getText().toString());
+        String where=" where R.id_tmc="+MainActivity.StrToFloat(tvIdTmc.getText().toString())+" and R.id_post="+MainActivity.StrToFloat(tvIdPost.getText().toString())+" and R.ed="+MainActivity.StrToFloat(tvIdEd.getText().toString())+" and R.keg="+MainActivity.StrToFloat(tvKeg.getText().toString());
         //Log.d("MyLog", "dt="+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString())));
         if (str[0].length()!=0) where=where+" and "+str[0].toString(); 
      

@@ -55,6 +55,7 @@ static int tabH=15;
 static int tabI=13;
 static int tabBut=15;
 static int butMenu=20;
+static int butKalk=30;
 static int tvH=15;
 static int tvI=17;
 static int seek=50;
@@ -291,14 +292,14 @@ static void setSizeFontKalk(ViewGroup mlayout) {
 	//if (alv.get(i) instanceof CheckBox) ((CheckBox)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvI);
 	//else 
 		if (alv.get(i) instanceof Button)
-    	((Button)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , butPgr);
+    	((Button)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , butKalk);
     	//else if (alv.get(i) instanceof EditText ) {
     		//((EditText)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , butPgr);
 		//}
     	else 
     		//if (((TextView)alv.get(i)).getParent() instanceof TableRow) ((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tabH);
     		//else
-    		((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , butPgr-5);	
+    		((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , butKalk-5);	
     }
 }
 
@@ -503,6 +504,7 @@ void saveSetting() {
 	    ed.putInt("tabi", tabI );
 	    ed.putInt("tabbut", tabBut );
 	    ed.putInt("butmenu", butMenu );
+	    ed.putInt("butkalk", butKalk );
 	    ed.putInt("tvh", tvH );
 	    ed.putInt("tvi", tvI );
 	    ed.putInt("seek", seek );
@@ -526,11 +528,12 @@ void saveSetting() {
 	butTara = sPref.getInt("buttara", butTara/*(int)(h/15)*/);
 	butPgr = sPref.getInt("butpgr", butPgr /*(int)(h/15)*/);
     butName = sPref.getInt("butname", butName /*(int)(h/23)*/);
-    //butNameS = sPref.getInt("butnames", butNameS /*(int)(h/46)*/);
+    butNameS = sPref.getInt("butnames", butNameS /*(int)(h/46)*/);
     tabH = sPref.getInt("tabh", tabH /*(int)(h/25)*/);
     tabI = sPref.getInt("tabi", tabI /*(int)(h/25)*/);
     tabBut = sPref.getInt("tabbut", tabBut /*(int)(h/30)*/);
     butMenu = sPref.getInt("butmenu", butMenu /*(int)(h/25)*/);
+    butKalk = sPref.getInt("butkalk", butKalk /*(int)(h/25)*/);
     tvH = sPref.getInt("tvh", tvH /*(int)(h/25)*/);
     tvI = sPref.getInt("tvi", tvI /*(int)(h/25)*/);
     seek = sPref.getInt("seek", 50);

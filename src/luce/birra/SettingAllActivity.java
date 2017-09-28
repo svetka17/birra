@@ -150,7 +150,7 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
     butPgr2=(Button) findViewById(R.id.tvSettingButPgr2); 
     butPgr2.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butPgr);
     butPgr3=(Button) findViewById(R.id.tvSettingButPgr3); 
-    butPgr3.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butPgr);
+    butPgr3.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butKalk);
     int l1=("Õ¿»Ã≈ÕŒ¬¿Õ»≈"+"\n").length(), l2=("Õ¿»Ã≈ÕŒ¬¿Õ»≈"+"\n"+"Œ—“¿“Œ  » ÷≈Õ¿").length();
 	
 	final SpannableStringBuilder text = new SpannableStringBuilder("Õ¿»Ã≈ÕŒ¬¿Õ»≈"+"\n"+"Œ—“¿“Œ  » ÷≈Õ¿"); 
@@ -166,10 +166,10 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
     butName2=(Button) findViewById(R.id.tvSettingButName2); 
     butName2.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
     butName3=(Button) findViewById(R.id.tvSettingButName3); 
-    butName3.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    butName3.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butNameS);
     butName1.setText(text);
     butName2.setText(text);
-    butName3.setText(text);
+    butName3.setText("Œ—“¿“Œ  » ÷≈Õ¿");
     tabBut1=(Button) findViewById(R.id.btnSettingTab1);
     tabBut1.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.tabBut);
     tabBut2=(Button) findViewById(R.id.btnSettingTab2); 
@@ -262,7 +262,11 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
 		   	 MainActivity.butPgr = np.getValue();//sbDKol.getProgress();
 	       	 butPgr1.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butPgr);
 	       	 butPgr2.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butPgr);
-	       	 butPgr3.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butPgr);
+	       	 tvDialogN=0;
+		     break;
+	   case R.id.tvSettingButPgr3:
+		   MainActivity.butKalk = np.getValue();
+	       	 butPgr3.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butKalk);
 			 tvDialogN=0;
 		     break;
 	   case R.id.tvSettingButName1:
@@ -282,8 +286,23 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
 		   	 butName1.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
 		   	butName2.setText(text);
 	       	 butName2.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
-	       	butName3.setText(text);
-	       	 butName3.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+	       	tvDialogN=0;
+		     break;
+	   case R.id.tvSettingButName3:
+		   	 MainActivity.butNameS = np.getValue();//sbDKol.getProgress();
+		   	//MainActivity.butNameS = (int)(MainActivity.butName/MainActivity.scale);
+		   	int l1s=("Œ—“¿“Œ  » ÷≈Õ¿"+"\n").length(), l2s=("Œ—“¿“Œ  » ÷≈Õ¿"+"\n"+"Œ—“¿“Œ  » ÷≈Õ¿").length();
+      	
+      	final SpannableStringBuilder texts = new SpannableStringBuilder("Œ—“¿“Œ  » ÷≈Õ¿"+"\n"+"Œ—“¿“Œ  » ÷≈Õ¿"); 
+      	//final ForegroundColorSpan style = new ForegroundColorSpan(Color.rgb(255, 0, 0)); 
+      	final StyleSpan style2s = new StyleSpan(Typeface.BOLD); 
+      	final AbsoluteSizeSpan s12s = new AbsoluteSizeSpan(MainActivity.butNameS ,false);
+      	texts.setSpan(s12s, l1s, l2s, Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
+      	//text.setSpan(style, l1, l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
+      	//textView.setTypeface(null,Typeface.BOLD);
+      	texts.setSpan(style2s,l1s,l2s, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+	       	 butName3.setText(texts);
+	       	 butName3.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butNameS);
 			 tvDialogN=0;
 		     break;
 	   case R.id.btnSettingTab1:
@@ -334,8 +353,12 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
 		   return String.valueOf( MainActivity.butTara );
 	   case R.id.tvSettingButPgr1:
 		   return String.valueOf( MainActivity.butPgr );
+	   case R.id.tvSettingButPgr3:
+		   return String.valueOf( MainActivity.butKalk );
 	   case R.id.tvSettingButName1:
 		   return String.valueOf( MainActivity.butName );
+	   case R.id.tvSettingButName3:
+		   return String.valueOf( MainActivity.butNameS );
 	   case R.id.btnSettingTab1:
 		   return String.valueOf( MainActivity.tabBut );
 	   case R.id.btnSetting1:
@@ -360,8 +383,12 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
 		   return  MainActivity.butTara ;
 	   case R.id.tvSettingButPgr1:
 		   return  MainActivity.butPgr ;
+	   case R.id.tvSettingButPgr3:
+		   return  MainActivity.butKalk ;
 	   case R.id.tvSettingButName1:
 		   return  MainActivity.butName ;
+	   case R.id.tvSettingButName3:
+		   return  MainActivity.butNameS ;
 	   case R.id.btnSettingTab1:
 		   return  MainActivity.tabBut ;
 	   case R.id.btnSetting1:
@@ -390,8 +417,12 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
 		   return " ÌÓÔÍ‡ Ò Ì‡Á‚‡ÌËÂÏ Ú‡˚";
 	   case R.id.tvSettingButPgr1:
 		   return " ÌÓÔÍ‡ Ì‡Á‚‡ÌËˇ ÔÓ„‰ÛÔÔ˚";
+	   case R.id.tvSettingButPgr3:
+		   return " ÌÓÔÍ‡ Í‡Î¸ÍÛÎˇÚÓ‡";
 	   case R.id.tvSettingButName1:
 		   return " ÌÓÔÍ‡ Ì‡Á‚‡ÌËˇ";
+	   case R.id.tvSettingButName3:
+		   return " ÌÓÔÍ‡ Ì‡Á‚‡ÌËˇ (ÓÒÚ‡ÚÓÍ Ë ˆÂÌ‡)";
 	   case R.id.btnSettingTab1:
 		   return " ÌÔÍ‡ ‚ Ú‡·ÎËˆÂ";
 	   case R.id.btnSetting1:
@@ -520,13 +551,17 @@ public void onClick(View v) {
 	     break;
 	   case R.id.tvSettingButPgr1:
 	   case R.id.tvSettingButPgr2:
-	   case R.id.tvSettingButPgr3:
 		   tvDialogN=R.id.tvSettingButPgr1;
+		     break;
+	   case R.id.tvSettingButPgr3:
+		   tvDialogN=R.id.tvSettingButPgr3;
 		     break;
 	   case R.id.tvSettingButName1:
 	   case R.id.tvSettingButName2:
+		   tvDialogN=R.id.tvSettingButName1;
+		     break;
 	   case R.id.tvSettingButName3:
-			 tvDialogN=R.id.tvSettingButName1;
+			 tvDialogN=R.id.tvSettingButName3;
 		     break;
 	   case R.id.btnSettingTab1:
 	   case R.id.btnSettingTab2:

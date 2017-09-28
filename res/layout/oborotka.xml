@@ -64,6 +64,10 @@
  		    style="@style/lv_h"
             android:layout_weight="0.5"
  		    android:text="№ ТОВАРА"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="КЕГА"/>
  		
  		<TextView
  		    style="@style/lv_h"

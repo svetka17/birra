@@ -755,7 +755,7 @@ void makeDialog() {
 //			   ("select S.id_tmc as _id, S.keg as keg, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
 	//			+ " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.pgr="+tvIdPgr.getText()+" and T.vis=1 and S.kol!=0 order by T.pos, S.id_tmc",null);
 
-("select G._id as _id, min(O.keg) as keg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, G.minkol as kol, G.ed as ed, G.ted as ted, G.pos as pos from (" +
+("select G._id as _id, min(O.keg) as keg, count(O.keg) as countkeg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, G.minkol as kol, G.ed as ed, G.ted as ted, G.pos as pos from (" +
 		"select S.id_tmc as _id, T.pos as pos, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.ed as ed, E.name as ted " 
 		//+",min(S.kol) over (partition by S.id_tmc, S.id_post, S.ed order by S.kol rows between unbounded preceding and current row) as minkol"
 		+",min(S.kol) as minkol"
@@ -1012,7 +1012,7 @@ void makeDialog() {
 	        			tmp_minus=0;
 	        			//Log.d("MyLog", "tmp_minus=0 "+but.get(Btovar).keg+" "+String.valueOf((new Date()).getTime()) );
 	        			
-	        			if (but.get(Btovar).ost<=0.0001)
+	        			if (but.get(Btovar).ost<0.2)
 	        			{tmp_minus=2;
 	        			if (Btara!=-1) {
 	        			if (Btara!=-2)
@@ -1069,7 +1069,7 @@ void makeDialog() {
 	    					@Override
 	    					public void OnSelectedKol(double k) {
 	    						//tmp_minus=2;
-	    						//byte upd=0;
+	    						byte upd=0;
 	    						//Log.d("MyLog", "tmp_minus="+tmp_minus+" "+String.valueOf((new Date()).getTime()) );
 	    						if (k==0) {
 	    						
@@ -1084,20 +1084,18 @@ void makeDialog() {
 								      };
 								cc.close();
 								if (countT!=0) {showMessage("Остаток обнулен", (byte)1);
-								butAdd.callOnClick();
-								//upd=1;
+								
+								upd=1;
 									//setBut();
 	    			        		}
 	    						} // else {tmp_minus=2;}
 	    						
 	    						///////////////////
-	    						//if (upd!=1)
-	    						//{ //да-продолжаем продавать с отрицательного
-	    							//&52W;Ej7
-	    							//tmp_minus=3;
-								   // } else {
-								  //  	butAdd.callOnClick(); //setBut();
-								    //}
+	    						if (upd!=1)
+	    						{ //да-продолжаем продавать с отрицательного
+	    							tmp_minus=3;
+								    } else {butAdd.callOnClick(); //setBut();
+								    }
 	    						//////////////////
 	    						
 	    					}
@@ -1139,7 +1137,7 @@ void makeDialog() {
 	    				//////////
 	        			}*/
 
-	        			if (tmp_minus==0 /*|| tmp_minus==3*/)
+	        			if (tmp_minus==0 || tmp_minus==3)
 	        			{//Log.d("MyLog", "tmp_minus!=1 "+but.get(Btovar).keg+" "+String.valueOf((new Date()).getTime()) );
 	        				buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 		        			//Btovar=Byte.parseByte(buttonView.getTag().toString());
@@ -1611,7 +1609,7 @@ void makeDialog() {
 	     break;
 	   case R.id.tvOtherKol_:
         	 tvKol.setText(/*tvDKol.getText()*/String.valueOf(k));
-        	 if (Btovar!=-1 /*&& tmp_minus!=2*/) fixV();
+        	 if (Btovar!=-1 && tmp_minus!=2) fixV();
 		   tvDialogN=0;
 	     break;
 	   case R.id.etCheckNal:

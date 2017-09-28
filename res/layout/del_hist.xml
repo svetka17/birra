@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/del_hist_ll"
+    android:orientation="vertical" >
+    <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+<!--                  
+                <Spinner
+                    android:id="@+id/sp_Pgr_RasHist"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+                <TextView
+ 		    android:id="@+id/tv_Id_PgrRasHist"
+ 		    android:layout_width="wrap_content"
+    		android:layout_height="match_parent"
+    		android:layout_weight="0"
+    		android:text=""
+ 		    android:visibility="invisible" />
+
+                <Spinner
+                    android:id="@+id/sp_Prod_RasHist"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5" />
+                <TextView
+ 		    android:id="@+id/tv_Id_ProdRasHist"
+ 		    android:layout_width="wrap_content"
+    		android:layout_height="match_parent"
+    		android:layout_weight="0"
+    		android:text=""
+ 		    android:visibility="invisible" />
+-->
+         <TextView
+             android:id="@+id/tv_data_ras1del"
+ 		    android:text="ДАТА С"
+ 		    style="@style/TV_h"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data_RasHistdel"
+ 		    style="@style/ET_t"
+ 		    android:layout_width="0dp"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0.5"/>
+                  <TextView
+                      android:id="@+id/tv_data_ras2del"
+ 		    android:text="ДАТА ПО"
+ 		    style="@style/TV_h"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+         <TextView
+ 		    android:id="@+id/tv_Data_RasHist2del"
+ 		    style="@style/ET_t"
+ 		    android:layout_width="0dp"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0.5"/>
+         
+<!--  		<TextView
+ 		    android:text="ЧЕКИ"
+ 		    style="@style/TV_h"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="match_parent"
+ 		    android:layout_weight="0" />
+		<TextView
+ 		    android:id="@+id/tv_Id_KlientRasHist"
+ 		    android:layout_width="0dp"
+    		android:layout_height="match_parent"
+    		android:layout_weight="0"
+    		android:text=""
+ 		    android:visibility="invisible" />
+                
+                <Spinner
+                    android:id="@+id/sp_Klient_RasHist"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+-->
+    </LinearLayout>
+<TableRow  style="@style/mw0">
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="№ ТОВАРА"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="НАИМЕНОВАНИЕ"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ПОСТАВЩИК"/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="КОЛ"/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ЦЕНА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="СКИДКА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="СУММА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ДАТА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ПРИМЕЧАНИЕ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="№ЧЕКА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="СУММА ЧЕКА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="КЕГА"/>
+<TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+    </TableRow>
+    <ListView
+        android:id="@+id/lvDelHist"
+            style="@style/mm1" />
+
+        <TableRow  style="@style/mw0">
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text=""/>
+ <TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+ 				<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogDelKol"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogDelSkidka"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogDelSumma"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text=""/>
+<TextView
+            android:layout_width="0dp"
+            android:id="@+id/itogDelNoSkidka"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/summa_chek"
+            android:text=""/>
+    </TableRow>
+    
+    <LinearLayout
+            style="@style/mw0"
+        android:orientation="horizontal" >
+<!--  
+        <Button
+            android:id="@+id/btnAddPrixodHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="ДОБАВИТЬ НОВЫЙ" />
+--><Button
+            android:id="@+id/btnExcelDelHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="В EXCEL" />
+        <Button
+            android:id="@+id/btnExitDelHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            style="@style/B"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>
