@@ -53,7 +53,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.ostat);
-    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by _id", null);
+    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_Ostat);
     cbVis = (CheckBox) findViewById(R.id.cb_Kol_Ostat);
     cbVis.setChecked(true);

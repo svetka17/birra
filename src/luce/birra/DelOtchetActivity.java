@@ -30,9 +30,9 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
   //Spinner spPgr, spProd, spKlient;
   //Cursor cKlient;
   //SimpleCursorAdapter scaKlient, scaProd;
-  static int tmp=0;
+  //static int tmp=0;
   //LinearLayout ll;
- static long idd=0;
+ //static long idd=0;
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.del_hist);
@@ -137,18 +137,17 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	MainActivity.excel(DelOtchetActivity.this, DelOtchetActivity.this, tvDataIns.getText().toString(), 
-        			tvDataIns2.getText().toString(), 
-        			tvIdPgr.getText().toString(), "Расход за период", (byte)2);
+        			tvDataIns2.getText().toString(),"", "Удаленные за период", (byte)9);
         	}
       });
     // формируем столбцы сопоставления
-    String[] from = new String[] { /*"_id",*/"id_tmc","name","pname","kol","ch","sumka","price","prim","skidka","sum_no_skidka","keg"};
-    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Del_Hist, R.id.tv_Name_Del_Hist, R.id.tv_Postav_Del_Hist, R.id.tv_Kol_Del_Hist,R.id.tv_CH_Del_Hist,R.id.tv_Sumka_Del_Hist,R.id.tv_Price_Del_Hist,R.id.tv_Prim_Del_Hist,R.id.tv_Skidka_Del_Hist,R.id.tv_Summa_Del_Hist,R.id.tv_Keg_Del_Hist};
+    String[] from = new String[] { /*"_id",*/"id_tmc","name","pname","kol","price","prim","skidka","sum_no_skidka","keg"};
+    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Del_Hist, R.id.tv_Name_Del_Hist, R.id.tv_Postav_Del_Hist, R.id.tv_Kol_Del_Hist,R.id.tv_Price_Del_Hist,R.id.tv_Prim_Del_Hist,R.id.tv_Skidka_Del_Hist,R.id.tv_Summa_Del_Hist,R.id.tv_Keg_Del_Hist};
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelDelHist, R.id.btnUpdDelHist, (byte)4, this, R.layout.del_hist_item, null, from, to, 0)
-    		.setCamdiareListener(new CambiareListener() {
+    scAdapter = new AdapterLV(R.id.btnDelDelHist, R.id.btnUpdDelHist, (byte)13, this, R.layout.del_hist_item, null, from, to, 0)
+    		/*.setCamdiareListener(new CambiareListener() {
     			@Override
     			public void OnCambiare(byte flag, long id) {
     				idd=id;
@@ -180,34 +179,32 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
     					
     					}
     			}
-    		});
-    lvData = (ListView) findViewById(R.id.lvRasxodHist);
+    		})*/;
+    lvData = (ListView) findViewById(R.id.lvDelHist);
     lvData.setAdapter(scAdapter);
     
 
     // создаем лоадер для чтения данных
     
-    tmp=0;
     if( getIntent().getExtras() != null)
     {
     	
     	tvDataIns.setText(getIntent().getStringExtra("dat1"));
     	tvDataIns2.setText(getIntent().getStringExtra("dat2"));
-    	tmp=Integer.parseInt(getIntent().getStringExtra("id_check"));
     }
     
-    getSupportLoaderManager().initLoader(1, null, this);
-    getSupportLoaderManager().initLoader(2, null, this);
+    //getSupportLoaderManager().initLoader(1, null, this);
+    //getSupportLoaderManager().initLoader(2, null, this);
     getSupportLoaderManager().initLoader(0, null, this);
     setItog();
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
-    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.rasxod_hist_ll));
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.del_hist_ll));
   }
   
   @Override
   protected void onRestart() {
     super.onRestart();
-    getSupportLoaderManager().getLoader(1).forceLoad();
+    //getSupportLoaderManager().getLoader(1).forceLoad();
     getSupportLoaderManager().getLoader(0).forceLoad();
     setItog();
   }
@@ -220,9 +217,9 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
   
   public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
      // Log.d("Loader<Cursor> onCreateLoader", String.valueOf(i));
-      if (i == 0 ) return new RasxodLoader(this, MainActivity.db);
-      if (i == 1 )  return new KlientLoader(this, MainActivity.db);
-      if (i == 2 )  return new ProdLoader(this, MainActivity.db);
+      if (i == 0 ) return new RasxodDelLoader(this, MainActivity.db);
+      //if (i == 1 )  return new KlientLoader(this, MainActivity.db);
+      //if (i == 2 )  return new ProdLoader(this, MainActivity.db);
       return null;
   }
   
@@ -233,12 +230,12 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
       case 0:
     	  scAdapter.swapCursor(cursor);
        break;
-      case 1:
+ /*case 1:
     	  scaKlient.swapCursor(cursor);
        break;
       case 2:
     	  scaProd.swapCursor(cursor);
-       break;
+       break;*/
    }
 	  
   }
@@ -256,72 +253,55 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
    }*/
   }
    
-  static class RasxodLoader extends CursorLoader {
+  static class RasxodDelLoader extends CursorLoader {
  
     DB db;
-    public RasxodLoader(Context context, DB db/*, int id*/) {
+    public RasxodDelLoader(Context context, DB db/*, int id*/) {
       super(context);
       this.db = db;
     }
      
     @Override
     public Cursor loadInBackground() {
-    	String []str = {(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":" TP.pgr="+tvIdPgr.getText().toString(),
+    	String []str = {//(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":" TP.pgr="+tvIdPgr.getText().toString(),
         		//(tvDataIns.getText().length()==0)?"":" substr(T.data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")",
-    			(tvDataIns.getText().length()==0)?"":" T.data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")",
+    			(tvDataIns.getText().length()==0)?"":" T.data_del>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")",
         				//(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")",
-    					(tvDataIns2.getText().length()==0)?"":" T.data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")",
-        				(tvIdKlient.getText().toString().equals("0")||tvIdKlient.getText().length()==0)?"":" K._id="+tvIdKlient.getText().toString(),
-        						(tvIdProd.getText().toString().equals("-1")||/*tvIdProd.getText().toString().equals("0")||*/tvIdProd.getText().length()==0)?"":" T.id_tmc="+tvIdProd.getText().toString()};
+    					(tvDataIns2.getText().length()==0)?"":" T.data_del<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")"
+        				//,(tvIdKlient.getText().toString().equals("0")||tvIdKlient.getText().length()==0)?"":" K._id="+tvIdKlient.getText().toString(),
+        					//	(tvIdProd.getText().toString().equals("-1")||/*tvIdProd.getText().toString().equals("0")||*/tvIdProd.getText().length()==0)?"":" T.id_tmc="+tvIdProd.getText().toString()
+        								};
         String where=str[0].toString();
         //Log.d("MyLog", "dt="+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString())));
         if (where.equals("")||where.length()==0) where=str[1].toString(); else 
         	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
      
-        if (where.equals("")||where.length()==0) where=str[2].toString(); else 
-        	if (!str[2].equals("")) where=where+" and "+str[2].toString();
-        
-        if (where.equals("")||where.length()==0) where=str[3].toString(); else 
-        	if (!str[3].equals("")) where=where+" and "+str[3].toString();
-        
-        if (where.equals("")||where.length()==0) where=str[4].toString(); else 
-        	if (!str[4].equals("")) where=where+" and "+str[4].toString();
-     
-            	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join klient as K on T.id_klient = K._id left join postav as P on T.id_post=P._id", 
+            	 Cursor cursor = db.getQueryData("rasxod_del as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join postav as P on T.id_post=P._id", 
              			new String[] {"T.keg as keg","P.name as pname","T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","round(T.kol,3)||' '||E.name as kol",
-            			 "E.name as ted", "T.ed as ed","T.price as price","T.skidka as skidka","round((T.kol*T.price-T.skidka) ,2) as sum_no_skidka","T.prim as prim","TP.pgr as pgr","K.sumka as sumka","'№'||K.num_id as ch"}, 
+            			 "E.name as ted", "T.ed as ed","T.price as price","ifnull(T.skidka,0) as skidka","round((T.kol*T.price-ifnull(T.skidka,0)) ,2) as sum_no_skidka","T.prim as prim","TP.pgr as pgr","round(T.kol*T.price,3) as sumka"}, 
              			 //"TP.pgr = ?"
             			 where, null,null,null,null);
-
       return cursor;
     }
      
   }
   
   void setItog () {
-	  String []str = {(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":" TP.pgr="+tvIdPgr.getText().toString(),
+	  String []str = {//(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":" TP.pgr="+tvIdPgr.getText().toString(),
       		//(tvDataIns.getText().length()==0)?"":" substr(T.data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")",
-  			(tvDataIns.getText().length()==0)?"":" T.data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")",
+  			(tvDataIns.getText().length()==0)?"":" T.data_del>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")",
       				//(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")",
-  					(tvDataIns2.getText().length()==0)?"":" T.data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")",
-      				(tvIdKlient.getText().toString().equals("0")||tvIdKlient.getText().length()==0)?"":" K._id="+tvIdKlient.getText().toString(),
-      						(tvIdProd.getText().toString().equals("-1")||/*tvIdProd.getText().toString().equals("0")||*/tvIdProd.getText().length()==0)?"":" T.id_tmc="+tvIdProd.getText().toString()};
+  					(tvDataIns2.getText().length()==0)?"":" T.data_del<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")"
+      				//,(tvIdKlient.getText().toString().equals("0")||tvIdKlient.getText().length()==0)?"":" K._id="+tvIdKlient.getText().toString(),
+      					//	(tvIdProd.getText().toString().equals("-1")||/*tvIdProd.getText().toString().equals("0")||*/tvIdProd.getText().length()==0)?"":" T.id_tmc="+tvIdProd.getText().toString()
+      								};
       String where=str[0].toString();
       //Log.d("MyLog", "dt="+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString())));
       if (where.equals("")||where.length()==0) where=str[1].toString(); else 
       	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
-   
-      if (where.equals("")||where.length()==0) where=str[2].toString(); else 
-      	if (!str[2].equals("")) where=where+" and "+str[2].toString();
-      
-      if (where.equals("")||where.length()==0) where=str[3].toString(); else 
-      	if (!str[3].equals("")) where=where+" and "+str[3].toString();
-      
-      if (where.equals("")||where.length()==0) where=str[4].toString(); else 
-      	if (!str[4].equals("")) where=where+" and "+str[4].toString();
 
 	        	 Cursor cursor = MainActivity.db.getQueryData
-	("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join klient as K on T.id_klient = K._id",
+	("rasxod_del as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join klient as K on T.id_klient = K._id",
 	         			new String[] {"round(sum(T.kol),3) as kol","round(sum(T.price*T.kol),2) as sumka","round(sum(T.skidka),2) as skidka"}, 
 	         			 //"TP.pgr = ?"
 	        			 where, null,null,null,null);
@@ -338,75 +318,5 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
 	        	        cursor.close();
 	     	     
 	}
-  
-  static class KlientLoader extends CursorLoader {
-	  
-	    DB db;
-	    public KlientLoader(Context context, DB db/*, int id*/) {
-	      super(context);
-	      this.db = db;
-	    }
-	     
-	    @Override
-	    public Cursor loadInBackground() {
-
-	    	String []str = {
-	    			//(tvDataIns.getText().length()==0)?"":" substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"
-	    			(tvDataIns.getText().length()==0)?"":" data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")"
-	    			,//(tvDataIns2.getText().length()==0)?"":" substr(data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")"
-	    			(tvDataIns2.getText().length()==0)?"":" data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")"
-	        		, (tmp==0)?"":" _id="+tmp	};
-	    	String where=str[0].toString();
-	        //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
-	        if (where.equals("")||where.length()==0) where=str[1].toString(); else 
-	        	if (!str[1].equals("")) where=where+" and "+str[1].toString();
-	        if (where.equals("")||where.length()==0) where=str[2].toString(); else 
-	        	if (!str[2].equals("")) where=where+" and "+str[2].toString();
-	        if (!where.equals("")) where=" where "+where;
-	    Cursor cursor = MainActivity.db.getRawData("select 0 _id, 0 num_id, 0 sumka from foo " +((tmp==0)?"":"where _id="+tmp) +" union all select _id, num_id, sumka from klient "+
-	    //((tvDataIns.getText().length()==0)?"":" where substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")")
-	    where
-	    , null);
-	    
-	      return cursor;
-	    }
-	     
-	  }
-  
-  static class ProdLoader extends CursorLoader {
-	  
-	    DB db;
-	    public ProdLoader(Context context, DB db/*, int id*/) {
-	      super(context);
-	      this.db = db;
-	    }
-	     
-	    @Override
-	    public Cursor loadInBackground() {
-
-	    	String []str = {
-	    			//(tvDataIns.getText().length()==0)?"":" substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")"
-	    			//(tvDataIns.getText().length()==0)?"":" data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")"
-	    			//,(tvDataIns2.getText().length()==0)?"":" substr(data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")"
-	    			//(tvDataIns2.getText().length()==0)?"":" data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")"
-	    			(tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?" group by T._id, T.name ":"where T.pgr="+tvIdPgr.getText().toString()+" group by T._id, T.name"
-	    			//, (tmp1==0)?"":" _id="+tmp1	
-	    					};
-	    	String where=str[0].toString();
-	        //Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
-	       // if (where.equals("")||where.length()==0) where=str[1].toString(); else 
-	        //	if (!str[1].equals("")) where=where+" and "+str[1].toString();
-	        //if (where.equals("")||where.length()==0) where=str[2].toString(); else 
-	        	//if (!str[2].equals("")) where=where+" and "+str[2].toString();
-	        //if (!where.equals("")) where=" where "+where;
-	    Cursor cursor = MainActivity.db.getRawData("select _id, id_tmc, sumka from (select -1 _id, 'нет' id_tmc,  0 sumka from foo " /*+((tmp1==0)?"":"where _id="+tmp1)*/ +" union all select T._id _id, T.name id_tmc, sum(O.kol) sumka from tmc as T left join ostat as O on T._id=O.id_tmc "+
-	    //((tvDataIns.getText().length()==0)?"":" where substr(data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")")
-	    where+" ) order by id_tmc "
-	    , null);
-	    
-	      return cursor;
-	    }
-	     
-	  }
 
 }

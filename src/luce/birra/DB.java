@@ -25,7 +25,7 @@ public class DB {
 		
 	
   private static final String DB_NAME = "birraDB";
-  private static final int DB_VERSION = 19;
+  private static final int DB_VERSION = 20;
   //private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
   //private static final String DB_TABLE = "mytab";
    
@@ -485,7 +485,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "id_post integer,"
                   + "prim text,"
                   + "data_ins integer,"
-                //  + "data_del integer default 0,"
+                  + "data_del integer,"
                   + "ok integer default 0);");
           
           db.execSQL("create table rasxod ("
@@ -516,7 +516,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "id_klient integer,"
                   + "prim text,"
                   + "data_ins integer,"
-                //  + "data_del integer default 0,"
+                  + "data_del integer,"
                   + "ok integer default 0);");
 
           db.execSQL("create table ostat ("
@@ -566,14 +566,14 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
           db.execSQL("INSERT or replace INTO tmc_pgr (_id,name) VALUES(1,'“¿–¿')");
           db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara) VALUES(-1,'-ÌÂÚ-',0,0,0,0,0,0)");
           db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara) VALUES(0,'— »ƒ ¿',0,4,0,0,0,0)");
-          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(1,'¡”“€À ¿ 0.5À',1,2,1,1,1,0.5,1)");
+         /*db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(1,'¡”“€À ¿ 0.5À',1,2,1,1,1,0.5,1)");
           db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(2,'¡”“€À ¿ 1À',1,2,1,1,1,1,2)");
           db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(3,'¡”“€À ¿ 1.5À',1,2,1,1,1,1.5,3)");
           db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(4,'¡”“€À ¿ 2À',1,2,1,1,1,2,4)");
           db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(5,'¡”“€À ¿ 2.5À',1,2,1,1,1,2.5,5)");
           db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(6,'¡”“€À ¿ 3À',1,2,1,1,1,3,6)");
           db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(7,'—“¿ ¿Õ 0.5À',1,2,1,1,1,0.5,7)");
-          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(8,'—“¿ ¿Õ 0.2À',1,2,1,1,1,0.2,8)");
+          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(8,'—“¿ ¿Õ 0.2À',1,2,1,1,1,0.2,8)");*/
           db.execSQL("CREATE INDEX pri_tmc ON prixod (id_tmc);");
           db.execSQL("CREATE INDEX klient_k ON klient (karta);"); 
           db.execSQL("CREATE INDEX pri_ed ON prixod (ed);");
@@ -685,7 +685,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
         		    " ON prixod "+    	        		    
         		    " FOR EACH ROW "+
         		    " BEGIN "+
-        		    " insert into prixod_del (id_id, id_tmc, keg, kol, ed, price, price_vendor, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.id_post, OLD.data_ins, OLD.ok); "+
+        		    " insert into prixod_del (id_id, id_tmc, keg, kol, ed, price, price_vendor, id_post, data_ins, ok, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.id_post, OLD.data_ins, OLD.ok, "+MainActivity.getIntDataTime()+"); "+
         		    " END;");
           
           db.execSQL("CREATE TRIGGER pri_del2 " +
@@ -739,7 +739,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW "+
       		    " BEGIN "+
-      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.ok); "+
+      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, "+MainActivity.getIntDataTime()+"); "+
       		    " END;");
         db.execSQL("CREATE TRIGGER ras_del2 " +
     		    " AFTER DELETE "+
@@ -754,7 +754,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	//Log.d("MyLog", " --- onUpgrade database --- ");
-    	if (newVersion == 19) {
+    	if (newVersion == 20) {
     	    db.beginTransaction();
     	    try {
     	    	  db.execSQL("DROP INDEX pri_tmc;");       
@@ -896,7 +896,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "id_post integer,"
     	                  + "prim text,"
     	                  + "data_ins integer,"
-    	                //  + "data_del integer default 0,"
+    	                  + "data_del integer,"
     	                  + "ok integer default 0);");
     	          
     	          db.execSQL("create table rasxod ("
@@ -927,7 +927,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "id_klient integer,"
     	                  + "prim text,"
     	                  + "data_ins integer,"
-    	                //  + "data_del integer default 0,"
+    	                  + "data_del integer,"
     	                  + "ok integer default 0);");
 
     	          db.execSQL("create table ostat ("
@@ -977,14 +977,14 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("INSERT or replace INTO tmc_pgr (_id,name) VALUES(1,'“¿–¿')");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara) VALUES(-1,'-ÌÂÚ-',0,0,0,0,0,0)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara) VALUES(0,'— »ƒ ¿',0,4,0,0,0,0)");
-    	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(1,'¡”“€À ¿ 0.5À',1,2,1,1,1,0.5,1)");
+    	         /* db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(1,'¡”“€À ¿ 0.5À',1,2,1,1,1,0.5,1)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(2,'¡”“€À ¿ 1À',1,2,1,1,1,1,2)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(3,'¡”“€À ¿ 1.5À',1,2,1,1,1,1.5,3)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(4,'¡”“€À ¿ 2À',1,2,1,1,1,2,4)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(5,'¡”“€À ¿ 2.5À',1,2,1,1,1,2.5,5)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(6,'¡”“€À ¿ 3À',1,2,1,1,1,3,6)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(7,'—“¿ ¿Õ 0.5À',1,2,1,1,1,0.5,7)");
-    	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(8,'—“¿ ¿Õ 0.2À',1,2,1,1,1,0.2,8)");
+    	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(8,'—“¿ ¿Õ 0.2À',1,2,1,1,1,0.2,8)");*/
     	          db.execSQL("CREATE INDEX pri_tmc ON prixod (id_tmc);");
     	          db.execSQL("CREATE INDEX klient_k ON klient (karta);"); 
     	          db.execSQL("CREATE INDEX pri_ed ON prixod (ed);");
@@ -1095,7 +1095,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	        		    " ON prixod "+    	        		    
     	        		    " FOR EACH ROW "+
     	        		    " BEGIN "+
-    	        		    " insert into prixod_del (id_id, id_tmc, keg, kol, ed, price, price_vendor, id_post, data_ins, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.id_post, OLD.data_ins, OLD.ok); "+
+    	        		    " insert into prixod_del (id_id, id_tmc, keg, kol, ed, price, price_vendor, id_post, data_ins, ok, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.id_post, OLD.data_ins, OLD.ok, "+MainActivity.getIntDataTime()+"); "+
     	        		    " END;");
     	          
     	          db.execSQL("CREATE TRIGGER pri_del2 " +
@@ -1149,7 +1149,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW "+
     	      		    " BEGIN "+
-    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, ok) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.ok); "+
+    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins,"+MainActivity.getIntDataTime()+"); "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_del2 " +
     	    		    " AFTER DELETE "+

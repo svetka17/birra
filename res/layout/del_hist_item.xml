@@ -63,20 +63,15 @@
         android:id="@+id/tv_Prim_Del_Hist"
         style="@style/lv_i"
         android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tv_CH_Del_Hist"
-        style="@style/lv_i"
-        android:layout_weight="0.5" />
-    <TextView
-        android:id="@+id/tv_Sumka_Del_Hist"
-        style="@style/lv_i"
-        android:layout_weight="0.5" />
+
+
     <TextView
         android:id="@+id/tv_Keg_Del_Hist"
         style="@style/lv_i"
         android:layout_weight="0.5" />
     <LinearLayout
         style="@style/_m1"
+        android:visibility="gone"
         android:orientation="vertical" >
 
         <Button

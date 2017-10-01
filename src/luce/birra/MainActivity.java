@@ -150,6 +150,8 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 					file=Export2Excel.price((int) StrToFloat(pgrr), ""); break;
 				case 8:
 					file=Export2Excel.check(getIntData(dat11),getIntData(dat22), ""); break;
+				case 9:
+					file=Export2Excel.otchet_del(getIntData(dat11),getIntData(dat22), ""); break;
 				}
 				//u1  =  Uri.fromFile(file);
 				//intent = new Intent(Intent.);

@@ -313,6 +313,115 @@ e.printStackTrace();
 return file;
 }
 
+static File otchet_del (int dat1, int dat2, String dirN) {
+	String []str = {//pgr==0?"":" TP._id="+pgr,
+			dat1==0?"":" substr(R.data_del,1,6)>=trim("+dat1+")",
+			dat2==0?"":" substr(R.data_del,1,6)<=trim("+dat2+")"
+			};
+			String where=str[0].toString();
+			if (where.length()==0) where=str[1].toString(); else where=where+" and "+str[1].toString();
+			//if (where.length()==0) where=str[2].toString(); else where=where+" and "+str[2].toString();
+			//if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
+			//Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
+			Cursor cc = MainActivity.db.getQueryData( 
+			"rasxod_del as R "
+			+ " left join tmc as T on R.id_tmc=T._id left join tmc_ed as E on R.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id left join postav as POS on R.id_post=POS._id left join klient as K on R.id_klient=K._id",
+			new String[] {"R._id as _id",
+			"R.id_tmc as id_tmc","R.keg as keg","T.name as name","E.name as ted","TP.name namet","POS.name as namep",
+			//"O.sumka+R.sumkr-P.sumkp as kol_n","O.sumka+R.sumsr-P.sumsp as sum_n","0 as price_n",
+			"R.prim as prim", "'÷åê¹'||K._id||' íà ñóììó '||K.sumka as chek",//"0 as price_pri",
+			"R.kol*R.price as sumka","R.data_ins as data_ins",//"0 as price_ras",
+			"R.kol as kol","R.price as price","R.skidka as skidka", "R.kol*R.price-R.skidka as sumkaskidka"
+			}, 
+			where, null,null,null,null);
+
+File file   = null, dir = null;
+File root   = Environment.getExternalStorageDirectory();
+if (dirN.length()!=0) {dir=new File(dirN); }
+else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
+if (root.canWrite()){
+dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
+}
+file   =   new File(dir, "Óäàëåííûå ïîçèöèè "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+".xls");
+
+try {
+FileOutputStream out   =   null;
+out = new FileOutputStream(file);
+HSSFWorkbook workbook = new HSSFWorkbook();
+HSSFSheet sheet = workbook.createSheet("Ëèñò1");
+HSSFDataFormat df2 = workbook.createDataFormat();
+HSSFDataFormat df3 = workbook.createDataFormat();
+HSSFCellStyle styleN2 = workbook.createCellStyle();
+styleN2.setDataFormat(df2.getFormat("0.00"));
+HSSFCellStyle styleN3 = workbook.createCellStyle();
+styleN3.setDataFormat(df3.getFormat("0.000"));
+HSSFFont font = workbook.createFont();
+font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+HSSFCellStyle style = workbook.createCellStyle();
+style.setFont(font);
+style.setWrapText(true);
+style.setAlignment(HSSFCellStyle.ALIGN_FILL );
+style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
+int rowNum = 0;
+HSSFRow row = sheet.createRow(rowNum);
+row.createCell(0).setCellValue("ÍÎÌÅÍÊËÀÒÓĞÀ"); //row.getCell(0).setCellStyle(style2);
+row.createCell(1).setCellValue("ÃĞÓÏÏÀ");
+row.createCell(2).setCellValue("ÍÀÇÂÀÍÈÅ");
+row.createCell(3).setCellValue("ÏÎÑÒÀÂÙÈÊ");
+row.createCell(4).setCellValue("ÊÎË-ÂÎ");
+row.createCell(5).setCellValue("ÅÄ.ÈÇÌ");
+row.createCell(6).setCellValue("ÑÓÌÌÀ ÁÅÇ ÑÊÈÄÊÈ");
+row.createCell(7).setCellValue("ÑÊÈÄÊÀ");
+row.createCell(8).setCellValue("ÑÓÌÌÀ ÑÎ ÑÊÈÄÊÎÉ");
+row.createCell(9).setCellValue("ÖÅÍÀ");
+row.createCell(10).setCellValue("ÏĞÈÌÅ×ÀÍÈÅ");
+row.createCell(11).setCellValue("ÈÄ¹");
+row.createCell(12).setCellValue("×ÅÊ");
+row.createCell(13).setCellValue("ÄÀÒÀ");
+row.createCell(14).setCellValue("ÊÅÃÀ");
+for (int i=0; i<15; i++) row.getCell(i).setCellStyle(style);
+row.setHeight((short)1000);
+sheet.createFreezePane(0, 1);
+if (cc.moveToFirst())  
+do {
+rowNum++;
+row = sheet.createRow(rowNum);
+row.createCell(0).setCellValue(cc.getInt(cc.getColumnIndex("id_tmc")));
+row.createCell(1).setCellValue(cc.getString(cc.getColumnIndex("namet")));
+row.createCell(2).setCellValue(cc.getString(cc.getColumnIndex("name")));
+row.createCell(3).setCellValue(cc.getString(cc.getColumnIndex("namep")));
+row.createCell(4).setCellValue(cc.getDouble(cc.getColumnIndex("kol")));row.getCell(4).setCellStyle(styleN3);
+row.createCell(5).setCellValue(cc.getString(cc.getColumnIndex("ted")));
+row.createCell(6).setCellValue(cc.getDouble(cc.getColumnIndex("sumka")));row.getCell(6).setCellStyle(styleN2);
+row.createCell(7).setCellValue(cc.getDouble(cc.getColumnIndex("skidka")));row.getCell(7).setCellStyle(styleN2);
+row.createCell(8).setCellValue(cc.getDouble(cc.getColumnIndex("sumkaskidka")));row.getCell(8).setCellStyle(styleN2);
+row.createCell(9).setCellValue(cc.getDouble(cc.getColumnIndex("price")));row.getCell(9).setCellStyle(styleN2);
+row.createCell(10).setCellValue(cc.getString(cc.getColumnIndex("prim")));
+row.createCell(11).setCellValue(cc.getInt(cc.getColumnIndex("_id")));
+row.createCell(12).setCellValue(cc.getString(cc.getColumnIndex("chek")));
+row.createCell(13).setCellValue(MainActivity.getStringDataTime( cc.getInt(cc.getColumnIndex("data_ins")) ));
+row.createCell(14).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
+} while (cc.moveToNext());
+cc.close();
+rowNum++;
+row = sheet.createRow(rowNum);
+FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+row.createCell(4).setCellFormula("SUM(E2:E"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(4));row.getCell(4).setCellStyle(styleN3);
+row.createCell(6).setCellFormula("SUM(G2:G"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(6));row.getCell(6).setCellStyle(styleN2);
+row.createCell(7).setCellFormula("SUM(H2:H"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(7));row.getCell(7).setCellStyle(styleN2);
+row.createCell(8).setCellFormula("SUM(I2:I"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(8));row.getCell(8).setCellStyle(styleN2);
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:N"+rowNum));
+workbook.write(out);// workbook.close();
+out.close();
+} catch (FileNotFoundException ef) {
+ef.printStackTrace();// out.close();
+}
+catch (IOException e) {
+e.printStackTrace();
+}
+return file;
+}
+
 static File check (int dat1, int dat2, String dirN) {
 	String []str = {
 			dat1==0?"":" substr(K.data_ins,1,6)>=trim("+dat1+")",

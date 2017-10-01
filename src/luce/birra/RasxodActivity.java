@@ -755,13 +755,13 @@ void makeDialog() {
 //			   ("select S.id_tmc as _id, S.keg as keg, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
 	//			+ " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.pgr="+tvIdPgr.getText()+" and T.vis=1 and S.kol!=0 order by T.pos, S.id_tmc",null);
 
-("select G._id as _id, min(O.keg) as keg, count(O.keg) as countkeg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, G.minkol as kol, G.ed as ed, G.ted as ted, G.pos as pos from (" +
+("select G._id as _id, min(O.keg) as keg, G.countkeg as countkeg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, G.minkol as kol, G.ed as ed, G.ted as ted, G.pos as pos from (" +
 		"select S.id_tmc as _id, T.pos as pos, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.ed as ed, E.name as ted " 
 		//+",min(S.kol) over (partition by S.id_tmc, S.id_post, S.ed order by S.kol rows between unbounded preceding and current row) as minkol"
-		+",min(S.kol) as minkol"
+		+",count(S.kol) as countkeg, min(S.kol) as minkol"
 + " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.pgr="+tvIdPgr.getText()+" and T.vis=1 and S.kol!=0 " +
 " group by S.id_tmc, T.pos, T.name, P.name, TP.price, S.id_post, S.ed, E.name) as G left join ostat as O on G._id=O.id_tmc and G.id_post=O.id_post and G.ed=O.ed and G.minkol=O.kol " +
-" group by G._id, G.name, G.namep, G.price, G.id_post, G.minkol, G.ed, G.ted, G.pos order by G.pos, G._id",null);
+" group by G._id, G.countkeg, G.name, G.namep, G.price, G.id_post, G.minkol, G.ed, G.ted, G.pos order by G.pos, G._id",null);
 
 	     //cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
 	   // scale size font
@@ -968,11 +968,13 @@ void makeDialog() {
 	        	float sText=((display_w)/(6*scale*scale*l))+scale*10;
 	        	*/
 	        	but.get(ib).tb.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+	        	String l = but.get(ib).tmc_name+"\n"+MainActivity.round3(but.get(ib).ost)+but.get(ib).ted+" ЦЕНА "+MainActivity.round2(but.get(ib).price);
+	        	if (cc.getInt(cc.getColumnIndex("countkeg"))>1) l=l+"\n"+cc.getInt(cc.getColumnIndex("countkeg"))+" кеги";
+	        	int l1=(but.get(ib).tmc_name+"\n").length(), l2=l.length();
 	        	
-	        	int l1=(but.get(ib).tmc_name+"\n").length(), l2=(but.get(ib).tmc_name+"\n"+MainActivity.round3(but.get(ib).ost)+but.get(ib).ted+" ЦЕНА "+MainActivity.round2(but.get(ib).price)).length();
-	        	
-	        	final SpannableStringBuilder text = new SpannableStringBuilder(but.get(ib).tmc_name
-	        			+"\n"+MainActivity.round3(but.get(ib).ost)+but.get(ib).ted+" ЦЕНА "+MainActivity.round2(but.get(ib).price)); 
+	        	final SpannableStringBuilder text = new SpannableStringBuilder(l
+	        			//but.get(ib).tmc_name+"\n"+MainActivity.round3(but.get(ib).ost)+but.get(ib).ted+" ЦЕНА "+MainActivity.round2(but.get(ib).price)
+	        			); 
 	        	//final ForegroundColorSpan style = new ForegroundColorSpan(Color.rgb(255, 0, 0)); 
 	        	final StyleSpan style2 = new StyleSpan(Typeface.BOLD); 
 	        	final AbsoluteSizeSpan s12 = new AbsoluteSizeSpan(MainActivity.butNameS ,false);
@@ -981,7 +983,7 @@ void makeDialog() {
 	        	//textView.setTypeface(null,Typeface.BOLD);
 	        	text.setSpan(style2,l1,l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 	        	//textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); 
-	    
+	        	
 	        	but.get(ib).tb.setTextOff(text);//(but.get(ib).tmc_name+"\n"+but.get(ib).ost+but.get(ib).ted+" ЦЕНА "+but.get(ib).price);
 	        	but.get(ib).tb.setTextOn(text);//(but.get(ib).tmc_name+"\n"+but.get(ib).ost+but.get(ib).ted+" ЦЕНА "+but.get(ib).price);
 	        	but.get(ib).tb.setChecked(false);
@@ -1356,7 +1358,8 @@ void makeDialog() {
    	   		tranz.get(i).prim="из отрицательного остатка! "+tranz.get(i).prim;
    	   	}
    		MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
-   			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
+   			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
+   			"чек№ "+MainActivity.num_id+" автозакрыт на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
    	   	
    	
    	//Log.d("MyLog", "PtagB="+tranz.get(i).tagB+" ost="+but.get(tranz.get(i).tagB).ost);
@@ -1432,7 +1435,8 @@ void makeDialog() {
     //long tmp = MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc,
    		//	tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
     	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
-       			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
+       			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
+       			"чек№ "+MainActivity.num_id+" закрыт с проверкой на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
        	
   	//Log.d("MyLog", "data="+data.get(tranz.get(i).tagL).get("skidka_sum").toString());
    	//эта жесть создает скидку по позиции если она есть в чеке (в поле rasxod.ok пишу _id расхода, по которой скидка)

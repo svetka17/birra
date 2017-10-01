@@ -8,7 +8,6 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -90,13 +89,13 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
 		}
 	});*/
     tvKol = (EditText) findViewById(R.id.tvKolPri);
+
     tvEd = (TextView) findViewById(R.id.tvIdEdPri);
     tvPrice = (EditText) findViewById(R.id.tvPricePri);
     //tvPrice.setText("0");
     tvSumma = (EditText) findViewById(R.id.tvSummaPri);
     //tvSumma.setText("0");
     tvSumma.setOnFocusChangeListener(new OnFocusChangeListener() {
-		
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			if (hasFocus) flagFocus=1;
@@ -386,39 +385,39 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     
     if( getIntent().getExtras() != null)
     {
-    	Log.d("MyLog", "prixod 1");
+
     tvIdPgr.setText(getIntent().getStringExtra("PrixodPgr"));
-    Log.d("MyLog", "prixod 2");
+
 tvIdPost.setText(getIntent().getStringExtra("PrixodPost"));
-Log.d("MyLog", "prixod 3");
+
 tmp_post = ((int) MainActivity.StrToFloat(getIntent().getStringExtra("PrixodPost")));
-Log.d("MyLog", "prixod 4");
+
 MainActivity.setSpinnerItemById(spPost, tmp_post);
-Log.d("MyLog", "prixod 5");
+
 tmp=((int) MainActivity.StrToFloat(getIntent().getStringExtra("PrixodProd")));
-Log.d("MyLog", "prixod 6");
+
 tmp_ed=(byte) (MainActivity.StrToFloat(getIntent().getStringExtra("PrixodEd")));
-Log.d("MyLog", "prixod 7");
+
 tmp_close=(byte) (MainActivity.StrToFloat(getIntent().getStringExtra("PrixodClose")));
-Log.d("MyLog", "prixod 8");
+
 tvPrice.setText(getIntent().getStringExtra("PrixodPrice"));
-Log.d("MyLog", "prixod 9");
+
 tvPriceVendor.setText(getIntent().getStringExtra("PrixodPriceVendor"));
-Log.d("MyLog", "prixod 10");
+
 //Log.d("MyLog", "prixod price="+getIntent().getStringExtra("PrixodPrice") );
 tvKol.setText(getIntent().getStringExtra("PrixodKol"));
-Log.d("MyLog", "prixod 11");
+
 //spProd.setSelection(Integer.parseInt(getIntent().getStringExtra("PrixodProd")));
 
 tvPrim.setText(getIntent().getStringExtra("PrixodPrim"));
-Log.d("MyLog", "prixod 12");
+
 //tvDataIns.setText(MainActivity.getStringDataTime((int) MainActivity.StrToFloat(getIntent().getStringExtra("PrixodDataIns"))));
 tvDataIns.setText(MainActivity.getStringDataTime(Integer.parseInt(getIntent().getStringExtra("PrixodDataIns"))));
-Log.d("MyLog", "prixod 13");
+
 tvId.setText(getIntent().getStringExtra("PrixodId"));
-Log.d("MyLog", "prixod 14");
+
 tvSumma.setText(String.valueOf(MainActivity.StrToFloat(tvKol.getText().toString())*MainActivity.StrToFloat(tvPrice.getText().toString()) ));
-Log.d("MyLog", "prixod 15");
+
 //setSpinnerItemById(spPgr, Integer.parseInt(getIntent().getStringExtra("PrixodPgr")));
     }
     
@@ -521,8 +520,10 @@ void setPrice () {
         	        			     	        do {//tmpKol=cursor.getDouble(cursor.getColumnIndex("kol"));
         	        			     	        	//tmpSum=cursor.getDouble(cursor.getColumnIndex("s"));
         	        			     	        	if ( cursor.getDouble(cursor.getColumnIndex("price")) != 0 )
-        	        			     	        	{tmp=1;
+        	        			     	        	{if (tmp==0)
         	        			     	        	tvPriceVendor.setText(String.valueOf(MainActivity.round2( cursor.getDouble(cursor.getColumnIndex("price")) )) );
+        	        			     	        	if (MainActivity.StrToFloat2(tvSumma.getText().toString())!=0)
+        	        			     	        	tvSumma.setText(String.valueOf(MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("price")))*MainActivity.StrToFloat(tvKol.getText().toString())));
         	        			     	        	}
         	        			     	        } while (cursor.moveToNext());
         	        			     	      

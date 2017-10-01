@@ -51,6 +51,7 @@ public AdapterLV(/*int[] r,*/ int bD, int bU, byte nT, Context context, int layo
     case 10: namT=""; break;
     case 11: namT="tmc_price"; break;
     case 12: namT=""; break;
+    case 13: namT="rasxod_del"; break;
     }
 }
 
@@ -345,6 +346,13 @@ public void bindView(View view, Context context, final Cursor cursor) {
         tv = (TextView) view.findViewById(R.id.tv_DataIns_Rasxod_Hist);  	
         tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
 		
+    	break;
+    case 13:
+
+    	//tv = (TextView) view.findViewById(R.id.tvNamePostPrixod_);  	
+        //tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
+        tv = (TextView) view.findViewById(R.id.tv_DataIns_Del_Hist);  	
+        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
     	break;
     case 7: break;
     case 9: 
