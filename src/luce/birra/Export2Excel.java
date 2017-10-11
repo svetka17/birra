@@ -224,7 +224,7 @@ static File rasxod (int dat1, int dat2, int pgr, String dirN) {
 			"R.kol*R.price as sumka","R.data_ins as data_ins",//"0 as price_ras",
 			"R.kol as kol","R.price as price","R.skidka as skidka", "R.kol*R.price-R.skidka as sumkaskidka"
 			}, 
-			where, null,null,null,null);
+			where, null,null,null,"K._id,TP.name,R.keg");
 
 File file   = null, dir = null;
 File root   = Environment.getExternalStorageDirectory();

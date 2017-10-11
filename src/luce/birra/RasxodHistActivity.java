@@ -432,7 +432,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
              			new String[] {"T.keg as keg","P.name as pname","T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","round(T.kol,3)||' '||E.name as kol",
             			 "E.name as ted", "T.ed as ed","T.price as price","T.skidka as skidka","round((T.kol*T.price-T.skidka) ,2) as sum_no_skidka","T.prim as prim","TP.pgr as pgr","K.sumka as sumka","'¹'||K.num_id as ch"}, 
              			 //"TP.pgr = ?"
-            			 where, null,null,null,"TP.name,T.keg");
+            			 where, null,null,null,"K.num_id,TP.name,T.keg");
 
       return cursor;
     }
