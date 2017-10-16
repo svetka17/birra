@@ -7,6 +7,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -313,6 +314,10 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     setItog();
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.rasxod_hist_ll));
+    itogKol.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogSum.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogSkidka.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogNoSkidka.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
   }
 /*  
   protected Dialog onCreateDialog(int id) {

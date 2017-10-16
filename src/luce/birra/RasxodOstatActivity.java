@@ -12,6 +12,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -143,6 +144,10 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
     setItog();
     //Log.d("MyLog", "create data="+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString())));
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.rasxod_ostat_ll));
+    itogKol.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogSum.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogSkidka.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogNoSkidka.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
   }
   
   protected Dialog onCreateDialog(int id) {
@@ -250,11 +255,34 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
         	if (!str[3].equals("")) where=where+" and "+str[3].toString();
 "id_tmc","pgr","name","post","kol","ed","sumka","ostat"
 */     
-            	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on T.id_post=KK._id", 
-             			new String[] {"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg","TP._id as _id","TT.name as pgr","TP.name as name",/*"T.data_ins as data_ins",*/"KK.name as post","sum(T.kol) as kol","E.name as ed",
+  /*          	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id LEFT OUTER JOIN ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on T.id_post=KK._id", 
+             			new String[] {"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg","TP._id as _id","TT.name as pgr","TP.name as name","KK.name as post","sum(T.kol) as kol","E.name as ed",
             			 "sum(T.price*T.kol) as sumka","round(sum(T.price*T.kol)/sum(T.kol),2) as price","round(sum(T.skidka),2) as skidka","K.kol as ostat"}, 
              			 //"TP.pgr = ?"
             			 where, null,"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, K.kol",null,"TP.name,K.keg");
+*/
+/*        Cursor cursor = db.getQueryData("ostat as K left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on K.ed = E._id left JOIN rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on K.id_post=KK._id", 
+     			new String[] {"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg","TP._id as _id","TT.name as pgr","TP.name as name","KK.name as post","sum(T.kol) as kol","E.name as ed",
+    			 "sum(T.price*T.kol) as sumka","round(sum(T.price*T.kol)/sum(T.kol),2) as price","round(sum(T.skidka),2) as skidka","K.kol as ostat"}, 
+     			 //"TP.pgr = ?"
+    			 where, null,"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, K.kol","K.kol<>0 or sum(T.kol)<>0","TP.name,K.keg");
+*/
+        Cursor cursor = db.getRawData (
+    			"select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, O.kol as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, "
+    			+ "P.name as pname, T.name as tname, TP.name as pgr "
+    			+ "from ostat as O "
+    			+ "left join tmc_price as TT "
+    			+ "on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed "
+    			+ "left join tmc as T "
+    			+ "on O.id_tmc=T._id "
+    			+ "left join postav as P "
+    			+ "on O.id_post=P._id "
+    			+ "left join tmc_ed as E "
+    			+ "on O.ed=E._id "
+    			+ "left join tmc_pgr as TP "
+    			+ "on T.pgr=TP._id "
+    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" O.kol=0")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString())  +" order by T.pgr, T.name, O.id_post, O.kol"
+    			, null);//new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"T.pgr ":tvIdPgr.getText().toString()});// new String[] {,});
 
       return cursor;
     }
