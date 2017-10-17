@@ -43,7 +43,14 @@
         android:id="@+id/tvKeg_Ostat"
         style="@style/lv_i"
         android:layout_weight="0.5" />
-
+        <TextView
+        android:id="@+id/tvKolNedo_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+        <TextView
+        android:id="@+id/tvKolIzl_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
     <LinearLayout
         style="@style/_m1"
         android:orientation="vertical" >

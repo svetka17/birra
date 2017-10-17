@@ -234,7 +234,7 @@ catch(IOException e) {};
 			            if (kol>0 && idtmc!=-1 && idpost!=-1 && ed!=-1 && id_pgr!=-1) {
 			            int kegs=0;
 			            if (ed==1) kegs=(int)MainActivity.db.addRecKEGSCount("загрузка остатков "+n, kol, "из файла", MainActivity.getIntDataTime(), (byte)0);
-			             MainActivity.db.addRecPRIXOD(idtmc,kegs, kol, (byte)ed, price, price, idpost, "загрузка остатка из файла "+file, MainActivity.getIntDataTime(), (byte)0); 
+			             MainActivity.db.addRecPRIXOD(idtmc,kegs, kol,0,0, (byte)ed, price, price, idpost, "загрузка остатка из файла "+file, MainActivity.getIntDataTime(), (byte)0); 
 			            Toast.makeText(cnt , "загрузка остатка " +n+" кол-во:"+kol+" цена продажи:"+price , Toast.LENGTH_SHORT).show();
 			            }
 			            }

@@ -85,7 +85,7 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
         	showDialog(2);
         }
       });
-    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by _id", null);
+    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_PriHist);
     tvIdPgr = (TextView) findViewById(R.id.tv_Id_PgrPriHist);
     tvIdPgr.setText("0");

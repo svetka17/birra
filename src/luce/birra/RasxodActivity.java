@@ -1,7 +1,6 @@
 package luce.birra;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -524,7 +523,7 @@ void makeDialog() {
 							Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
 							   if (cc.moveToFirst()) { 
 							        do {countT=
-							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка - из меню продаж"+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0), (cc.getDouble(cc.getColumnIndex("kol"))<0?0:cc.getDouble(cc.getColumnIndex("kol"))), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка - из меню продаж"+MainActivity.usr, MainActivity.getIntDataTime(), 1);
 							        } while (cc.moveToNext());
 							      };
 							if (countT!=0) showMessage("Остаток обнулен", (byte)1);
@@ -758,9 +757,14 @@ void makeDialog() {
 ("select G._id as _id, min(O.keg) as keg, G.countkeg as countkeg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, G.minkol as kol, G.ed as ed, G.ted as ted, G.pos as pos from (" +
 		"select S.id_tmc as _id, T.pos as pos, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.ed as ed, E.name as ted " 
 		//+",min(S.kol) over (partition by S.id_tmc, S.id_post, S.ed order by S.kol rows between unbounded preceding and current row) as minkol"
-		+",count(S.kol) as countkeg, min(S.kol) as minkol"
+		+",count(S.kol) as countkeg, "
+		//+ "min(S.kol) as minkol"
+		+ "S.kol as minkol, "
+		+ "min(S.data_ins) as mindat"
 + " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.pgr="+tvIdPgr.getText()+" and T.vis=1 and S.kol!=0 " +
-" group by S.id_tmc, T.pos, T.name, P.name, TP.price, S.id_post, S.ed, E.name) as G left join ostat as O on G._id=O.id_tmc and G.id_post=O.id_post and G.ed=O.ed and G.minkol=O.kol " +
+" group by S.id_tmc, T.pos, T.name, P.name, TP.price, S.id_post, S.ed, E.name) as G left join ostat as O on G._id=O.id_tmc and G.id_post=O.id_post and G.ed=O.ed "
+//+ "and G.minkol=O.kol " +
++ " and G.mindat=O.data_ins " +
 " group by G._id, G.countkeg, G.name, G.namep, G.price, G.id_post, G.minkol, G.ed, G.ted, G.pos order by G.pos, G._id",null);
 
 	     //cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
@@ -1037,7 +1041,7 @@ void makeDialog() {
 					      };
 					cc.close();
 					//Log.d("MyLog", "new keg countT="+countT+" "+String.valueOf((new Date()).getTime()) );
-					    if (countT>1) {
+					    if (countT>=1) {
 					    	//перейти на новую кегу
 					    	DialogScreen getYes = new DialogScreen(RasxodActivity.this,RasxodActivity.this,-8).setDialogScreenListener(new DialogListener() {
 	        					
@@ -1049,7 +1053,7 @@ void makeDialog() {
 		    							Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<0.0001 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
 		 							   if (cc.moveToFirst()) { 
 		 							        do {countT=
-		 							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка с 0 кол-ом - обнуление из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+		 							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 0,0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка с 0 кол-ом - обнуление из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
 		 							        showMessage("Кнопка с текущей кегой обнулена", (byte)1);
 		 							        //Log.d("MyLog", "countT="+countT+" "+String.valueOf((new Date()).getTime()) );
 		 							        } while (cc.moveToNext());
@@ -1080,7 +1084,7 @@ void makeDialog() {
 								Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<0.0001 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
 								   if (cc.moveToFirst()) { 
 								        do {countT=
-								        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка с 0 кол-ом - обнуление из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+								        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 0, 0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка с 0 кол-ом - обнуление из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
 								        //Log.d("MyLog", "countT="+countT+" "+String.valueOf((new Date()).getTime()) );
 								        } while (cc.moveToNext());
 								      };
@@ -1346,20 +1350,20 @@ void makeDialog() {
    		//public void addRecRASXOD(int id_tmc, float kol, float price, int id_post, int id_klient, String prim, int data_del, int data_ins, byte ok)
    	//MainActivity.db.addRecRASXOD(but.get(Btovar).id_tmc,but.get(Btovar).keg,
    		//	tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
-   		but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
+   		but.get(tranz.get(i).tagB).ost=MainActivity.round3( but.get(tranz.get(i).tagB).ost-tranz.get(i).kol );
    	   	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i);
    	   	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i+" ost="+but.get(tranz.get(i).tagB).ost);
    	   	
    	   	//but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
    	   	if (but.get(tranz.get(i).tagB).ost==0 && but.get(tranz.get(i).tagB).ed==1)//если кол-во =0 то добавляем остаток по приходу
    	   	{
-   	   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, tranz.get(i).keg, -but.get(tranz.get(i).tagB).ost+0.0001, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "автоувеличение+1 остатка "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
-   	   		but.get(tranz.get(i).tagB).ost=0.0001;
+   	   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, tranz.get(i).keg, -but.get(tranz.get(i).tagB).ost+0.00001,0,0, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "автоувеличение+1 остатка "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
+   	   		but.get(tranz.get(i).tagB).ost=0.00001;
    	   		tranz.get(i).prim="из отрицательного остатка! "+tranz.get(i).prim;
    	   	}
    		MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
-   			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
-   			MainActivity.usr+" авточек№ "+MainActivity.num_id+" на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" осталось:"+but.get(tranz.get(i).tagB).ost+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
+   			tranz.get(i).kol, (but.get(tranz.get(i).tagB).ost<0?-but.get(tranz.get(i).tagB).ost:0), (but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0), tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
+   			MainActivity.usr+" авточек№ "+MainActivity.num_id+" на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" остаток:"+but.get(tranz.get(i).tagB).ost+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
    	   	
    	
    	//Log.d("MyLog", "PtagB="+tranz.get(i).tagB+" ost="+but.get(tranz.get(i).tagB).ost);
@@ -1424,10 +1428,10 @@ void makeDialog() {
     skid=0;	
     if (tranz.get(i).tagL!=-1) skid=MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() );
 	
-    but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
+    but.get(tranz.get(i).tagB).ost=MainActivity.round3(but.get(tranz.get(i).tagB).ost-tranz.get(i).kol);
    	if (but.get(tranz.get(i).tagB).ost==0 && but.get(tranz.get(i).tagB).ed==1 )//если кол-во =0 то добавляем остаток по приходу
    	{
-   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, tranz.get(i).keg, -but.get(tranz.get(i).tagB).ost+0.0001, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
+   		MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, tranz.get(i).keg, -but.get(tranz.get(i).tagB).ost+0.00001,0,0, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "остаток "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
    		but.get(tranz.get(i).tagB).ost=0.0001;
    		tranz.get(i).prim="из отрицательного остатка! "+tranz.get(i).prim;
    	}
@@ -1435,8 +1439,8 @@ void makeDialog() {
     //long tmp = MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc,
    		//	tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
     	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
-       			tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
-       			MainActivity.usr+" чек№ "+MainActivity.num_id+" на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" осталось:"+but.get(tranz.get(i).tagB).ost+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
+       			tranz.get(i).kol,(but.get(tranz.get(i).tagB).ost<0?-but.get(tranz.get(i).tagB).ost:0), (but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0), tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
+       			MainActivity.usr+" чек№ "+MainActivity.num_id+" на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" остаток:"+but.get(tranz.get(i).tagB).ost+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
        	
   	//Log.d("MyLog", "data="+data.get(tranz.get(i).tagL).get("skidka_sum").toString());
    	//эта жесть создает скидку по позиции если она есть в чеке (в поле rasxod.ok пишу _id расхода, по которой скидка)
@@ -2186,4 +2190,9 @@ public void onStopTrackingTouch(SeekBar seekBar) {
 }
  
 }
+/*10-17 19:27:20.069: E/AndroidRuntime(1209): 	at dalvik.system.NativeStart.main(Native Method)
+10-17 19:27:20.069: E/AndroidRuntime(1209): Caused by: android.database.sqlite.SQLiteException: near "(": syntax error (code 1): , while compiling: 
+select G._id as _id, min(O.keg) as keg, G.countkeg as countkeg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, G.minkol as kol, G.ed as ed, G.ted as ted, G.pos as pos from 
+(select S.id_tmc as _id, T.pos as pos, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.ed as ed, E.name as ted ,count(S.kol) as countkeg, S.kol as minkol min(S.data_ins) as mindat from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.pgr=-1 and T.vis=1 and S.kol!=0  group by S.id_tmc, T.pos, T.name, P.name, TP.price, S.kol, S.id_post, S.ed, E.name) as G left join ostat as O on G._id=O.id_tmc and G.id_post=O.id_post and G.ed=O.ed  and G.mindat=O.data_ins  group by G._id, G.countkeg, G.name, G.namep, G.price, G.id_post, G.mindat, G.minkol, G.ed, G.ted, G.pos order by G.pos, G._id
+*/
 

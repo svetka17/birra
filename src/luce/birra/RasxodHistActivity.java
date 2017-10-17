@@ -125,7 +125,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
 			}) ;getDT.show();
         }
       });
-    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by _id", null);
+    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_RasHist);
     tvIdPgr = (TextView) findViewById(R.id.tv_Id_PgrRasHist);
     tvIdPgr.setText("0");

@@ -52,7 +52,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
         }
       });
     
-    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by _id", null);
+    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_Oborotka);
     tvIdPgr = (TextView) findViewById(R.id.tv_Id_PgrOborotka);
     tvIdPgr.setText("0");

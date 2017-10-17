@@ -704,7 +704,7 @@ static File ostat (int pgr, String dirN) {
 			//Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
 			Cursor cc = MainActivity.db.getRawData (
 	    			"select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, O.kol as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, "
-	    	    			+ "P.name as pname, T.name as tname, TP.name as pgr, O.kol*TT.price as sumka "
+	    	    			+ "P.name as pname, T.name as tname, TP.name as pgr, O.kol*TT.price as sumka, O.kol_nedo as kol_nedo, O.kol_izl as kol_izl "
 	    	    			+ "from ostat as O "
 	    	    			+ "left join tmc_price as TT "
 	    	    			+ "on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed "
@@ -716,7 +716,7 @@ static File ostat (int pgr, String dirN) {
 	    	    			+ "on O.ed=E._id "
 	    	    			+ "left join tmc_pgr as TP "
 	    	    			+ "on T.pgr=TP._id "
-	    	    			+ "where O.kol<>0 "+((pgr==0)?"":(" and T.pgr="+pgr)) // +"? and ?"
+	    	    			+ "where (O.kol<>0 or O.kol_izl<>0 or O.kol_nedo<>0) "+((pgr==0)?"":(" and T.pgr="+pgr)) // +"? and ?"
 	    	    			, null);
 
 File file   = null, dir = null;
@@ -759,7 +759,9 @@ row.createCell(7).setCellValue("—”ÃÃ¿");
 row.createCell(8).setCellValue("»ƒπ");
 row.createCell(9).setCellValue("ƒ¿“¿ œŒ—À≈ƒÕ≈√Œ »«Ã≈Õ≈Õ»ﬂ");
 row.createCell(10).setCellValue(" ≈√¿");
-for (int i=0; i<11; i++) row.getCell(i).setCellStyle(style);
+row.createCell(11).setCellValue("Õ≈ƒŒ—“¿“ »");
+row.createCell(12).setCellValue("»«À»ÿ »");
+for (int i=0; i<13; i++) row.getCell(i).setCellStyle(style);
 row.setHeight((short)1000);
 sheet.createFreezePane(0, 1);
 if (cc.moveToFirst())  
@@ -777,6 +779,8 @@ row.createCell(7).setCellValue(cc.getDouble(cc.getColumnIndex("sumka")));row.get
 row.createCell(8).setCellValue(cc.getInt(cc.getColumnIndex("_id")));
 row.createCell(9).setCellValue(MainActivity.getStringDataTime( cc.getInt(cc.getColumnIndex("data_ins")) ));
 row.createCell(10).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
+row.createCell(11).setCellValue(cc.getDouble(cc.getColumnIndex("kol_nedo")));row.getCell(11).setCellStyle(styleN3);
+row.createCell(12).setCellValue(cc.getDouble(cc.getColumnIndex("kol_izl")));row.getCell(12).setCellStyle(styleN3);
 } while (cc.moveToNext());
 cc.close();
 rowNum++;
@@ -784,7 +788,8 @@ row = sheet.createRow(rowNum);
 FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 row.createCell(4).setCellFormula("SUM(E2:E"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(4));row.getCell(4).setCellStyle(styleN3);
 row.createCell(7).setCellFormula("SUM(H2:H"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(7));row.getCell(7).setCellStyle(styleN2);
-sheet.setAutoFilter(CellRangeAddress.valueOf("A1:L"+rowNum));
+
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:N"+rowNum));
 workbook.write(out);// workbook.close();
 out.close();
 } catch (FileNotFoundException ef) {

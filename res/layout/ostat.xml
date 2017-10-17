@@ -30,7 +30,7 @@
  		    style="@style/TV_h"
                     android:clickable="true"
                     android:editable="false"
-                    android:text="НЕ ПОКАЗЫВАТЬ НУЛЕВЫЕ ОСТАТКИ" />
+                    android:text="ПОКАЗЫВАТЬ ТОЛЬКО НЕ НУЛЕВЫЕ ОСТАТКИ" />
     </LinearLayout>
 <TableRow  style="@style/mw0">
 
@@ -71,6 +71,14 @@
  		    style="@style/lv_h"
             android:layout_weight="0.5"
  		    android:text="КЕГА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="НЕДОСТАЧА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="ИЗЛИШКИ"/>
 <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"

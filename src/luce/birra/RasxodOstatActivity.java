@@ -74,7 +74,7 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
         	showDialog(2);
         }
       });
-    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by _id", null);
+    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_RasOst);
     tvIdPgr = (TextView) findViewById(R.id.tv_Id_PgrRasOst);
     tvIdPgr.setText("0");
@@ -268,20 +268,15 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
     			 where, null,"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, K.kol","K.kol<>0 or sum(T.kol)<>0","TP.name,K.keg");
 */
         Cursor cursor = db.getRawData (
-    			"select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, O.kol as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, "
-    			+ "P.name as pname, T.name as tname, TP.name as pgr "
-    			+ "from ostat as O "
-    			+ "left join tmc_price as TT "
-    			+ "on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed "
-    			+ "left join tmc as T "
-    			+ "on O.id_tmc=T._id "
-    			+ "left join postav as P "
-    			+ "on O.id_post=P._id "
-    			+ "left join tmc_ed as E "
-    			+ "on O.ed=E._id "
-    			+ "left join tmc_pgr as TP "
-    			+ "on T.pgr=TP._id "
-    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" O.kol=0")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString())  +" order by T.pgr, T.name, O.id_post, O.kol"
+    			"select keg, kkeg, _id, pgr, name, post, kol, ed, sumka, price, skidka, ostat from (" +
+    			"select K.keg as kkeg, K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(T.kol) as kol,E.name as ed,sum(T.price*T.kol) as sumka,round(sum(T.price*T.kol)/sum(T.kol),2) as price,round(sum(T.skidka),2) as skidka,K.kol as ostat "
+    			+ "from rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id LEFT OUTER JOIN ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on T.id_post=KK._id "
+    			+ "where "+where+" group by K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, K.kol union " +
+    					"select K.keg as kkeg, K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(T.kol) as kol,E.name as ed,sum(T.price*T.kol) as sumka,round(sum(T.price*T.kol)/sum(T.kol),2) as price,round(sum(T.skidka),2) as skidka,K.kol as ostat" +
+    					" from ostat as K left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on K.ed = E._id left JOIN rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on K.id_post=KK._id " +
+    					" where K.kol<>0 "+((tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":"and TP.pgr="+(tvIdPgr.getText().toString()))+" group by K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, K.kol" +
+    							" )"
+    			+" order by name, keg"
     			, null);//new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"T.pgr ":tvIdPgr.getText().toString()});// new String[] {,});
 
       return cursor;

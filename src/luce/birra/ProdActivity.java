@@ -75,7 +75,7 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.prod);
-    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by _id", null);
+    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
     //showMessage("w = "+width+"; h = "+height+"; S = "+scale+"; W = "+display_w+"; H = "+display_h+" SF="+height/15, (byte)1);
     
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_Prod);

@@ -56,7 +56,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_Ostat);
     cbVis = (CheckBox) findViewById(R.id.cb_Kol_Ostat);
-    cbVis.setChecked(true);
+    cbVis.setChecked(false);
     cbVis.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -107,8 +107,8 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
         }
       });
     // ÙÓÏËÛÂÏ ÒÚÓÎ·ˆ˚ ÒÓÔÓÒÚ‡‚ÎÂÌËˇ
-    String[] from = new String[] { "_id","tname","pgr",/*"pname",*/"kol","ted","price", "keg" };
-    int[] to = new int[] {R.id.tvId_Ostat, R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat, /*R.id.tvNamePost_Ostat,*/R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat, R.id.tvKeg_Ostat };
+    String[] from = new String[] { "_id","tname","pgr",/*"pname",*/"kol","kol_nedo","kol_izl","ted","price", "keg" };
+    int[] to = new int[] {R.id.tvId_Ostat, R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat, /*R.id.tvNamePost_Ostat,*/R.id.tvKol_Ostat,R.id.tvKolNedo_Ostat,R.id.tvKolIzl_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat, R.id.tvKeg_Ostat };
     //int[] toH = new int[] {R.id.tvId_Ostat,R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,R.id.tvNamePost_Ostat,R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat,R.id.tvDataIns_Ostat};
 
     // ÒÓÁ‰‡ÂÏ ‡‰‡ÔÚÂ Ë Ì‡ÒÚ‡Ë‚‡ÂÏ ÒÔËÒÓÍ ÒÌ‡˜‡Î‡ ÍÌÓÔÍ‡ ƒÂÎ, ¿Ô‰, ËÏˇ Ú‡·ÎËˆ˚
@@ -121,7 +121,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     					Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<>0 and _id="+id,null);
     					   if (cc.moveToFirst()) { 
     					        do {countT=
-    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")),cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "Œ¡Õ”À≈Õ»≈ Œ—“¿“ ¿ ID="+id, MainActivity.getIntDataTime(), 1);
+    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")),cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 0, cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "Œ¡Õ”À≈Õ»≈ Œ—“¿“ ¿ ID="+id, MainActivity.getIntDataTime(), 1);
     					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
     					        } while (cc.moveToNext());
     					      };
@@ -146,8 +146,8 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     				    					Cursor cc = MainActivity.db.getRawData ("select O.id_tmc as id_tmc, O.keg as keg, O.kol as kol, O.ed as ed, O.id_post as id_post, TP.price as price from ostat O left join tmc_price as TP on O.id_tmc=TP.id_tmc and O.id_post=TP.id_post where O.kol<>0 and O._id="+idd,null);
     				    					   if (cc.moveToFirst()) { 
     				    					        do {countT=
-    				    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")),cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "»«Ã≈Õ≈Õ»≈ Œ—“¿“ ¿ –¿—’Œƒ ID="+idd, MainActivity.getIntDataTime(), 1);
-    				    					        		MainActivity.db.addRecPRIXOD(cc.getInt(cc.getColumnIndex("id_tmc")),cc.getInt(cc.getColumnIndex("keg")), k, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,cc.getDouble(cc.getColumnIndex("price")), cc.getInt(cc.getColumnIndex("id_post")), "»«Ã≈Õ≈Õ»≈ Œ—“¿“ ¿ œ–»’Œƒ ID="+idd, MainActivity.getIntDataTime(), (byte)1);
+    				    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")),cc.getDouble(cc.getColumnIndex("kol")),(cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0),(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "»«Ã≈Õ≈Õ»≈ Œ—“¿“ ¿ –¿—’Œƒ ID="+idd, MainActivity.getIntDataTime(), 1);
+    				    					        		MainActivity.db.addRecPRIXOD(cc.getInt(cc.getColumnIndex("id_tmc")),cc.getInt(cc.getColumnIndex("keg")), k,0, 0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getDouble(cc.getColumnIndex("price")), cc.getInt(cc.getColumnIndex("id_post")), "»«Ã≈Õ≈Õ»≈ Œ—“¿“ ¿ œ–»’Œƒ ID="+idd, MainActivity.getIntDataTime(), (byte)1);
     				    					        } while (cc.moveToNext());
     				    					      };
     				    					if (countT!=0)      
@@ -226,7 +226,7 @@ from ostat as O left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT
     	
     	Cursor cursor = db.getRawData (
     			"select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, O.kol as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, "
-    			+ "P.name as pname, T.name as tname, TP.name as pgr "
+    			+ "P.name as pname, T.name as tname, TP.name as pgr, O.kol_nedo as kol_nedo, O.kol_izl as kol_izl "
     			+ "from ostat as O "
     			+ "left join tmc_price as TT "
     			+ "on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed "
@@ -238,7 +238,7 @@ from ostat as O left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT
     			+ "on O.ed=E._id "
     			+ "left join tmc_pgr as TP "
     			+ "on T.pgr=TP._id "
-    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" O.kol=0")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString())  +" order by T.pgr, T.name, O.id_post, O.kol"
+    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" (O.kol!=0 or O.kol_nedo!=0 or O.kol_izl!=0) ")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString())  +" order by T.pgr, T.name, O.id_post, O.kol"
     			, null);//new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"T.pgr ":tvIdPgr.getText().toString()});// new String[] {,});
       return cursor;
     }

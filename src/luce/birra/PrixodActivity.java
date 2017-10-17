@@ -127,7 +127,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     //cProd = MainActivity.db.getRawData("select _id, name, pgr,ed,ted from (select _id, name,0 pgr, 0 ed, '-' ted from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted from tmc as T left join tmc_ed as E on T.ed=E._id) where pgr = "+((tvIdPgr.getText().equals("0") )?"pgr":tvIdPgr.getText()), null);
     //cProd = MainActivity.db.getRawData("select _id, name,0 pgr, 0 ed, '-' ted from foo union all select T._id as _id, T.name as name, T.pgr as pgr, T.ed as ed, E.name as ted from tmc as T left join tmc_ed as E on T.ed=E._id", null);
     cPost = MainActivity.db.getRawData("select _id, name from postav", null);
-    cPgr = MainActivity.db.getRawData("select _id, name from tmc_pgr", null);
+    cPgr = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
     /////////////
     spPgr = (Spinner) findViewById(R.id.spPgrPri);
     fromPgr = new String[] {"name"};
@@ -294,7 +294,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
 				   if (cc.moveToFirst()) { 
 				        do {if (cc.getDouble(cc.getColumnIndex("kol"))<0) //<0 %)
 				        	countT=
-				        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "ÎÁÍÓËÅÍÈÅ ÎÒÐÈÖÀÒÅËÜÍÎÃÎ ÎÑÒÀÒÊÀ Â ÏÐÈÕÎÄÅ "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+				        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), cc.getDouble(cc.getColumnIndex("kol")), 0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "ÎÁÍÓËÅÍÈÅ ÎÒÐÈÖÀÒÅËÜÍÎÃÎ ÎÑÒÀÒÊÀ Â ÏÐÈÕÎÄÅ "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
 				        } while (cc.moveToNext());
 				      };
 				      
@@ -307,6 +307,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         				Integer.parseInt(tvIdProd.getText().toString()), 
         				Integer.parseInt(tvKeg.getText().toString()),
         				MainActivity.StrToFloat(tvKol.getText().toString()), 
+        				0,0,
         				Byte.parseByte(tvEd.getText().toString()),
         				MainActivity.StrToFloat2(tvPrice.getText().toString() ), 
         				MainActivity.StrToFloat2(tvPriceVendor.getText().toString()), 
