@@ -1034,7 +1034,7 @@ void makeDialog() {
 	        		   	Btara=-1;}
 	        			// проверяем есть ли другая кега
 	        			long countT=0;
-						Cursor cc = MainActivity.db.getRawData ("select count(*) c from ostat where kol>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and ed="+but.get(Btovar).ed , null);
+						Cursor cc = MainActivity.db.getRawData ("select count(*) c from ostat where kol>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and ed="+but.get(Btovar).ed+" and keg<>"+but.get(Btovar).keg , null);
 					   if (cc.moveToFirst()) { 
 					        do {countT=cc.getInt(cc.getColumnIndex("c"));
 					        } while (cc.moveToNext());
