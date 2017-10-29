@@ -226,7 +226,7 @@ from ostat as O left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT
     	
     	Cursor cursor = db.getRawData (
     			"select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, O.kol as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, "
-    			+ "P.name as pname, T.name as tname, TP.name as pgr, O.kol_nedo as kol_nedo, O.kol_izl as kol_izl "
+    			+ "P.name as pname, T.name as tname, TP.name as pgr, CASE O.ed WHEN 1 then round(O.kol_nedo,2) ELSE round(O.kol_nedo,3) END  as kol_nedo, CASE O.ed WHEN 1 then round(O.kol_izl,2) ELSE round(O.kol_izl,3) END as kol_izl "
     			+ "from ostat as O "
     			+ "left join tmc_price as TT "
     			+ "on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed "

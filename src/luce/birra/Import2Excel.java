@@ -58,15 +58,15 @@ try { //Log.d("MyLog", "1");
 							case 0: id = (int) MainActivity.StrToFloat(value);
 								break;
 							case 1: //n_pgr = value.trim();
-							c = MainActivity.db.getRawData ("select _id from tmc_pgr where trim(name)=trim('"+value.replace("'", "") +"')", null);
+							c = MainActivity.db.getRawData ("select _id from tmc_pgr where trim(name)=trim('"+value.replace("\'", "").replace("\"", "") +"')", null);
 							if (c.moveToFirst()) {   
 						        do { id_pgr = c.getInt(c.getColumnIndex("_id"));} 
 						        while (c.moveToNext());
 						      }
-							if (id_pgr==-1 && id!=0 && !value.replace("'", "").equals("")) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
+							if (id_pgr==-1 && id!=0 && !value.replace("\'", "").replace("\"", "").equals("")) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 								break;
 							case 2: n = value.trim();
-							c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value.replace("'", "")+"')", null);
+							c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value.replace("\'", "").replace("\"", "") +"')", null);
 							if (c.moveToFirst()) {   
 						        do { idtmc = c.getInt(c.getColumnIndex("_id"));} 
 						        while (c.moveToNext());
@@ -98,11 +98,11 @@ try { //Log.d("MyLog", "1");
 	                    i++;
 	                }
 	             if (idtmc==-1 && !n.equals(""))
-	            	 idtmc=(int) MainActivity.db.addRecTMCcount(n, id_pgr, ed, price, vis, pos, tara, MainActivity.getIntDataTime(), ok);
+	            	 idtmc=(int) MainActivity.db.addRecTMCcount(n.replace("\'", "").replace("\"", ""), id_pgr, ed, price, vis, pos, tara, MainActivity.getIntDataTime(), ok);
 	             else {
-	            	 if (id==idtmc) Toast.makeText(cnt , "наименование " +n+" уже есть" , Toast.LENGTH_SHORT).show();
+	            	 if (id==idtmc) Toast.makeText(cnt , "наименование " +n.replace("\'", "").replace("\"", "")+" уже есть" , Toast.LENGTH_SHORT).show();
 	            	 //Log.d("MyLog", "exists equal "+n);}
-	            	 else Toast.makeText(cnt , "наименование " +n+" уже есть с другим номенклатурным номером" , Toast.LENGTH_SHORT).show();
+	            	 else Toast.makeText(cnt , "наименование " +n.replace("\'", "").replace("\"", "")+" уже есть с другим номенклатурным номером" , Toast.LENGTH_SHORT).show();
 	            	 //Log.d("MyLog", "exists other "+n);}
 	            	 }
 	             }
@@ -174,15 +174,15 @@ catch(IOException e) {};
 									case 0: id = (int) MainActivity.StrToFloat(value);
 										break;
 									case 1: //n_pgr = value.trim();
-									c = MainActivity.db.getRawData ("select _id from tmc_pgr where trim(name)=trim('"+value.replace("'", "") +"')", null);
+									c = MainActivity.db.getRawData ("select _id from tmc_pgr where trim(name)=trim('"+value.replace("\'", "").replace("\"", "")+"')", null);
 									if (c.moveToFirst()) {   
 								        do { id_pgr = c.getInt(c.getColumnIndex("_id"));} 
 								        while (c.moveToNext());
 								      }
-									if (id_pgr==-1 && id!=0 && !value.replace("'", "").equals("") ) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
+									if (id_pgr==-1 && id!=0 && !value.replace("\'", "").replace("\"", "").equals("") ) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 										break;
 									case 2: n = value.trim();
-									c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value.replace("'", "")+"')", null);
+									c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value.replace("\'", "").replace("\"", "")+"')", null);
 									if (c.moveToFirst()) {   
 								        do { idtmc = c.getInt(c.getColumnIndex("_id"));} 
 								        while (c.moveToNext());
@@ -190,12 +190,12 @@ catch(IOException e) {};
 									//if (idtmc==-1) idtmc = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 										break;
 									case 3: //n_pgr = value.trim();
-										c = MainActivity.db.getRawData ("select _id from postav where trim(name)=trim('"+value+"')", null);
+										c = MainActivity.db.getRawData ("select _id from postav where trim(name)=trim('"+value.replace("\'", "").replace("\"", "")+"')", null);
 										if (c.moveToFirst()) {   
 									        do { idpost = c.getInt(c.getColumnIndex("_id"));} 
 									        while (c.moveToNext());
 									      }
-										if (idpost==-1 && !value.equals("")) idpost = (int) MainActivity.db.addRecPOSTAVcount(value,"","","загружено с остатками", MainActivity.getIntDataTime(),(byte)0);
+										if (idpost==-1 && !value.replace("\'", "").replace("\"", "").equals("")) idpost = (int) MainActivity.db.addRecPOSTAVcount(value.replace("\'", "").replace("\"", ""),"","","загружено с остатками", MainActivity.getIntDataTime(),(byte)0);
 											break;
 									case 4: kol = MainActivity.StrToFloat(value);
 									case 5: //ted = value.trim();
@@ -220,9 +220,9 @@ catch(IOException e) {};
 			                }
 			                
 			             if (idtmc==-1)
-			                { if (!n.equals(""))
-			            	{idtmc=(int) MainActivity.db.addRecTMCcount(n, id_pgr, ed, price, /*vis*/(byte)1, /*pos*/(byte)1, /*tara*/0, MainActivity.getIntDataTime(), /*ok*/(byte)0);
-			                Toast.makeText(cnt , "добавлено наименование " +n, Toast.LENGTH_SHORT).show();
+			                { if (!n.replace("\'", "").replace("\"", "").equals(""))
+			            	{idtmc=(int) MainActivity.db.addRecTMCcount(n.replace("\'", "").replace("\"", ""), id_pgr, ed, price, /*vis*/(byte)1, /*pos*/(byte)1, /*tara*/0, MainActivity.getIntDataTime(), /*ok*/(byte)0);
+			                Toast.makeText(cnt , "добавлено наименование " +n.replace("\'", "").replace("\"", ""), Toast.LENGTH_SHORT).show();
 				            }
 			                }
 			                /*else {
@@ -233,7 +233,7 @@ catch(IOException e) {};
 			            	 }*/
 			            if (kol>0 && idtmc!=-1 && idpost!=-1 && ed!=-1 && id_pgr!=-1) {
 			            int kegs=0;
-			            if (ed==1) kegs=(int)MainActivity.db.addRecKEGSCount("загрузка остатков "+n, kol, "из файла", MainActivity.getIntDataTime(), (byte)0);
+			            if (ed==1) kegs=(int)MainActivity.db.addRecKEGSCount("загрузка остатков "+n.replace("\'", "").replace("\"", ""), kol, "из файла", MainActivity.getIntDataTime(), (byte)0);
 			             MainActivity.db.addRecPRIXOD(idtmc,kegs, kol,0,0, (byte)ed, price, price, idpost, "загрузка остатка из файла "+file, MainActivity.getIntDataTime(), (byte)0); 
 			            Toast.makeText(cnt , "загрузка остатка " +n+" кол-во:"+kol+" цена продажи:"+price , Toast.LENGTH_SHORT).show();
 			            }

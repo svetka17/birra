@@ -17,7 +17,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -34,6 +37,7 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
   //static EditText tvDataIns;
   static TextView tvDataIns,tvDataIns2, tvd1, tvd2;
   Spinner spPgr;//, spKlient;
+  static CheckBox cbOst;
   //Cursor cKlient;
   //SimpleCursorAdapter scaKlient;
   
@@ -42,7 +46,15 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.rasxod_ostat);
-    //final DialogFragment dlg = new DialogActivity();
+    cbOst = (CheckBox) findViewById(R.id.cb_Ost_RasOst);
+    cbOst.setChecked(true);
+    cbOst.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			getSupportLoaderManager().getLoader(0).forceLoad();
+        	setItog();
+		}
+	});
     itogKol = (TextView) findViewById(R.id.itogRasxodOstKol);
     itogSum = (TextView) findViewById(R.id.itogRasxodOstSumma);
     itogSkidka = (TextView) findViewById(R.id.itogRasxodOstSkidka);
@@ -267,7 +279,9 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
      			 //"TP.pgr = ?"
     			 where, null,"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, K.kol","K.kol<>0 or sum(T.kol)<>0","TP.name,K.keg");
 */
-        Cursor cursor = db.getRawData (
+        Cursor cursor;
+        if (cbOst.isChecked())
+         cursor = db.getRawData (
     			"select keg, kkeg, _id, pgr, name, post, kol, ed, sumka, price, skidka, ostat from (" +
     			"select K.keg as kkeg, K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(T.kol) as kol,E.name as ed,sum(T.price*T.kol) as sumka,round(sum(T.price*T.kol)/sum(T.kol),2) as price,round(sum(T.skidka),2) as skidka,K.kol as ostat "
     			+ "from rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id LEFT OUTER JOIN ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on T.id_post=KK._id "
@@ -278,7 +292,13 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
     							" )"
     			+" order by name, keg"
     			, null);//new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"T.pgr ":tvIdPgr.getText().toString()});// new String[] {,});
-
+        else
+        	cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id LEFT OUTER JOIN ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on T.id_post=KK._id", 
+         			new String[] {"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg","TP._id as _id","TT.name as pgr","TP.name as name","KK.name as post","sum(T.kol) as kol","E.name as ed",
+        			 "sum(T.price*T.kol) as sumka","round(sum(T.price*T.kol)/sum(T.kol),2) as price","round(sum(T.skidka),2) as skidka","K.kol as ostat"}, 
+         			 //"TP.pgr = ?"
+        			 where, null,"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, K.kol",null,"TP.name,K.keg");
+	
       return cursor;
     }
      
@@ -298,7 +318,22 @@ void setItog () {
     	if (!str[2].equals("")) where=where+" and "+str[2].toString();
     if (where.equals("")||where.length()==0) where=" T.ok=0 "; else where=where+" and T.ok=0 ";
       //  float tmpKol=0, tmpSum=0;
-        	 Cursor cursor = MainActivity.db.getQueryData
+    Cursor cursor;
+    if (cbOst.isChecked()) 
+    	cursor = MainActivity.db.getRawData (
+    			"select round(sum(kol),3) as kol, round(sum(price*kol),2) as sumka, round(sum(skidka),2) as skidka from (" +
+    			"select K.keg as kkeg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(T.kol) as kol,E.name as ed,sum(T.price*T.kol) as sumka,round(sum(T.price*T.kol)/sum(T.kol),2) as price,round(sum(T.skidka),2) as skidka,K.kol as ostat "
+    			+ "from rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id LEFT OUTER JOIN ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on T.id_post=KK._id "
+    			+ "where "+where+" group by K.keg, TP._id, TT.name, TP.name, KK.name, E.name, K.kol union " +
+    					"select K.keg as kkeg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(T.kol) as kol,E.name as ed,sum(T.price*T.kol) as sumka,round(sum(T.price*T.kol)/sum(T.kol),2) as price,round(sum(T.skidka),2) as skidka,K.kol as ostat" +
+    					" from ostat as K left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on K.ed = E._id left JOIN rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on K.id_post=KK._id " +
+    					" where K.kol<>0 "+((tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":"and TP.pgr="+(tvIdPgr.getText().toString()))+" group by K.keg, TP._id, TT.name, TP.name, KK.name, E.name, K.kol" +
+    							" )"
+    			//+" order by name, keg"
+    			, null);//new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"T.pgr ":tvIdPgr.getText().toString()});// new String[] {,});
+	
+    else
+    cursor = MainActivity.db.getQueryData
 ("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.keg=K.keg and T.ed=K.ed left join postav as KK on T.id_post=KK._id",
          			new String[] {"round(sum(T.kol),3) as kol","round(sum(T.price*T.kol),2) as sumka","round(sum(T.skidka),2) as skidka"}, 
          			 //"TP.pgr = ?"

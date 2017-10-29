@@ -754,7 +754,7 @@ void makeDialog() {
 //			   ("select S.id_tmc as _id, S.keg as keg, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
 	//			+ " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.pgr="+tvIdPgr.getText()+" and T.vis=1 and S.kol!=0 order by T.pos, S.id_tmc",null);
 
-("select G._id as _id, min(O.keg) as keg, G.countkeg as countkeg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, G.minkol as kol, G.ed as ed, G.ted as ted, G.pos as pos from (" +
+("select G._id as _id, min(O.keg) as keg, G.countkeg as countkeg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, G.minkol as kol, round(G.minkol,1) as kol2, G.ed as ed, G.ted as ted, G.pos as pos from (" +
 		"select S.id_tmc as _id, T.pos as pos, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.ed as ed, E.name as ted " 
 		//+",min(S.kol) over (partition by S.id_tmc, S.id_post, S.ed order by S.kol rows between unbounded preceding and current row) as minkol"
 		+",count(S.kol) as countkeg, "
@@ -972,7 +972,7 @@ void makeDialog() {
 	        	float sText=((display_w)/(6*scale*scale*l))+scale*10;
 	        	*/
 	        	but.get(ib).tb.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
-	        	String l = but.get(ib).tmc_name+"\n"+MainActivity.round3(but.get(ib).ost)+but.get(ib).ted+" ЦЕНА "+MainActivity.round2(but.get(ib).price);
+	        	String l = but.get(ib).tmc_name+"\n"+(but.get(ib).ed==1?cc.getDouble(cc.getColumnIndex("kol2")):MainActivity.round3(but.get(ib).ost))+but.get(ib).ted+" ЦЕНА "+MainActivity.round2(but.get(ib).price);
 	        	if (cc.getInt(cc.getColumnIndex("countkeg"))>1) l=l+"\n"+cc.getInt(cc.getColumnIndex("countkeg"))+" кеги";
 	        	int l1=(but.get(ib).tmc_name+"\n").length(), l2=l.length();
 	        	
@@ -1034,7 +1034,7 @@ void makeDialog() {
 	        		   	Btara=-1;}
 	        			// проверяем есть ли другая кега
 	        			long countT=0;
-						Cursor cc = MainActivity.db.getRawData ("select count(*) c from ostat where kol>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and ed="+but.get(Btovar).ed+" and keg<>"+but.get(Btovar).keg , null);
+						Cursor cc = MainActivity.db.getRawData ("select count(*) c from ostat where kol>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and ed="+but.get(Btovar).ed+" and keg<>"+but.get(Btovar).keg, null);
 					   if (cc.moveToFirst()) { 
 					        do {countT=cc.getInt(cc.getColumnIndex("c"));
 					        } while (cc.moveToNext());
@@ -1362,7 +1362,7 @@ void makeDialog() {
    	   		tranz.get(i).prim="из отрицательного остатка! "+tranz.get(i).prim;
    	   	}
    		MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
-   			tranz.get(i).kol, (but.get(tranz.get(i).tagB).ost<0?-but.get(tranz.get(i).tagB).ost:0), (but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0), tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
+   			tranz.get(i).kol, (but.get(tranz.get(i).tagB).ost<0?tranz.get(i).kol:0), /*(but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0)*/0, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
    			MainActivity.usr+" авточек№ "+MainActivity.num_id+" на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" остаток:"+but.get(tranz.get(i).tagB).ost+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
    	   	
    	
@@ -1370,8 +1370,9 @@ void makeDialog() {
    	if (tranz.get(i).tagB>CountTara-1) {
    		
    	//Log.d("MyLog", but.get(tranz.get(i).tagB).tb.getTextOff().toString() );
-   		int l1=(but.get(tranz.get(i).tagB).tmc_name+"\n").length(), l2=(but.get(tranz.get(i).tagB).tmc_name+"\n"+MainActivity.round3( but.get(tranz.get(i).tagB).ost)+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)).length();
-       	final SpannableStringBuilder text = new SpannableStringBuilder(but.get(tranz.get(i).tagB).tmc_name+"\n"+MainActivity.round3( but.get(tranz.get(i).tagB).ost)+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)); 
+   		
+   		int l1=(but.get(tranz.get(i).tagB).tmc_name+"\n").length(), l2=(but.get(tranz.get(i).tagB).tmc_name+"\n"+(but.get(tranz.get(i).tagB).ed==1?MainActivity.round( but.get(tranz.get(i).tagB).ost,1):MainActivity.round3( but.get(tranz.get(i).tagB).ost))+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)).length();
+       	final SpannableStringBuilder text = new SpannableStringBuilder(but.get(tranz.get(i).tagB).tmc_name+"\n"+(but.get(tranz.get(i).tagB).ed==1?MainActivity.round( but.get(tranz.get(i).tagB).ost,1):MainActivity.round3( but.get(tranz.get(i).tagB).ost))+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)); 
        	//final ForegroundColorSpan style = new ForegroundColorSpan(Color.rgb(255, 0, 0)); 
        	final StyleSpan style2 = new StyleSpan(Typeface.BOLD); 
        	final AbsoluteSizeSpan s12 = new AbsoluteSizeSpan(MainActivity.butNameS,false);
@@ -1439,7 +1440,7 @@ void makeDialog() {
     //long tmp = MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc,
    		//	tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
     	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
-       			tranz.get(i).kol,(but.get(tranz.get(i).tagB).ost<0?-but.get(tranz.get(i).tagB).ost:0), (but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0), tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
+       			tranz.get(i).kol,(but.get(tranz.get(i).tagB).ost<0?tranz.get(i).kol:0), /*(but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0)*/0, tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
        			MainActivity.usr+" чек№ "+MainActivity.num_id+" на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" остаток:"+but.get(tranz.get(i).tagB).ost+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
        	
   	//Log.d("MyLog", "data="+data.get(tranz.get(i).tagL).get("skidka_sum").toString());
@@ -1451,8 +1452,8 @@ void makeDialog() {
 
    	if (tranz.get(i).tagB>CountTara-1) {
    		int l1=(but.get(tranz.get(i).tagB).tmc_name+"\n").length(), 
-   			l2=(but.get(tranz.get(i).tagB).tmc_name+"\n"+MainActivity.round3(but.get(tranz.get(i).tagB).ost)+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)).length();
-       	final SpannableStringBuilder text = new SpannableStringBuilder(but.get(tranz.get(i).tagB).tmc_name+"\n"+MainActivity.round3(but.get(tranz.get(i).tagB).ost)+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)); 
+   			l2=(but.get(tranz.get(i).tagB).tmc_name+"\n"+(but.get(tranz.get(i).tagB).ed==1?MainActivity.round( but.get(tranz.get(i).tagB).ost,1):MainActivity.round3( but.get(tranz.get(i).tagB).ost))+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)).length();
+       	final SpannableStringBuilder text = new SpannableStringBuilder(but.get(tranz.get(i).tagB).tmc_name+"\n"+(but.get(tranz.get(i).tagB).ed==1?MainActivity.round( but.get(tranz.get(i).tagB).ost,1):MainActivity.round3( but.get(tranz.get(i).tagB).ost))+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+MainActivity.round2(but.get(tranz.get(i).tagB).price)); 
        	//final ForegroundColorSpan style = new ForegroundColorSpan(Color.rgb(255, 0, 0)); 
        	final StyleSpan style2 = new StyleSpan(Typeface.BOLD); 
        	final AbsoluteSizeSpan s12 = new AbsoluteSizeSpan(MainActivity.butNameS,false);

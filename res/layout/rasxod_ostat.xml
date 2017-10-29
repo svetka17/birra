@@ -12,7 +12,7 @@
                     android:id="@+id/sp_Pgr_RasOst"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="0" />
+                    android:layout_weight="0.2" />
                 <TextView
  		    android:id="@+id/tv_Id_PgrRasOst"
  		    android:layout_width="0dp"
@@ -45,8 +45,16 @@
  		    style="@style/ET_t"
  		    android:layout_width="wrap_content"
  		    android:layout_height="match_parent"
- 		    android:layout_weight="1"/>
-
+ 		    android:layout_weight="0"/>
+<CheckBox
+                    android:id="@+id/cb_Ost_RasOst"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+ 		    style="@style/TV_h"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:text="ПОКАЗЫВАТЬ ВСЕ ОСТАТКИ" />
     </LinearLayout>
 <TableRow  style="@style/mw0">
 

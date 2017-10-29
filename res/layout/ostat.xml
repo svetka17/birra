@@ -74,11 +74,11 @@
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="0.5"
- 		    android:text="НЕДОСТАЧА"/>
+ 		    android:text="ИЗЛИШКИ"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="0.5"
- 		    android:text="ИЗЛИШКИ"/>
+ 		    android:text="НЕДОСТАЧА"/>
 <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"

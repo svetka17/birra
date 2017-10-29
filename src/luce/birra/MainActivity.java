@@ -135,7 +135,7 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 			case 1:
 				switch(met) {
 				case 1:
-				file=Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), ""); break;
+				file=Export2Excel.oborotka(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
 				case 2:
 					file=Export2Excel.rasxod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
 				case 3:
@@ -169,7 +169,7 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 					public void OnSelectedDir(String dirName) {
 						switch(met){
 						case 1:
-						Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), dirName); break;
+						Export2Excel.oborotka(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), dirName); break;
 						case 2:
 						Export2Excel.rasxod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), dirName); break;
 						case 3:
@@ -195,7 +195,7 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 				//Log.d("MyLog", "met="+met);
 				switch(met){
 				case 1:
-				file=Export2Excel.oborotka(getIntData(dat11),(int) StrToFloat(pgrr), ""); break;
+				file=Export2Excel.oborotka(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
 				case 2:
 					file=Export2Excel.rasxod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
 				case 3:
@@ -272,14 +272,15 @@ static void setSizeFontMain(ViewGroup mlayout) {
 	for (int i=0; i<alv.size(); i++)
     {
 	if (!(alv.get(i) instanceof SeekBar || alv.get(i) instanceof NumberPicker))
-	if (alv.get(i) instanceof CheckBox) ((CheckBox)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvI);
-	else if (alv.get(i) instanceof Button)
-    	((Button)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , butMenu);
-    	else if (alv.get(i) instanceof EditText ) {
+	
+		if (alv.get(i) instanceof CheckBox) 
+			((CheckBox)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvI);
+		else if (alv.get(i) instanceof Button)
+			((Button)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , butMenu);
+    	else if (alv.get(i) instanceof EditText ) 
     		((EditText)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tvI);
-		}
-    	else 
-    		if (((TextView)alv.get(i)).getParent() instanceof TableRow) ((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tabH);
+    	else if (((TextView)alv.get(i)).getParent() instanceof TableRow) 
+    		((TextView)alv.get(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX , tabH);
     		else
     		{ //int l=1; 
     		String[] n = ((TextView)alv.get(i)).getText().toString().split(" ");
@@ -403,13 +404,14 @@ static int getIntData(){
 		}
 }*/
 
-private static float round(double number, int scale) {
+static float round(double number, int scale) {
     int pow = 10;
     for (int i = 1; i < scale; i++)
         pow *= 10;
     double tmp = number * pow;
-    return (float) (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) / pow;
+    return (float) ( (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) ) / pow;
 }
+
 
 static float round2(double number/*, int scale*/) {
     /*int pow = 10;

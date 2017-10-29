@@ -45,23 +45,32 @@ public class /*ExportDatabaseCSVTask*/ Export2Excel //extends AsyncTask<String, 
 		}
     }
 */	
-static File oborotka (int dat, int pgr, String dirN) {
+static File oborotka (int dat1, int dat2, int pgr, String dirN) {
 //////////////////////////////////////
-String []str = {pgr==0?"":" TP._id="+pgr, dat==0?"":" where substr(data_ins,1,6)>=trim("+dat+")"};
+String []str = {pgr==0?"":" TP._id="+pgr, dat1==0?"":"where data_ins>="+dat1+"0000 and data_ins<="+dat2+"5959",
+		dat2==0?"":"where data_ins<="+dat2+"5959"};
 //String where=str[0].toString();
 //if (str[0].length()!=0) where=where+" and "+str[0];
 Cursor cc = MainActivity.db.getQueryData( 
-"ostat as O left join (select id_tmc, keg, id_post, ed, sum(round(kol,3)) as sumkr, sum(round(kol,3)*round(price,2)-round(skidka,2)) as sumsr from rasxod " + str[1].toString() + 
-" group by id_tmc, keg, id_post, ed) as R on O.id_tmc=R.id_tmc and O.keg=R.keg and O.id_post=R.id_post and O.ed=R.ed "
-+ " left join (select id_tmc, keg, id_post, ed, sum(round(kol,3)) as sumkp, sum(round(kol,3)*round(price,2)) as sumsp from prixod " + str[1].toString() +
-" group by id_tmc, keg, id_post, ed) as P on O.id_tmc=P.id_tmc and O.keg=P.keg and O.id_post=P.id_post and O.ed=P.ed"
-+ " left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id left join postav as POS on O.id_post=POS._id",
-new String[] {"O._id as _id",
-"O.id_tmc as id_tmc","O.keg as keg","T.name as name","E.name as ted", "POS.name as pname", "TP.name as pgrname", "T.price as price",
-//"O.sumka+R.sumkr-P.sumkp as kol_n","O.sumka+R.sumsr-P.sumsp as sum_n","0 as price_n",
-"sumkp as kol_pri","sumsp sum_pri",//"0 as price_pri",
-"sumkr kol_ras","sumsr as sum_ras",//"0 as price_ras",
-"O.kol kol_k","O.sumka as sum_k"//,"0 as price_k"
+		"(select CAST(id_tmc||keg||id_post||ed as integer) as _id, id_tmc, keg, id_post, ed, ifnull(sum(round(kol,3)),0) as kol, ifnull(sum(round(sumo,2)),0) as sumka from "+ 
+      			"("+
+      			"select id_tmc, keg, id_post, ed, -ifnull(round(kol,3),0) as kol, -ifnull(round(kol,3)*round(price,2)-round(ifnull(skidka,0),2),0) as sumo from rasxod "+str[2].toString()+
+      			" union all "+
+      			"select id_tmc, keg, id_post, ed, ifnull(round(kol,3),0) as kol, ifnull(round(kol,3)*round(price,2),0) as sumo from prixod "+str[2].toString()+
+      			") group by id_tmc, keg, id_post, ed)" +
+    			 " as O " +
+    			 "left join (select id_tmc, keg, id_post, ed, ifnull(sum(round(kol,3)),0) as sumkr, ifnull(sum(round(kol,3)*round(price,2)-round(ifnull(skidka,0),2)),0) as sumsr from rasxod " + str[1].toString() + 
+    			 " group by id_tmc, keg, id_post, ed) as R on O.id_tmc=R.id_tmc and O.keg=R.keg and O.id_post=R.id_post and O.ed=R.ed "
+      			+ " left join (select id_tmc, keg, id_post, ed, ifnull(sum(round(kol,3)),0) as sumkp, ifnull(sum(round(kol,3)*round(price,2)),0) as sumsp from prixod " + str[1].toString() +
+      			" group by id_tmc, keg, id_post, ed) as P on O.id_tmc=P.id_tmc and O.keg=P.keg and O.id_post=P.id_post and O.ed=P.ed"
+      			+ " left join ostat as K on O.id_tmc=K.id_tmc and O.keg=K.keg and O.id_post=K.id_post and O.ed=K.ed " +
+      			" left join tmc_price as TPP on O.id_tmc=TPP.id_tmc and O.id_post=TPP.id_post and O.ed=TPP.ed "+
+      			" left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id left join postav as POS on O.id_post=POS._id",
+    			 new String[] {"O._id as _id","O.keg as keg", "O.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as kkeg",
+    			"O.id_tmc as id_tmc","T.name||' '||POS.name as name","E.name as ted","TP.name as pgrname","POS.name as pname","TPP.price as price",
+    			//"0 as kol_n","0 as sum_n","0 as price_n","sum(round(P.kol,3)) as kol_pri","sum(round(P.kol,3)*round(P.price,2)) sum_pri","0 as price_pri","sum(round(R.kol,3)) kol_ras","sum(round(R.kol,3)*round(R.price,2)) as sum_ras","0 as price_ras",
+    			"0 as kol_n","0 as sum_n","0 as price_n","sumkp as kol_pri","sumsp sum_pri","CASE sumkp WHEN 0 then 0 ELSE round(sumsp/sumkp,2) END as price_pri","sumkr kol_ras","sumsr as sum_ras","CASE sumkr WHEN 0 then 0 ELSE round(sumsr/sumkr,2) END as price_ras",
+    			"O.kol kol_k","ifnull(O.sumka,0) as sum_k","CASE O.kol WHEN 0 then 0 ELSE round(O.sumka/O.kol,2) END as price_k"
 }, 
 str[0].toString(), null,null,null,null);
 
@@ -125,16 +134,16 @@ row.createCell(1).setCellValue("ÃÐÓÏÏÀ");
 row.createCell(2).setCellValue("ÍÀÇÂÀÍÈÅ");
 row.createCell(3).setCellValue("ÏÎÑÒÀÂÙÈÊ");
 row.createCell(4).setCellValue("ÅÄ.ÈÇÌ");
-row.createCell(5).setCellValue("ÊÎË-ÂÎ ÍÀ "+MainActivity.getStringData(dat) );
-row.createCell(6).setCellValue("ÑÓÌÌÀ ÍÀ "+MainActivity.getStringData(dat));
-row.createCell(7).setCellValue("ÑÐÅÄÍßß ÖÅÍÀ ÍÀ "+MainActivity.getStringData(dat));
+row.createCell(5).setCellValue("ÊÎË-ÂÎ ÍÀ "+MainActivity.getStringData(dat1) );
+row.createCell(6).setCellValue("ÑÓÌÌÀ ÍÀ "+MainActivity.getStringData(dat1));
+row.createCell(7).setCellValue("ÑÐÅÄÍßß ÖÅÍÀ ÍÀ "+MainActivity.getStringData(dat1));
 row.createCell(8).setCellValue("ÊÎË-ÂÎ ÏÐÈÕÎÄ");
 row.createCell(9).setCellValue("ÑÓÌÌÀ ÏÐÈÕÎÄ");
 row.createCell(10).setCellValue("ÊÎË-ÂÎ ÐÀÑÕÎÄ");
 row.createCell(11).setCellValue("ÑÓÌÌÀ ÐÀÑÕÎÄ");
-row.createCell(12).setCellValue("ÊÎË-ÂÎ ÍÀ "+Calendar.getInstance().get(Calendar.DATE)+"."+(Calendar.getInstance().get(Calendar.MONTH)+1)+"."+Calendar.getInstance().get(Calendar.YEAR));
-row.createCell(13).setCellValue("ÑÓÌÌÀ ÍÀ "+Calendar.getInstance().get(Calendar.DATE)+"."+(Calendar.getInstance().get(Calendar.MONTH)+1)+"."+Calendar.getInstance().get(Calendar.YEAR));
-row.createCell(14).setCellValue("ÑÐÅÄÍßß ÖÅÍÀ ÍÀ "+Calendar.getInstance().get(Calendar.DATE)+"."+(Calendar.getInstance().get(Calendar.MONTH)+1)+"."+Calendar.getInstance().get(Calendar.YEAR));
+row.createCell(12).setCellValue("ÊÎË-ÂÎ ÍÀ "+MainActivity.getStringData(dat2));
+row.createCell(13).setCellValue("ÑÓÌÌÀ ÍÀ "+MainActivity.getStringData(dat2));
+row.createCell(14).setCellValue("ÑÐÅÄÍßß ÖÅÍÀ ÍÀ "+MainActivity.getStringData(dat2));
 row.createCell(15).setCellValue("ÖÅÍÀ ÏÐÎÄÀÆÈ ÍÀ "+Calendar.getInstance().get(Calendar.DATE)+"."+(Calendar.getInstance().get(Calendar.MONTH)+1)+"."+Calendar.getInstance().get(Calendar.YEAR));
 row.createCell(16).setCellValue("ÊÅÃÀ");
 for (int i=0; i<17; i++) row.getCell(i).setCellStyle(style);
@@ -147,6 +156,7 @@ koln=0; sumn=0; pricen=0; pricek=0; sumk=0; kolk=0;
 koln = cc.getDouble(cc.getColumnIndex("kol_k"))+cc.getDouble(cc.getColumnIndex("kol_ras"))-cc.getDouble(cc.getColumnIndex("kol_pri")) ;
 sumn = cc.getDouble(cc.getColumnIndex("sum_k"))+cc.getDouble(cc.getColumnIndex("sum_ras"))-cc.getDouble(cc.getColumnIndex("sum_pri")) ;
 if (koln!=0) pricen= MainActivity.round2(sumn/koln);
+
 kolk=cc.getDouble(cc.getColumnIndex("kol_k"));
 sumk=cc.getDouble(cc.getColumnIndex("sum_k"));
 if (kolk!=0) pricek=MainActivity.round2(sumk/kolk);
@@ -168,7 +178,7 @@ row.createCell(12).setCellValue(kolk);row.getCell(12).setCellStyle(styleN3);
 row.createCell(13).setCellValue(sumk);row.getCell(13).setCellStyle(styleN2);
 row.createCell(14).setCellValue(pricek);row.getCell(14).setCellStyle(styleN2);
 row.createCell(15).setCellValue(cc.getDouble(cc.getColumnIndex("price")));row.getCell(15).setCellStyle(styleN2);
-row.createCell(16).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
+row.createCell(16).setCellValue(cc.getString(cc.getColumnIndex("kkeg")));
 } while (cc.moveToNext());
 
 cc.close();

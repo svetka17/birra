@@ -81,7 +81,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
 			((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
 		}
 		
-        tv = (TextView) view.findViewById(R.id.tv_Price_Pri_Oborotka);  	
+/*        tv = (TextView) view.findViewById(R.id.tv_Price_Pri_Oborotka);  	
         double kol=cursor.getDouble(cursor.getColumnIndex("kol_pri"));
         if (kol!=0)
         tv.setText( String.format("%.2f",cursor.getDouble(cursor.getColumnIndex("sum_pri"))/kol ) ); else tv.setText("");
@@ -95,15 +95,18 @@ public void bindView(View view, Context context, final Cursor cursor) {
         kol=cursor.getDouble(cursor.getColumnIndex("kol_k"));
         if (kol!=0)
         tv.setText( String.format("%.2f",cursor.getDouble(cursor.getColumnIndex("sum_k"))/kol ) ); else tv.setText("");
-
+*/
         tv = (TextView) view.findViewById(R.id.tv_Sum_Nach_Oborotka);  	
         tv.setText( String.format("%.2f",cursor.getDouble(cursor.getColumnIndex("sum_k"))+cursor.getDouble(cursor.getColumnIndex("sum_ras"))-cursor.getDouble(cursor.getColumnIndex("sum_pri")) ) );
+        //tv.setText(String.valueOf(MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("sum_k"))+cursor.getDouble(cursor.getColumnIndex("sum_ras"))-cursor.getDouble(cursor.getColumnIndex("sum_pri")) )) );
+        double s=MainActivity.StrToFloat(tv.getText().toString());
         
         tv = (TextView) view.findViewById(R.id.tv_Kol_Nach_Oborotka);  	
-        tv.setText( String.format("%.2f",cursor.getDouble(cursor.getColumnIndex("kol_k"))+cursor.getDouble(cursor.getColumnIndex("kol_ras"))-cursor.getDouble(cursor.getColumnIndex("kol_pri")) ) );
-        
+        tv.setText( String.format("%.3f",cursor.getDouble(cursor.getColumnIndex("kol_k"))+cursor.getDouble(cursor.getColumnIndex("kol_ras"))-cursor.getDouble(cursor.getColumnIndex("kol_pri")) ) );
+        double kol=MainActivity.StrToFloat(tv.getText().toString());
         tv = (TextView) view.findViewById(R.id.tv_Price_Nach_Oborotka);
-        String s=((TextView) view.findViewById(R.id.tv_Kol_Nach_Oborotka)).getText().toString().replace(",", ".");
+        
+        /*String s=((TextView) view.findViewById(R.id.tv_Kol_Nach_Oborotka)).getText().toString().replace(",", ".");
         //Log.d("MyLog","kol="+s );
         //s=((TextView) view.findViewById(R.id.tv_Sum_Nach_Oborotka)).getText().toString();
         //Log.d("MyLog","sum="+s );
@@ -112,9 +115,10 @@ public void bindView(View view, Context context, final Cursor cursor) {
         s=((TextView) view.findViewById(R.id.tv_Sum_Nach_Oborotka)).getText().toString().replace(",", ".");
         float sum;
         if (s.equals("")||s.length()==0||s.equals("0,00")) sum=0; else
-        sum=Float.parseFloat(s);
+        sum=Float.parseFloat(s);*/
+        
         if (kol!=0)
-        tv.setText( String.format("%.2f",sum/kol ) ); else tv.setText("");
+        tv.setText( String.format("%.2f",s/kol ) ); else tv.setText("0");
 
         //for (i=0;i<r.length;i++) {
 			//tv = (TextView) view.findViewById(r[i]);
