@@ -6,17 +6,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import luce.birra.AdapterLV.CambiareListener;
 import luce.birra.DialogScreen.DialogListener;
  
 public class DelOtchetActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
@@ -267,20 +262,33 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
         		//(tvDataIns.getText().length()==0)?"":" substr(T.data_ins,1,6)>=trim("+String.valueOf(MainActivity.getIntData(tvDataIns.getText().toString()))+")",
     			(tvDataIns.getText().length()==0)?"":" T.data_del>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")",
         				//(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")",
-    					(tvDataIns2.getText().length()==0)?"":" T.data_del<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")"
-        				//,(tvIdKlient.getText().toString().equals("0")||tvIdKlient.getText().length()==0)?"":" K._id="+tvIdKlient.getText().toString(),
-        					//	(tvIdProd.getText().toString().equals("-1")||/*tvIdProd.getText().toString().equals("0")||*/tvIdProd.getText().length()==0)?"":" T.id_tmc="+tvIdProd.getText().toString()
-        								};
+    					(tvDataIns2.getText().length()==0)?"":" T.data_del<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")",
+    							(tvDataIns.getText().length()==0)?"":" T.data_ins>=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString()))+")",
+    			        				//(tvDataIns2.getText().length()==0)?"":" substr(T.data_ins,1,6)<=trim("+String.valueOf(MainActivity.getIntData(tvDataIns2.getText().toString()))+")",
+    			    					(tvDataIns2.getText().length()==0)?"":" T.data_ins<=trim("+String.valueOf(MainActivity.getIntDataTime(tvDataIns2.getText().toString()))+")"};
         String where=str[0].toString();
         //Log.d("MyLog", "dt="+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString())));
         if (where.equals("")||where.length()==0) where=str[1].toString(); else 
         	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
-     
+        String where1 = str[2].toString();
+        if (where1.equals("")||where1.length()==0) where1=str[3].toString(); else 
+        	if (!str[1].equals("")) where1=where1+" and "+str[3].toString(); 
+     /*
             	 Cursor cursor = db.getQueryData("rasxod_del as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join postav as P on T.id_post=P._id", 
              			new String[] {"T.keg as keg","P.name as pname","T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","round(T.kol,3)||' '||E.name as kol",
             			 "E.name as ted", "T.ed as ed","T.price as price","ifnull(T.skidka,0) as skidka","round((T.kol*T.price-ifnull(T.skidka,0)) ,2) as sum_no_skidka","T.prim as prim","TP.pgr as pgr","round(T.kol*T.price,3) as sumka"}, 
              			 //"TP.pgr = ?"
             			 where, null,null,null,null);
+            	 */
+Cursor cursor = db.getRawData (
+"select keg, pname,_id,id_tmc,name,data_ins,kol,ted,ed,price,skidka,sum_no_skidka,prim,pgr,sumka  "
++ " from (select T.keg as keg,P.name as pname,T._id as _id,T.id_tmc as id_tmc,TP.name as name,T.data_ins as data_ins,round(T.kol,3)||' '||E.name as kol,E.name as ted,T.ed as ed,T.price as price,ifnull(T.skidka,0) as skidka,round((T.kol*T.price-ifnull(T.skidka,0)) ,2) as sum_no_skidka,T.prim as prim,TP.pgr as pgr,round(T.kol*T.price,3) as sumka"
++" from rasxod_del as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join postav as P on T.id_post=P._id where "+ where
++ " union all "
++"select T.keg as keg,P.name as pname,T._id as _id,T.id_tmc as id_tmc,TP.name as name,T.data_ins as data_ins,round(T.kol,3)||' '||E.name as kol,E.name as ted,T.ed as ed,T.price as price,ifnull(T.skidka,0) as skidka,round((T.kol*T.price-ifnull(T.skidka,0)) ,2) as sum_no_skidka,T.prim as prim,TP.pgr as pgr,round(T.kol*T.price,3) as sumka"
++" from rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join postav as P on T.id_post=P._id where "+ where1
++" and T.prim like 'кнопка - из меню продаж%') order by data_ins"
+, null);
       return cursor;
     }
      

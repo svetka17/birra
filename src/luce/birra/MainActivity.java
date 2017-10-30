@@ -1,6 +1,8 @@
 package luce.birra;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -412,6 +414,13 @@ static float round(double number, int scale) {
     return (float) ( (int) ((tmp - (int) tmp) >= 0.5f ? tmp + 1 : tmp) ) / pow;
 }
 
+static double roundd(double value, int places) {
+    if (places < 0) throw new IllegalArgumentException();
+
+    BigDecimal bd = new BigDecimal(value);
+    bd = bd.setScale(places, RoundingMode.HALF_UP);
+    return bd.doubleValue();
+}
 
 static float round2(double number/*, int scale*/) {
     /*int pow = 10;
