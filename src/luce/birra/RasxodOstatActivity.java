@@ -283,19 +283,19 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
         if (cbOst.isChecked())
          cursor = db.getRawData (
     			"select keg, kkeg, _id, pgr, name, post, kol, ed, sumka, price, skidka, ostat from (" +
-    			"select K.keg as kkeg, K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(T.kol) as kol,E.name as ed,sum(T.price*T.kol) as sumka,round(sum(T.price*T.kol)/sum(T.kol),2) as price,round(sum(T.skidka),2) as skidka,K.kol as ostat "
-    			+ "from rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id LEFT OUTER JOIN ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on T.id_post=KK._id "
-    			+ "where "+where+" group by K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, K.kol union " +
-    					"select K.keg as kkeg, K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(T.kol) as kol,E.name as ed,sum(T.price*T.kol) as sumka,round(sum(T.price*T.kol)/sum(T.kol),2) as price,round(sum(T.skidka),2) as skidka,K.kol as ostat" +
+    			"select K.keg as kkeg, K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(T.kol) as kol,E.name as ed,sum(T.price*T.kol) as sumka,round(sum(T.price*T.kol)/sum(T.kol),2) as price,round(sum(T.skidka),2) as skidka,round(K.kol,3) as ostat "
+    			+ "from rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id LEFT JOIN ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on T.id_post=KK._id "
+    			+ "where "+where+" group by K.keg, K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, round(K.kol,3) union " +
+    					"select K.keg as kkeg, K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,null as kol,E.name as ed,null as sumka,null as price,null as skidka, round(K.kol,3) as ostat" +
     					" from ostat as K left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on K.ed = E._id left JOIN rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on K.id_post=KK._id " +
-    					" where K.kol<>0 "+((tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":"and TP.pgr="+(tvIdPgr.getText().toString()))+" group by K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, K.kol" +
+    					" where K.kol<>0 "+((tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":"and TP.pgr="+(tvIdPgr.getText().toString()))+" group by K.keg, K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, round(K.kol,3)" +
     							" )"
     			+" order by name, keg"
     			, null);//new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"T.pgr ":tvIdPgr.getText().toString()});// new String[] {,});
         else
         	cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id LEFT OUTER JOIN ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on T.id_post=KK._id", 
          			new String[] {"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as keg","TP._id as _id","TT.name as pgr","TP.name as name","KK.name as post","sum(T.kol) as kol","E.name as ed",
-        			 "sum(T.price*T.kol) as sumka","round(sum(T.price*T.kol)/sum(T.kol),2) as price","round(sum(T.skidka),2) as skidka","K.kol as ostat"}, 
+        			 "sum(T.price*T.kol) as sumka","round(sum(T.price*T.kol)/sum(T.kol),2) as price","round(sum(T.skidka),2) as skidka","round(K.kol,3) as ostat"}, 
          			 //"TP.pgr = ?"
         			 where, null,"K.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')', TP._id, TT.name, TP.name, KK.name, E.name, K.kol",null,"TP.name,K.keg");
 	
@@ -325,7 +325,7 @@ void setItog () {
     			"select K.keg as kkeg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(T.kol) as kol,E.name as ed,sum(T.price*T.kol) as sumka,round(sum(T.price*T.kol)/sum(T.kol),2) as price,round(sum(T.skidka),2) as skidka,K.kol as ostat "
     			+ "from rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id LEFT OUTER JOIN ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on T.id_post=KK._id "
     			+ "where "+where+" group by K.keg, TP._id, TT.name, TP.name, KK.name, E.name, K.kol union " +
-    					"select K.keg as kkeg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(T.kol) as kol,E.name as ed,sum(T.price*T.kol) as sumka,round(sum(T.price*T.kol)/sum(T.kol),2) as price,round(sum(T.skidka),2) as skidka,K.kol as ostat" +
+    					"select K.keg as kkeg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,null as kol,E.name as ed,null as sumka,null as price,null as skidka,K.kol as ostat" +
     					" from ostat as K left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on K.ed = E._id left JOIN rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg left join postav as KK on K.id_post=KK._id " +
     					" where K.kol<>0 "+((tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?"":"and TP.pgr="+(tvIdPgr.getText().toString()))+" group by K.keg, TP._id, TT.name, TP.name, KK.name, E.name, K.kol" +
     							" )"

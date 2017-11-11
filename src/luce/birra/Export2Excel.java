@@ -72,7 +72,7 @@ Cursor cc = MainActivity.db.getQueryData(
     			"0 as kol_n","0 as sum_n","0 as price_n","sumkp as kol_pri","sumsp sum_pri","CASE sumkp WHEN 0 then 0 ELSE round(sumsp/sumkp,2) END as price_pri","sumkr kol_ras","sumsr as sum_ras","CASE sumkr WHEN 0 then 0 ELSE round(sumsr/sumkr,2) END as price_ras",
     			"O.kol kol_k","ifnull(O.sumka,0) as sum_k","CASE O.kol WHEN 0 then 0 ELSE round(O.sumka/O.kol,2) END as price_k"
 }, 
-str[0].toString(), null,null,null,null);
+str[0].toString(), null,null,null,"O.id_tmc, O.keg");
 
 File file   = null, dir = null;
 File root   = Environment.getExternalStorageDirectory();

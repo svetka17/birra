@@ -327,7 +327,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
              			 //"TP.pgr = ?"
             			 where, null,
             			 null//"O._id, O.id_tmc, O.kol"
-            			 ,null,null);
+            			 ,null,"O.id_tmc, O.keg");
 
       return cursor;
     }

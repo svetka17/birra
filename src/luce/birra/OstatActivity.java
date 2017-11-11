@@ -225,7 +225,7 @@ from ostat as O left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT
 
     	
     	Cursor cursor = db.getRawData (
-    			"select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, O.kol as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, "
+    			"select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, round(O.kol,3) as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, "
     			+ "P.name as pname, T.name as tname, TP.name as pgr, CASE O.ed WHEN 1 then round(O.kol_nedo,2) ELSE round(O.kol_nedo,3) END  as kol_nedo, CASE O.ed WHEN 1 then round(O.kol_izl,2) ELSE round(O.kol_izl,3) END as kol_izl "
     			+ "from ostat as O "
     			+ "left join tmc_price as TT "
@@ -238,7 +238,7 @@ from ostat as O left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT
     			+ "on O.ed=E._id "
     			+ "left join tmc_pgr as TP "
     			+ "on T.pgr=TP._id "
-    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" (O.kol!=0 or O.kol_nedo!=0 or O.kol_izl!=0) ")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString())  +" order by T.pgr, T.name, O.id_post, O.kol"
+    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" (O.kol!=0 or O.kol_nedo!=0 or O.kol_izl!=0) ")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString())  +" order by T.pgr, T.name, O.id_post, O.keg"
     			, null);//new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"T.pgr ":tvIdPgr.getText().toString()});// new String[] {,});
       return cursor;
     }

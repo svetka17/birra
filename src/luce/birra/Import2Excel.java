@@ -65,7 +65,7 @@ try { //Log.d("MyLog", "1");
 						      }
 							if (id_pgr==-1 && id!=0 && !value.replace("\'", "").replace("\"", "").equals("")) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 								break;
-							case 2: n = value.trim();
+							case 2: n = value.trim().replace("\'", "").replace("\"", "");
 							c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value.replace("\'", "").replace("\"", "") +"')", null);
 							if (c.moveToFirst()) {   
 						        do { idtmc = c.getInt(c.getColumnIndex("_id"));} 
@@ -98,10 +98,12 @@ try { //Log.d("MyLog", "1");
 	                    i++;
 	                }
 	             if (idtmc==-1 && !n.equals(""))
-	            	 idtmc=(int) MainActivity.db.addRecTMCcount(n.replace("\'", "").replace("\"", ""), id_pgr, ed, price, vis, pos, tara, MainActivity.getIntDataTime(), ok);
+	             {	 idtmc=(int) MainActivity.db.addRecTMCcount(n.replace("\'", "").replace("\"", ""), id_pgr, ed, price, vis, pos, tara, MainActivity.getIntDataTime(), ok);
+	             //Log.d("MyLog", "n="+n+" r="+n.replace("\'", "").replace("\"", ""));
+	             }
 	             else {
 	            	 if (id==idtmc) Toast.makeText(cnt , "наименование " +n.replace("\'", "").replace("\"", "")+" уже есть" , Toast.LENGTH_SHORT).show();
-	            	 //Log.d("MyLog", "exists equal "+n);}
+	            	 //}
 	            	 else Toast.makeText(cnt , "наименование " +n.replace("\'", "").replace("\"", "")+" уже есть с другим номенклатурным номером" , Toast.LENGTH_SHORT).show();
 	            	 //Log.d("MyLog", "exists other "+n);}
 	            	 }
@@ -181,7 +183,7 @@ catch(IOException e) {};
 								      }
 									if (id_pgr==-1 && id!=0 && !value.replace("\'", "").replace("\"", "").equals("") ) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 										break;
-									case 2: n = value.trim();
+									case 2: n = value.trim().replace("\'", "").replace("\"", "");
 									c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value.replace("\'", "").replace("\"", "")+"')", null);
 									if (c.moveToFirst()) {   
 								        do { idtmc = c.getInt(c.getColumnIndex("_id"));} 
@@ -251,4 +253,8 @@ catch(IOException e) {};
 			}
 
 }
+
+/*
+ * 
+*/
 
