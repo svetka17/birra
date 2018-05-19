@@ -13,6 +13,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
+//import org.apache.poi.ss.usermodel.HorizontalAlignment;
+//import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import android.database.Cursor;
@@ -122,6 +124,7 @@ XSSFCellStyle.VERTICAL_CENTER);*/
 HSSFFont font = workbook.createFont();
 // указываем, что хотим его видеть жирным
 font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//font.setBold(true);
 // создаем стиль дл€ €чейки
 HSSFCellStyle style = workbook.createCellStyle();
 // и примен€ем к этому стилю жирный шрифт
@@ -129,6 +132,9 @@ style.setFont(font);
 style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
 style.setAlignment(HSSFCellStyle.ALIGN_FILL );
 style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
+//style.setAlignment(HorizontalAlignment.FILL);
+//style.setVerticalAlignment(VerticalAlignment.CENTER);
+
 row.createCell(0).setCellValue("Ќќћ≈Ќ Ћј“”–ј"); //row.getCell(0).setCellStyle(style2);
 row.createCell(1).setCellValue("√–”ѕѕј");
 row.createCell(2).setCellValue("Ќј«¬јЌ»≈");
@@ -258,9 +264,12 @@ HSSFCellStyle styleN3 = workbook.createCellStyle();
 styleN3.setDataFormat(df3.getFormat("0.000"));
 HSSFFont font = workbook.createFont();
 font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//font.setBold(true);
+//создаем стиль дл€ €чейки
 HSSFCellStyle style = workbook.createCellStyle();
+//и примен€ем к этому стилю жирный шрифт
 style.setFont(font);
-style.setWrapText(true);
+style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
 style.setAlignment(HSSFCellStyle.ALIGN_FILL );
 style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
 int rowNum = 0;
@@ -367,9 +376,12 @@ HSSFCellStyle styleN3 = workbook.createCellStyle();
 styleN3.setDataFormat(df3.getFormat("0.000"));
 HSSFFont font = workbook.createFont();
 font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//font.setBold(true);
+//создаем стиль дл€ €чейки
 HSSFCellStyle style = workbook.createCellStyle();
+//и примен€ем к этому стилю жирный шрифт
 style.setFont(font);
-style.setWrapText(true);
+style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
 style.setAlignment(HSSFCellStyle.ALIGN_FILL );
 style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
 int rowNum = 0;
@@ -469,9 +481,12 @@ HSSFCellStyle styleN3 = workbook.createCellStyle();
 styleN3.setDataFormat(df3.getFormat("0.000"));
 HSSFFont font = workbook.createFont();
 font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//font.setBold(true);
+//создаем стиль дл€ €чейки
 HSSFCellStyle style = workbook.createCellStyle();
+//и примен€ем к этому стилю жирный шрифт
 style.setFont(font);
-style.setWrapText(true);
+style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
 style.setAlignment(HSSFCellStyle.ALIGN_FILL );
 style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
 int rowNum = 0;
@@ -529,7 +544,7 @@ static File rasxod_ostat (int dat1, int dat2, int pgr, String dirN) {
 			if (where.equals("")||where.length()==0) where=" T.ok=0 "; else where=where+" and T.ok=0 ";
 				//if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
 			//Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
-			Cursor cc = MainActivity.db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.keg=K.keg and T.ed=K.ed left join postav as KK on T.id_post=KK._id", 
+			Cursor cc = MainActivity.db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join ostat as K on T.id_tmc=K.id_tmc and T.id_post = K.id_post and T.keg=K.keg and T.ed=K.ed left join postav as KK on T.id_post=KK._id", 
          			new String[] {"TP._id as _id","T.keg as keg","TT.name as pgr","TP.name as name",/*"T.data_ins as data_ins",*/"KK.name as post","sum(T.kol) as kol","E.name as ed",
         			 "sum(T.price*T.kol-T.skidka) as sumka","K.kol as ostat","T.price as price", "round(sum(T.skidka),2) as skidka"}, 
          			 //"TP.pgr = ?"
@@ -557,9 +572,12 @@ HSSFCellStyle styleN3 = workbook.createCellStyle();
 styleN3.setDataFormat(df3.getFormat("0.000"));
 HSSFFont font = workbook.createFont();
 font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//font.setBold(true);
+//создаем стиль дл€ €чейки
 HSSFCellStyle style = workbook.createCellStyle();
+//и примен€ем к этому стилю жирный шрифт
 style.setFont(font);
-style.setWrapText(true);
+style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
 style.setAlignment(HSSFCellStyle.ALIGN_FILL );
 style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
 int rowNum = 0;
@@ -651,9 +669,12 @@ HSSFCellStyle styleN3 = workbook.createCellStyle();
 styleN3.setDataFormat(df3.getFormat("0.000"));
 HSSFFont font = workbook.createFont();
 font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//font.setBold(true);
+//создаем стиль дл€ €чейки
 HSSFCellStyle style = workbook.createCellStyle();
+//и примен€ем к этому стилю жирный шрифт
 style.setFont(font);
-style.setWrapText(true);
+style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
 style.setAlignment(HSSFCellStyle.ALIGN_FILL );
 style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
 int rowNum = 0;
@@ -751,9 +772,12 @@ HSSFCellStyle styleN3 = workbook.createCellStyle();
 styleN3.setDataFormat(df3.getFormat("0.000"));
 HSSFFont font = workbook.createFont();
 font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//font.setBold(true);
+//создаем стиль дл€ €чейки
 HSSFCellStyle style = workbook.createCellStyle();
+//и примен€ем к этому стилю жирный шрифт
 style.setFont(font);
-style.setWrapText(true);
+style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
 style.setAlignment(HSSFCellStyle.ALIGN_FILL );
 style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
 int rowNum = 0;
@@ -852,9 +876,12 @@ HSSFCellStyle styleN3 = workbook.createCellStyle();
 styleN3.setDataFormat(df3.getFormat("0.000"));
 HSSFFont font = workbook.createFont();
 font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//font.setBold(true);
+//создаем стиль дл€ €чейки
 HSSFCellStyle style = workbook.createCellStyle();
+//и примен€ем к этому стилю жирный шрифт
 style.setFont(font);
-style.setWrapText(true);
+style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
 style.setAlignment(HSSFCellStyle.ALIGN_FILL );
 style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
 int rowNum = 0;
@@ -940,9 +967,12 @@ HSSFCellStyle styleN3 = workbook.createCellStyle();
 styleN3.setDataFormat(df3.getFormat("0.000"));
 HSSFFont font = workbook.createFont();
 font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//font.setBold(true);
+//создаем стиль дл€ €чейки
 HSSFCellStyle style = workbook.createCellStyle();
+//и примен€ем к этому стилю жирный шрифт
 style.setFont(font);
-style.setWrapText(true);
+style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
 style.setAlignment(HSSFCellStyle.ALIGN_FILL );
 style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
 int rowNum = 0;

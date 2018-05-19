@@ -169,8 +169,6 @@ public class DvigActivity extends FragmentActivity implements LoaderCallbacks<Cu
     			}
     		});
     
-    lvData = (ListView) findViewById(R.id.lvDvig);
-    lvData.setAdapter(scAdapter);
 
     if( getIntent().getExtras() != null)
     {
@@ -198,7 +196,9 @@ public class DvigActivity extends FragmentActivity implements LoaderCallbacks<Cu
     	//Log.d("MyLog", "start create11 "+tvID.getText());
     }
     
-
+    lvData = (ListView) findViewById(R.id.lvDvig);
+    lvData.setAdapter(scAdapter);
+    
     //getSupportLoaderManager().initLoader(1, null, this);
     getSupportLoaderManager().initLoader(0, null, this);
 

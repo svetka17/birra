@@ -133,10 +133,8 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
     				
     				if (flag==1 || flag==2) {
     					
-    					Cursor cc = MainActivity.db.getRawData ("select O._id as id, O.keg as keg, O.id_tmc as id_tmc, T.name as name_tmc, O.kol as kol, O.ed as ed, E.name as name_ed, O.id_post as id_post, P.name as name_post from ostat as O left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join postav as P on O.id_post=P._id where O._id="+id,null);
-    					
+    					Cursor cc = MainActivity.db.getRawData ("select O._id as id, O.keg as keg, O.id_tmc as id_tmc, T.name as name_tmc, O.kol as kol, O.ed as ed, E.name as name_ed, O.id_post as id_post, P.name as name_post from ostat as O left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join postav as P on O.id_post=P._id where CAST(O.id_tmc||O.keg||O.id_post||O.ed as integer)="+id,null);
     					Intent intent = new Intent(OborotkaActivity.this, DvigActivity.class);
-    					
     					if (cc.moveToFirst()) { 
     					        do {
     					        	
@@ -316,11 +314,14 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
               			" group by id_tmc, keg, id_post, ed) as P on O.id_tmc=P.id_tmc and O.keg=P.keg and O.id_post=P.id_post and O.ed=P.ed"
               			+ " left join ostat as K on O.id_tmc=K.id_tmc and O.keg=K.keg and O.id_post=K.id_post and O.ed=K.ed " +
               			" left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id left join postav as POS on O.id_post=POS._id",
-            			 new String[] {"O._id as _id","O.keg as keg", "O.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as kkeg",
+            			 
+              			new String[] {"O._id as _id","O.keg as keg", "O.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as kkeg",
             			"O.id_tmc as id_tmc","T.name||' '||POS.name as name","E.name as ted",
             			//"0 as kol_n","0 as sum_n","0 as price_n","sum(round(P.kol,3)) as kol_pri","sum(round(P.kol,3)*round(P.price,2)) sum_pri","0 as price_pri","sum(round(R.kol,3)) kol_ras","sum(round(R.kol,3)*round(R.price,2)) as sum_ras","0 as price_ras",
             			"0 as kol_n","0 as sum_n","0 as price_n","sumkp as kol_pri","sumsp sum_pri","CASE sumkp WHEN 0 then 0 ELSE round(sumsp/sumkp,2) END as price_pri","sumkr kol_ras","sumsr as sum_ras","CASE sumkr WHEN 0 then 0 ELSE round(sumsr/sumkr,2) END as price_ras",
-            			"O.kol kol_k","ifnull(O.sumka,0) as sum_k","CASE O.kol WHEN 0 then 0 ELSE round(O.sumka/O.kol,2) END as price_k"		 
+            			"O.kol kol_k","(CASE O.kol WHEN 0 then 0 ELSE round(O.sumka/O.kol,2) END)*O.kol as sum_k",
+            			//"ifnull(O.sumka,0) as sum_k",
+            			"CASE O.kol WHEN 0 then 0 ELSE round(O.sumka/O.kol,2) END as price_k"		 
             			 //"T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","T.kol||' '||E.name as kol",
             			 //"E.name as ted", "T.ed as ed","'÷ÂÌ‡:'||T.price as price","T.prim as prim","TP.pgr as pgr","K.sumka as sumka","'◊≈ π'||K._id as ch"
             			 }, 

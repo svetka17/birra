@@ -569,7 +569,7 @@ void saveSetting() {
     green2 = sPref.getInt("green2", 50);
     blue1 = sPref.getInt("blue1", 50);
     blue2 = sPref.getInt("blue2", 50);
-    postlitr = (byte)sPref.getInt("postlitr", 1);
+    postlitr = (byte)sPref.getInt("postlitr", 0);
     num_id = sPref.getInt("num_id", num_id);
     day = sPref.getInt("day", day);
     if (day!=Calendar.getInstance().get(Calendar.DATE))
@@ -770,6 +770,7 @@ void saveSetting() {
       super.onDestroy();
       //db.close();
       saveSetting();
+      db.close();
       //this.finishAffinity();
       //Log.d("MyLog", "MainActivity: onDestroy()");
       android.os.Process.killProcess(android.os.Process.myPid());

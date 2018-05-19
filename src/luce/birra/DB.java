@@ -25,7 +25,7 @@ public class DB {
 		
 	
   private static final String DB_NAME = "birraDB";
-  private static final int DB_VERSION = 21;
+  private static final int DB_VERSION = 22;
   //private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
   //private static final String DB_TABLE = "mytab";
    
@@ -55,12 +55,13 @@ public class DB {
     mDBHelper = new DBHelper(mCtx, DB_NAME, null, DB_VERSION);
     mDB = mDBHelper.getWritableDatabase();
     mDB.execSQL("PRAGMA foreign_keys = ON;");
-   // mDB.execSQL("PRAGMA case_sensitive_like=OFF;");
+    mDB.execSQL("PRAGMA synchronous = OFF; ");
+   // mDB.execSQL("PRAGMA case_sensitive_like=OFF;"); BEGIN IMMEDIATE TRANSACTION 
   }
    
   // закрыть подключение
   public void close() {
-    if (mDBHelper!=null) mDBHelper.close();
+    if (mDBHelper!=null) {mDB.execSQL("COMMIT; END TRANSACTION "); mDBHelper.close();}
   }
    
   // получить все данные из таблицы DB_TABLE
@@ -370,6 +371,11 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 			    cv.put(name_f, val);
 		    return mDB.update(namT, cv, "_id = "+id, null);
 		  }
+	  public int updOstatIns(int id_tmc, int id_post, int keg, int ed) {
+		    ContentValues cv = new ContentValues();
+			    cv.put("data_ins", MainActivity.getIntDataTime());
+		    return mDB.update("ostat", cv, "id_tmc = "+id_tmc+" and id_post = "+id_post+" and keg = "+keg+" and ed = "+ed, null);
+		  }
    
   // удалить запись из DB_TABLE
   public void delRec(String namTable,long id) {
@@ -395,6 +401,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	//Log.d("MyLog", " --- onCreate tmc --- ");
     	//PRAGMA foreign_keys = ON;
     	db.execSQL("PRAGMA foreign_keys = ON;");
+    	//db.execSQL("PRAGMA synchronous = OFF; BEGIN IMMEDIATE TRANSACTION ");
     	
     	db.execSQL("create table foo ("
                 + "_id integer primary key,"
@@ -605,7 +612,10 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
           db.execSQL("CREATE INDEX ost_sumka ON ostat (sumka);");
           db.execSQL("CREATE INDEX tmc_pos ON tmc (pos);");
           db.execSQL("CREATE INDEX tmc_price_ed ON tmc_price (ed);");
+          db.execSQL("CREATE INDEX tmc_price_tmc ON tmc_price (id_tmc);");
+          db.execSQL("CREATE INDEX tmc_price_post ON tmc_price (id_post);");
           db.execSQL("CREATE INDEX tmcpgr ON tmc (pgr);");
+          db.execSQL("CREATE INDEX tmced ON tmc (ed);");
           db.execSQL("CREATE INDEX tmc_vis ON tmc (vis);");
           //Log.d("MyLog", " --- onCreate create all table --- ");
           //////prixod
@@ -774,7 +784,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	//Log.d("MyLog", " --- onUpgrade database --- ");
-    	if (newVersion == 21) {
+    	if (newVersion == 22) {
     	    db.beginTransaction();
     	    try {
     	    	  db.execSQL("DROP INDEX pri_tmc;");       
@@ -791,9 +801,13 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("DROP INDEX ost_sumka;");
     	          db.execSQL("DROP INDEX tmc_pos;");
     	          db.execSQL("DROP INDEX tmc_price_ed;");
+    	          db.execSQL("DROP INDEX tmc_price_tmc;");
+    	          db.execSQL("DROP INDEX tmc_price_post;");
     	          db.execSQL("DROP INDEX tmcpgr;");
+    	          db.execSQL("DROP INDEX tmced;");
     	          db.execSQL("DROP INDEX tmc_vis;");
     	          db.execSQL("DROP INDEX klient_k;");
+
     	          
     	      db.execSQL("drop table foo;");
     	      db.execSQL("drop table user;");
@@ -820,6 +834,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      db.execSQL("drop table postav;");
     	      
     	    	db.execSQL("PRAGMA foreign_keys = ON;");
+    	    	//db.execSQL("PRAGMA synchronous = OFF; BEGIN IMMEDIATE TRANSACTION ");
     	    	
     	    	db.execSQL("create table foo ("
     	                + "_id integer primary key,"
@@ -1030,7 +1045,10 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("CREATE INDEX ost_sumka ON ostat (sumka);");
     	          db.execSQL("CREATE INDEX tmc_pos ON tmc (pos);");
     	          db.execSQL("CREATE INDEX tmc_price_ed ON tmc_price (ed);");
+    	          db.execSQL("CREATE INDEX tmc_price_tmc ON tmc_price (id_tmc);");
+    	          db.execSQL("CREATE INDEX tmc_price_post ON tmc_price (id_post);");
     	          db.execSQL("CREATE INDEX tmcpgr ON tmc (pgr);");
+    	          db.execSQL("CREATE INDEX tmced ON tmc (ed);");
     	          db.execSQL("CREATE INDEX tmc_vis ON tmc (vis);");
     	    //////prixod
     	          db.execSQL("CREATE TRIGGER pri_ins1 " +

@@ -49,7 +49,7 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
 					if (k!=0) 
 					{
 						tvDataIns.setText(MainActivity.getStringDataTime((int)k));
-						getSupportLoaderManager().getLoader(1).forceLoad();
+						//getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
 					      setItog();
 					}
@@ -69,7 +69,7 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
 					if (k!=0) 
 					{
 						tvDataIns.setText(MainActivity.getStringDataTime((int)k));
-						getSupportLoaderManager().getLoader(1).forceLoad();
+						//getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
 					      setItog();
 					}
@@ -90,7 +90,7 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
 					if (k!=0) 
 					{
 						tvDataIns2.setText(MainActivity.getStringDataTime((int)k));
-						getSupportLoaderManager().getLoader(1).forceLoad();
+						//getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
 					      setItog();
 					}
@@ -110,7 +110,7 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
 					if (k!=0) 
 					{
 						tvDataIns2.setText(MainActivity.getStringDataTime((int)k));
-						getSupportLoaderManager().getLoader(1).forceLoad();
+						//getSupportLoaderManager().getLoader(1).forceLoad();
 					      getSupportLoaderManager().getLoader(0).forceLoad();
 					      setItog();
 					}
@@ -182,8 +182,7 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
     // создаем лоадер для чтения данных
     
     if( getIntent().getExtras() != null)
-    {
-    	
+    {	
     	tvDataIns.setText(getIntent().getStringExtra("dat1"));
     	tvDataIns2.setText(getIntent().getStringExtra("dat2"));
     }
