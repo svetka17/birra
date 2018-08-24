@@ -770,7 +770,7 @@ void saveSetting() {
       super.onDestroy();
       //db.close();
       saveSetting();
-      db.close();
+      //db.close();
       //this.finishAffinity();
       //Log.d("MyLog", "MainActivity: onDestroy()");
       android.os.Process.killProcess(android.os.Process.myPid());
@@ -785,7 +785,16 @@ void saveSetting() {
 	if (v.getId() == R.id.btnKassa)
 	{intent = new Intent(this, OtchetActivity.class);
 		   startActivity(intent);}
-	if (v.getId() == R.id.btnExit) finish();
+	
+	if (v.getId() == R.id.btnOstat)
+	{intent = new Intent(this, OstatActivity.class);
+		   startActivity(intent);}
+	
+	if (v.getId() == R.id.btnOstat)
+	{intent = new Intent(this, OstatActivity.class);
+		   startActivity(intent);}
+	
+	
 	if (v.getId() == R.id.btnPrixod)
 	{  
 		intent = new Intent(this, PrixodActivity.class);
@@ -807,11 +816,11 @@ void saveSetting() {
 			   startActivity(intent);
 		     break;
 		   
-		   case R.id.btnOstat:
+		   /*case R.id.btnOstat:
 			   intent = new Intent(this, OstatActivity.class);
 			   startActivity(intent);
 		     break;
-		   /*case R.id.btnRasxod:
+		   case R.id.btnRasxod:
 			   intent = new Intent(this, RasxodActivity.class);
 			   startActivity(intent);
 			   break;*/
@@ -838,7 +847,7 @@ void saveSetting() {
 		     finish();
 		     break;*/
 		   }
-		
+	if (v.getId() == R.id.btnExit) finish();	
 		//}
 	}
 }

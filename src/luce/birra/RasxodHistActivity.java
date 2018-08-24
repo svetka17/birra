@@ -420,6 +420,8 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         				(tvIdKlient.getText().toString().equals("0")||tvIdKlient.getText().length()==0)?"":" K._id="+tvIdKlient.getText().toString(),
         						(tvIdProd.getText().toString().equals("-1")||/*tvIdProd.getText().toString().equals("0")||*/tvIdProd.getText().length()==0)?"":" T.id_tmc="+tvIdProd.getText().toString()};
         String where=str[0].toString();
+        if (where.equals("")||where.length()==0) where=" ifnull(T.ok,0)=0 "; else 
+        	if (!str[1].equals("")) where=where+" and ifnull(T.ok,0)=0 ";
         //Log.d("MyLog", "dt="+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString())));
         if (where.equals("")||where.length()==0) where=str[1].toString(); else 
         	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 
@@ -453,6 +455,8 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
       				(tvIdKlient.getText().toString().equals("0")||tvIdKlient.getText().length()==0)?"":" K._id="+tvIdKlient.getText().toString(),
       						(tvIdProd.getText().toString().equals("-1")||/*tvIdProd.getText().toString().equals("0")||*/tvIdProd.getText().length()==0)?"":" T.id_tmc="+tvIdProd.getText().toString()};
       String where=str[0].toString();
+      if (where.equals("")||where.length()==0) where=" ifnull(T.ok,0)=0 "; else 
+      	if (!str[1].equals("")) where=where+" and ifnull(T.ok,0)=0 ";
       //Log.d("MyLog", "dt="+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString())));
       if (where.equals("")||where.length()==0) where=str[1].toString(); else 
       	if (!str[1].equals("")) where=where+" and "+str[1].toString(); 

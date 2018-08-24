@@ -77,9 +77,10 @@ public void bindView(View view, Context context, final Cursor cursor) {
 		//R.id.tv_Kol_Ras_Oborotka,R.id.tv_Sum_Ras_Oborotka,R.id.tv_Price_Ras_Oborotka,
 		//R.id.tv_Kol_Kon_Oborotka,R.id.tv_Sum_Kon_Oborotka,R.id.tv_Price_Kon_Oborotka}
 		
-		if (MainActivity.access!=1) {
+		/*if (MainActivity.access!=1) {
 			((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
-		}
+		}*/
+		((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
 		
 /*        tv = (TextView) view.findViewById(R.id.tv_Price_Pri_Oborotka);  	
         double kol=cursor.getDouble(cursor.getColumnIndex("kol_pri"));
@@ -210,6 +211,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
     	break;
     case 5:
     	if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
+    	//((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
     	tv = (TextView) view.findViewById(R.id.tvNamePost_Ostat);  	
         tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
     	tv = (TextView) view.findViewById(R.id.tvDataIns_Ostat);  	
@@ -281,8 +283,10 @@ public void bindView(View view, Context context, final Cursor cursor) {
                 tv.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             } 
         });*/
-    	if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
-      tv = (TextView) view.findViewById(R.id.tvNamePostPrixod_); 
+    	//удалять можно всем, изменять нельзя никому
+    	//if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
+    	((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
+    	tv = (TextView) view.findViewById(R.id.tvNamePostPrixod_); 
       //  tv = (TextView) view.findViewById(r[2]);
         tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
 
@@ -344,7 +348,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
 		}*/
     	break;
     case 4:
-
+    	((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
     	//tv = (TextView) view.findViewById(R.id.tvNamePostPrixod_);  	
         //tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
         tv = (TextView) view.findViewById(R.id.tv_DataIns_Rasxod_Hist);  	
@@ -357,6 +361,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
         //tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
         tv = (TextView) view.findViewById(R.id.tv_DataIns_Del_Hist);  	
         tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+        //tv.setText(String.valueOf( cursor.getInt(cursor.getColumnIndex("data_ins")) ) );
     	break;
     case 7: break;
     case 9: 
@@ -379,7 +384,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
     	//}
     	break;
     case 11:
-    	if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
+    	//if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
     	tv = (TextView) view.findViewById(R.id.tvNamePost_Price);  	
         tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
     	tv = (TextView) view.findViewById(R.id.tvDataIns_Price);  	

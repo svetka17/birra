@@ -281,12 +281,12 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
             	 */
 Cursor cursor = db.getRawData (
 "select keg, pname,_id,id_tmc,name,data_ins,kol,ted,ed,price,skidka,sum_no_skidka,prim,pgr,sumka  "
-+ " from (select T.keg as keg,P.name as pname,T._id as _id,T.id_tmc as id_tmc,TP.name as name,T.data_ins as data_ins,round(T.kol,3)||' '||E.name as kol,E.name as ted,T.ed as ed,T.price as price,ifnull(T.skidka,0) as skidka,round((T.kol*T.price-ifnull(T.skidka,0)) ,2) as sum_no_skidka,T.prim as prim,TP.pgr as pgr,round(T.kol*T.price,3) as sumka"
++ " from (select T.keg as keg,P.name as pname,T._id as _id,T.id_tmc as id_tmc,TP.name as name,T.data_del as data_ins,round(T.kol,3)||' '||E.name as kol,E.name as ted,T.ed as ed,T.price as price,ifnull(T.skidka,0) as skidka,round((T.kol*T.price-ifnull(T.skidka,0)) ,2) as sum_no_skidka,T.prim as prim,TP.pgr as pgr,round(T.kol*T.price,3) as sumka"
 +" from rasxod_del as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join postav as P on T.id_post=P._id where "+ where
 + " union all "
 +"select T.keg as keg,P.name as pname,T._id as _id,T.id_tmc as id_tmc,TP.name as name,T.data_ins as data_ins,round(T.kol,3)||' '||E.name as kol,E.name as ted,T.ed as ed,T.price as price,ifnull(T.skidka,0) as skidka,round((T.kol*T.price-ifnull(T.skidka,0)) ,2) as sum_no_skidka,T.prim as prim,TP.pgr as pgr,round(T.kol*T.price,3) as sumka"
 +" from rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_ed as E on T.ed = E._id left join postav as P on T.id_post=P._id where "+ where1
-+" and T.prim like 'кнопка - из меню продаж%') order by data_ins"
++" and T.prim like 'удаление по кнопке%') order by data_ins"
 , null);
       return cursor;
     }

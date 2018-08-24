@@ -373,7 +373,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		  }
 	  public int updOstatIns(int id_tmc, int id_post, int keg, int ed) {
 		    ContentValues cv = new ContentValues();
-			    cv.put("data_ins", MainActivity.getIntDataTime());
+			    cv.put("data_upd", MainActivity.getIntDataTime());
 		    return mDB.update("ostat", cv, "id_tmc = "+id_tmc+" and id_post = "+id_post+" and keg = "+keg+" and ed = "+ed, null);
 		  }
    
@@ -769,7 +769,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW "+
       		    " BEGIN "+
-      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, "+MainActivity.getIntDataTime()+"); "+
+      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, cast(substr(strftime('%Y%m%d%H%M','now'),3) as INTEGER) ); "+
       		    " END;");
         db.execSQL("CREATE TRIGGER ras_del2 " +
     		    " AFTER DELETE "+
@@ -1201,7 +1201,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW "+
     	      		    " BEGIN "+
-    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, "+MainActivity.getIntDataTime()+"); "+
+    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, cast(substr(strftime('%Y%m%d%H%M','now'),3) as INTEGER) ); "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_del2 " +
     	    		    " AFTER DELETE "+

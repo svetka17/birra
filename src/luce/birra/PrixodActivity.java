@@ -289,7 +289,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   			 {if ((tvId.getText().toString().length()==0)) 
         		//MainActivity.db.addRecPRIXOD(id_tmc, kol, price, id_post, prim, data_del, data_ins, ok);
         		{
-  				long countT=0;
+  				/*long countT=0;
 				Cursor cc = MainActivity.db.getRawData ("select id_tmc, kol, ed, id_post, keg from ostat where kol<0 and id_tmc="+tvIdProd.getText().toString()+" and id_post="+tvIdPost.getText().toString()+" and ed="+tvEd.getText().toString() , null);
 				   if (cc.moveToFirst()) { 
 				        do {if (cc.getDouble(cc.getColumnIndex("kol"))<0) //<0 %)
@@ -298,7 +298,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
 				        } while (cc.moveToNext());
 				      };
 				      
-				      if (countT!=0) showMessage("Отрицательный остаток обнулен", (byte)1);
+				      if (countT!=0) showMessage("Отрицательный остаток обнулен", (byte)1);*/
 				      if (Byte.parseByte(tvEd.getText().toString())!=1) tvKeg.setText("0");
 				      else 
 				      {tvKeg.setText(String.valueOf(MainActivity.db.addRecKEGSCount("new keg", MainActivity.StrToFloat(tvKol.getText().toString()), MainActivity.getStringDataTime(MainActivity.getIntDataTime()), MainActivity.getIntDataTime(), (byte)0)) ); };

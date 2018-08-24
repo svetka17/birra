@@ -24,7 +24,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -148,8 +147,10 @@ SeekBar.OnSeekBarChangeListener
 	   String ted;
 	   int count_rasxod;
 	   double kol_in_chek;
+	   //double nedo;
+	   //double izl;
 	   ToggleButton tb;
-	  chB(byte indBT, int id_tmc, int keg, String tmc_name, String string_keg, double val, double ost, int post, double kol, double price, byte ed, String ted, int count_rasxod, double kol_in_chek, ToggleButton tb){
+	  chB(byte indBT, int id_tmc, int keg, String tmc_name, String string_keg, double val, double ost, int post, double kol, double price, byte ed, String ted, int count_rasxod, double kol_in_chek, /*double nedo, double izl,*/ ToggleButton tb){
 		  this.indBT=indBT;//tag button
 		  this.tmc_name=tmc_name;
 		  this.string_keg=string_keg;
@@ -164,6 +165,8 @@ SeekBar.OnSeekBarChangeListener
 		  this.ted=ted;
 		  this.count_rasxod=count_rasxod;
 		  this.kol_in_chek=kol_in_chek;
+		  //this.nedo=nedo;
+		  //this.izl=izl;
 		  this.tb=tb;
   }}
   
@@ -181,7 +184,9 @@ SeekBar.OnSeekBarChangeListener
 	   int id_post;
 	   int id_klient; //пока ничего не пишется
 	   String prim;
-	  tranDB(byte tag, byte tagL, byte tagB, int id_tmc, int keg, double kol, byte ed, double price, /*float skidka,*/ int id_post,int id_klient, String prim){
+	   double nedo;
+	   double izl;
+	  tranDB(byte tag, byte tagL, byte tagB, int id_tmc, int keg, double kol, byte ed, double price, /*float skidka,*/ int id_post,int id_klient, String prim, double nedo, double izl){
 		  this.tag=tag;
 		  this.tagL=tagL;
 		  this.tagB=tagB;
@@ -193,7 +198,10 @@ SeekBar.OnSeekBarChangeListener
 		  //this.skidka=skidka;
 		  this.id_post=id_post;
 		  this.id_klient=id_klient;
-		  this.prim=prim;}
+		  this.prim=prim;
+		  this.nedo=nedo;
+		  this.izl=izl;
+		  }
 	  }
 
 void makeDialog() {
@@ -328,6 +336,8 @@ void makeDialog() {
         			cTara.getString(cTara.getColumnIndex("ted")), //ted
         			1,
         			0,
+        			//0,//nedo
+        			//0,//izl
         			new ToggleButton(this)
         			));
         	
@@ -558,7 +568,9 @@ void makeDialog() {
 							Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
 							   if (cc.moveToFirst()) { 
 							        do {countT=
-							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0), (cc.getDouble(cc.getColumnIndex("kol"))<0?0:cc.getDouble(cc.getColumnIndex("kol"))), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кнопка - из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+							        		
+							        		MainActivity.db.addRecRASXODcount
+							        		(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0), /*(cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0)*/0, (byte)cc.getInt(cc.getColumnIndex("ed")), but.get(Btovar).price,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "удаление по кнопке из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
 							        } while (cc.moveToNext());
 							      };
 							if (countT!=0) showMessage("Остаток обнулен", (byte)1);
@@ -801,18 +813,21 @@ void makeDialog() {
 //+ "and G.minkol=O.kol " +
 + " and G.mindat=O.data_ins where O.kol!=0 " +
 " group by G._id, G.countkeg, G.name, G.namep, G.price, G.id_post, G.minkol, G.ed, G.ted, G.pos order by G.pos, G._id",null);*/
-			   ("select G._id as _id, min(O.keg) as keg, max(O.data_ins) data_ins, count(R.keg) as count_rasxod, G.countkeg as countkeg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, G.minkol as kol, round(G.minkol,2) as kol2, round(G.minkol,3) as kol3, G.ed as ed, G.ted as ted, G.pos as pos from (" +
+
+					   ("select G._id as _id, min(O.keg) as keg, max(O.data_ins) data_ins, count(R.keg) as count_rasxod, G.countkeg as countkeg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, G.minkol as kol, round(G.minkol,2) as kol2, round(G.minkol,3) as kol3, G.ed as ed, G.ted as ted, G.pos as pos from (" +
 						"select S.id_tmc as _id, T.pos as pos, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.ed as ed, E.name as ted " 
 						//+",min(S.kol) over (partition by S.id_tmc, S.id_post, S.ed order by S.kol rows between unbounded preceding and current row) as minkol"
 						+",count(S.kol) as countkeg, "
 						//+ "min(S.kol) as minkol"
 						+ "S.kol as minkol, "
-						+ "max(S.data_ins) as mindat"
+						+ "min(S.data_ins) as mindat"
 				+ " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.pgr="+tvIdPgr.getText()+" and T.vis=1 and S.kol!=0 " +
 				" group by S.id_tmc, T.pos, T.name, P.name, TP.price, S.id_post, S.ed, E.name) as G left join ostat as O on G._id=O.id_tmc and G.id_post=O.id_post and G.ed=O.ed and G.mindat=O.data_ins"
 				+ " left join rasxod as R on R.id_tmc=O.id_tmc and R.id_post=O.id_post and R.ed=O.ed and R.keg=O.keg where O.kol!=0 " +
 				" group by G._id, G.countkeg, G.name, G.namep, G.price, G.id_post, G.minkol, G.ed, G.ted, G.pos order by G.pos, G._id",null);
-	     //cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
+
+	   
+	   //cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
 	   // scale size font
 /*
 */
@@ -1008,6 +1023,8 @@ void makeDialog() {
 	        			cc.getString(cc.getColumnIndex("ted")), //ted
 	        			cc.getInt(cc.getColumnIndex("count_rasxod")),//count_rasxod
 	        			0,
+	        			//0,//nedo
+	        			//0,//izl
 	        			new ToggleButton(this)
 	        			));
 	        	
@@ -1069,7 +1086,7 @@ void makeDialog() {
 	        			tmp_minus=0;
 	        			//Log.d("MyLog", "tmp_minus=0 "+but.get(Btovar).keg+" "+String.valueOf((new Date()).getTime()) );
 	        			
-	        			if (but.get(Btovar).ost<0.0001)
+	        			if (but.get(Btovar).ost<0.001)
 	        			{tmp_minus=2;
 	        			if (Btara!=-1) {
 	        			if (Btara!=-2)
@@ -1101,7 +1118,7 @@ void makeDialog() {
 		    					public void OnSelectedKol(double k) {
 		    						//1-да 0-нет -1-дисмис
 		    						if (k==1) {
-		    						long countT=0;
+		    						long countT1=0;
 		    						//Log.d("MyLog", "countT="+countT);
 		    							Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
 		 							   if (cc.moveToFirst()) { 
@@ -1112,8 +1129,12 @@ void makeDialog() {
 		 							        				kol_in_chek=kol_in_chek+tranz.get(i).kol;
 		 							        		}*/
 		 							        	//}
-		 							        	countT=		 							        
-		 							        MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 0,0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, MainActivity.usr+"новая кега - обнуление из меню продаж ", MainActivity.getIntDataTime(), 1);
+		 							        	countT1=		 							        
+		 							        MainActivity.db.addRecRASXODcount
+		 							        (cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 
+		 							        		 0,0,/*(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0),
+		 							        		 (cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0),*/ 
+		 							        		(byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, MainActivity.usr+"новая кега - обнуление из меню продаж ", MainActivity.getIntDataTime(), 1);
 		 							        showMessage("Кнопка с текущей кегой обнулена", (byte)1);
 		 							        //Log.d("MyLog", "countT="+countT+" "+String.valueOf(cc.getDouble(cc.getColumnIndex("kol")))-kol+" "+but.get(Btovar).keg+" keg="+cc.getInt(cc.getColumnIndex("keg")) );
 		 							       /*
@@ -1146,17 +1167,21 @@ void makeDialog() {
 	    						if (k==0) {
 	    						
 	    						//удаляем кнопку спрашиваем нужно ли оприходовать
-	    						long countT=0;
-								Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<0.00001 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
+	    						long countT2=0;
+								Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<0.0001 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
 								//Log.d("MyLog", "countT="+countT+" "+but.get(Btovar).id_tmc+" "+but.get(Btovar).keg);   
 								if (cc.moveToFirst()) { 
-								        do {countT=
-								        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 0, 0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка с 0 кол-ом - обнуление из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
+								        do {countT2=
+								        		MainActivity.db.addRecRASXODcount
+								        		(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 
+								        				 /*(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0)*/0, 
+								        				 /*(cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0)*/0, 
+								        				(byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка с 0 кол-ом - обнуление из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
 								        
 								        } while (cc.moveToNext());
 								      };
 								cc.close();
-								if (countT!=0) {showMessage("Остаток обнулен", (byte)1);
+								if (countT2!=0) {showMessage("Остаток обнулен", (byte)1);
 								
 								upd=1;
 									//setBut();
@@ -1291,10 +1316,11 @@ void makeDialog() {
    		   m.put("price", MainActivity.round2(but.get(Btovar).price));
    		   if (Btara!=-2) 
    		   {m.put("kol", MainActivity.round3(but.get(Btara).val)+" "+but.get(Btovar).ted); 
-   		   m.put("summa", but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
-   		m.put("summakp", but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
-   		m.put("summa2", but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
-   		m.put("skidka_sum_itog", but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
+   		   tmp=MainActivity.round2(but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
+   		   m.put("summa", tmp/*/0.5*/);
+   		m.put("summakp", tmp);
+   		m.put("summa2", tmp);
+   		m.put("skidka_sum_itog", tmp);
    		   m.put("itog", MainActivity.round3(but.get(Btara).val)+" * "+MainActivity.round2(but.get(Btovar).price)+" = ");} 
    		   else
    		   {m.put("kol", tvKol.getText().toString()+" "+but.get(Btovar).ted); 
@@ -1314,6 +1340,11 @@ void makeDialog() {
    		   if (Btara!=-2)	
    	{
    			//Log.d("MyLog", "Btovar1="+Btovar);
+   			sumI=sumI+but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/);
+   		   	
+   		   	but.get(Btovar).ost=but.get(Btovar).ost-but.get(Btara).val;
+   		   	but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+but.get(Btara).val;
+   		   	
    	tranz.add(new tranDB(
    			(byte)(data.size()-1),
    			(byte)(data.size()-1), 
@@ -1324,15 +1355,18 @@ void makeDialog() {
    			but.get(Btovar).ed, 
    			but.get(Btovar).price, 
    			but.get(Btovar).post, 
-   			0, "своя тара"));
-   	sumI=sumI+but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/);
-   	
-   	but.get(Btovar).ost=but.get(Btovar).ost-but.get(Btara).val;
-   	but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+but.get(Btara).val;
+   			0, "своя тара",
+   			0,
+   			(but.get(Btovar).ost<0?((but.get(Btovar).ost)>0?-(but.get(Btovar).ost+but.get(Btara).val):but.get(Btara).val):0) ));
    	
    	}
    		   else
    		{//Log.d("MyLog", "Btovar2="+Btovar);
+   			sumI=sumI+but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+   	   	   			;
+   	   	 but.get(Btovar).ost=but.get(Btovar).ost-MainActivity.StrToFloat(tvKol.getText().toString());
+   	   	 but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+MainActivity.StrToFloat(tvKol.getText().toString());
+   	   	 
    			   tranz.add(new tranDB(
    				(byte)(data.size()-1),
    				(byte)(data.size()-1), 
@@ -1342,11 +1376,10 @@ void makeDialog() {
    				MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/) 
    				,but.get(Btovar).ed, 
    				but.get(Btovar).price, 
-   				but.get(Btovar).post, 0, "своя тара"));
-   	   	sumI=sumI+but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
-   	   			;
-   	 but.get(Btovar).ost=but.get(Btovar).ost-MainActivity.StrToFloat(tvKol.getText().toString());
-   	 but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+MainActivity.StrToFloat(tvKol.getText().toString());	
+   				but.get(Btovar).post, 0, "своя тара",
+   				0,
+   	   			(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-(but.get(Btovar).ost):MainActivity.StrToFloat(tvKol.getText().toString())):0) ) );
+   	   		
    		}
    		
    	}
@@ -1386,24 +1419,29 @@ void makeDialog() {
 		      if (Btara!=-2) {	
 		    	 // Log.d("MyLog", "tara1="+(byte)(data.size()-1));
 		    	 // Log.d("MyLog", "Btovar3="+Btovar);
-	tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar, but.get(Btovar).id_tmc, but.get(Btovar).keg, but.get(Btara).val,but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "с тарой"));	
+		    	  but.get(Btovar).ost=but.get(Btovar).ost-but.get(Btara).val;
+		    	   	but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+but.get(Btara).val;
+		    	   	but.get(Btara).ost=but.get(Btara).ost-but.get(Btara).kol;
+		    	   	
+		    	   	sumI=sumI+(but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/)+but.get(Btara).price);
+		    	   	
+	tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar, but.get(Btovar).id_tmc, but.get(Btovar).keg, but.get(Btara).val,but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "с тарой"
+			,0,(but.get(Btovar).ost<0?((but.get(Btovar).ost+but.get(Btara).val)>0?-(but.get(Btovar).ost):but.get(Btara).val):0)));	
 	//Log.d("MyLog", "Btovar4="+Btovar+" "+Btara);
-   	tranz.add(new tranDB((byte)(data.size()-1),(byte) -1 /*если тара, то позиция в чеке -1*/, Btara,but.get(Btara).id_tmc, but.get(Btara).keg, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "тара"));
-   	
-   	but.get(Btovar).ost=but.get(Btovar).ost-but.get(Btara).val;
-   	but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+but.get(Btara).val;
-   	but.get(Btara).ost=but.get(Btara).ost-but.get(Btara).kol;
-   	
-   	sumI=sumI+(but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/)+but.get(Btara).price);
+   	tranz.add(new tranDB((byte)(data.size()-1),(byte) -1 /*если тара, то позиция в чеке -1*/, Btara,but.get(Btara).id_tmc, but.get(Btara).keg, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "тара",0,0));
+
 		      }
 		      else
 			      
 		    	   	{//Log.d("MyLog", "Btovar5="+Btovar);
-		    	  tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc,but.get(Btovar).keg, MainActivity.StrToFloat(tvKol.getText().toString()),but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "пакет"));	
-		    	      // tranz.add(new tranDB((byte)(data.size()-1), Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "tara"));
 		    	  but.get(Btovar).ost=but.get(Btovar).ost-MainActivity.StrToFloat(tvKol.getText().toString());     
 		    	  sumI=sumI+(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
-		    	    		   +0);}
+		    	    		   +0);
+		    	  tranz.add(new tranDB((byte)(data.size()-1),(byte)(data.size()-1), Btovar,but.get(Btovar).id_tmc,but.get(Btovar).keg, 
+		    			  MainActivity.StrToFloat(tvKol.getText().toString()),but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "пакет"
+		    			  ,0,(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-(but.get(Btovar).ost):MainActivity.StrToFloat(tvKol.getText().toString())):0)));	
+		    	      // tranz.add(new tranDB((byte)(data.size()-1), Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "tara"));
+		    	  }
    	}
 
 	   l = but.get(Btovar).tmc_name+"\n"
@@ -1486,7 +1524,8 @@ void makeDialog() {
    	   		tranz.get(i).prim="из отрицательного остатка! "+tranz.get(i).prim;
    	   	}
    		MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
-   			tranz.get(i).kol, (but.get(tranz.get(i).tagB).ost<0?tranz.get(i).kol:0), /*(but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0)*/0, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
+   			tranz.get(i).kol, 
+   			/*(but.get(tranz.get(i).tagB).ost<0?tranz.get(i).kol:0)*/tranz.get(i).nedo, /*(but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0)*/tranz.get(i).izl, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
    			MainActivity.usr+" авточек№ "+MainActivity.num_id+" на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" остаток:"+but.get(tranz.get(i).tagB).ost+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
    	   	
    	
@@ -1511,6 +1550,7 @@ void makeDialog() {
        	//textView.setTypeface(null,Typeface.BOLD);
        	text.setSpan(style2,l1,l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
        	*/
+   		//первый расход, апдейтим дату остатка
        	if (but.get(tranz.get(i).tagB).count_rasxod==0 && but.get(tranz.get(i).tagB).ed==1) {
        		MainActivity.db.updOstatIns(but.get(tranz.get(i).tagB).id_tmc, but.get(tranz.get(i).tagB).post, but.get(tranz.get(i).tagB).keg, but.get(tranz.get(i).tagB).ed);
        		but.get(tranz.get(i).tagB).count_rasxod=1;
@@ -1585,7 +1625,7 @@ void makeDialog() {
     //long tmp = MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc,
    		//	tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
     	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
-       			tranz.get(i).kol,(but.get(tranz.get(i).tagB).ost<0?tranz.get(i).kol:0), /*(but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0)*/0, tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
+       			tranz.get(i).kol,/*(but.get(tranz.get(i).tagB).ost<0?tranz.get(i).kol:0)*/tranz.get(i).nedo, /*(but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0)*/tranz.get(i).izl, tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
        			MainActivity.usr+" чек№ "+MainActivity.num_id+" на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" остаток:"+but.get(tranz.get(i).tagB).ost+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
        	
   	//Log.d("MyLog", "data="+data.get(tranz.get(i).tagL).get("skidka_sum").toString());

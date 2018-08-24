@@ -315,8 +315,8 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
               			+ " left join ostat as K on O.id_tmc=K.id_tmc and O.keg=K.keg and O.id_post=K.id_post and O.ed=K.ed " +
               			" left join tmc as T on O.id_tmc=T._id left join tmc_ed as E on O.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id left join postav as POS on O.id_post=POS._id",
             			 
-              			new String[] {"O._id as _id","O.keg as keg", "O.keg||' ('||substr(K.data_ins,5,2)||'.'||substr(K.data_ins,3,2)||')' as kkeg",
-            			"O.id_tmc as id_tmc","T.name||' '||POS.name as name","E.name as ted",
+              			new String[] {"O._id as _id","O.keg as keg", "O.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as kkeg",
+            			"O.id_tmc as id_tmc","T.name||case POS.name when '-нет-' then '' else ' '||POS.name end as name","E.name as ted",
             			//"0 as kol_n","0 as sum_n","0 as price_n","sum(round(P.kol,3)) as kol_pri","sum(round(P.kol,3)*round(P.price,2)) sum_pri","0 as price_pri","sum(round(R.kol,3)) kol_ras","sum(round(R.kol,3)*round(R.price,2)) as sum_ras","0 as price_ras",
             			"0 as kol_n","0 as sum_n","0 as price_n","sumkp as kol_pri","sumsp sum_pri","CASE sumkp WHEN 0 then 0 ELSE round(sumsp/sumkp,2) END as price_pri","sumkr kol_ras","sumsr as sum_ras","CASE sumkr WHEN 0 then 0 ELSE round(sumsr/sumkr,2) END as price_ras",
             			"O.kol kol_k","(CASE O.kol WHEN 0 then 0 ELSE round(O.sumka/O.kol,2) END)*O.kol as sum_k",

@@ -226,6 +226,7 @@ static File rasxod (int dat1, int dat2, int pgr, String dirN) {
 			dat2==0?"":" substr(R.data_ins,1,6)<=trim("+dat2+")"
 			};
 			String where=str[0].toString();
+			if (where.length()==0) where=" ifnull(R.ok,0)=0 "; else where=where+" and ifnull(R.ok,0)=0 ";
 			if (where.length()==0) where=str[1].toString(); else where=where+" and "+str[1].toString();
 			if (where.length()==0) where=str[2].toString(); else where=where+" and "+str[2].toString();
 				//if (!str[1].equals("")) where=where+" and "+str[1].toString(); 

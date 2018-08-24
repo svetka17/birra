@@ -165,9 +165,18 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
 		    					getSupportLoaderManager().getLoader(0).forceLoad();
 		    					}
 		    					else 
-		    						showMessage("Нельзя удалять, возникнет отрицательный остаток", (byte)1); 
+		    					{cc = MainActivity.db.getRawData ("select O.id_klient id_klient, O.data_ins data_ins, sum(O.kol) kolr,OO.kol kolo from rasxod O left join prixod P on O.id_tmc=P.id_tmc and O.ed=P.ed and O.id_post=P.id_post and O.keg=P.keg left join ostat OO on OO.id_tmc=P.id_tmc and OO.ed=P.ed and OO.id_post=P.id_post and OO.keg=P.keg where P._id="+idd+" group by O.id_klient, O.data_ins,OO.kol", null);
+								String s="", ss="";   
+			    				if (cc.moveToFirst()) { 
+								        do {
+								        	ss="текущий остаток "+String.valueOf(cc.getDouble(cc.getColumnIndex("kolo"))) ;
+								        	s=s+"\nкол-во "+String.valueOf(cc.getDouble(cc.getColumnIndex("kolr")))+" чек ИД"+String.valueOf(cc.getInt(cc.getColumnIndex("id_klient")))+" от "+MainActivity.getStringDataTime(cc.getInt(cc.getColumnIndex("data_ins")));
+								        } while (cc.moveToNext());
+								      };
+		    						showMessage("Нельзя удалять, возникнет отрицательный остаток "+s+ss, (byte)1);
+		    					}
+		    					cc.close();
 							}
-							
 						}
 					}); getYes.show();
 	   					
