@@ -52,6 +52,8 @@ public AdapterLV(/*int[] r,*/ int bD, int bU, byte nT, Context context, int layo
     case 11: namT="tmc_price"; break;
     case 12: namT=""; break;
     case 13: namT="rasxod_del"; break;
+    case 14: namT="invent_head"; break;
+    case 15: namT="invent"; break;
     }
 }
 
@@ -218,6 +220,24 @@ public void bindView(View view, Context context, final Cursor cursor) {
         tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
 
     	break;
+    case 14:
+    	//if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
+    	//((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
+    	//tv = (TextView) view.findViewById(R.id.tvNamePost_Inv);  	
+        //tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
+    	tv = (TextView) view.findViewById(R.id.tv_DataIns_InvHead);  	
+        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+
+    	break;
+    case 15:
+    	//if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
+    	//((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
+    	//tv = (TextView) view.findViewById(R.id.tvNamePost_Inv);  	
+        //tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
+    	//tv = (TextView) view.findViewById(R.id.tvDataIns_Inv);  	
+        //tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+
+    	break;	
     case 2:
         //for (i=0;i<r.length;i++) {
         	/*tv = (TextView) view.findViewById(r[i]);
@@ -529,6 +549,9 @@ public void bindView(View view, Context context, final Cursor cursor) {
                 case  5:
                 case 10:
                 case 11:
+                case 15:
+                	listenerFlag.OnCambiare((byte)3, getItemId(position));
+                    break;
                 case 0:
                 	listenerFlag.OnCambiare((byte)2, getItemId(position));
                     break;
@@ -540,6 +563,32 @@ public void bindView(View view, Context context, final Cursor cursor) {
 
         }
     });
+	
+	/*if (nT==15) {
+		((TextView) view.findViewById(R.id.tvKolReal_Inv)).setOnClickListener(new View.OnClickListener() {
+	        @Override
+	        public void onClick(View v) {
+	            View parent_row = (View) ((View) v.getParent()).getParent() ;
+	            ListView lv = (ListView) parent_row.getParent();
+	            final int position = lv.getPositionForView(parent_row);
+	            
+	            //tv = (TextView) v.findViewById(R.id.tvKolReal_Inv);  	
+	            //tv.setText("100");
+	            
+	            try{
+	            	
+	            	listenerFlag.OnCambiare((byte)3, getItemId(position));
+	            	
+	                }
+	                catch(Exception e){
+	                	throw new ClassCastException("Ќе удалось изменить количество");
+	                }
+	            
+	            //Log.d("MyLog", "Dposition = " + position);
+	            //Log.d("MyLog", "Did = " + getItemId(position));
+	        }
+	    });	
+	}*/
 	
 	super.bindView(view, context, cursor);
    }

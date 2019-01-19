@@ -26,15 +26,41 @@
             android:text="ИСТОРИЯ"
             android:textAppearance="@style/textB30" />
 -->
-
-        <ToggleButton
-            android:id="@+id/btnTaraRasxod_"
+<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:orientation="vertical" >
+        <ToggleButton
+            android:id="@+id/btnTaraRasxod_"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:textOff="СВОЯ ТАРА"
             android:textOn="СВОЯ ТАРА" />
+       
+</LinearLayout> 
+<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
 
+        <ToggleButton
+            android:id="@+id/btnBrak"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textOff="БРАК"
+            android:textOn="БРАК" />
+        <ToggleButton
+            android:id="@+id/btnMove"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textOff="ПЕРЕМЕЩЕНИЕ"
+            android:textOn="ПЕРЕМЕЩЕНИЕ" />
+</LinearLayout> 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

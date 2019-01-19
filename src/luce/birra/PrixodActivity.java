@@ -307,7 +307,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         				Integer.parseInt(tvIdProd.getText().toString()), 
         				Integer.parseInt(tvKeg.getText().toString()),
         				MainActivity.StrToFloat(tvKol.getText().toString()), 
-        				0,0,
+        				//0,0,
         				Byte.parseByte(tvEd.getText().toString()),
         				MainActivity.StrToFloat2(tvPrice.getText().toString() ), 
         				MainActivity.StrToFloat2(tvPriceVendor.getText().toString()), 

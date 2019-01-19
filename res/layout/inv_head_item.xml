@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/inv_head_item_tr"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_Id_InvHead"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+    <TextView
+        android:id="@+id/tv_Dat_InvHead"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+    <TextView
+        android:id="@+id/tv_User_InvHead"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tv_Name_InvHead"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+
+    <TextView
+        android:id="@+id/tv_Summa_InvHead"
+        style="@style/lv_i"
+        android:layout_weight="0.5"/>
+    <TextView
+        android:id="@+id/tv_DatN_InvHead"
+        style="@style/lv_i"
+        android:layout_weight="0.5"/>   
+            <TextView
+        android:id="@+id/tv_DatK_InvHead"
+        style="@style/lv_i"
+        android:layout_weight="0.5" /> 
+        <TextView
+        android:id="@+id/tv_Prim_InvHead"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+    <TextView
+        android:id="@+id/tv_DataIns_InvHead"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+    <TextView
+        android:id="@+id/tv_Ok_InvHead"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+         
+
+    <LinearLayout
+        style="@style/_m1"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnUpdInvHead"
+            style="@style/B"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="СМОТРЕТЬ" />
+
+        <Button
+            android:id="@+id/btnDelInvHead"
+            style="@style/B"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ИЗМЕНИТЬ" />
+    </LinearLayout>
+
+</TableRow>

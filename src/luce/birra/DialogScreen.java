@@ -59,7 +59,9 @@ public class DialogScreen extends AlertDialog.Builder {
 			   return "Введите количество правильного остатка";
 		   case R.id.cb_Kol_Price:
 			   return "Введите правильную цену";
-		   default: return "";
+		   case R.id.tvKolReal_Inv:
+			   return "Введите реальное количество остатка";
+		   default: return "Введите количество";
 		   }
 	   }
 	   
@@ -348,6 +350,50 @@ public class DialogScreen extends AlertDialog.Builder {
 				}
 			})
 			.setTitle("ПЕРЕЙТИ НА НОВУЮ КЕГУ?");
+            break;
+        case -9:
+            setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                	listener.OnSelectedKol(1);
+                }
+            })
+            .setNegativeButton("НЕТ", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					listener.OnSelectedKol(0);
+				}
+			})
+			.setOnDismissListener(new OnDismissListener() {	
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					listener.OnSelectedKol(-1);						
+				}
+			})
+			.setTitle("ВКЛЮЧИТЬ С ПОМЕТКОЙ БРАК?");
+            break;
+        case -10:
+            setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                	listener.OnSelectedKol(1);
+                }
+            })
+            .setNegativeButton("НЕТ", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					listener.OnSelectedKol(0);
+				}
+			})
+			.setOnDismissListener(new OnDismissListener() {	
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					listener.OnSelectedKol(-1);						
+				}
+			})
+			.setTitle("ВКЛЮЧИТЬ ПЕРЕМЕЩЕНИЕ В ДРУГОЙ МАГАЗИН?");
             break;
         case 0: 
 			/*OnDateSetListener myCallBack = new OnDateSetListener() {

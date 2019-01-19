@@ -25,7 +25,7 @@ public class DB {
 		
 	
   private static final String DB_NAME = "birraDB";
-  private static final int DB_VERSION = 22;
+  private static final int DB_VERSION = 1;
   //private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
   //private static final String DB_TABLE = "mytab";
    
@@ -159,13 +159,13 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("user", null, cv);
 		  }
 
-	  public void addRecPRIXOD(int id_tmc, int keg, double kol, double kol_nedo, double kol_izl, byte ed, double price, double price_vendor, int id_post, String prim, /*int data_del,*/ int data_ins, byte ok) {
+	  public void addRecPRIXOD(int id_tmc, int keg, double kol, /*double kol_nedo, double kol_izl,*/ byte ed, double price, double price_vendor, int id_post, String prim, /*int data_del,*/ int data_ins, byte ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("keg", keg);
 		    cv.put("kol", kol);
-		    cv.put("kol_nedo", kol_nedo);
-		    cv.put("kol_izl", kol_izl);
+		    //cv.put("kol_nedo", kol_nedo);
+		    //cv.put("kol_izl", kol_izl);
 		    cv.put("ed", ed);
 		    cv.put("price", price);
 		    cv.put("price_vendor", price_vendor);
@@ -177,13 +177,16 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("prixod", null, cv);
 		  }
 
-	  public void addRecRASXOD(int id_tmc, int keg, double kol, double kol_nedo, double kol_izl, byte ed, double price, double skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
+	  public void addRecRASXOD(int id_tmc, int keg, double kol, double kol_nedo, double kol_izl, double kol_brak, double kol_move, /*double kol_correct,*/ byte ed, double price, double skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("keg", keg);
 		    cv.put("kol", kol);
 		    cv.put("kol_nedo", kol_nedo);
 		    cv.put("kol_izl", kol_izl);
+		    cv.put("kol_brak", kol_brak);
+		    cv.put("kol_move", kol_move);
+		    //cv.put("kol_correct", kol_correct);
 		    cv.put("ed", ed);
 		    cv.put("price", price);
 		    cv.put("skidka", skidka);
@@ -196,13 +199,16 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("rasxod", null, cv);
 		  }
 	  
-	  public long addRecRASXODcount(int id_tmc, int keg, double kol, double kol_nedo, double kol_izl, byte ed, double price, double skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
+	  public long addRecRASXODcount(int id_tmc, int keg, double kol, double kol_nedo, double kol_izl, double kol_brak, double kol_move, /*double kol_correct,*/ byte ed, double price, double skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("keg", keg);
 		    cv.put("kol", kol);
 		    cv.put("kol_nedo", kol_nedo);
 		    cv.put("kol_izl", kol_izl);
+		    cv.put("kol_brak", kol_brak);
+		    cv.put("kol_move", kol_move);
+		    //cv.put("kol_correct", kol_correct);
 		    cv.put("ed", ed);
 		    cv.put("price", price);
 		    cv.put("skidka", skidka);
@@ -290,6 +296,63 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    return mDB.insert("postav", null, cv);
 		  }
 	  
+	  public void addRecINVENT(long id_inv, int id_tmc, String name_tmc, int pgr, String name_pgr, int keg, int id_post, int ed, 
+			  double kol_ostat, double kol_real, double kol_n, double summa_n, double kol_p, double summa_p, double kol_r, double summa_r, double kol_brak, double summa_brak, 
+			  double kol_move, double summa_move, double kol_izl, double summa_izl, double kol_nedo, double summa_nedo, double kol_skidka, double summa_skidka,
+			  double kol_k, double summa_k,
+			  double price_vendor, double price,
+			  String prim, int data_ins, byte ok) {
+		    ContentValues cv = new ContentValues();
+		    cv.put("id_inv", id_inv);
+		    cv.put("id_tmc", id_tmc);
+		    cv.put("name_tmc", name_tmc);
+		    cv.put("pgr", pgr);
+		    cv.put("name_pgr", name_pgr);
+		    cv.put("keg", keg);
+		    cv.put("id_post", id_post);
+		    cv.put("ed", ed);
+		    cv.put("kol_ostat", kol_ostat);
+		    cv.put("kol_real", kol_real);
+		    cv.put("kol_n", kol_n);
+		    cv.put("summa_n", summa_n);
+		    cv.put("kol_p", kol_p);
+		    cv.put("summa_p", summa_p);
+		    cv.put("kol_r", kol_r);
+		    cv.put("summa_r", summa_r);
+		    cv.put("kol_brak", kol_brak);
+		    cv.put("summa_brak", summa_brak);
+		    cv.put("kol_move", kol_move);
+		    cv.put("summa_move", summa_move);
+		    cv.put("kol_izl", kol_izl);
+		    cv.put("summa_izl", summa_izl);
+		    cv.put("kol_nedo", kol_nedo);
+		    cv.put("summa_nedo", summa_nedo);
+		    cv.put("kol_skidka", kol_skidka);
+		    cv.put("summa_skidka", summa_skidka);
+		    cv.put("kol_k", kol_k);
+		    cv.put("summa_k", summa_k);
+		    cv.put("price_vendor", price_vendor);
+		    cv.put("price", price);		    
+		    cv.put("prim", prim);
+		    cv.put("data_ins", data_ins);
+		    cv.put("ok", ok);
+		    mDB.insert("invent", null, cv);
+		  }
+	  
+	  public long addRecINVHEADcount(int id_user, String user, String name, double summa, int dat_n, int dat_k, String prim, int data_ins, int ok) {
+		    ContentValues cv = new ContentValues();
+		    cv.put("name", name);
+		    cv.put("id_user", id_user);
+		    cv.put("user", user);
+		    cv.put("prim", prim);
+		    cv.put("data_ins", data_ins);
+		    cv.put("ok", ok);
+		    cv.put("summa", summa);
+		    cv.put("dat_n", dat_n);
+		    cv.put("dat_k", dat_k);
+		    return mDB.insert("invent_head", null, cv);
+		  }
+	  
 	  /*public void updMyltyRecTMC_PGR(String name, int data_ins) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("name", name);
@@ -375,6 +438,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    ContentValues cv = new ContentValues();
 			    cv.put("data_upd", MainActivity.getIntDataTime());
 		    return mDB.update("ostat", cv, "id_tmc = "+id_tmc+" and id_post = "+id_post+" and keg = "+keg+" and ed = "+ed, null);
+		  }
+	  public int delAll(String namT) {
+		    return mDB.delete(namT, "1", null);
 		  }
    
   // удалить запись из DB_TABLE
@@ -477,8 +543,8 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "keg integer DEFAULT 0,"
                   + "kol real not null,"
-                  + "kol_nedo real DEFAULT 0,"
-                  + "kol_izl real DEFAULT 0,"
+                  //+ "kol_nedo real DEFAULT 0,"
+                  //+ "kol_izl real DEFAULT 0,"
                   + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "price real not null CHECK (price>=0),"
                   + "price_vendor real not null CHECK (price>=0),"
@@ -494,8 +560,8 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "id_tmc integer not null,"
                   + "keg integer,"
                   + "kol real not null,"
-                  + "kol_nedo real,"
-                  + "kol_izl real,"
+                  //+ "kol_nedo real,"
+                  //+ "kol_izl real,"
                   + "ed integer not null,"
                   + "price real not null,"
                   + "price_vendor real not null,"
@@ -512,6 +578,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "kol real not null,"
                   + "kol_nedo real DEFAULT 0,"
                   + "kol_izl real DEFAULT 0,"
+                  + "kol_brak real DEFAULT 0,"
+                  + "kol_move real DEFAULT 0,"
+                  //+ "kol_correct real DEFAULT 0,"
                   + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "price real not null CHECK (price>=0),"
                   + "skidka real,"
@@ -521,6 +590,15 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "data_ins integer,"
                  // + "data_del integer default 0,"
                   + "ok integer default 0);");
+          /*
+           * ok 
+           * 0 - нормальный расход
+           * 1 - брак
+           * 2 - перемещение в другой магазин
+           * 3 - излишки
+           * 4 - недостача
+           * 5 - исправление остатка*
+           */
           
           db.execSQL("create table rasxod_del ("
                   + "_id integer primary key autoincrement,"
@@ -530,6 +608,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "kol real not null,"
                   + "kol_nedo real,"
                   + "kol_izl real,"
+                  + "kol_brak real DEFAULT 0,"
+                  + "kol_move real DEFAULT 0,"
+                  //+ "kol_correct real DEFAULT 0,"
                   + "ed integer not null,"
                   + "price real not null,"
                   + "skidka real,"
@@ -571,6 +652,55 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "name text not null UNIQUE ON CONFLICT IGNORE,"
                   + "adres text,"
                   + "telef text,"
+                  + "prim text,"
+                  + "data_ins integer,"
+                  + "ok integer default 0);");
+
+          db.execSQL("create table invent ("
+        		  + "_id integer primary key autoincrement,"
+                  + "id_inv integer DEFAULT -1 REFERENCES invent_head(_id) ON DELETE CASCADE ON UPDATE CASCADE,"
+                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+                  + "name_tmc text,"
+                  + "pgr integer DEFAULT 0 REFERENCES tmc_pgr(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+                  + "name_pgr text,"
+                  + "keg integer DEFAULT 0,"
+                  + "kol_ostat real not null,"
+                  + "kol_real real DEFAULT 0,"
+                  + "kol_n real DEFAULT 0,"
+                  + "summa_n real DEFAULT 0,"
+                  + "kol_p real DEFAULT 0,"
+                  + "summa_p real DEFAULT 0,"
+                  + "kol_r real DEFAULT 0,"
+                  + "summa_r real DEFAULT 0,"
+                  + "kol_brak real DEFAULT 0,"
+                  + "summa_brak real DEFAULT 0,"
+                  + "kol_move real DEFAULT 0,"
+                  + "summa_move real DEFAULT 0,"
+                  + "kol_izl real DEFAULT 0,"
+                  + "summa_izl real DEFAULT 0,"
+                  + "kol_nedo real DEFAULT 0,"
+                  + "summa_nedo real DEFAULT 0,"
+                  + "kol_skidka real DEFAULT 0,"
+                  + "summa_skidka real DEFAULT 0,"
+                  + "kol_k real DEFAULT 0,"
+                  + "summa_k real DEFAULT 0,"
+                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+                  + "price real not null CHECK (price>=0),"
+                  + "price_vendor real not null CHECK (price>=0),"
+                  + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+                  + "prim text,"
+                  + "data_ins integer,"
+                 // + "data_del integer default 0,"
+                  + "ok integer default 0);");
+          
+          db.execSQL("create table invent_head ("
+        		  + "_id integer primary key autoincrement,"
+        		  + "id_user integer,"
+                  + "user text,"
+                  + "name text,"
+                  + "summa real DEFAULT 0,"
+                  + "dat_n integer,"
+                  + "dat_k integer,"
                   + "prim text,"
                   + "data_ins integer,"
                   + "ok integer default 0);");
@@ -617,6 +747,8 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
           db.execSQL("CREATE INDEX tmcpgr ON tmc (pgr);");
           db.execSQL("CREATE INDEX tmced ON tmc (ed);");
           db.execSQL("CREATE INDEX tmc_vis ON tmc (vis);");
+          db.execSQL("CREATE INDEX invtmc ON invent (id_tmc);");
+          db.execSQL("CREATE INDEX invpgr ON invent (pgr);");
           //Log.d("MyLog", " --- onCreate create all table --- ");
           //////prixod
           db.execSQL("CREATE TRIGGER pri_ins1 " +
@@ -624,7 +756,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
         		    " ON prixod "+    	        		    
         		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
         		    " BEGIN "+
-        		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+        		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl,  ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, 0, 0, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
         		    //" insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
         		    " END;");
           db.execSQL("CREATE TRIGGER pri_ins_price1 " +
@@ -641,7 +773,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " ON prixod "+    	        		    
       		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
       		    " BEGIN "+
-      		    " update ostat set kol=kol+NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka+NEW.price*NEW.kol"//, data_ins=NEW.data_ins "
+      		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.price*NEW.kol"//, data_ins=NEW.data_ins "
       		    + " where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
       		    //" update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
       		    " END;");
@@ -659,7 +791,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
         		    " ON prixod "+    	        		    
         		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
         		    " BEGIN "+
-        		    " update ostat set kol=kol-OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka-OLD.price*OLD.kol"//, data_ins=OLD.data_ins "
+        		    " update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol"//, data_ins=OLD.data_ins "
         		    + " where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
         		    //" update tmc_price set price=OLD.price_vendor, data_ins=OLD.data_ins, vis=1 where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+  
         		  " END;");
@@ -677,7 +809,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " ON prixod "+    	        		    
       		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
       		    " BEGIN "+
-      		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, NEW.price*New.kol, NEW.id_post, NEW.data_ins, 0); "+
+      		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, 0, 0, NEW.ed, NEW.price, NEW.price*New.kol, NEW.id_post, NEW.data_ins, 0); "+
       		    //" insert into tmc_price (id_tmc, keg, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.keg, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
       		    " END;");
           
@@ -695,7 +827,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
         		    " ON prixod "+    	        		    
         		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
         		    " BEGIN "+
-        		    " update ostat set kol=kol+NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka+NEW.kol*NEW.price"//, data_ins=NEW.data_ins "
+        		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.kol*NEW.price"//, data_ins=NEW.data_ins "
         		    + " where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
         		    //" update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+  
         		  " END;");
@@ -714,7 +846,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
         		    " ON prixod "+    	        		    
         		    " FOR EACH ROW "+
         		    " BEGIN "+
-        		    " insert into prixod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, price_vendor, id_post, data_ins, ok, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.ed, OLD.price, OLD.price_vendor, OLD.id_post, OLD.data_ins, OLD.ok, "+MainActivity.getIntDataTime()+"); "+
+        		    " insert into prixod_del (id_id, id_tmc, keg, kol, ed, price, price_vendor, id_post, data_ins, ok, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.id_post, OLD.data_ins, OLD.ok, "+MainActivity.getIntDataTime()+"); "+
         		    " END;");
           
           db.execSQL("CREATE TRIGGER pri_del2 " +
@@ -722,7 +854,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " ON prixod "+    	        		    
       		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
       		    " BEGIN "+
-      		    " update ostat set kol=kol-OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka-OLD.price*OLD.kol"//, data_ins=OLD.data_ins "
+      		    " update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol"//, data_ins=OLD.data_ins "
       		    + " where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
       		    " END;");
           
@@ -769,7 +901,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW "+
       		    " BEGIN "+
-      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, cast(substr(strftime('%Y%m%d%H%M','now'),3) as INTEGER) ); "+
+      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, kol_brak, kol_move, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.kol_brak, OLD.kol_move, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, cast(substr(strftime('%Y%m%d%H%M','now'),3) as INTEGER) ); "+
       		    " END;");
         db.execSQL("CREATE TRIGGER ras_del2 " +
     		    " AFTER DELETE "+
@@ -779,12 +911,13 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     		    " update ostat set kol=kol+OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_upd=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
     		    " END;");
           //Log.d("MyLog", " --- onCreate create all trigger --- ");
+        MainActivity.inv_dat_n=MainActivity.getIntDataTime();
     }
  
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	//Log.d("MyLog", " --- onUpgrade database --- ");
-    	if (newVersion == 22) {
+    	if (newVersion == 1) {
     	    db.beginTransaction();
     	    try {
     	    	  db.execSQL("DROP INDEX pri_tmc;");       
@@ -807,6 +940,8 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("DROP INDEX tmced;");
     	          db.execSQL("DROP INDEX tmc_vis;");
     	          db.execSQL("DROP INDEX klient_k;");
+    	          db.execSQL("DROP INDEX invtmc;");
+    	          db.execSQL("DROP INDEX invpgr;");
 
     	          
     	      db.execSQL("drop table foo;");
@@ -832,6 +967,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      db.execSQL("drop table karta_klient;");
 
     	      db.execSQL("drop table postav;");
+    	      
+    	      db.execSQL("drop table invent;");
+    	      db.execSQL("drop table invent_head;");
     	      
     	    	db.execSQL("PRAGMA foreign_keys = ON;");
     	    	//db.execSQL("PRAGMA synchronous = OFF; BEGIN IMMEDIATE TRANSACTION ");
@@ -910,8 +1048,8 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "keg integer DEFAULT 0,"
     	                  + "kol real not null,"
-    	                  + "kol_nedo real DEFAULT 0,"
-    	                  + "kol_izl real DEFAULT 0,"
+    	                  //+ "kol_nedo real DEFAULT 0,"
+    	                  //+ "kol_izl real DEFAULT 0,"
     	                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "price real not null CHECK (price>=0),"
     	                  + "price_vendor real not null CHECK (price>=0),"
@@ -927,8 +1065,8 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "id_tmc integer not null,"
     	                  + "keg integer,"
     	                  + "kol real not null,"
-    	                  + "kol_nedo real,"
-    	                  + "kol_izl real,"
+    	                  //+ "kol_nedo real,"
+    	                  //+ "kol_izl real,"
     	                  + "ed integer not null,"
     	                  + "price real not null,"
     	                  + "price_vendor real not null,"
@@ -945,6 +1083,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "kol real not null,"
     	                  + "kol_nedo real DEFAULT 0,"
     	                  + "kol_izl real DEFAULT 0,"
+    	                  + "kol_brak real DEFAULT 0,"
+    	                  + "kol_move real DEFAULT 0,"
+    	                  //+ "kol_correct real DEFAULT 0,"
     	                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "price real not null CHECK (price>=0),"
     	                  + "skidka real,"
@@ -954,6 +1095,15 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "data_ins integer,"
     	                 // + "data_del integer default 0,"
     	                  + "ok integer default 0);");
+    	          /*
+    	           * ok 
+    	           * 0 - нормальный расход
+    	           * 1 - брак
+    	           * 2 - перемещение в другой магазин
+    	           * 3 - излишки
+    	           * 4 - недостача
+    	           * 5 - исправление остатка*
+    	           */
     	          
     	          db.execSQL("create table rasxod_del ("
     	                  + "_id integer primary key autoincrement,"
@@ -963,6 +1113,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "kol real not null,"
     	                  + "kol_nedo real,"
     	                  + "kol_izl real,"
+    	                  + "kol_brak real DEFAULT 0,"
+    	                  + "kol_move real DEFAULT 0,"
+    	                  //+ "kol_correct real DEFAULT 0,"
     	                  + "ed integer not null,"
     	                  + "price real not null,"
     	                  + "skidka real,"
@@ -1008,6 +1161,55 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "data_ins integer,"
     	                  + "ok integer default 0);");
     	          
+    	          db.execSQL("create table invent ("
+    	        		  + "_id integer primary key autoincrement,"
+    	                  + "id_inv integer DEFAULT -1 REFERENCES invent_head(_id) ON DELETE CASCADE ON UPDATE CASCADE,"
+    	                  + "id_tmc integer DEFAULT -1 REFERENCES tmc(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                  + "name_tmc text,"
+    	                  + "pgr integer DEFAULT 0 REFERENCES tmc_pgr(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                  + "name_pgr text,"
+    	                  + "keg integer DEFAULT 0,"
+    	                  + "kol_ostat real not null,"
+    	                  + "kol_real real DEFAULT 0,"
+    	                  + "kol_n real DEFAULT 0,"
+    	                  + "summa_n real DEFAULT 0,"
+    	                  + "kol_p real DEFAULT 0,"
+    	                  + "summa_p real DEFAULT 0,"
+    	                  + "kol_r real DEFAULT 0,"
+    	                  + "summa_r real DEFAULT 0,"
+    	                  + "kol_brak real DEFAULT 0,"
+    	                  + "summa_brak real DEFAULT 0,"
+    	                  + "kol_move real DEFAULT 0,"
+    	                  + "summa_move real DEFAULT 0,"
+    	                  + "kol_izl real DEFAULT 0,"
+    	                  + "summa_izl real DEFAULT 0,"
+    	                  + "kol_nedo real DEFAULT 0,"
+    	                  + "summa_nedo real DEFAULT 0,"
+    	                  + "kol_skidka real DEFAULT 0,"
+    	                  + "summa_skidka real DEFAULT 0,"
+    	                  + "kol_k real DEFAULT 0,"
+    	                  + "summa_k real DEFAULT 0,"
+    	                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                  + "price real not null CHECK (price>=0),"
+    	                  + "price_vendor real not null CHECK (price>=0),"
+    	                  + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
+    	                  + "prim text,"
+    	                  + "data_ins integer,"
+    	                 // + "data_del integer default 0,"
+    	                  + "ok integer default 0);");
+    	          
+    	          db.execSQL("create table invent_head ("
+    	        		  + "_id integer primary key autoincrement,"
+    	        		  + "id_user integer,"
+    	                  + "user text,"
+    	                  + "name text,"
+    	                  + "summa real DEFAULT 0,"
+    	                  + "dat_n integer,"
+    	                  + "dat_k integer,"
+    	                  + "prim text,"
+    	                  + "data_ins integer,"
+    	                  + "ok integer default 0);");
+    	          
     	          db.execSQL("INSERT or replace INTO karta_klient (_id,name,ok,sconto_sum,sconto_per) VALUES(0,'0%',0,0,0)");
     	          db.execSQL("INSERT or replace INTO user (_id,name,password,ok,admin) VALUES(0,'САША','1',1,1)");
     	          db.execSQL("INSERT or replace INTO foo (_id,name) VALUES(-1,'-нет-')");
@@ -1022,7 +1224,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("INSERT or replace INTO tmc_pgr (_id,name) VALUES(1,'ТАРА')");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara) VALUES(-1,'-нет-',0,0,0,0,0,0)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara) VALUES(0,'СКИДКА',0,4,0,0,0,0)");
-    	         /* db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(1,'БУТЫЛКА 0.5Л',1,2,1,1,1,0.5,1)");
+    	         /*db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(1,'БУТЫЛКА 0.5Л',1,2,1,1,1,0.5,1)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(2,'БУТЫЛКА 1Л',1,2,1,1,1,1,2)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(3,'БУТЫЛКА 1.5Л',1,2,1,1,1,1.5,3)");
     	          db.execSQL("INSERT or replace INTO tmc (_id,name,pgr,ed,price,vis,ok,tara,pos) VALUES(4,'БУТЫЛКА 2Л',1,2,1,1,1,2,4)");
@@ -1050,13 +1252,15 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	          db.execSQL("CREATE INDEX tmcpgr ON tmc (pgr);");
     	          db.execSQL("CREATE INDEX tmced ON tmc (ed);");
     	          db.execSQL("CREATE INDEX tmc_vis ON tmc (vis);");
+    	          db.execSQL("CREATE INDEX invtmc ON invent (id_tmc);");
+    	          db.execSQL("CREATE INDEX invpgr ON invent (pgr);");
     	    //////prixod
     	          db.execSQL("CREATE TRIGGER pri_ins1 " +
     	        		    " AFTER INSERT "+
     	        		    " ON prixod "+    	        		    
     	        		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	        		    " BEGIN "+
-    	        		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+    	        		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl,  ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, 0, 0, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
     	        		    //" insert into tmc_price (id_tmc, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
     	        		    " END;");
     	          db.execSQL("CREATE TRIGGER pri_ins_price1 " +
@@ -1073,7 +1277,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON prixod "+    	        		    
     	      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	      		    " BEGIN "+
-    	      		    " update ostat set kol=kol+NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka+NEW.price*NEW.kol"//, data_ins=NEW.data_ins "
+    	      		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.price*NEW.kol"//, data_ins=NEW.data_ins "
     	      		    + " where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
     	      		    //" update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
     	      		    " END;");
@@ -1091,7 +1295,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	        		    " ON prixod "+    	        		    
     	        		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
     	        		    " BEGIN "+
-    	        		    " update ostat set kol=kol-OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka-OLD.price*OLD.kol"//, data_ins=OLD.data_ins "
+    	        		    " update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol"//, data_ins=OLD.data_ins "
     	        		    + " where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
     	        		    //" update tmc_price set price=OLD.price_vendor, data_ins=OLD.data_ins, vis=1 where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+  
     	        		  " END;");
@@ -1109,7 +1313,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON prixod "+    	        		    
     	      		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	      		    " BEGIN "+
-    	      		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, NEW.price*New.kol, NEW.id_post, NEW.data_ins, 0); "+
+    	      		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, data_ins, ok) values (NEW.id_tmc, NEW.keg, NEW.kol, 0, 0, NEW.ed, NEW.price, NEW.price*New.kol, NEW.id_post, NEW.data_ins, 0); "+
     	      		    //" insert into tmc_price (id_tmc, keg, id_post, ed, price, data_ins, vis, pos, ok) values (NEW.id_tmc, NEW.keg, NEW.id_post, NEW.ed, NEW.price_vendor, NEW.data_ins, 1, 1, 0); "+
     	      		    " END;");
     	          
@@ -1127,7 +1331,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	        		    " ON prixod "+    	        		    
     	        		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	        		    " BEGIN "+
-    	        		    " update ostat set kol=kol+NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka+NEW.kol*NEW.price"//, data_ins=NEW.data_ins "
+    	        		    " update ostat set kol=kol+NEW.kol, price=NEW.price, sumka=sumka+NEW.kol*NEW.price"//, data_ins=NEW.data_ins "
     	        		    + " where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
     	        		    //" update tmc_price set price=NEW.price_vendor, data_ins=NEW.data_ins, vis=1 where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+  
     	        		  " END;");
@@ -1146,7 +1350,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	        		    " ON prixod "+    	        		    
     	        		    " FOR EACH ROW "+
     	        		    " BEGIN "+
-    	        		    " insert into prixod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, price_vendor, id_post, data_ins, ok, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.ed, OLD.price, OLD.price_vendor, OLD.id_post, OLD.data_ins, OLD.ok, "+MainActivity.getIntDataTime()+"); "+
+    	        		    " insert into prixod_del (id_id, id_tmc, keg, kol, ed, price, price_vendor, id_post, data_ins, ok, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.ed, OLD.price, OLD.price_vendor, OLD.id_post, OLD.data_ins, OLD.ok, "+MainActivity.getIntDataTime()+"); "+
     	        		    " END;");
     	          
     	          db.execSQL("CREATE TRIGGER pri_del2 " +
@@ -1154,10 +1358,9 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON prixod "+    	        		    
     	      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
     	      		    " BEGIN "+
-    	      		    " update ostat set kol=kol-OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka-OLD.price*OLD.kol"//, data_ins=OLD.data_ins "
+    	      		    " update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol"//, data_ins=OLD.data_ins "
     	      		    + " where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
-    	      		    " END;");
-    	          
+    	      		    " END;");    	          
     	          ////rasxod
     	          db.execSQL("CREATE TRIGGER ras_ins1 " +
     	      		    " AFTER INSERT "+
@@ -1201,7 +1404,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW "+
     	      		    " BEGIN "+
-    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, cast(substr(strftime('%Y%m%d%H%M','now'),3) as INTEGER) ); "+
+    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, kol_brak, kol_move, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.kol_brak, OLD.kol_move, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, cast(substr(strftime('%Y%m%d%H%M','now'),3) as INTEGER) ); "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_del2 " +
     	    		    " AFTER DELETE "+
@@ -1233,6 +1436,7 @@ db.execSQL("CREATE TRIGGER fk_empdept_deptid " +
     "  END;");
   */
     	      db.setTransactionSuccessful();
+    	      MainActivity.inv_dat_n=MainActivity.getIntDataTime();
     
     	    } finally {
     	      db.endTransaction();

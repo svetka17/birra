@@ -42,6 +42,8 @@ static DB db;
 static int w=0;
 static int h=0;
 static float scale=0;
+static long invent=0;
+static int inv_dat_n=0;
 static int sizeBigButton=15;
 static int sizeMediumButton=15;
 static int sizeSmallButton=15;
@@ -74,6 +76,32 @@ static int num_id=1;
 static int day=1;
 int but_menu=0;
 static String my_pass="svetka";
+/*
+static String MillisToString(long dat) {
+	 //System.currentTimeMillis()  
+	 DateFormat dateF = DateFormat.getDateTimeInstance();
+	    String data = dateF.format(new Date(dat));
+	    return data;
+} 
+
+
+static long StringToMillis(String dat) {
+	 Date c =  new Date();
+	 try {
+	 //SimpleDateFormat df = new SimpleDateFormat();//.parse(dat);
+	 c = new SimpleDateFormat((new SimpleDateFormat()).toLocalizedPattern()//df.getDateFormatSymbols().getLocalPatternChars()  "dd.MM.yyyy HH:mm:ss", 
+	 Locale.getDefault()).parse(dat);
+	 }
+	 catch (Exception e) {
+		// TODO: handle exception
+		 c = new Date(Long.MIN_VALUE);
+	}
+	 long milliseconds = c.getTime();
+	 //To get current time
+	 return milliseconds;
+}
+*/
+
 // SharedPreferences sPref;
 /*static void setSizeFont(ViewGroup mlayout,byte sB, byte sH, byte sI) {
 	float b = (sB==1)?sizeBigButton:((sB==2)?sizeMediumButton:sizeSmallButton);
@@ -154,6 +182,8 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 					file=Export2Excel.check(getIntData(dat11),getIntData(dat22), ""); break;
 				case 9:
 					file=Export2Excel.otchet_del(getIntData(dat11),getIntData(dat22), ""); break;
+				case 10:
+					file=Export2Excel.invent((int) StrToFloat(pgrr), ""); break;
 				}
 				//u1  =  Uri.fromFile(file);
 				//intent = new Intent(Intent.);
@@ -521,6 +551,8 @@ static float StrToFloat2(String s) {
 void saveSetting() {
 		SharedPreferences sPref = getSharedPreferences("BirraPref", MODE_PRIVATE);//getPreferences(MODE_PRIVATE);
 	    Editor ed = sPref.edit();
+	    ed.putLong("invent", invent );
+	    ed.putInt("inv_dat_n", inv_dat_n );
 	    ed.putInt("buttara", butTara );
 	    ed.putInt("butpgr", butPgr );
 	    ed.putInt("butname", butName );
@@ -550,6 +582,8 @@ void saveSetting() {
 
   void loadSetting() {
 	SharedPreferences sPref = getSharedPreferences("BirraPref", MODE_PRIVATE);//getPreferences(MODE_PRIVATE);
+	invent = sPref.getLong("invent", invent);
+	inv_dat_n = sPref.getInt("inv_dat_n", inv_dat_n);
 	butTara = sPref.getInt("buttara", butTara/*(int)(h/15)*/);
 	butPgr = sPref.getInt("butpgr", butPgr /*(int)(h/15)*/);
     butName = sPref.getInt("butname", butName /*(int)(h/23)*/);
@@ -786,12 +820,12 @@ void saveSetting() {
 	{intent = new Intent(this, OtchetActivity.class);
 		   startActivity(intent);}
 	
-	if (v.getId() == R.id.btnOstat)
+	/*if (v.getId() == R.id.btn)
 	{intent = new Intent(this, OstatActivity.class);
-		   startActivity(intent);}
+		   startActivity(intent);}*/
 	
 	if (v.getId() == R.id.btnOstat)
-	{intent = new Intent(this, OstatActivity.class);
+	{intent = new Intent(this, InvHeadActivity.class);
 		   startActivity(intent);}
 	
 	

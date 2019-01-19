@@ -31,7 +31,7 @@
             android:layout_gravity="right|center_vertical"
             android:layout_weight="2"
             android:gravity="right|center_vertical|center_horizontal"
-            android:text="ТОВАР В НАЛИЧИИ"
+            android:text="ИНВЕНТАРИЗАЦИЯ"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
             android:background="@drawable/edittexth_style"

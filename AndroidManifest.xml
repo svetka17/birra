@@ -5,7 +5,7 @@
     android:versionName="1.0" >
     <uses-sdk
         android:minSdkVersion="17"
-        android:targetSdkVersion="22" />
+        android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
   
@@ -175,6 +175,18 @@
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"
             android:label="ДВИЖЕНИЕ"
+            android:screenOrientation="landscape" />
+                                                <activity
+            android:name="luce.birra.InvActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="ИНВЕНТАРИЗАЦИЯ"
+            android:screenOrientation="landscape" />
+                                                <activity
+            android:name="luce.birra.InvHeadActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="НОВАЯ ИНВЕНТАРИЗАЦИЯ"
             android:screenOrientation="landscape" />
     </application>
 
