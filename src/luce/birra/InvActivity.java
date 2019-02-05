@@ -27,7 +27,8 @@ public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cur
 
   ListView lvData;
   Button //btnExit, 
-  btnAdd, btnSave, btnMake;
+  btnAdd, btnSave;
+  public static Button btnMake;
   AdapterLV scAdapter;
   //static CheckBox cbVis;
   static TextView tvIdPgr;

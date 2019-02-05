@@ -19,6 +19,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 
 import android.database.Cursor;
 import android.os.Environment;
+import android.util.Log;
 
 //http://stackoverflow.com/questions/5401104/android-exporting-to-csv-and-sending-as-email-attachment
 //http://stackoverflow.com/questions/4632501/android-generate-csv-file-from-table-values
@@ -47,6 +48,265 @@ public class /*ExportDatabaseCSVTask*/ Export2Excel //extends AsyncTask<String, 
 		}
     }
 */	
+	static File inv (int id, String dirN) {
+//////////////////////////////////////
+
+Cursor cc = MainActivity.db.getQueryData( 
+		"invent as O left join tmc as T on O.id_tmc=T._id "
+    			+ "left join postav as P on O.id_post=P._id "
+    			+ "left join tmc_ed as E on O.ed=E._id "
+    			+ "left join tmc_pgr as TP on O.pgr=TP._id ",
+    			
+new String[] { "O._id as _id", 
+		"O.id_tmc id_tmc", 
+		"O.name_tmc name_tmc", 
+		"T.name nametmc", 
+		"O.pgr pgr", 
+		"O.name_pgr name_pgr", 
+		"O.keg keg", 
+		"O.kol_ostat kol_ostat", 
+		"O.kol_real kol_real",
+		"O.kol_n kol_n",
+		"O.summa_n summa_n",
+		"O.kol_p kol_p",
+		"O.summa_p summa_p",
+		"O.kol_r kol_r",
+		"O.summa_r summa_r",
+		"O.kol_brak kol_brak",
+		"O.summa_brak summa_brak",
+		"O.kol_move kol_move",
+		"O.summa_move summa_move",
+		"O.kol_izl kol_izl",
+		"O.summa_izl summa_izl",
+		"O.kol_nedo kol_nedo",
+		"O.summa_nedo summa_nedo",
+		"O.kol_skidka kol_skidka",
+		"O.summa_skidka summa_skidka",
+		"O.kol_k kol_k",
+		"O.summa_k summa_k",
+		"O.ed ed",
+		"E.name edname",
+		"O.price price",
+		"O.price_vendor price_vendor",
+		"O.id_post id_post",
+		"P.name postname",
+		"O.prim prim",
+		"O.data_ins data_ins",
+		"O.ok ok"}, "O.id_inv="+id, null,null,null,"O.pgr, O.name_tmc, O.id_post, O.keg");
+Log.d("MyLog", "create cc");
+String d1="", d2="", u="", d3="";
+Cursor cOst1 = MainActivity.db.getRawData ("select id_user, user, name, summa, dat_n, dat_k, prim, data_ins from invent_head where _id="+id,null);
+if (cOst1.moveToFirst()) {
+	do {
+		//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
+	u=cOst1.getString(cOst1.getColumnIndex("user"));
+	d1=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("dat_n")) );
+	d2=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("dat_k")) );
+	d3=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("data_ins")));
+		//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
+	} while (cOst1.moveToNext());
+}
+else cOst1.close();
+Log.d("MyLog", "d3="+d3+" d2="+d2+" d1="+d1+" u="+u);
+File file   = null, dir = null;
+File root   = Environment.getExternalStorageDirectory();
+if (dirN.length()!=0) {dir=new File(dirN); }
+else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
+if (root.canWrite()){
+dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
+}
+file   =   new File(dir, u+" Инвентаризационная ведомость №"+id+" c "+d1+" по "+d2//+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)
+		+".xls");
+
+try {
+FileOutputStream out   =   null;
+
+out = new FileOutputStream(file);
+
+//создание самого excel файла в памяти
+HSSFWorkbook workbook = new HSSFWorkbook();
+
+//HSSFDataFormat df = workbook.createDataFormat();
+HSSFDataFormat df2 = workbook.createDataFormat();
+HSSFDataFormat df3 = workbook.createDataFormat();
+HSSFCellStyle styleN2 = workbook.createCellStyle();
+//styleN2.setFillForegroundColor(HSSFColor.LIME.index);
+//styleN2.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+styleN2.setDataFormat(df2.getFormat("0.00"));
+HSSFCellStyle styleN3 = workbook.createCellStyle();
+styleN3.setDataFormat(df3.getFormat("0.000"));
+//создание листа с названием "Просто лист"
+HSSFSheet sheet = workbook.createSheet("Лист1");
+//и применяем к этому стилю жирный шрифт
+//style.setFont(font);
+//style.setAlignment(HorizontalAlignment.CENTER_SELECTION);
+//заполняем список какими-то данными
+//List<DataModel> dataList = fillData();
+//счетчик для строк
+int rowNum = 0;
+//создаем подписи к столбцам (это будет первая строчка в листе Excel файла)
+HSSFRow row = sheet.createRow(rowNum);
+
+//создаем шрифт
+HSSFFont font = workbook.createFont();
+//указываем, что хотим его видеть жирным
+font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//font.setBold(true);
+//создаем стиль для ячейки
+HSSFCellStyle style = workbook.createCellStyle();
+//и применяем к этому стилю жирный шрифт
+style.setFont(font);
+style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
+style.setAlignment(HSSFCellStyle.ALIGN_FILL );
+style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
+//style.setAlignment(HorizontalAlignment.FILL);
+//style.setVerticalAlignment(VerticalAlignment.CENTER);
+
+//id_tmc,name_tmc,nametmc,pgr,name_pgr,keg,kol_ostat,kol_real,kol_n,summa_n,kol_p,summa_p,kol_r,summa_r,kol_brak,summa_brak,
+//kol_move,summa_move,kol_izl,summa_izl,kol_nedo,summa_nedo,kol_skidka,summa_skidka,kol_k,summa_k,ed,edname,price,price_vendor,id_post,postname,prim,data_ins
+
+Log.d("MyLog", "start header");
+row.createCell(0).setCellValue("НОМЕНКЛАТУРА"); //row.getCell(0).setCellStyle(style2);
+row.createCell(1).setCellValue("ГРУППА");
+row.createCell(2).setCellValue("НАЗВАНИЕ");
+row.createCell(3).setCellValue("ПОСТАВЩИК");
+row.createCell(4).setCellValue("ДАТА 1й ПРОДАЖИ");
+row.createCell(5).setCellValue("КЕГА");
+row.createCell(6).setCellValue("ЕД.ИЗМ");
+row.createCell(7).setCellValue("КОЛ-ВО В СИСТЕМЕ НА "+d1);
+row.createCell(8).setCellValue("СУММА В СИСТЕМЕ НА "+d1);
+row.createCell(9).setCellValue("КОЛ-ВО ФАКТ");
+row.createCell(10).setCellValue("СУММА ФАКТ");
+row.createCell(11).setCellValue("КОЛ-ВО НА НАЧАЛО");
+row.createCell(12).setCellValue("СУММА НА НАЧАЛО");
+row.createCell(13).setCellValue("КОЛ-ВО ПРИХОД ");
+row.createCell(14).setCellValue("СУММА ПРИХОД");
+row.createCell(15).setCellValue("КОЛ-ВО РАСХОД");
+row.createCell(16).setCellValue("СУММА РАСХОД");
+row.createCell(17).setCellValue("КОЛ-ВО БРАК");
+row.createCell(18).setCellValue("СУММА БРАК");
+row.createCell(19).setCellValue("КОЛ-ВО ПЕРЕМЕЩЕНО");
+row.createCell(20).setCellValue("СУММА ПЕРЕМЕЩЕНО");
+row.createCell(21).setCellValue("КОЛ-ВО ИЗЛИШКИ");
+row.createCell(22).setCellValue("СУММА ИЗЛИШКИ");
+row.createCell(23).setCellValue("КОЛ-ВО НЕДОСТАЧА");
+row.createCell(24).setCellValue("СУММА НЕДОСТАЧА");
+row.createCell(25).setCellValue("КОЛ-ВО СКИДКА");
+row.createCell(26).setCellValue("СУММА СКИДКА");
+row.createCell(27).setCellValue("КОЛ-ВО НА КОНЕЦ "+d2);
+row.createCell(28).setCellValue("СУММА НА КОНЕЦ "+d2);
+row.createCell(29).setCellValue("ЦЕНА ПРОДАЖИ");
+row.createCell(30).setCellValue("ПРИМЕЧАНИЕ "+u+" "+d3);
+Log.d("MyLog", "end header");
+//row.createCell(15).setCellValue("ЦЕНА ПРОДАЖИ НА "+Calendar.getInstance().get(Calendar.DATE)+"."+(Calendar.getInstance().get(Calendar.MONTH)+1)+"."+Calendar.getInstance().get(Calendar.YEAR));
+
+for (int i=0; i<31; i++) row.getCell(i).setCellStyle(style);
+row.setHeight((short)1000);
+sheet.createFreezePane(0, 1);
+
+if (cc.moveToFirst())  
+do {
+	Log.d("MyLog", "start rownum="+rowNum);
+rowNum++;
+row = sheet.createRow(rowNum);
+//          prim
+row.createCell(0).setCellValue(cc.getInt(cc.getColumnIndex("id_tmc")));
+//Log.d("MyLog", "num="+0);
+row.createCell(1).setCellValue(cc.getString(cc.getColumnIndex("name_pgr")));
+//Log.d("MyLog", "num="+1);
+row.createCell(2).setCellValue(cc.getString(cc.getColumnIndex("nametmc")));
+//Log.d("MyLog", "num="+2);
+row.createCell(3).setCellValue(cc.getString(cc.getColumnIndex("postname")));
+//Log.d("MyLog", "num="+3);
+row.createCell(4).setCellValue(MainActivity.getStringDataTime( cc.getInt(cc.getColumnIndex("data_ins")) ));
+//Log.d("MyLog", "num="+4);
+row.createCell(5).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
+//Log.d("MyLog", "num="+5);
+row.createCell(6).setCellValue(cc.getString(cc.getColumnIndex("edname")));
+//Log.d("MyLog", "num="+6);
+row.createCell(7).setCellValue(cc.getDouble(cc.getColumnIndex("kol_ostat"))); row.getCell(7).setCellStyle(styleN3);
+//Log.d("MyLog", "num="+7);
+row.createCell(8).setCellValue(cc.getDouble(cc.getColumnIndex("kol_ostat"))*cc.getDouble(cc.getColumnIndex("price_vendor")));row.getCell(8).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+8);
+row.createCell(9).setCellValue(cc.getDouble(cc.getColumnIndex("kol_real"))); row.getCell(9).setCellStyle(styleN3);
+//Log.d("MyLog", "num="+9);
+row.createCell(10).setCellValue(cc.getDouble(cc.getColumnIndex("kol_real"))*cc.getDouble(cc.getColumnIndex("price_vendor")));row.getCell(10).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+10);
+row.createCell(11).setCellValue(cc.getDouble(cc.getColumnIndex("kol_n"))); row.getCell(11).setCellStyle(styleN3);
+//Log.d("MyLog", "num="+11);
+row.createCell(12).setCellValue(cc.getDouble(cc.getColumnIndex("summa_n")));row.getCell(12).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+12);
+row.createCell(13).setCellValue(cc.getDouble(cc.getColumnIndex("kol_p"))); row.getCell(13).setCellStyle(styleN3);
+//Log.d("MyLog", "num="+13);
+row.createCell(14).setCellValue(cc.getDouble(cc.getColumnIndex("summa_p")));row.getCell(14).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+14);
+row.createCell(15).setCellValue(cc.getDouble(cc.getColumnIndex("kol_r"))); row.getCell(15).setCellStyle(styleN3);
+//Log.d("MyLog", "num="+15);
+row.createCell(16).setCellValue(cc.getDouble(cc.getColumnIndex("summa_r")));row.getCell(16).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+16);
+row.createCell(17).setCellValue(cc.getDouble(cc.getColumnIndex("kol_brak"))); row.getCell(17).setCellStyle(styleN3);
+//Log.d("MyLog", "num="+17);
+row.createCell(18).setCellValue(cc.getDouble(cc.getColumnIndex("summa_brak")));row.getCell(18).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+18);
+row.createCell(19).setCellValue(cc.getDouble(cc.getColumnIndex("kol_move"))); row.getCell(19).setCellStyle(styleN3);
+//Log.d("MyLog", "num="+19);
+row.createCell(20).setCellValue(cc.getDouble(cc.getColumnIndex("summa_move")));row.getCell(20).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+20);
+row.createCell(21).setCellValue(cc.getDouble(cc.getColumnIndex("kol_izl"))); row.getCell(21).setCellStyle(styleN3);
+//Log.d("MyLog", "num="+21);
+row.createCell(22).setCellValue(cc.getDouble(cc.getColumnIndex("summa_izl")));row.getCell(22).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+22);
+row.createCell(23).setCellValue(cc.getDouble(cc.getColumnIndex("kol_nedo"))); row.getCell(23).setCellStyle(styleN3);
+//Log.d("MyLog", "num="+23);
+row.createCell(24).setCellValue(cc.getDouble(cc.getColumnIndex("summa_nedo")));row.getCell(24).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+24);
+row.createCell(25).setCellValue(cc.getDouble(cc.getColumnIndex("kol_skidka"))); row.getCell(25).setCellStyle(styleN3);
+//Log.d("MyLog", "num="+25);
+row.createCell(26).setCellValue(cc.getDouble(cc.getColumnIndex("summa_skidka")));row.getCell(26).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+26);
+row.createCell(27).setCellValue(cc.getDouble(cc.getColumnIndex("kol_k"))); row.getCell(27).setCellStyle(styleN3);
+//Log.d("MyLog", "num="+27);
+row.createCell(28).setCellValue(cc.getDouble(cc.getColumnIndex("summa_k")));row.getCell(28).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+28);
+row.createCell(29).setCellValue(cc.getDouble(cc.getColumnIndex("price_vendor")));row.getCell(29).setCellStyle(styleN2);
+//Log.d("MyLog", "num="+29);
+row.createCell(30).setCellValue(cc.getString(cc.getColumnIndex("prim")));
+//Log.d("MyLog", "num="+30);
+Log.d("MyLog", "end rownum="+rowNum);
+} while (cc.moveToNext());
+
+cc.close();
+
+rowNum++;
+//
+
+row = sheet.createRow(rowNum);
+FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+row.createCell(0).setCellFormula("SUM(A2:A"+rowNum+")"); evaluator.evaluateFormulaCell(row.getCell(0));
+Log.d("MyLog", "end");
+//row.createCell(6).setCellFormula("SUM(G2:G"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(6));
+//row.createCell(8).setCellFormula("SUM(I2:I"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(8));
+//row.createCell(9).setCellFormula("SUM(J2:J"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(9));
+//row.createCell(10).setCellFormula("SUM(K2:K"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(10));
+//row.createCell(11).setCellFormula("SUM(L2:L"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(11));
+//row.createCell(12).setCellFormula("SUM(M2:M"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(12));
+//row.createCell(13).setCellFormula("SUM(N2:N"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(13));
+//rowNum++;
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:AG"+rowNum));
+
+workbook.write(out);
+out.close();
+} catch (FileNotFoundException ef) {
+ef.printStackTrace();// out.close();
+}
+catch (IOException e) {
+e.printStackTrace();// out.close();
+}
+
+return file;
+}	
+	
 static File oborotka (int dat1, int dat2, int pgr, String dirN) {
 //////////////////////////////////////
 String []str = {pgr==0?"":" TP._id="+pgr, dat1==0?"":"where data_ins>="+dat1+"0000 and data_ins<="+dat2+"5959",
@@ -835,7 +1095,7 @@ e.printStackTrace();
 }
 return file;
 }
-
+/*
 static File invent (int pgr, String dirN) {
 	//String []str = {pgr==0?"":" TT._id="+pgr};
 			//String where=str[0].toString(); 
@@ -992,7 +1252,7 @@ catch (IOException e) {
 e.printStackTrace();
 }
 return file;
-}
+}*/
 
 static File price (int pgr, String dirN) {
 	//String []str = {pgr==0?"":" TT._id="+pgr};

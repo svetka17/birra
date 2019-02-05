@@ -33,7 +33,8 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
   //Cursor cKlient;
   //SimpleCursorAdapter scaKlient;
   //TextView tv;
-  //LinearLayout ll;
+  LinearLayout ll;
+  Button bll;
   
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -154,7 +155,7 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
                     	{
                 	    tmp=0;
                 	    Cursor cOst1 = MainActivity.db.getRawData ("select O.id_inv as id_inv, O._id as id, O.id_tmc as oid_tmc, O.keg as okeg, O.kol_ostat as okol, O.kol_nedo as okol_nedo, O.kol_izl as okol_izl, O.ed as oed, O.id_post as oid_post "
-                	    		+ "from invent as O where O.id_inv="+MainActivity.invent+" and O.id_tmc="+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" and O.id_post="+cOst.getInt(cOst.getColumnIndex("oid_post"))+" and O.keg="+cOst.getInt(cOst.getColumnIndex("okeg"))+" and O.ed="+cOst.getInt(cOst.getColumnIndex("oed")),/*order by T.tara*/null);
+                	    		+ " from invent as O where O.id_inv="+MainActivity.invent+" and O.id_tmc="+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" and O.id_post="+cOst.getInt(cOst.getColumnIndex("oid_post"))+" and O.keg="+cOst.getInt(cOst.getColumnIndex("okeg"))+" and O.ed="+cOst.getInt(cOst.getColumnIndex("oed")),/*order by T.tara*/null);
                 	    if (cOst1.moveToFirst()) {
                 	    	do {
                 	    		//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
@@ -198,7 +199,7 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
                 	    {//Log.d("MyLog", "add="+ib);
                 	    	MainActivity.db.addRecINVENT(
                 	    			MainActivity.invent, cOst.getInt(cOst.getColumnIndex("oid_tmc")), cOst.getString(cOst.getColumnIndex("tname")), cOst.getInt(cOst.getColumnIndex("tpgr")), cOst.getString(cOst.getColumnIndex("tpname")), cOst.getInt(cOst.getColumnIndex("okeg")), cOst.getInt(cOst.getColumnIndex("oid_post")), cOst.getInt(cOst.getColumnIndex("oed")), 
-                	    			cOst.getDouble(cOst.getColumnIndex("okol")), (double)0, cOst.getDouble(cOst.getColumnIndex("ikol_n")), cOst.getDouble(cOst.getColumnIndex("isum_n")), cOst.getDouble(cOst.getColumnIndex("pkol")), cOst.getDouble(cOst.getColumnIndex("psum")), 
+                	    			cOst.getDouble(cOst.getColumnIndex("okol")), /*(double)0*/cOst.getDouble(cOst.getColumnIndex("okol")), cOst.getDouble(cOst.getColumnIndex("ikol_n")), cOst.getDouble(cOst.getColumnIndex("isum_n")), cOst.getDouble(cOst.getColumnIndex("pkol")), cOst.getDouble(cOst.getColumnIndex("psum")), 
                 	    			cOst.getDouble(cOst.getColumnIndex("rkol")), cOst.getDouble(cOst.getColumnIndex("rsum")), cOst.getDouble(cOst.getColumnIndex("rkol_brak")), cOst.getDouble(cOst.getColumnIndex("rsum_brak")), 
                 	    			cOst.getDouble(cOst.getColumnIndex("rkol_move")), cOst.getDouble(cOst.getColumnIndex("rsum_move")), cOst.getDouble(cOst.getColumnIndex("rkol_izl")), cOst.getDouble(cOst.getColumnIndex("rsum_izl")), 
                 	    			cOst.getDouble(cOst.getColumnIndex("rkol_nedo")), cOst.getDouble(cOst.getColumnIndex("rsum_nedo")), cOst.getDouble(cOst.getColumnIndex("rkol_skidka")), cOst.getDouble(cOst.getColumnIndex("rsum_skidka")), 
@@ -222,10 +223,13 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
         	        } while (cOst.moveToNext());
         	        
         	      } else cOst.close();
-        	        	
+        	
+        	    
 			intent.putExtra("id_inv", String.valueOf(MainActivity.invent));
 			 //Log.d("MyLog", "put String.valueOf(cou)="+String.valueOf(cou));
+			
 			startActivity(intent);
+			//InvActivity.btnMake.setVisibility(LinearLayout.VISIBLE );
         	
         }}
     );
@@ -281,7 +285,13 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
     					      //  while (cc.moveToNext());
     					      //};
     					      //Log.d("MyLog", "id="+id);
+    			                    ll = (LinearLayout) getLayoutInflater().inflate(R.layout.inv, null);
+    			        			bll = (Button) ll.findViewById(R.id.btnMakeInv);
+    			        			bll.setVisibility(LinearLayout.GONE);
     					      startActivity(intent);
+    					      
+    					      //InvActivity.btnMake.setVisibility(LinearLayout.GONE);
+    					      //Dview = (LinearLayout) getLayoutInflater().inflate(R.layout.chek, null);
 
     				}
     			}
@@ -292,14 +302,9 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
     //scAdapterP = new AdapterLV(R.id.btnDelOborotka, R.id.btnUpdOborotka, (byte)10, this, R.layout.oborotka_item, null, fromP, toP, 0);
     //lvData.setAdapter(scAdapterP);
      
-    /*btnAdd = (Button) findViewById(R.id.btnAddInvHead);
-    btnAdd.setOnClickListener(new OnClickListener() {
-        public void onClick(View v) {
-        	MainActivity.excel(InvHeadActivity.this, InvHeadActivity.this, tvDataIns.getText().toString(), tvDataIns2.getText().toString(), 
-        			//Calendar.getInstance().get(Calendar.DATE)+"."+Calendar.getInstance().get(Calendar.MONTH)+"."+Calendar.getInstance().get(Calendar.YEAR), 
-        			tvIdPgr.getText().toString(), "Оборотная ведомость", (byte)1);
-        	}
-      });*/
+    /*
+
+*/
     
     // создаем лоадер для чтения данных
     //getSupportLoaderManager().initLoader(1, null, this);
