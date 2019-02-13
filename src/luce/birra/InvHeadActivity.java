@@ -33,8 +33,8 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
   //Cursor cKlient;
   //SimpleCursorAdapter scaKlient;
   //TextView tv;
-  LinearLayout ll;
-  Button bll;
+  //LinearLayout ll;
+  //Button bll;
   
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -110,7 +110,7 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
         public void onClick(View v) {
         	Intent intent = new Intent(InvHeadActivity.this, InvActivity.class);
         	
-        		int d=MainActivity.getIntDataTime();
+        		int d= MainActivity.getIntDataTime();
         		long coun=0;
             	//if (MainActivity.invent==0)
             	//{        		
@@ -226,10 +226,14 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
         	
         	    
 			intent.putExtra("id_inv", String.valueOf(MainActivity.invent));
+			intent.putExtra("text_inv", "ТЕКУЩАЯ ИНВЕНТАРИЗАЦИЯ");
 			 //Log.d("MyLog", "put String.valueOf(cou)="+String.valueOf(cou));
-			
+			MainActivity.no_inv=1;
 			startActivity(intent);
 			//InvActivity.btnMake.setVisibility(LinearLayout.VISIBLE );
+			//ll = (LinearLayout) getLayoutInflater().inflate(R.layout.inv, null);
+			//bll = (Button) ll.findViewById(R.id.btnMakeInv);
+			//bll.setVisibility(LinearLayout.GONE);
         	
         }}
     );
@@ -243,9 +247,9 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
     //String[] fromP = new String[] {"_id", "kol_pri","sum_pri"};
     //int[] toP = new int[] {R.id.tv_Id_OstatP_oborotka, R.id.tv_Kol_Pri_Oborotka,R.id.tv_Sum_Pri_Oborotka};
     //_id, id_user, user, name, summa, dat_n, dat_k, prim, data_ins, ok		
-    String[] fromO = new String[] {"_id","dat", "user","name","summa","dat_n","dat_k","prim","data_ins","ok"};
-    	    int[] toO = new int[] {R.id.tv_Id_InvHead, R.id.tv_Dat_InvHead, R.id.tv_User_InvHead,R.id.tv_Name_InvHead,
-    	    		R.id.tv_Summa_InvHead,R.id.tv_DatN_InvHead,R.id.tv_DatK_InvHead,R.id.tv_Prim_InvHead,R.id.tv_DataIns_InvHead,R.id.tv_Ok_InvHead};
+    String[] fromO = new String[] {"_id", "user","name","summa","dat_n","dat_k","prim","data_ins"};
+    	    int[] toO = new int[] {R.id.tv_Id_InvHead, R.id.tv_User_InvHead,R.id.tv_Name_InvHead,
+    	    		R.id.tv_Summa_InvHead,R.id.atN_InvHead,R.id.atK_InvHead,R.id.tv_Prim_InvHead,R.id.ataIns_InvHead};
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
 
     	    scAdapterO = new AdapterLV(R.id.btnDelInvHead, R.id.btnUpdInvHead, (byte)14, this, R.layout.inv_head_item, null, fromO, toO, 0)
@@ -255,12 +259,15 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
     				
     				if (flag==1 || flag==2) {
     					
-    					//Cursor cc = MainActivity.db.getRawData ("select id_inv from invent as O where CAST(O.id_tmc||O.keg||O.id_post||O.ed as integer)="+id,null);
+    					Cursor cc = MainActivity.db.getRawData ("select substr(data_ins,5,2)||'.'||substr(data_ins,3,2)||'.'||substr(data_ins,1,2) dat, user, substr(dat_n,5,2)||'.'||substr(dat_n,3,2) dat_n,substr(dat_k,5,2)||'.'||substr(dat_k,3,2) dat_k from invent_head where _id="+id,null);
     					Intent intent = new Intent(InvHeadActivity.this, InvActivity.class);
-    					//if (cc.moveToFirst()) { 
-    					  //      do {
+    					intent.putExtra("id_inv", String.valueOf(id));
+    					MainActivity.no_inv=0;
+    					if (cc.moveToFirst()) { 
+    					        do {
     					        	
-    			                    intent.putExtra("id_inv", String.valueOf(id));
+    			                    
+    			                    intent.putExtra("text_inv", cc.getString(cc.getColumnIndex("dat"))+" "+cc.getString(cc.getColumnIndex("user"))+" c "+cc.getString(cc.getColumnIndex("dat_n"))+" по "+cc.getString(cc.getColumnIndex("dat_k")));
     			                    /*intent.putExtra("dvigKeg", String.valueOf(cc.getInt(cc.getColumnIndex("keg"))) );
     			                    //Log.d("MyLog", "dvigTmc "+cc.getInt(cc.getColumnIndex("id_tmc")));
     			                    intent.putExtra("dvigNameTmc", cc.getString(cc.getColumnIndex("name_tmc")));
@@ -281,18 +288,16 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
     			                     */
     			                     
     			        
-    			            //        } 
-    					      //  while (cc.moveToNext());
-    					      //};
+    			                    } 
+    					       while (cc.moveToNext());
+    					      };
     					      //Log.d("MyLog", "id="+id);
-    			                    ll = (LinearLayout) getLayoutInflater().inflate(R.layout.inv, null);
-    			        			bll = (Button) ll.findViewById(R.id.btnMakeInv);
-    			        			bll.setVisibility(LinearLayout.GONE);
     					      startActivity(intent);
-    					      
+    					     /* ll = (LinearLayout) getLayoutInflater().inflate(R.layout.inv, null);
+			        			bll = (Button) ll.findViewById(R.id.btnMakeInv);
+			        			bll.setVisibility(LinearLayout.GONE);*/
     					      //InvActivity.btnMake.setVisibility(LinearLayout.GONE);
     					      //Dview = (LinearLayout) getLayoutInflater().inflate(R.layout.chek, null);
-
     				}
     			}
     		});
@@ -416,7 +421,7 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
             	 
             	 
             	 Cursor cursor = db.getRawData (
-             			"select _id as _id,id_user as id_user,substr(data_ins,5,2)||'.'||substr(data_ins,3,2) as dat,user as user,name as name,summa as summa,dat_n as dat_n,dat_k as dat_k,prim as prim,data_ins as data_ins,ok as ok"
+             			"select _id as _id, id_user, user, name, summa, substr(dat_n,5,2)||'.'||substr(dat_n,3,2)||'.'||substr(dat_n,1,2)||' '||substr(dat_n,7,2)||':'||substr(dat_n,9,2) as dat_n, substr(dat_k,5,2)||'.'||substr(dat_k,3,2)||'.'||substr(dat_k,1,2)||' '||substr(dat_k,7,2)||':'||substr(dat_k,9,2) as dat_k, prim, substr(data_ins,5,2)||'.'||substr(data_ins,3,2)||'.'||substr(data_ins,1,2)||' '||substr(data_ins,7,2)||':'||substr(data_ins,9,2) as data_ins "
              			+ " from invent_head "+str[0]+" order by dat_k, user"
              			, null);
 

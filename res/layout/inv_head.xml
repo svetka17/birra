@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/B"
-            android:text="ИНВЕНТАРИЗАЦИЯ" />
+            android:text="ПРОИЗВЕСТИ ИНВЕНТАРИЗАЦИЮ" />
 
     </LinearLayout>
     
@@ -64,10 +64,7 @@
  		    style="@style/lv_h"
             android:layout_weight="0.5"
  		    android:text="ИД"/>
- 		<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="0.5"
- 		    android:text="ДАТА"/>
+
  		
  		<TextView
  		    style="@style/lv_h"
@@ -83,11 +80,11 @@
  		    android:text="СУММА"/>
 <TextView
  		    style="@style/lv_h"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
  		    android:text="ДАТА Н"/>
 <TextView
  		    style="@style/lv_h"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
  		    android:text="ДАТА К"/>
 <TextView
  		    style="@style/lv_h"
@@ -95,12 +92,8 @@
  		    android:text="ПРИМ"/>
 <TextView
  		    style="@style/lv_h"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
  		    android:text="ДАТА INS"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="0.5"
- 		    android:text="OK"/>
 
 <TextView
             android:layout_width="0dp"

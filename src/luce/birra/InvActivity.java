@@ -7,17 +7,13 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import luce.birra.AdapterLV.CambiareListener;
@@ -28,12 +24,13 @@ public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cur
   ListView lvData;
   Button //btnExit, 
   btnAdd, btnSave;
-  public static Button btnMake;
+  Button btnMake;
   AdapterLV scAdapter;
   //static CheckBox cbVis;
-  static TextView tvIdPgr;
- static TextView tvIdInv;
-  Spinner spPgr;
+//  static TextView tvIdPgr;
+static TextView tvIdInv;
+TextView tvTextInv;
+//  Spinner spPgr;
   
   void showMessage(String s, byte dur){
 	  LayoutInflater inflater = getLayoutInflater();
@@ -62,11 +59,15 @@ public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cur
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.inv);
-    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
+    tvIdInv = (TextView) findViewById(R.id.tv_Id_Inv);
+    tvIdInv.setText("0");
+    tvTextInv = (TextView) findViewById(R.id.tv_TextInv);
+    tvTextInv.setText("-");
+/*    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_Inv);
     
     tvIdInv = (TextView) findViewById(R.id.tv_Id_Inv);
-    tvIdInv.setText("0");
+    tvIdInv.setText("0");*/
     /*cbVis = (CheckBox) findViewById(R.id.cb_Kol_Inv);
     cbVis.setChecked(false);
     cbVis.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -75,22 +76,22 @@ public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cur
 			getSupportLoaderManager().getLoader(0).forceLoad();
 		}
 	});*/
-    tvIdPgr = (TextView) findViewById(R.id.et_Id_PgrInv);
-    tvIdPgr.setText("0");
+ //   tvIdPgr = (TextView) findViewById(R.id.et_Id_PgrInv);
+  //  tvIdPgr.setText("0");
     // make an adapter from the cursor
-    String[] fromPgr = new String[] {"name"};
+/*    String[] fromPgr = new String[] {"name"};
     int[] toPgr = new int[] {android.R.id.text1};
     SimpleCursorAdapter sca = new SimpleCursorAdapter(this, R.layout.spinner_item, c, fromPgr, toPgr);
 
     // set layout for activated adapter
     sca.setDropDownViewResource(R.layout.spinner_drop_down); 
-    
+*/    
     // get xml file spinner and set adapter 
-    spPgr.setAdapter(sca);
+ //   spPgr.setAdapter(sca);
 
     // set spinner listener to display the selected item id
     //mContext = this;
-    spPgr.setOnItemSelectedListener(new OnItemSelectedListener() {
+ /*   spPgr.setOnItemSelectedListener(new OnItemSelectedListener() {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
         	spPgr.setTag(id);
@@ -103,7 +104,7 @@ public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cur
         	getSupportLoaderManager().getLoader(0).forceLoad();
         }
         });
-    
+   */ 
     btnAdd = (Button) findViewById(R.id.btnAddInv);
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
@@ -145,12 +146,15 @@ public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cur
         	        	        } while (cOst.moveToNext());
         	        	        
         	        	      } else cOst.close();
-
+        	        	    MainActivity.inv_dat_n=MainActivity.getIntDataTime();
         	        	    MainActivity.invent=0;
         	        	    finish();
         }
       });
     
+    //ll = (LinearLayout) getLayoutInflater().inflate(R.layout.inv, null);
+	//bll = (Button) ll.findViewById(R.id.btnMakeInv);
+	//bll.setVisibility(LinearLayout.GONE);
     // формируем столбцы сопоставления
     String[] from = new String[] { 
     		"_id","name_pgr","id_tmc","name_tmc","postname","keg","edname","price","price_vendor","kol_ostat","kol_real","kol_n","summa_n",
@@ -224,7 +228,9 @@ public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cur
     
     if( getIntent().getExtras() != null)
     {
-      	tvIdInv.setText(getIntent().getStringExtra("id_inv"));
+    	//Log.d("MyLog","id="+getIntent().getStringExtra("id_inv") );
+    	tvIdInv.setText(getIntent().getStringExtra("id_inv"));
+    	tvTextInv.setText(getIntent().getStringExtra("text_inv"));
     }
     
     lvData = (ListView) findViewById(R.id.lvInv);
@@ -242,6 +248,8 @@ public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cur
     getSupportLoaderManager().initLoader(0, null, this);
     
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.inv_ll));
+    if (MainActivity.no_inv==0)
+    	btnMake.setVisibility(LinearLayout.GONE);
   }
   
   @Override

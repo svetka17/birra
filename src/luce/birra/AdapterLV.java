@@ -221,13 +221,19 @@ public void bindView(View view, Context context, final Cursor cursor) {
 
     	break;
     case 14:
-    	//if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
-    	//((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
-    	//tv = (TextView) view.findViewById(R.id.tvNamePost_Inv);  	
-        //tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
-    	tv = (TextView) view.findViewById(R.id.tv_DataIns_InvHead);  	
-        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
-
+/*       
+        tv = (TextView) view.findViewById(R.id.atN_InvHead); 
+        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("dat_n"))) );
+        //tv.setText( ((cursor.getInt(cursor.getColumnIndex("dat_n"))==0)?"":MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("dat_n")))) );
+        
+        tv = (TextView) view.findViewById(R.id.atK_InvHead);  	
+        //tv.setText( ((cursor.getInt(cursor.getColumnIndex("dat_k"))==0)?"":MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("dat_k")))) );
+        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("dat_k"))) );
+        
+tv = (TextView) view.findViewById(R.id.ataIns_InvHead);  	
+tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+*/
+        ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
     	break;
     case 15:
     	//if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
@@ -236,7 +242,9 @@ public void bindView(View view, Context context, final Cursor cursor) {
         //tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
     	//tv = (TextView) view.findViewById(R.id.tvDataIns_Inv);  	
         //tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
-
+    	if (MainActivity.no_inv==0)
+    	{((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
+    	
     	break;	
     case 2:
         //for (i=0;i<r.length;i++) {
@@ -417,6 +425,7 @@ public void bindView(View view, Context context, final Cursor cursor) {
     	break;
         }
 	//Button btn = (Button) view.findViewById(R.id.btnDelPgr );
+	
 	((Button) view.findViewById(bD)).setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -549,7 +558,9 @@ public void bindView(View view, Context context, final Cursor cursor) {
                 case  5:
                 case 10:
                 case 11:
+                case 14: MainActivity.no_inv=0; break;
                 case 15:
+                	
                 	listenerFlag.OnCambiare((byte)3, getItemId(position));
                     break;
                 case 0:

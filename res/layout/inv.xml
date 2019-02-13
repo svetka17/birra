@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/inv_ll"
     android:orientation="vertical" >
+
 <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,10 +15,16 @@
  		    android:id="@+id/tv_Id_Inv"
  		    android:layout_width="wrap_content"
  		    android:layout_height="wrap_content"
- 		    android:visibility="visible"
+ 		    style="@style/TV_h"
  		    android:layout_weight="0" />
+<TextView
+ 		    android:id="@+id/tv_TextInv"
+ 		    android:layout_width="wrap_content"
+ 		    android:layout_height="wrap_content"
+ 		    style="@style/TV_h"
+ 		    android:layout_weight="1" />
 
- 		<TextView
+<!--   		<TextView
  		    android:id="@+id/et_Id_PgrInv"
  		    android:layout_width="wrap_content"
  		    android:layout_height="wrap_content"
@@ -38,7 +45,9 @@
                     android:clickable="true"
                     android:editable="false"
                     android:text="ПОКАЗЫВАТЬ ТОЛЬКО НЕ НУЛЕВЫЕ ОСТАТКИ" />
+-->
     </LinearLayout>
+   
 <TableRow  style="@style/mw0">
 <TextView
  		    style="@style/lv_h"
@@ -194,7 +203,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/B"
-            android:text="СОХРАНИТЬ И ВЫЙТИ" />
+            android:text="НАЗАД" />
         
 
 <!--  

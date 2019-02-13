@@ -7,10 +7,7 @@
         android:id="@+id/tv_Id_InvHead"
         style="@style/lv_i"
         android:layout_weight="0.5" />
-    <TextView
-        android:id="@+id/tv_Dat_InvHead"
-        style="@style/lv_i"
-        android:layout_weight="0.5" />
+
     <TextView
         android:id="@+id/tv_User_InvHead"
         style="@style/lv_i"
@@ -25,25 +22,22 @@
         style="@style/lv_i"
         android:layout_weight="0.5"/>
     <TextView
-        android:id="@+id/tv_DatN_InvHead"
+        android:id="@+id/atN_InvHead"
         style="@style/lv_i"
-        android:layout_weight="0.5"/>   
+        android:layout_weight="1"/>   
             <TextView
-        android:id="@+id/tv_DatK_InvHead"
+        android:id="@+id/atK_InvHead"
         style="@style/lv_i"
-        android:layout_weight="0.5" /> 
+        android:layout_weight="1" /> 
         <TextView
         android:id="@+id/tv_Prim_InvHead"
         style="@style/lv_i"
         android:layout_weight="0.5" />
     <TextView
-        android:id="@+id/tv_DataIns_InvHead"
+        android:id="@+id/ataIns_InvHead"
         style="@style/lv_i"
-        android:layout_weight="0.5" />
-    <TextView
-        android:id="@+id/tv_Ok_InvHead"
-        style="@style/lv_i"
-        android:layout_weight="0.5" />
+        android:layout_weight="1" />
+
          
 
     <LinearLayout
@@ -64,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ИЗМЕНИТЬ" />
+            android:text="СМОТРЕТЬ" />
     </LinearLayout>
 
 </TableRow>

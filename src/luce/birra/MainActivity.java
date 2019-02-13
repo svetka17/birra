@@ -43,6 +43,7 @@ static int w=0;
 static int h=0;
 static float scale=0;
 static long invent=0;
+static int no_inv=0;
 static int inv_dat_n=0;
 static int sizeBigButton=15;
 static int sizeMediumButton=15;
