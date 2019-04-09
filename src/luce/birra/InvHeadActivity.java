@@ -42,7 +42,8 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
     //final DialogFragment dlg = new DialogActivity();
     
     tvDataIns = (TextView) findViewById(R.id.tv_Data_InvHead);
-    tvDataIns.setText(MainActivity.getStringData(MainActivity.getIntData()));
+    tvDataIns.setText( "01.".concat(MainActivity.getStringData(MainActivity.getIntData()).substring(3, 8)) );
+    //tvDataIns.setText(MainActivity.getStringData( Integer.parseInt( String.valueOf( MainActivity.getIntDataTime() ).substring(0,6) ) ));
     tvDataIns.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	showDialog(1);
@@ -136,7 +137,7 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
 //_id, id_inv, id_tmc, name_tmc, pgr, name_pgr, keg, kol_ostat, kol_real, kol_n, summa_n, kol_p, summa_p, kol_r, summa_r, kol_brak, summa_brak, kol_move, summa_move,
 //kol_izl, summa_izl, kol_nedo, summa_nedo, kol_skidka, summa_skidka, kol_k, summa_k, ed, price, price_vendor, id_post, prim, data_ins, ok        		
         		        		        	    
-        		Cursor cOst = MainActivity.db.getRawData ("select TT.price as ttprice, T.name as tname, T.pgr as tpgr, TP.name as tpname, O.id_tmc as oid_tmc, O.keg as okeg, O.kol as okol, O.kol_nedo as okol_nedo, O.kol_izl as okol_izl, O.ed as oed, O.id_post as oid_post, O.data_ins as odata_ins, O.data_upd as odata_upd, "
+        		Cursor cOst = MainActivity.db.getRawData ("select TT.price as ttprice, T.name as tname, T.pgr as tpgr, TP.name as tpname, O.id_tmc as oid_tmc, O.keg as okeg, O.kol as okol, O.kol_nedo as okol_nedo, O.kol_izl as okol_izl, O.ed as oed, O.id_post as oid_post, ifnull(O.data_upd,O.data_ins) as odata_ins, O.data_ins as odata_upd, "
 		+ "sum(I.kol_k) as ikol_n, sum(I.summa_k) as isum_n, sum(R.kol) as rkol, sum(R.kol*R.price) as rsum, sum(R.kol_brak) as rkol_brak, sum(R.kol_brak*R.price) as rsum_brak, sum(R.kol_move) as rkol_move, sum(R.kol_move*R.price) as rsum_move, sum(R.kol_nedo) as rkol_nedo, sum(R.kol_nedo*R.price) as rsum_nedo, sum(R.kol_izl) as rkol_izl, sum(R.kol_izl*R.price) as rsum_izl, count(CASE WHEN ifnull(skidka,0) > 0 THEN 1 ELSE 0 END) as rkol_skidka, sum(R.skidka) as rsum_skidka, sum(P.kol) as pkol, sum(P.price_vendor*P.kol) as psum "
 		+ "from ostat O left join rasxod as R on O.id_tmc=R.id_tmc and O.keg=R.keg and O.id_post=R.id_post and O.ed=R.ed "
 		+ "left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed left join tmc as T on T._id=O.id_tmc left join tmc_pgr as TP on TP._id=T.pgr "
@@ -190,6 +191,8 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
                 	    					cOst.getDouble(cOst.getColumnIndex("rsum_nedo")),
                 	    					cOst.getDouble(cOst.getColumnIndex("rkol_skidka")), 
                 	    					cOst.getDouble(cOst.getColumnIndex("rsum_skidka"))});
+                	    	MainActivity.db.updRec("invent", cOst1.getLong(cOst1.getColumnIndex("id")), 
+                	    			new String[]{"data_ins"},new int[]{cOst.getInt(cOst.getColumnIndex("odata_ins"))});
                 	    	//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
                 	    	} while (cOst1.moveToNext());
                     	}
@@ -199,9 +202,9 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
                 	    {//Log.d("MyLog", "add="+ib);
                 	    	MainActivity.db.addRecINVENT(
                 	    			MainActivity.invent, cOst.getInt(cOst.getColumnIndex("oid_tmc")), cOst.getString(cOst.getColumnIndex("tname")), cOst.getInt(cOst.getColumnIndex("tpgr")), cOst.getString(cOst.getColumnIndex("tpname")), cOst.getInt(cOst.getColumnIndex("okeg")), cOst.getInt(cOst.getColumnIndex("oid_post")), cOst.getInt(cOst.getColumnIndex("oed")), 
-                	    			cOst.getDouble(cOst.getColumnIndex("okol")), /*(double)0*/cOst.getDouble(cOst.getColumnIndex("okol")), cOst.getDouble(cOst.getColumnIndex("ikol_n")), cOst.getDouble(cOst.getColumnIndex("isum_n")), cOst.getDouble(cOst.getColumnIndex("pkol")), cOst.getDouble(cOst.getColumnIndex("psum")), 
+                	    			cOst.getDouble(cOst.getColumnIndex("okol")), /*(double)0*//*cOst.getDouble(cOst.getColumnIndex("okol"))*/Double.NaN, cOst.getDouble(cOst.getColumnIndex("ikol_n")), cOst.getDouble(cOst.getColumnIndex("isum_n")), cOst.getDouble(cOst.getColumnIndex("pkol")), cOst.getDouble(cOst.getColumnIndex("psum")), 
                 	    			cOst.getDouble(cOst.getColumnIndex("rkol")), cOst.getDouble(cOst.getColumnIndex("rsum")), cOst.getDouble(cOst.getColumnIndex("rkol_brak")), cOst.getDouble(cOst.getColumnIndex("rsum_brak")), 
-                	    			cOst.getDouble(cOst.getColumnIndex("rkol_move")), cOst.getDouble(cOst.getColumnIndex("rsum_move")), cOst.getDouble(cOst.getColumnIndex("rkol_izl")), cOst.getDouble(cOst.getColumnIndex("rsum_izl")), 
+                	    			cOst.getDouble(cOst.getColumnIndex("rkol_move")), cOst.getDouble(cOst.getColumnIndex("rsum_move")), (double)0,(double)0,/*kol_cash sumcash*/cOst.getDouble(cOst.getColumnIndex("rkol_izl")), cOst.getDouble(cOst.getColumnIndex("rsum_izl")), 
                 	    			cOst.getDouble(cOst.getColumnIndex("rkol_nedo")), cOst.getDouble(cOst.getColumnIndex("rsum_nedo")), cOst.getDouble(cOst.getColumnIndex("rkol_skidka")), cOst.getDouble(cOst.getColumnIndex("rsum_skidka")), 
                 	    			(double)0, (double)0, cOst.getDouble(cOst.getColumnIndex("ttprice")), (double)0, "", cOst.getInt(cOst.getColumnIndex("odata_ins")), (byte)0
                 	    			);

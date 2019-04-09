@@ -30,11 +30,11 @@
         style="@style/lv_i"
         android:layout_weight="0.5" />
     <TextView
-        android:id="@+id/tvTed_Inv"
+        android:id="@+id/tvDataIns_Inv"
         style="@style/lv_i"
         android:layout_weight="1" />
     <TextView
-        android:id="@+id/tvPrice_Inv"
+        android:id="@+id/tvTed_Inv"
         style="@style/lv_i"
         android:layout_weight="1" />
     <TextView
@@ -50,74 +50,14 @@
         style="@style/lv_i"
         android:layout_weight="1" />
     <TextView
-        android:id="@+id/tvKolN_Inv"
+        android:id="@+id/tvSumma_Inv"
         style="@style/lv_i"
         android:layout_weight="1" />
     <TextView
-        android:id="@+id/tvSummaN_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvKolP_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvSummaP_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvKolR_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvSummaR_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvKolBrak_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvSummaBrak_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvKolMove_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvSummaMove_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvKolIzl_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvSummaIzl_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvKolNedo_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvSummaNedo_Inv"
+        android:id="@+id/tvSummaFact_Inv"
         style="@style/lv_i"
         android:layout_weight="1" />
     
-    <TextView
-        android:id="@+id/tvSummaSkidka_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvKolK_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvSummaK_Inv"
-        style="@style/lv_i"
-        android:layout_weight="1" />
     <LinearLayout
         style="@style/_m1"
         android:orientation="vertical" >
@@ -136,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/B"
-            android:text="ОБНУЛИТЬ" />
+            android:text="НЕТ В НАЛИЧИИ" />
     </LinearLayout>
 
 </TableRow>

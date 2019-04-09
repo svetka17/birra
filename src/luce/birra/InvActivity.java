@@ -131,10 +131,24 @@ TextView tvTextInv;
     btnMake.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	
+        	Cursor cNan = MainActivity.db.getRawData ("select count(*) c  "
+    	    		+ "from invent as O where O.id_inv="+MainActivity.invent/*tvIdInv.getText().toString()*/+" and O.kol_real is null",null);
+    int nan=-1;
+    
+    if (cNan.moveToFirst()) { 
+    	 
+        do {
+        	nan=cNan.getInt(cNan.getColumnIndex("c"));
+        } while (cNan.moveToNext());
+        
+      } else cNan.close();
+        	
+        	
+        	if (nan==0) {
         	MainActivity.db.delAll("prixod");
         	MainActivity.db.delAll("rasxod");
         	MainActivity.db.delAll("ostat");
-        	Cursor cOst = MainActivity.db.getRawData ("select O._id as id, O.id_tmc as oid_tmc, O.keg as okeg, O.kol_ostat as okol, O.kol_nedo as okol_nedo, O.kol_izl as okol_izl, O.ed as oed, O.id_post as oid_post, O.kol_real kol_real, O.price_vendor ttprice "
+        	Cursor cOst = MainActivity.db.getRawData ("select O._id as id, O.id_tmc as oid_tmc, O.keg as okeg, O.kol_ostat as okol, O.kol_nedo as okol_nedo, O.kol_izl as okol_izl, O.ed as oed, O.id_post as oid_post, O.kol_real kol_real, O.price_vendor ttprice, O.data_ins data_ins "
         	                	    		+ "from invent as O where O.id_inv="+MainActivity.invent/*tvIdInv.getText().toString()*/+" and ifnull(O.kol_real,0)!=0",null);
         	        	    byte ib=0;
         	        	    byte tmp=0;
@@ -143,12 +157,15 @@ TextView tvTextInv;
         	        	    	 
         	        	        do {
         	        	        	MainActivity.db.addRecPRIXOD(cOst.getInt(cOst.getColumnIndex("oid_tmc")), cOst.getInt(cOst.getColumnIndex("okeg")), cOst.getDouble(cOst.getColumnIndex("kol_real")), (byte)cOst.getInt(cOst.getColumnIndex("oed")), cOst.getDouble(cOst.getColumnIndex("ttprice")), cOst.getDouble(cOst.getColumnIndex("ttprice")), cOst.getInt(cOst.getColumnIndex("oid_post")), "после инвентаризации "+cOst.getInt(cOst.getColumnIndex("id"))+MainActivity.usr, MainActivity.getIntDataTime(), (byte)0);
+        	        	        	MainActivity.db.updOstatKegInv(cOst.getInt(cOst.getColumnIndex("oid_tmc")), cOst.getInt(cOst.getColumnIndex("oid_post")), cOst.getInt(cOst.getColumnIndex("okeg")), cOst.getInt(cOst.getColumnIndex("oed")), cOst.getInt(cOst.getColumnIndex("data_ins")));
         	        	        } while (cOst.moveToNext());
         	        	        
         	        	      } else cOst.close();
         	        	    MainActivity.inv_dat_n=MainActivity.getIntDataTime();
         	        	    MainActivity.invent=0;
         	        	    finish();
+        	}
+        	else showMessage("количества факта указаны не по всем позициям", (byte)1);
         }
       });
     
@@ -157,13 +174,13 @@ TextView tvTextInv;
 	//bll.setVisibility(LinearLayout.GONE);
     // формируем столбцы сопоставления
     String[] from = new String[] { 
-    		"_id","name_pgr","id_tmc","name_tmc","postname","keg","edname","price","price_vendor","kol_ostat","kol_real","kol_n","summa_n",
+    		"_id","name_pgr","id_tmc","name_tmc","postname","keg","edname",/*"price",*/"price_vendor","kol_ostat","kol_real","summa","summa_fact"/*"kol_n","summa_n",
     		"kol_p","summa_p","kol_r","summa_r","kol_brak","summa_brak","kol_move","summa_move","kol_izl","summa_izl","kol_nedo","summa_nedo","summa_skidka",
-    		"kol_k","summa_k"//,"prim" //,"prim","ok"
+    		"kol_k","summa_k"*/ //,"prim" //,"prim","ok"
     		};
-    int[] to = new int[] {R.id.tvId_Inv,R.id.tvNamePgr_Inv, R.id.tvId_Tmc_Inv, R.id.tvNameTmc_Inv, R.id.tvNamePost_Inv, R.id.tvKeg_Inv, R.id.tvTed_Inv, R.id.tvPrice_Inv, R.id.tvPriceVen_Inv, R.id.tvKol_Inv, R.id.tvKolReal_Inv, R.id.tvKolN_Inv, R.id.tvSummaN_Inv,
+    int[] to = new int[] {R.id.tvId_Inv,R.id.tvNamePgr_Inv, R.id.tvId_Tmc_Inv, R.id.tvNameTmc_Inv, R.id.tvNamePost_Inv, R.id.tvKeg_Inv, R.id.tvTed_Inv, /*R.id.tvPrice_Inv,*/ R.id.tvPriceVen_Inv, R.id.tvKol_Inv, R.id.tvKolReal_Inv,R.id.tvSumma_Inv,R.id.tvSummaFact_Inv /* R.id.tvKolN_Inv, R.id.tvSummaN_Inv,
     		R.id.tvKolP_Inv, R.id.tvSummaP_Inv, R.id.tvKolR_Inv, R.id.tvSummaR_Inv, R.id.tvKolBrak_Inv, R.id.tvSummaBrak_Inv, R.id.tvKolMove_Inv, R.id.tvSummaMove_Inv, R.id.tvKolIzl_Inv, R.id.tvSummaIzl_Inv, R.id.tvKolNedo_Inv, R.id.tvSummaNedo_Inv,
-    		R.id.tvSummaSkidka_Inv, R.id.tvKolK_Inv, R.id.tvSummaK_Inv };
+    		R.id.tvSummaSkidka_Inv, R.id.tvKolK_Inv, R.id.tvSummaK_Inv*/ };
     //int[] toH = new int[] {R.id.tvId_Ostat,R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,R.id.tvNamePost_Ostat,R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat,R.id.tvDataIns_Ostat};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
@@ -292,7 +309,7 @@ TextView tvTextInv;
     	
     	Cursor cursor = db.getRawData (
     			"select O._id as _id, O.id_tmc id_tmc, O.name_tmc name_tmc, T.name nametmc, O.pgr pgr, O.name_pgr name_pgr, O.keg keg, "
-    			+ "O.kol_ostat kol_ostat, O.kol_real kol_real, "
+    			+ "round(O.kol_ostat,3) kol_ostat, O.kol_real kol_real, round(O.kol_ostat*O.price_vendor,2) summa, round(O.kol_real*O.price_vendor,2) summa_fact,"
     			+ "O.kol_n kol_n, O.summa_n summa_n, "
     			+ "O.kol_p kol_p, O.summa_p summa_p, O.kol_r kol_r, O.summa_r summa_r, "
     			+ "O.kol_brak kol_brak, O.summa_brak summa_brak, O.kol_move kol_move, O.summa_move summa_move, O.kol_izl kol_izl, O.summa_izl summa_izl, O.kol_nedo kol_nedo, O.summa_nedo summa_nedo, O.kol_skidka kol_skidka, O.summa_skidka summa_skidka, "

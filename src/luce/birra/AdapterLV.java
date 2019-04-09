@@ -244,7 +244,8 @@ tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("d
         //tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
     	if (MainActivity.no_inv==0)
     	{((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
-    	
+    	tv = (TextView) view.findViewById(R.id.tvDataIns_Inv);  	
+        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
     	break;	
     case 2:
         //for (i=0;i<r.length;i++) {

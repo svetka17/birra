@@ -79,11 +79,11 @@
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
- 		    android:text="ЕД.ИЗМ"/>
+ 		    android:text="ДАТА"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
- 		    android:text="ЦЕНА"/>
+ 		    android:text="ЕД.ИЗМ"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
@@ -91,82 +91,19 @@
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
- 		    android:text="КОЛ"/>
+ 		    android:text="КОЛ-ВО В ОСТАТКЕ"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
- 		    android:text="КОЛ РЕАЛ"/>
-
+ 		    android:text="КОЛ-ВО ПО ФАКТУ"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
- 		    android:text="КОЛ НАЧ"/>
+ 		    android:text="СУММА ОСТАТКА"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
- 		    android:text="СУММА НАЧ"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="КОЛ ПРИХОД"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="СУММА ПРИХОД"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="КОЛ РАСХОД"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="СУММА РАСХОД"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="КОЛ БРАК"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="СУММА БРАК"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="КОЛ ПЕРЕМЕЩЕНО"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="СУММА ПЕРЕМЕЩЕНО"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="КОЛ ИЗЛИШКИ"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="СУММА ИЗЛИШКИ"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="КОЛ НЕДОСТАЧИ"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="СУММА НЕДОСТАЧИ"/>
-
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="СУММА СКИДКИ"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="КОЛ КОН"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="СУММА КОН"/>
-
+ 		    android:text="СУММА ПО ФАКТУ"/>
 
 <TextView
             android:layout_width="0dp"

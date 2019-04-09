@@ -177,7 +177,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("prixod", null, cv);
 		  }
 
-	  public void addRecRASXOD(int id_tmc, int keg, double kol, double kol_nedo, double kol_izl, double kol_brak, double kol_move, /*double kol_correct,*/ byte ed, double price, double skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
+	  public void addRecRASXOD(int id_tmc, int keg, double kol, double kol_nedo, double kol_izl, double kol_brak, double kol_move, byte cash,/*double kol_correct,*/ byte ed, double price, double skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("keg", keg);
@@ -186,7 +186,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    cv.put("kol_izl", kol_izl);
 		    cv.put("kol_brak", kol_brak);
 		    cv.put("kol_move", kol_move);
-		    //cv.put("kol_correct", kol_correct);
+		    cv.put("cash", cash);
 		    cv.put("ed", ed);
 		    cv.put("price", price);
 		    cv.put("skidka", skidka);
@@ -199,7 +199,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    mDB.insert("rasxod", null, cv);
 		  }
 	  
-	  public long addRecRASXODcount(int id_tmc, int keg, double kol, double kol_nedo, double kol_izl, double kol_brak, double kol_move, /*double kol_correct,*/ byte ed, double price, double skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
+	  public long addRecRASXODcount(int id_tmc, int keg, double kol, double kol_nedo, double kol_izl, double kol_brak, double kol_move, byte cash,/*double kol_correct,*/ byte ed, double price, double skidka, int id_post, int id_klient, String prim, /*int data_del,*/ int data_ins, int ok) {
 		    ContentValues cv = new ContentValues();
 		    cv.put("id_tmc", id_tmc);
 		    cv.put("keg", keg);
@@ -208,7 +208,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    cv.put("kol_izl", kol_izl);
 		    cv.put("kol_brak", kol_brak);
 		    cv.put("kol_move", kol_move);
-		    //cv.put("kol_correct", kol_correct);
+		    cv.put("cash", cash);
 		    cv.put("ed", ed);
 		    cv.put("price", price);
 		    cv.put("skidka", skidka);
@@ -298,7 +298,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 	  
 	  public void addRecINVENT(long id_inv, int id_tmc, String name_tmc, int pgr, String name_pgr, int keg, int id_post, int ed, 
 			  double kol_ostat, double kol_real, double kol_n, double summa_n, double kol_p, double summa_p, double kol_r, double summa_r, double kol_brak, double summa_brak, 
-			  double kol_move, double summa_move, double kol_izl, double summa_izl, double kol_nedo, double summa_nedo, double kol_skidka, double summa_skidka,
+			  double kol_move, double summa_move, double kol_cash, double summa_cash, double kol_izl, double summa_izl, double kol_nedo, double summa_nedo, double kol_skidka, double summa_skidka,
 			  double kol_k, double summa_k,
 			  double price_vendor, double price,
 			  String prim, int data_ins, byte ok) {
@@ -323,6 +323,8 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 		    cv.put("summa_brak", summa_brak);
 		    cv.put("kol_move", kol_move);
 		    cv.put("summa_move", summa_move);
+		    cv.put("kol_cash", kol_cash);
+		    cv.put("summa_cash", summa_cash);
 		    cv.put("kol_izl", kol_izl);
 		    cv.put("summa_izl", summa_izl);
 		    cv.put("kol_nedo", kol_nedo);
@@ -434,9 +436,14 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 			    cv.put(name_f, val);
 		    return mDB.update(namT, cv, "_id = "+id, null);
 		  }
-	  public int updOstatIns(int id_tmc, int id_post, int keg, int ed) {
+	  public int updOstatKeg(int id_tmc, int id_post, int keg, int ed) {
 		    ContentValues cv = new ContentValues();
 			    cv.put("data_upd", MainActivity.getIntDataTime());
+		    return mDB.update("ostat", cv, "id_tmc = "+id_tmc+" and id_post = "+id_post+" and keg = "+keg+" and ed = "+ed, null);
+		  }
+	  public int updOstatKegInv(int id_tmc, int id_post, int keg, int ed, int data_upd) {
+		    ContentValues cv = new ContentValues();
+			    cv.put("data_upd", data_upd);
 		    return mDB.update("ostat", cv, "id_tmc = "+id_tmc+" and id_post = "+id_post+" and keg = "+keg+" and ed = "+ed, null);
 		  }
 	  public int delAll(String namT) {
@@ -580,6 +587,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "kol_izl real DEFAULT 0,"
                   + "kol_brak real DEFAULT 0,"
                   + "kol_move real DEFAULT 0,"
+                  + "cash integer DEFAULT 0,"
                   //+ "kol_correct real DEFAULT 0,"
                   + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "price real not null CHECK (price>=0),"
@@ -590,7 +598,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "data_ins integer,"
                  // + "data_del integer default 0,"
                   + "ok integer default 0);");
-          /*
+          /*cash - 0 - наличные, 1 - карточка
            * ok 
            * 0 - нормальный расход
            * 1 - брак
@@ -610,6 +618,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "kol_izl real,"
                   + "kol_brak real DEFAULT 0,"
                   + "kol_move real DEFAULT 0,"
+                  + "cash integer DEFAULT 0,"
                   //+ "kol_correct real DEFAULT 0,"
                   + "ed integer not null,"
                   + "price real not null,"
@@ -635,7 +644,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "data_ins integer,"
                   + "data_upd integer,"
                   + "ok integer default 0);");
-
+/* поле ostat.data_upd содержит дату первой продажи кеги и апдейтится в форме расхода при первой продаже*/
           db.execSQL("create table klient ("
                   + "_id integer primary key autoincrement,"
                   + "num_id integer,"
@@ -676,6 +685,8 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "summa_brak real DEFAULT 0,"
                   + "kol_move real DEFAULT 0,"
                   + "summa_move real DEFAULT 0,"
+                  + "kol_cash real DEFAULT 0,"
+                  + "summa_cash real DEFAULT 0,"
                   + "kol_izl real DEFAULT 0,"
                   + "summa_izl real DEFAULT 0,"
                   + "kol_nedo real DEFAULT 0,"
@@ -864,7 +875,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
       		    " BEGIN "+
-      		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, data_upd, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+      		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, 0); "+
       		    " END;");
         
         db.execSQL("CREATE TRIGGER ras_ins2 " +
@@ -872,7 +883,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     		    " ON rasxod "+    	        		    
     		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     		    " BEGIN "+
-    		    " update ostat set kol=kol-NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_upd=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+    		    " update ostat set kol=kol-NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka-NEW.price*NEW.kol where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
     		    " END;");
         
         db.execSQL("CREATE TRIGGER ras_upd1 " +
@@ -880,35 +891,35 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
       		    " BEGIN "+
-      		    " update ostat set kol=kol+OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_upd=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
+      		    " update ostat set kol=kol+OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka+OLD.price*OLD.kol where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
       		    " END;");
         db.execSQL("CREATE TRIGGER ras_upd2 " +
     		    " AFTER UPDATE "+
     		    " ON rasxod "+    	        		    
     		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     		    " BEGIN "+
-    		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, data_upd, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, -NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+    		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, -NEW.price*NEW.kol, NEW.id_post, 0); "+
     		    " END;");
         db.execSQL("CREATE TRIGGER ras_upd3 " +
       		    " AFTER UPDATE "+
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
       		    " BEGIN "+
-      		    " update ostat set kol=kol-NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_upd=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+      		    " update ostat set kol=kol-NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka-NEW.price*NEW.kol where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
       		    " END;");
         db.execSQL("CREATE TRIGGER ras_del1 " +
       		    " BEFORE DELETE "+
       		    " ON rasxod "+    	        		    
       		    " FOR EACH ROW "+
       		    " BEGIN "+
-      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, kol_brak, kol_move, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.kol_brak, OLD.kol_move, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, cast(substr(strftime('%Y%m%d%H%M','now'),3) as INTEGER) ); "+
+      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, kol_brak, kol_move, cash, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.kol_brak, OLD.kol_move, OLD.cash, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, cast(substr(strftime('%Y%m%d%H%M','now'),3) as INTEGER) ); "+
       		    " END;");
         db.execSQL("CREATE TRIGGER ras_del2 " +
     		    " AFTER DELETE "+
     		    " ON rasxod "+    	        		    
     		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
     		    " BEGIN "+
-    		    " update ostat set kol=kol+OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_upd=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
+    		    " update ostat set kol=kol+OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka+OLD.price*OLD.kol where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
     		    " END;");
           //Log.d("MyLog", " --- onCreate create all trigger --- ");
         MainActivity.inv_dat_n=MainActivity.getIntDataTime();
@@ -1085,6 +1096,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "kol_izl real DEFAULT 0,"
     	                  + "kol_brak real DEFAULT 0,"
     	                  + "kol_move real DEFAULT 0,"
+    	                  + "cash integer DEFAULT 0,"
     	                  //+ "kol_correct real DEFAULT 0,"
     	                  + "ed integer DEFAULT 0 REFERENCES tmc_ed(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
     	                  + "price real not null CHECK (price>=0),"
@@ -1115,6 +1127,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "kol_izl real,"
     	                  + "kol_brak real DEFAULT 0,"
     	                  + "kol_move real DEFAULT 0,"
+    	                  + "cash integer DEFAULT 0,"
     	                  //+ "kol_correct real DEFAULT 0,"
     	                  + "ed integer not null,"
     	                  + "price real not null,"
@@ -1181,6 +1194,8 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	                  + "summa_brak real DEFAULT 0,"
     	                  + "kol_move real DEFAULT 0,"
     	                  + "summa_move real DEFAULT 0,"
+    	                  + "kol_cash real DEFAULT 0,"
+    	                  + "summa_cash real DEFAULT 0,"
     	                  + "kol_izl real DEFAULT 0,"
     	                  + "summa_izl real DEFAULT 0,"
     	                  + "kol_nedo real DEFAULT 0,"
@@ -1360,14 +1375,15 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " BEGIN "+
     	      		    " update ostat set kol=kol-OLD.kol, price=OLD.price, sumka=sumka-OLD.price*OLD.kol"//, data_ins=OLD.data_ins "
     	      		    + " where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
-    	      		    " END;");    	          
+    	      		    " END;");
+    	          
     	          ////rasxod
     	          db.execSQL("CREATE TRIGGER ras_ins1 " +
     	      		    " AFTER INSERT "+
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	      		    " BEGIN "+
-    	      		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, data_upd, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+    	      		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, NEW.price*NEW.kol, NEW.id_post, 0); "+
     	      		    " END;");
     	        
     	        db.execSQL("CREATE TRIGGER ras_ins2 " +
@@ -1375,7 +1391,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	    		    " ON rasxod "+    	        		    
     	    		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	    		    " BEGIN "+
-    	    		    " update ostat set kol=kol-NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_upd=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+    	    		    " update ostat set kol=kol-NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka-NEW.price*NEW.kol where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
     	    		    " END;");
     	        
     	        db.execSQL("CREATE TRIGGER ras_upd1 " +
@@ -1383,35 +1399,35 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
     	      		    " BEGIN "+
-    	      		    " update ostat set kol=kol+OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_upd=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
+    	      		    " update ostat set kol=kol+OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka+OLD.price*OLD.kol where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_upd2 " +
     	    		    " AFTER UPDATE "+
     	    		    " ON rasxod "+    	        		    
     	    		    " FOR EACH ROW WHEN not EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	    		    " BEGIN "+
-    	    		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, data_upd, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, -NEW.price*NEW.kol, NEW.id_post, NEW.data_ins, 0); "+
+    	    		    " insert into ostat (id_tmc, keg, kol, kol_nedo, kol_izl, ed, price, sumka, id_post, ok) values (NEW.id_tmc, NEW.keg, -NEW.kol, NEW.kol_nedo, NEW.kol_izl, NEW.ed, NEW.price, -NEW.price*NEW.kol, NEW.id_post, 0); "+
     	    		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_upd3 " +
     	      		    " AFTER UPDATE "+
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=NEW.keg and ed=NEW.ed and id_tmc = NEW.id_tmc and id_post=NEW.id_post) "+
     	      		    " BEGIN "+
-    	      		    " update ostat set kol=kol-NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka-NEW.price*NEW.kol, data_upd=NEW.data_ins where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
+    	      		    " update ostat set kol=kol-NEW.kol, kol_nedo=kol_nedo+NEW.kol_nedo, kol_izl=kol_izl+NEW.kol_izl, price=NEW.price, sumka=sumka-NEW.price*NEW.kol where keg=NEW.keg and ed=NEW.ed and id_tmc=NEW.id_tmc and id_post=NEW.id_post; "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_del1 " +
     	      		    " BEFORE DELETE "+
     	      		    " ON rasxod "+    	        		    
     	      		    " FOR EACH ROW "+
     	      		    " BEGIN "+
-    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, kol_brak, kol_move, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.kol_brak, OLD.kol_move, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, cast(substr(strftime('%Y%m%d%H%M','now'),3) as INTEGER) ); "+
+    	      		    " insert into rasxod_del (id_id, id_tmc, keg, kol, kol_nedo, kol_izl, kol_brak, kol_move, cash, ed, price, id_post, ok, data_ins, data_del) values (OLD._id, OLD.id_tmc, OLD.keg, OLD.kol, OLD.kol_nedo, OLD.kol_izl, OLD.kol_brak, OLD.kol_move, OLD.cash, OLD.ed, OLD.price, OLD.id_post, OLD.ok, OLD.data_ins, cast(substr(strftime('%Y%m%d%H%M','now'),3) as INTEGER) ); "+
     	      		    " END;");
     	        db.execSQL("CREATE TRIGGER ras_del2 " +
     	    		    " AFTER DELETE "+
     	    		    " ON rasxod "+    	        		    
     	    		    " FOR EACH ROW WHEN EXISTS (SELECT * FROM ostat WHERE keg=OLD.keg and ed=OLD.ed and id_tmc = OLD.id_tmc and id_post=OLD.id_post) "+
     	    		    " BEGIN "+
-    	    		    " update ostat set kol=kol+OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka+OLD.price*OLD.kol, data_upd=OLD.data_ins where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
+    	    		    " update ostat set kol=kol+OLD.kol, kol_nedo=kol_nedo-OLD.kol_nedo, kol_izl=kol_izl-OLD.kol_izl, price=OLD.price, sumka=sumka+OLD.price*OLD.kol where keg=OLD.keg and ed=OLD.ed and id_tmc=OLD.id_tmc and id_post=OLD.id_post; "+
     	    		    " END;");
     	         //Log.d("MyLog", " --- onUpgrade create all trigger --- ");
     	          

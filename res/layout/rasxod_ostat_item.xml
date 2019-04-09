@@ -41,6 +41,14 @@
         android:id="@+id/tv_Sumka_Rasxod_Ost"
         style="@style/lv_i"
         android:layout_weight="1" />
+        <TextView
+        android:id="@+id/tv_Sumka_NalRasxod_Ost"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+            <TextView
+        android:id="@+id/tv_Sumka_NoNalRasxod_Ost"
+        style="@style/lv_i"
+        android:layout_weight="1" />
     <TextView
         android:id="@+id/tv_Price_Rasxod_Ost"
         style="@style/lv_i"

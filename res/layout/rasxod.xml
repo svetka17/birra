@@ -39,7 +39,8 @@
             android:textOff="СВОЯ ТАРА"
             android:textOn="СВОЯ ТАРА" />
        
-</LinearLayout> 
+</LinearLayout>
+<!--   
 <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -61,6 +62,7 @@
             android:textOff="ПЕРЕМЕЩЕНИЕ"
             android:textOn="ПЕРЕМЕЩЕНИЕ" />
 </LinearLayout> 
+-->        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -186,14 +188,14 @@ android:thumb="@drawable/thumba" />
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="ЗАКРЫТЬ ЧЕК" />
+                    android:text="ЧЕК НАЛИЧНЫЙ" />
                 <Button
                     android:id="@+id/btnOkRasxod_ok"
                     style="@style/B"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="ЧЕК" />
+                    android:text="ЧЕК БЕЗНАЛИЧНЫЙ" />
 
                 <TextView
                     android:id="@+id/tvSumSum"

@@ -121,7 +121,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     					Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<>0 and _id="+id,null);
     					   if (cc.moveToFirst()) { 
     					        do {countT=
-    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")),cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 0, 0, 0, 0, /*cc.getDouble(cc.getColumnIndex("kol")),*/ (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "Œ¡Õ”À≈Õ»≈ Œ—“¿“ ¿ ID="+id, MainActivity.getIntDataTime(), 5);
+    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")),cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 0, 0, 0, 0, /*cc.getDouble(cc.getColumnIndex("kol")),*/(byte)0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "Œ¡Õ”À≈Õ»≈ Œ—“¿“ ¿ ID="+id, MainActivity.getIntDataTime(), 5);
     					        		//cc.getInt(cc.getColumnIndex("c"));//+ " count: tmc "+db.getAllData("tmc").getCount());
     					        } while (cc.moveToNext());
     					      };
@@ -151,7 +151,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     				    					        				//(k>0)&&(k<cc.getDouble(cc.getColumnIndex("kol")))?cc.getDouble(cc.getColumnIndex("kol"))-k:0,
     				    					        				//(k>0)&&(k>cc.getDouble(cc.getColumnIndex("kol")))?cc.getDouble(cc.getColumnIndex("kol"))-k:0,
     				    					        				0,0,0,0,//cc.getDouble(cc.getColumnIndex("kol"))-k,
-    				    					        				(byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "»«Ã≈Õ≈Õ»≈ Œ—“¿“ ¿ –¿—’Œƒ ID="+idd, MainActivity.getIntDataTime(), 5);
+    				    					        				(byte)0,(byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "»«Ã≈Õ≈Õ»≈ Œ—“¿“ ¿ –¿—’Œƒ ID="+idd, MainActivity.getIntDataTime(), 5);
     				    					        //MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")),-k,/*cc.getDouble(cc.getColumnIndex("kol")),(cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0),(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0)*/0,0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "»«Ã≈Õ≈Õ»≈ Œ—“¿“ ¿ –¿—’Œƒ ID="+idd, MainActivity.getIntDataTime(), 1);		
     				    					        //MainActivity.db.addRecPRIXOD(cc.getInt(cc.getColumnIndex("id_tmc")),cc.getInt(cc.getColumnIndex("keg")), k,0, 0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getDouble(cc.getColumnIndex("price")), cc.getInt(cc.getColumnIndex("id_post")), "»«Ã≈Õ≈Õ»≈ Œ—“¿“ ¿ œ–»’Œƒ ID="+idd, MainActivity.getIntDataTime(), (byte)1);
     				    					        } while (cc.moveToNext());
