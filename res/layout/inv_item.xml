@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:id="@+id/inv_item_tr"
     android:layout_height="wrap_content">
-
+<!--  
     <TextView
         android:id="@+id/tvId_Inv"
         style="@style/lv_i"
         android:layout_weight="0.5"/>
+-->        
     <TextView
         android:id="@+id/tvNamePgr_Inv"
         style="@style/lv_i"

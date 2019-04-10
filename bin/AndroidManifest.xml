@@ -183,6 +183,12 @@
             android:label="ИНВЕНТАРИЗАЦИЯ"
             android:screenOrientation="landscape" />
                                                 <activity
+            android:name="luce.birra.BrakActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="ПЕРЕМЕЩЕНИЕ И БРАК"
+            android:screenOrientation="landscape" />
+                                                <activity
             android:name="luce.birra.InvHeadActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="stateHidden"

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/brak_item_tr"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvId_Brak"
+        style="@style/lv_i"
+        android:layout_weight="0.5"/>
+
+    <TextView
+        android:id="@+id/tvNameTmc_Brak"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    
+    <TextView
+        android:id="@+id/tvNamePgr_Brak"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    
+    <TextView
+        android:id="@+id/tvNamePost_Brak"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvKol_Brak"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvTed_Brak"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvPrice_Brak"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvDataIns_Brak"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvKeg_Brak"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+        <TextView
+        android:id="@+id/tvKolNedo_Brak"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+        <TextView
+        android:id="@+id/tvKolIzl_Brak"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+    <LinearLayout
+        style="@style/_m1"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnUpdBrak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="ПЕРЕМЕСТИТЬ" />
+
+        <Button
+            android:id="@+id/btnDelBrak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="БРАК" />
+    </LinearLayout>
+
+</TableRow>

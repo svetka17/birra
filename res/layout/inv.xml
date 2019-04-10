@@ -49,10 +49,12 @@
     </LinearLayout>
    
 <TableRow  style="@style/mw0">
+<!--  
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="0.5"
  		    android:text="ИД"/>
+-->
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
@@ -115,7 +117,68 @@
     <ListView
         android:id="@+id/lvInv"
  		    style="@style/mm1" />
+<TableRow  style="@style/mw0">
 
+ <TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+ 				<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text=""/>
+ 				<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="3"
+ 		    android:text=""/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogInvSumReal"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogInvSumFact"
+            android:layout_weight="1"
+ 		    android:text=""/>
+
+<TextView
+            android:layout_width="0dp"
+            android:id="@+id/itogInvRaznica"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/summa_chek"
+            android:text=""/>
+    </TableRow>
    <LinearLayout
  		    style="@style/mw0"
         android:orientation="horizontal" >

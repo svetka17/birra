@@ -44,7 +44,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
     //final DialogFragment dlg = new DialogActivity();
     
     tvDataIns = (TextView) findViewById(R.id.tv_Data_Oborotka);
-    tvDataIns.setText(MainActivity.getStringData(MainActivity.getIntData()));
+    //tvDataIns.setText(MainActivity.getStringData(MainActivity.getIntData()));
     tvDataIns.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	showDialog(1);
@@ -58,7 +58,7 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
       });
     
     tvDataIns2 = (TextView) findViewById(R.id.tv_Data_Oborotka2);
-    tvDataIns2.setText(MainActivity.getStringData(MainActivity.getIntData()));
+    //tvDataIns2.setText(MainActivity.getStringData(MainActivity.getIntData()));
     tvDataIns2.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	showDialog(2);

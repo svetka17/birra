@@ -54,6 +54,7 @@ public AdapterLV(/*int[] r,*/ int bD, int bU, byte nT, Context context, int layo
     case 13: namT="rasxod_del"; break;
     case 14: namT="invent_head"; break;
     case 15: namT="invent"; break;
+    case 17: namT="ostat"; break;
     }
 }
 
@@ -424,6 +425,15 @@ tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("d
     	tv = (TextView) view.findViewById(R.id.tv_DataIns_Dvig);
         tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
     	break;
+    case 17:
+    	//if (MainActivity.access!=1) {((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
+    	//((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
+    	tv = (TextView) view.findViewById(R.id.tvNamePost_Brak);  	
+        tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
+    	tv = (TextView) view.findViewById(R.id.tvDataIns_Brak);  	
+        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+
+    	break;
         }
 	//Button btn = (Button) view.findViewById(R.id.btnDelPgr );
 	
@@ -567,7 +577,10 @@ tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("d
                 case 0:
                 	listenerFlag.OnCambiare((byte)2, getItemId(position));
                     break;
-                    }
+                case 17:
+                	listenerFlag.OnCambiare((byte)2, getItemId(position));
+                    break;
+                }
                 }
                 catch(Exception e){
                 	throw new ClassCastException("Table not found:_ " + namT);

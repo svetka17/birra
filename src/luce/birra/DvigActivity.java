@@ -45,7 +45,7 @@ public class DvigActivity extends FragmentActivity implements LoaderCallbacks<Cu
     tvKol = (TextView) findViewById(R.id.tv_kol_dvig);
     
     tvDataIns = (TextView) findViewById(R.id.te_Data_Ras1Dvig);
-    tvDataIns.setText(MainActivity.getStringDataTime( Integer.parseInt( String.valueOf( MainActivity.getIntDataTime() ).substring(0,6).concat("0000") ) ));
+    //tvDataIns.setText(MainActivity.getStringDataTime( Integer.parseInt( String.valueOf( MainActivity.getIntDataTime() ).substring(0,6).concat("0000") ) ));
     tvDataIns.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	//showDialog(1);
@@ -84,7 +84,7 @@ public class DvigActivity extends FragmentActivity implements LoaderCallbacks<Cu
         }
       });
     tvDataIns2 = (TextView) findViewById(R.id.te_Data_Ras2Dvig);
-    tvDataIns2.setText(MainActivity.getStringDataTime(MainActivity.getIntDataTime()));
+    //tvDataIns2.setText(MainActivity.getStringDataTime(MainActivity.getIntDataTime()));
     tvDataIns2.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	//showDialog(2);

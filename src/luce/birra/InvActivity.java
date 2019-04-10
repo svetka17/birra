@@ -7,6 +7,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,7 +29,7 @@ public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cur
   AdapterLV scAdapter;
   //static CheckBox cbVis;
 //  static TextView tvIdPgr;
-static TextView tvIdInv;
+static TextView tvIdInv, itogRaz, itogSumFact, itogSumReal;
 TextView tvTextInv;
 //  Spinner spPgr;
   
@@ -63,6 +64,10 @@ TextView tvTextInv;
     tvIdInv.setText("0");
     tvTextInv = (TextView) findViewById(R.id.tv_TextInv);
     tvTextInv.setText("-");
+    
+    itogSumFact = (TextView) findViewById(R.id.itogInvSumFact);
+    itogSumReal = (TextView) findViewById(R.id.itogInvSumReal);
+    itogRaz = (TextView) findViewById(R.id.itogInvRaznica);
 /*    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_Inv);
     
@@ -174,11 +179,11 @@ TextView tvTextInv;
 	//bll.setVisibility(LinearLayout.GONE);
     // формируем столбцы сопоставления
     String[] from = new String[] { 
-    		"_id","name_pgr","id_tmc","name_tmc","postname","keg","edname",/*"price",*/"price_vendor","kol_ostat","kol_real","summa","summa_fact"/*"kol_n","summa_n",
+    		/*"_id",*/"name_pgr","id_tmc","name_tmc","postname","keg","edname",/*"price",*/"price_vendor","kol_ostat","kol_real","summa","summa_fact"/*"kol_n","summa_n",
     		"kol_p","summa_p","kol_r","summa_r","kol_brak","summa_brak","kol_move","summa_move","kol_izl","summa_izl","kol_nedo","summa_nedo","summa_skidka",
     		"kol_k","summa_k"*/ //,"prim" //,"prim","ok"
     		};
-    int[] to = new int[] {R.id.tvId_Inv,R.id.tvNamePgr_Inv, R.id.tvId_Tmc_Inv, R.id.tvNameTmc_Inv, R.id.tvNamePost_Inv, R.id.tvKeg_Inv, R.id.tvTed_Inv, /*R.id.tvPrice_Inv,*/ R.id.tvPriceVen_Inv, R.id.tvKol_Inv, R.id.tvKolReal_Inv,R.id.tvSumma_Inv,R.id.tvSummaFact_Inv /* R.id.tvKolN_Inv, R.id.tvSummaN_Inv,
+    int[] to = new int[] {/*R.id.tvId_Inv,*/R.id.tvNamePgr_Inv, R.id.tvId_Tmc_Inv, R.id.tvNameTmc_Inv, R.id.tvNamePost_Inv, R.id.tvKeg_Inv, R.id.tvTed_Inv, /*R.id.tvPrice_Inv,*/ R.id.tvPriceVen_Inv, R.id.tvKol_Inv, R.id.tvKolReal_Inv,R.id.tvSumma_Inv,R.id.tvSummaFact_Inv /* R.id.tvKolN_Inv, R.id.tvSummaN_Inv,
     		R.id.tvKolP_Inv, R.id.tvSummaP_Inv, R.id.tvKolR_Inv, R.id.tvSummaR_Inv, R.id.tvKolBrak_Inv, R.id.tvSummaBrak_Inv, R.id.tvKolMove_Inv, R.id.tvSummaMove_Inv, R.id.tvKolIzl_Inv, R.id.tvSummaIzl_Inv, R.id.tvKolNedo_Inv, R.id.tvSummaNedo_Inv,
     		R.id.tvSummaSkidka_Inv, R.id.tvKolK_Inv, R.id.tvSummaK_Inv*/ };
     //int[] toH = new int[] {R.id.tvId_Ostat,R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,R.id.tvNamePost_Ostat,R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat,R.id.tvDataIns_Ostat};
@@ -220,6 +225,7 @@ TextView tvTextInv;
     					final long iid=id;
     					MainActivity.db.updRec("invent", iid, "kol_real", 0);  
     					getSupportLoaderManager().getLoader(0).forceLoad();
+    					setItog();
 						//showMessage("Колчество обнулено", (byte)1);		
     				}
     				if (flag==3) {
@@ -232,7 +238,9 @@ TextView tvTextInv;
 	    						//Log.d("MyLog",k+" iid1="+iid );
 	    						if (k!=0)
 	    						{MainActivity.db.updRec("invent", iid, "kol_real", k);  
-	        					getSupportLoaderManager().getLoader(0).forceLoad();}
+	        					getSupportLoaderManager().getLoader(0).forceLoad();
+	        					setItog();
+	    						}
 	    					}
 	    				}); 
 	    				getYes.show();
@@ -267,12 +275,18 @@ TextView tvTextInv;
     MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.inv_ll));
     if (MainActivity.no_inv==0)
     	btnMake.setVisibility(LinearLayout.GONE);
+    setItog();
+    itogSumFact.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogSumReal.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogRaz.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    
   }
   
   @Override
   protected void onRestart() {
     super.onRestart();
     getSupportLoaderManager().getLoader(0).forceLoad();
+    setItog ();
   }
   
   protected void onDestroy() {
@@ -326,7 +340,7 @@ TextView tvTextInv;
     			+ "on O.pgr=TP._id "
     			+ "where O.id_inv="+ ((Long.parseLong(tvIdInv.getText().toString())<=0)?"-1":tvIdInv.getText().toString()) + " order by O.pgr, O.name_tmc, O.id_post, O.keg"
     			, null);
-    	
+/*    	
     	Cursor cOst = MainActivity.db.getRawData ("select count(*) c from invent as O "			
     			//+ "left join tmc as T "
     			//+ "on O.id_tmc=T._id "
@@ -338,7 +352,7 @@ TextView tvTextInv;
     			//+ "on O.pgr=TP._id "
     			+ "where O.id_inv="+ ((Long.parseLong(tvIdInv.getText().toString())<=0)?"-1":tvIdInv.getText().toString()) //+ " order by O.pgr, O.name_tmc, O.id_post, O.keg"
     			, null);
-/*int ib=-1;
+int ib=-1;
 
 if (cOst.moveToFirst()) { 
 	 
@@ -352,6 +366,32 @@ if (cOst.moveToFirst()) {
       return cursor;
     }
      
+  }
+  
+  void setItog () {
+  	Cursor cursor = MainActivity.db.getRawData (
+  			"select sum(round(ifnull(O.kol_ostat,0)*ifnull(O.price_vendor,0),2)) summa, sum(round(ifnull(O.kol_real,0)*ifnull(O.price_vendor,0),2)) summa_fact "
+  			+ "from invent as O "			
+  			//+ "left join tmc as T "
+  			//+ "on O.id_tmc=T._id "
+  			//+ "left join postav as P "
+  			//+ "on O.id_post=P._id "
+  		//	+ "left join tmc_ed as E "
+  	//		+ "on O.ed=E._id "
+  //			+ "left join tmc_pgr as TP "
+//  			+ "on O.pgr=TP._id "
+  			+ "where O.id_inv="+ ((Long.parseLong(tvIdInv.getText().toString())<=0)?"-1":tvIdInv.getText().toString()) 
+  			, null);
+      			
+          	 if (cursor.moveToFirst())  
+        		   
+       	        do {
+       	        	itogSumReal.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("summa")) ) );
+       	        	itogSumFact.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("summa_fact")) ) );
+       	        	itogRaz.setText(String.valueOf(MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa"))-cursor.getDouble(cursor.getColumnIndex("summa_fact") ))) );
+       	        } while (cursor.moveToNext());
+          	        cursor.close();
+       	     
   }
   
 }

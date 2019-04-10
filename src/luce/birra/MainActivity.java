@@ -185,6 +185,8 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 					file=Export2Excel.otchet_del(getIntData(dat11),getIntData(dat22), ""); break;
 				case 10:
 					file=Export2Excel.inv((int) StrToFloat(pgrr), ""); break;
+				case 11:
+					file=Export2Excel.brakmove((int) StrToFloat(pgrr), ""); break;
 				}
 				//u1  =  Uri.fromFile(file);
 				//intent = new Intent(Intent.);
@@ -221,6 +223,8 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 							Export2Excel.otchet_del(getIntData(dat11),getIntData(dat22), dirName); break;
 						case 10:
 							Export2Excel.inv((int) StrToFloat(pgrr), ""); break;
+						case 11:
+							Export2Excel.brakmove((int) StrToFloat(pgrr), ""); break;
 						}
 					}
 				}) ;
@@ -249,6 +253,8 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 					file=Export2Excel.otchet_del(getIntData(dat11),getIntData(dat22), ""); break;
 				case 10:
 					file=Export2Excel.inv((int) StrToFloat(pgrr), ""); break;
+				case 11:
+					file=Export2Excel.brakmove((int) StrToFloat(pgrr), ""); break;
 				}
 				//u1  =  Uri.fromFile(file);
 				sendIntent = new Intent(Intent.ACTION_SEND);
