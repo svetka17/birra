@@ -32,6 +32,7 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
   AdapterLV scAdapter;
   static CheckBox cbVis;
   static TextView tvIdPgr;
+  TextView nedo,izl;
   Spinner spPgr;
   //int tvDialogN=0;
   //LinearLayout ll;
@@ -65,6 +66,11 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
 	});
     tvIdPgr = (TextView) findViewById(R.id.et_Id_PgrOstat);
     tvIdPgr.setText("0");
+    
+    nedo = (TextView) findViewById(R.id.tvOstat_nedo_brak);
+    nedo.setText("¡–¿ ");
+    izl = (TextView) findViewById(R.id.tvOstat_izl_move);
+    izl.setText("œ≈–≈Ã≈Ÿ≈Õ»≈");
     // make an adapter from the cursor
     String[] fromPgr = new String[] {"name"};
     int[] toPgr = new int[] {android.R.id.text1};
@@ -107,7 +113,7 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
         }
       });
     // ÙÓÏËÛÂÏ ÒÚÓÎ·ˆ˚ ÒÓÔÓÒÚ‡‚ÎÂÌËˇ
-    String[] from = new String[] { "_id","tname","pgr",/*"pname",*/"kol","kol_izl","kol_nedo","ted","price", "keg" };
+    String[] from = new String[] { "_id","tname","pgr",/*"pname",*/"kol","kol_nedo","kol_izl","ted","price", "keg" };
     int[] to = new int[] {R.id.tvId_Brak, R.id.tvNameTmc_Brak,R.id.tvNamePgr_Brak, /*R.id.tvNamePost_Ostat,*/R.id.tvKol_Brak,R.id.tvKolNedo_Brak,R.id.tvKolIzl_Brak,R.id.tvTed_Brak,R.id.tvPrice_Brak, R.id.tvKeg_Brak };
     //int[] toH = new int[] {R.id.tvId_Ostat,R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,R.id.tvNamePost_Ostat,R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat,R.id.tvDataIns_Ostat};
 
@@ -137,23 +143,26 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
     			} 
     				if (flag==2) {*/
     					final long idd=id;
-    					DialogScreen getkol = new DialogScreen(BrakActivity.this,BrakActivity.this,R.id.cb_Kol_Ostat)
+    					DialogScreen getkol = new DialogScreen(BrakActivity.this,BrakActivity.this, (fl==1?2:3))
     							 .setDialogScreenListener(new DialogListener() {
     								@Override
     								public void OnSelectedKol(double k) {
     									if (k!=0) 
     									{
     										long countT=0;
-    				    					Cursor cc = MainActivity.db.getRawData ("select O.id_tmc as id_tmc, O.keg as keg, O.kol as kol, O.ed as ed, O.id_post as id_post, TP.price as price from ostat O left join tmc_price as TP on O.id_tmc=TP.id_tmc and O.id_post=TP.id_post where O.kol<>0 and O._id="+idd,null);
+    				    					Cursor cc = MainActivity.db.getRawData ("select O.id_tmc as id_tmc, O.keg as keg, O.kol as kol, O.ed as ed, O.id_post as id_post, TP.price as price from ostat O left join tmc_price as TP on O.id_tmc=TP.id_tmc and O.id_post=TP.id_post where O._id="+idd,null);
     				    					   if (cc.moveToFirst()) { 
-    				    					        do {countT=
+    				    					        do {
+    				    					        	if (k<=cc.getDouble(cc.getColumnIndex("kol")))
+    				    					        	countT=
     				    					        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")),/*cc.getDouble(cc.getColumnIndex("kol"))-*/k,
     				    					        				/*(cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0),(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0)*/
     				    					        				//(k>0)&&(k<cc.getDouble(cc.getColumnIndex("kol")))?cc.getDouble(cc.getColumnIndex("kol"))-k:0,
     				    					        				//(k>0)&&(k>cc.getDouble(cc.getColumnIndex("kol")))?cc.getDouble(cc.getColumnIndex("kol"))-k:0,
-    				    					        				0,0,0,0,//cc.getDouble(cc.getColumnIndex("kol"))-k,
+    				    					        				0,0,(fl==1?0:k),(fl==1?k:0),//cc.getDouble(cc.getColumnIndex("kol"))-k,
     				    					        				(byte)0,(byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, (fl==1?"œ≈–≈Ã≈Ÿ≈Õ»≈":"¡–¿ ")+" Œ—“¿“ ¿ –¿—’Œƒ ID="+idd, MainActivity.getIntDataTime(), (fl==1?2:1));
-    				    					        //MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")),-k,/*cc.getDouble(cc.getColumnIndex("kol")),(cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0),(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0)*/0,0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "»«Ã≈Õ≈Õ»≈ Œ—“¿“ ¿ –¿—’Œƒ ID="+idd, MainActivity.getIntDataTime(), 1);		
+    				    					        	else showMessage(" ÓÎË˜ÂÒÚ‚Ó ÓÒÚ‡ÚÍ‡ ÌÂ ‰ÓÒÚ‡ÚÓ˜ÌÓ", (byte)1);
+    				    					        	//MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")),-k,/*cc.getDouble(cc.getColumnIndex("kol")),(cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0),(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0)*/0,0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "»«Ã≈Õ≈Õ»≈ Œ—“¿“ ¿ –¿—’Œƒ ID="+idd, MainActivity.getIntDataTime(), 1);		
     				    					        //MainActivity.db.addRecPRIXOD(cc.getInt(cc.getColumnIndex("id_tmc")),cc.getInt(cc.getColumnIndex("keg")), k,0, 0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getDouble(cc.getColumnIndex("price")), cc.getInt(cc.getColumnIndex("id_post")), "»«Ã≈Õ≈Õ»≈ Œ—“¿“ ¿ œ–»’Œƒ ID="+idd, MainActivity.getIntDataTime(), (byte)1);
     				    					        } while (cc.moveToNext());
     				    					      };
@@ -233,7 +242,7 @@ from ostat as O left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT
     	
     	Cursor cursor = db.getRawData (
     			"select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, round(O.kol,3) as kol, E.name as ted, TT.price as price, O.id_post as id_post, ifnull(O.data_upd,O.data_ins) as data_ins, "
-    			+ "P.name as pname, T.name as tname, TP.name as pgr, CASE O.ed WHEN 1 then round(O.kol_nedo,2) ELSE round(O.kol_nedo,3) END  as kol_nedo, CASE O.ed WHEN 1 then round(O.kol_izl,2) ELSE round(O.kol_izl,3) END as kol_izl "
+    			+ "P.name as pname, T.name as tname, TP.name as pgr, sum(CASE R.ok WHEN 1 then round(R.kol,3) ELSE 0 END) as kol_nedo, sum(CASE R.ok WHEN 2 then round(R.kol,3) ELSE 0 END) as kol_izl "
     			+ "from ostat as O "
     			+ "left join tmc_price as TT "
     			+ "on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed "
@@ -245,7 +254,11 @@ from ostat as O left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT
     			+ "on O.ed=E._id "
     			+ "left join tmc_pgr as TP "
     			+ "on T.pgr=TP._id "
-    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" (O.kol!=0 or O.kol_nedo!=0 or O.kol_izl!=0) ")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString())  +" order by T.pgr, T.name, O.id_post, O.keg"
+    			+ "left join rasxod as R "
+    			+ "on O.id_tmc=R.id_tmc and O.id_post=R.id_post and O.ed=R.ed and O.keg=R.keg and ifnull(R.ok,0) in (1,2)"
+    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" (O.kol!=0 or O.kol_nedo!=0 or O.kol_izl!=0) ")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString())  
+    			+ " group by O._id, O.id_tmc, O.keg, round(O.kol,3), E.name, TT.price, O.id_post, ifnull(O.data_upd,O.data_ins), P.name, T.name, TP.name"
+    			+" order by T.pgr, T.name, O.id_post, O.keg"
     			, null);//new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"T.pgr ":tvIdPgr.getText().toString()});// new String[] {,});
       return cursor;
     }

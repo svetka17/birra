@@ -386,8 +386,8 @@ if (cOst.moveToFirst()) {
           	 if (cursor.moveToFirst())  
         		   
        	        do {
-       	        	itogSumReal.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("summa")) ) );
-       	        	itogSumFact.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("summa_fact")) ) );
+       	        	itogSumReal.setText(String.valueOf( MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa")) )) );
+       	        	itogSumFact.setText(String.valueOf( MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa_fact")) )) );
        	        	itogRaz.setText(String.valueOf(MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa"))-cursor.getDouble(cursor.getColumnIndex("summa_fact") ))) );
        	        } while (cursor.moveToNext());
           	        cursor.close();

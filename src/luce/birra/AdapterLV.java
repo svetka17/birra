@@ -3,6 +3,7 @@ package luce.birra;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.Button;
@@ -247,6 +248,13 @@ tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("d
     	{((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
     	tv = (TextView) view.findViewById(R.id.tvDataIns_Inv);  	
         tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+        
+        tv = (TextView) view.findViewById(R.id.tvKolReal_Inv);  	
+        tv.setBackgroundColor(Color.TRANSPARENT);
+        
+        tv = (TextView) view.findViewById(R.id.tvKol_Inv);  	
+        tv.setBackgroundColor(Color.LTGRAY);
+        
     	break;	
     case 2:
         //for (i=0;i<r.length;i++) {
@@ -566,7 +574,8 @@ tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("d
                 case  6: //break;
                 //case  3:
                 case  4:
-                case  5:
+                case  5: listenerFlag.OnCambiare((byte)2, getItemId(position));
+                		break;
                 case 10:
                 case 11:
                 case 14: MainActivity.no_inv=0; break;

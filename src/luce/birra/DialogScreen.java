@@ -45,6 +45,10 @@ public class DialogScreen extends AlertDialog.Builder {
 		   switch (tvI) {
 		   case 0:
 			   return "Файл Excel";
+		   case 3:
+			   return "Вевдите количество брака";
+		   case 2:
+			   return "Вевдите количество перемещения";
 		   case R.id.tvOtherKol_:
 			   return "Введите вес/количество товара";
 		   case R.id.etCheckNal:

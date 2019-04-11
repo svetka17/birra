@@ -624,7 +624,8 @@ void makeDialog() {
 							        do {countT=
 							        		
 							        		MainActivity.db.addRecRASXODcount
-							        		(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0), (cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0), 0,0,(byte)0, (byte)cc.getInt(cc.getColumnIndex("ed")), but.get(Btovar).price,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "удаление по кнопке из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 5);
+							        		(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 
+							        				(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0), (cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0), 0,0,(byte)0, (byte)cc.getInt(cc.getColumnIndex("ed")), but.get(Btovar).price,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "удаление по кнопке из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 5);
 							        } while (cc.moveToNext());
 							      };
 							if (countT!=0) showMessage("Остаток обнулен", (byte)1);
@@ -1204,8 +1205,8 @@ void makeDialog() {
 		 							        	countT1=		 							        
 		 							        MainActivity.db.addRecRASXODcount
 		 							        (cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 
-		 							        		cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0,
-		 							        		cc.getDouble(cc.getColumnIndex("kol"))<0?cc.getDouble(cc.getColumnIndex("kol")):0,
+		 							        		0,//MainActivity.round3(cc.getDouble(cc.getColumnIndex("kol")))>0.001?cc.getDouble(cc.getColumnIndex("kol")):0,
+		 							        		cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0,
 		 							        		0,0,/*(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0),
 		 							        		 (cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0),*/ 
 		 							        		(byte)0,(byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, MainActivity.usr+"новая кега - обнуление из меню продаж ", MainActivity.getIntDataTime(), 1);
@@ -1373,7 +1374,6 @@ void makeDialog() {
    //static Drawable getDraw() {
 	//   return getResources().getDrawable(R.drawable.edittexth_style);
    //}
-   
   void fixV() {
 	   float tmp=0;
 	   String l = "";
@@ -1385,6 +1385,232 @@ void makeDialog() {
 	   StyleSpan style2; 
 	   AbsoluteSizeSpan s12;
 	   
+	   if (tbTara.isChecked()) 
+  	{	m = new HashMap<String, Object>();
+  	//if (tbBrak.isChecked()) {m.put("brak", 1); brak = 1;  b=b+" (БРАК)";} else m.put("brak", 0);
+  	//if (tbMove.isChecked()) {m.put("move", 1); move = 1; b=b+" (ПЕРЕМЕЩЕНИЕ)";} else m.put("move", 0);
+  		m.put("skidka_sum", 0);
+  		m.put("skidka_but", 0);
+  		m.put("skidka_but_text", "0%");
+  		  m.put("name", but.get(Btovar).tmc_name+" (СВОЯ ТАРА)"+b);
+  		//m.put("name", but.get(Btovar).tmc_name);
+  		   m.put("price", MainActivity.round2(but.get(Btovar).price));
+  		   if (Btara!=-2) 
+  		   {m.put("kol", MainActivity.round3(but.get(Btara).val)+" "+but.get(Btovar).ted); 
+  		   tmp=MainActivity.round2(but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
+  		   m.put("summa", tmp/*/0.5*/);
+  		m.put("summakp", tmp);
+  		m.put("summa2", tmp);
+  		m.put("skidka_sum_itog", tmp);
+  		   m.put("itog", MainActivity.round3(but.get(Btara).val)+" * "+MainActivity.round2(but.get(Btovar).price)+" = ");} 
+  		   else
+  		   {m.put("kol", tvKol.getText().toString()+" "+but.get(Btovar).ted); 
+  		   tmp = MainActivity.round2(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()));
+  		   m.put("summa", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+  				   );
+  		m.put("summakp", tmp );
+  		m.put("summa2", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+				   );
+  		m.put("skidka_sum_itog", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+				   );
+  		m.put("itog", tvKol.getText().toString()//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
+  				+" * "+MainActivity.round2(but.get(Btovar).price)+" = ");}
+  		      m.put("tara", "СВОЯ ТАРА");
+  		      data.add(m);
+  		      sAdapter.notifyDataSetChanged();
+  		   if (Btara!=-2)	
+  	{
+  			//Log.d("MyLog", "Btovar1="+Btovar);
+  			sumI=sumI+but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/);
+  		   	
+  		   	but.get(Btovar).ost=but.get(Btovar).ost-but.get(Btara).val;
+  		   	but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+but.get(Btara).val;
+  		   	
+  	tranz.add(new tranDB(
+  			brak,
+  			move,
+  			(byte)(data.size()-1),
+  			(byte)(data.size()-1), 
+  			Btovar, 
+  			but.get(Btovar).id_tmc, 
+  			but.get(Btovar).keg, 
+  			but.get(Btara).val, 
+  			but.get(Btovar).ed, 
+  			but.get(Btovar).price, 
+  			but.get(Btovar).post, 
+  			0, "своя тара"//,
+  			//0,
+  			//(but.get(Btovar).ost<0?((but.get(Btovar).ost)>0?-(but.get(Btovar).ost+but.get(Btara).val):but.get(Btara).val):0) 
+  			));
+  	
+  	}
+  		   else
+  		{//Log.d("MyLog", "Btovar2="+Btovar);
+  			sumI=sumI+but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+  	   	   			;
+  	   	 but.get(Btovar).ost=but.get(Btovar).ost-MainActivity.StrToFloat(tvKol.getText().toString());
+  	   	 but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+MainActivity.StrToFloat(tvKol.getText().toString());
+  	   	 
+  			   tranz.add(new tranDB(
+  				brak,
+  				move,
+  				(byte)(data.size()-1),
+  				(byte)(data.size()-1), 
+  				Btovar, 
+  				but.get(Btovar).id_tmc, 
+  				but.get(Btovar).keg,
+  				MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/) 
+  				,but.get(Btovar).ed, 
+  				but.get(Btovar).price, 
+  				but.get(Btovar).post, 0, "своя тара"//,
+  				//0,
+  	   			//(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-(but.get(Btovar).ost):MainActivity.StrToFloat(tvKol.getText().toString())):0) 
+  				) );
+  	   		
+  		}
+  		
+  	}
+  	else
+  	{//Log.d("MyLog", "Btovar fixV1="+Btovar);
+  	  m = new HashMap<String, Object>();
+  	//if (tbBrak.isChecked()) {m.put("brak", 1); brak = 1;  b=b+" (БРАК)";} else m.put("brak", 0);
+  	//if (tbMove.isChecked()) {m.put("move", 1); move = 1; b=b+" (ПЕРЕМЕЩЕНИЕ)";} else m.put("move", 0);
+  	  	m.put("skidka_sum", 0);
+		m.put("skidka_but", 0);
+		m.put("skidka_but_text", "0%");
+  	  	//m.put("name", but.get(Btovar).tmc_name);
+  	 m.put("price", MainActivity.round2(but.get(Btovar).price));
+  	 if (Btara!=-2) {m.put("kol", MainActivity.round3(but.get(Btara).val)+" "+but.get(Btovar).ted);
+		      m.put("tara", " + ТАРА "+but.get(Btara).tmc_name);
+		      m.put("name", but.get(Btovar).tmc_name+" (ТАРА "+but.get(Btara).tmc_name+")"+b);
+		      tmp = MainActivity.round2(but.get(Btovar).price*(but.get(Btara).val/*/0.5*/)+but.get(Btara).price);
+		      //Log.d("MyLog", "price="+but.get(Btara).price);
+		      m.put("summa", tmp);
+		      m.put("summakp", tmp);
+		      m.put("summa2", tmp);
+		      m.put("skidka_sum_itog", tmp);
+		      m.put("itog", MainActivity.round3(but.get(Btara).val)+" * "+MainActivity.round2(but.get(Btovar).price)+" + "+MainActivity.round2(but.get(Btara).price)+" = ");}
+  	 else
+  	{m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted);
+   m.put("tara", /*" + ПАКЕТ "*/"");
+   m.put("name", but.get(Btovar).tmc_name+b);
+   tmp = MainActivity.round2(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()));
+   m.put("summakp", tmp);
+   m.put("summa", tmp);
+   m.put("summa2", tmp);
+   m.put("skidka_sum_itog", tmp);
+   m.put("itog", tvKol.getText().toString()//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
+   		+" * "+MainActivity.round2(but.get(Btovar).price)+" = ");}
+		      data.add(m);
+		      
+  		
+		      sAdapter.notifyDataSetChanged();
+		      if (Btara!=-2) {	
+		    	 // Log.d("MyLog", "tara1="+(byte)(data.size()-1));
+		    	 // Log.d("MyLog", "Btovar3="+Btovar);
+		    	  but.get(Btovar).ost=but.get(Btovar).ost-but.get(Btara).val;
+		    	   	but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+but.get(Btara).val;
+		    	   	but.get(Btara).ost=but.get(Btara).ost-but.get(Btara).kol;
+		    	   	
+		    	   	sumI=sumI+(but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/)+but.get(Btara).price);
+		    	   	
+	tranz.add(new tranDB(
+			brak,
+			move,
+			(byte)(data.size()-1),
+			(byte)(data.size()-1), 
+			Btovar, 
+			but.get(Btovar).id_tmc, 
+			but.get(Btovar).keg, 
+			but.get(Btara).val,
+			but.get(Btovar).ed, 
+			but.get(Btovar).price, 
+			but.get(Btovar).post, 0, "с тарой"//,//0,
+			//(but.get(Btovar).ost<0?((but.get(Btovar).ost+but.get(Btara).val)>0?-(but.get(Btovar).ost):but.get(Btara).val):0)
+			));	
+	//Log.d("MyLog", "Btovar4="+Btovar+" "+Btara);
+  	tranz.add(new tranDB(
+  			brak,
+  			move,
+  			(byte)(data.size()-1),
+  			(byte) -1 /*если тара, то позиция в чеке -1*/, 
+  			Btara,
+  			but.get(Btara).id_tmc, 
+  			but.get(Btara).keg, 
+  			but.get(Btara).kol, 
+  			but.get(Btara).ed, 
+  			but.get(Btara).price, 
+  			but.get(Btara).post, 
+  			0, "тара"//,//0,
+  			//0
+  			));
+
+		      }
+		      else
+			      
+		    	   	{//Log.d("MyLog", "Btovar5="+Btovar);
+		    	  but.get(Btovar).ost=but.get(Btovar).ost-MainActivity.StrToFloat(tvKol.getText().toString());     
+		    	  sumI=sumI+(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
+		    	    		   +0);
+		    	  tranz.add(new tranDB(
+		    			  brak,
+		    			  move,
+		    			  (byte)(data.size()-1),
+		    			  (byte)(data.size()-1), 
+		    			  Btovar,
+		    			  but.get(Btovar).id_tmc,
+		    			  but.get(Btovar).keg, 
+		    			  MainActivity.StrToFloat(tvKol.getText().toString()),but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "пакет"//,//0,
+		    			  //(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-(but.get(Btovar).ost):MainActivity.StrToFloat(tvKol.getText().toString())):0)
+		    			  ));	
+		    	      // tranz.add(new tranDB((byte)(data.size()-1), Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "tara"));
+		    	  }
+  	}
+
+	   l = but.get(Btovar).tmc_name+"\n"
+			   	  +(but.get(Btovar).ed==1?MainActivity.round2(but.get(Btovar).ost):MainActivity.round3(but.get(Btovar).ost))
+			   	  +but.get(Btovar).ted+" ЦЕНА "+MainActivity.round2(but.get(Btovar).price)+but.get(Btovar).string_keg;
+				        	l1=(but.get(Btovar).tmc_name+"\n").length(); 
+				        	l2=l.length();
+				        	text = new SpannableStringBuilder(l); 
+				        	style2 = new StyleSpan(Typeface.BOLD); 
+				        	s12 = new AbsoluteSizeSpan(MainActivity.butNameS ,false);
+				        	text.setSpan(s12, l1, l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
+				        	text.setSpan(style2,l1,l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE);	  
+				        	but.get(Btovar).tb.setTextOff(text);
+				        	but.get(Btovar).tb.setTextOn(text);
+				        	
+  	tvSum.setText(String.valueOf(MainActivity.round2(sumI)));
+  	but.get(Btovar).tb.setChecked(false);
+  	but.get(Btovar).tb.setTextColor(clrNoCheck);
+  	but.get(Btovar).tb.setBackground(tvSum.getContext().getResources().getDrawable(R.drawable.edittexth_style));
+  	if (Btara!=-2)
+  	{but.get(Btara).tb.setChecked(false);
+  	but.get(Btara).tb.setTextColor(clrNoCheck);
+  	but.get(Btara).tb.setBackground(tvSum.getContext().getResources().getDrawable(R.drawable.edittexth_style));
+  	}
+  	else
+  	{tbnKol.setChecked(false);
+  	tbnKol.setTextColor(clrNoCheck);
+  	tbnKol.setBackground(tvSum.getContext().getResources().getDrawable(R.drawable.edittexth_style));
+  	tvKol.setText("");}
+  	Btovar=-1; Btara=-1;
+  	//strKol="";
+  lvCombo.smoothScrollToPosition(data.size()-1);
+  }
+  
+  void fixV_checkKol() {
+	  byte z = 0;
+	   float tmp=0;
+	   String l = "";
+	   String b = "";
+	   byte brak = 0;
+	   byte move = 0;
+	   int l1=0,l2=0;
+	   SpannableStringBuilder text; 
+	   StyleSpan style2; 
+	   AbsoluteSizeSpan s12;
+	//if (but.get(Btovar).ost<1) {};   
 	   if (tbTara.isChecked()) 
    	{	m = new HashMap<String, Object>();
    	//if (tbBrak.isChecked()) {m.put("brak", 1); brak = 1;  b=b+" (БРАК)";} else m.put("brak", 0);
@@ -1416,10 +1642,12 @@ void makeDialog() {
    		m.put("itog", tvKol.getText().toString()//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
    				+" * "+MainActivity.round2(but.get(Btovar).price)+" = ");}
    		      m.put("tara", "СВОЯ ТАРА");
-   		      data.add(m);
-   		      sAdapter.notifyDataSetChanged();
+   		      //data.add(m);
+   		      //sAdapter.notifyDataSetChanged();
    		   if (Btara!=-2)	
-   	{
+   	{ ///---
+   	  if (but.get(Btovar).ost>but.get(Btara).val) {
+      ///---			   
    			//Log.d("MyLog", "Btovar1="+Btovar);
    			sumI=sumI+but.get(Btovar).price*(but.get(Btara).val/*/0.5f*/);
    		   	
@@ -1442,10 +1670,16 @@ void makeDialog() {
    			//0,
    			//(but.get(Btovar).ost<0?((but.get(Btovar).ost)>0?-(but.get(Btovar).ost+but.get(Btara).val):but.get(Btara).val):0) 
    			));
-   	
+   	///---
+   	  z=1;
+   	  } else showMessage("Такого количества нет!", (byte)0);
+   	///---
    	}
    		   else
    		{//Log.d("MyLog", "Btovar2="+Btovar);
+   			   ///---
+   			if (but.get(Btovar).ost>MainActivity.StrToFloat(tvKol.getText().toString())) {
+   			   ///---
    			sumI=sumI+but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
    	   	   			;
    	   	 but.get(Btovar).ost=but.get(Btovar).ost-MainActivity.StrToFloat(tvKol.getText().toString());
@@ -1466,9 +1700,15 @@ void makeDialog() {
    				//0,
    	   			//(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-(but.get(Btovar).ost):MainActivity.StrToFloat(tvKol.getText().toString())):0) 
    				) );
-   	   		
+   	   		///---
+   			   z=1;
+   		} else showMessage("Такого количества нет!", (byte)0);
+   			///---
    		}
-   		
+ ///---
+   	if (z==1) {data.add(m);
+    sAdapter.notifyDataSetChanged();}
+ ///---
    	}
    	else
    	{//Log.d("MyLog", "Btovar fixV1="+Btovar);
@@ -1501,11 +1741,12 @@ void makeDialog() {
     m.put("skidka_sum_itog", tmp);
     m.put("itog", tvKol.getText().toString()//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
     		+" * "+MainActivity.round2(but.get(Btovar).price)+" = ");}
-		      data.add(m);
-		      
-   		
-		      sAdapter.notifyDataSetChanged();
-		      if (Btara!=-2) {	
+		     // data.add(m);
+		     // sAdapter.notifyDataSetChanged();
+		      if (Btara!=-2) {
+		    	///---
+		   			if (but.get(Btovar).ost>but.get(Btara).val) {
+		   			   ///---
 		    	 // Log.d("MyLog", "tara1="+(byte)(data.size()-1));
 		    	 // Log.d("MyLog", "Btovar3="+Btovar);
 		    	  but.get(Btovar).ost=but.get(Btovar).ost-but.get(Btara).val;
@@ -1544,11 +1785,17 @@ void makeDialog() {
    			0, "тара"//,//0,
    			//0
    			));
-
+  ///---
+	   z=1;
+} else showMessage("Такого количества нет!", (byte)0);
+	///---
 		      }
 		      else
 			      
 		    	   	{//Log.d("MyLog", "Btovar5="+Btovar);
+		    	///---
+		   			if (but.get(Btovar).ost>MainActivity.StrToFloat(tvKol.getText().toString())) {
+		   			   ///---
 		    	  but.get(Btovar).ost=but.get(Btovar).ost-MainActivity.StrToFloat(tvKol.getText().toString());     
 		    	  sumI=sumI+(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
 		    	    		   +0);
@@ -1564,7 +1811,15 @@ void makeDialog() {
 		    			  //(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-(but.get(Btovar).ost):MainActivity.StrToFloat(tvKol.getText().toString())):0)
 		    			  ));	
 		    	      // tranz.add(new tranDB((byte)(data.size()-1), Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "tara"));
-		    	  }
+		    	///---
+	   			   z=1;
+	   		} else showMessage("Такого количества нет!", (byte)0);
+	   			///---
+		    	   	}
+		    ///---
+		     	if (z==1) {data.add(m);
+		      sAdapter.notifyDataSetChanged();}
+		   ///---
    	}
 
 	   l = but.get(Btovar).tmc_name+"\n"
@@ -1715,7 +1970,7 @@ void makeDialog() {
 	   
 	   if (data.size()!=0)
    	{
-		// int klient=0; if (!=0) 
+		   // int klient=0; if (!=0) 
     long cou=0; cou=MainActivity.db.addRecKLIENTcount(MainActivity.num_id, "чек№ "+MainActivity.num_id, MainActivity.StrToFloat(tvSum.getText().toString()), 
     		MainActivity.round2(MainActivity.StrToFloat((etSkidka.getText().toString()))+MainActivity.StrToFloat((etSkidkaPerSum.getText().toString()))), "чек "+(cash==0?"наличными":"безналичный") , MainActivity.getIntDataTime(),(int) MainActivity.StrToFloat(tvIdKlient.getText().toString()) , (byte)0);
     
@@ -1728,7 +1983,19 @@ void makeDialog() {
     if (MainActivity.StrToFloat(etSkidka.getText().toString())!=0) sk=/*MainActivity.round(*/MainActivity.StrToFloat(etSkidka.getText().toString())/tranz.size()/*,2)*/;
     
     for (int i=0; i<tranz.size(); i++) {
-    skid=0;	
+    	/*int fla=-1;
+  		Cursor cur = MainActivity.db.getRawData (
+  	  			"select ifnull(data_upd,0) c from ostat where id_tmc="+but.get(tranz.get(i).tagB).id_tmc+" and keg="+but.get(tranz.get(i).tagB).keg+" and id_post="+but.get(tranz.get(i).tagB).post+" and ed="+but.get(tranz.get(i).tagB).ed//+" and data_upd is null"
+  	  			, null);	
+  	          	 if (cur.moveToFirst())  
+  	       	        do {
+  	       	        	fla= cur.getInt(cur.getColumnIndex("c"));
+  	       	      showMessage("111_fla="+fla, (byte)0);
+  	       	        } while (cur.moveToNext());
+  	          	        cur.close();	*/     
+  	          	        ////////////////
+    	
+    	skid=0;	
     if (tranz.get(i).tagL!=-1) skid=MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() );
     
     Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol=0 and id_tmc="+tranz.get(i).id_tmc+" and id_post="+tranz.get(i).id_post+" and keg="+tranz.get(i).keg+" and ed="+tranz.get(i).ed , null);
@@ -1778,18 +2045,19 @@ void makeDialog() {
        	text.setSpan(style2,l1,l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
        	*/
        	if (but.get(tranz.get(i).tagB).count_rasxod==0 && but.get(tranz.get(i).tagB).ed==1) {
-       		int fla=-1;
-       		Cursor cur = MainActivity.db.getRawData (
+       		 int fla=-1;
+       		 Cursor cur = MainActivity.db.getRawData (
        	  			"select count(*) c from ostat where id_tmc="+but.get(tranz.get(i).tagB).id_tmc+" and keg="+but.get(tranz.get(i).tagB).keg+" and id_post="+but.get(tranz.get(i).tagB).post+" and ed="+but.get(tranz.get(i).tagB).ed+" and data_upd is null"
        	  			, null);	
        	          	 if (cur.moveToFirst())  
        	       	        do {
        	       	        	fla= cur.getInt(cur.getColumnIndex("c"));
+       	       	      //showMessage("1_fla="+fla, (byte)0);
        	       	        } while (cur.moveToNext());
        	          	        cur.close();	        
-       		if (fla==0)
+       		if (fla>0)
        		MainActivity.db.updOstatKeg(but.get(tranz.get(i).tagB).id_tmc, but.get(tranz.get(i).tagB).post, but.get(tranz.get(i).tagB).keg, but.get(tranz.get(i).tagB).ed);
-       		
+       		//showMessage("fla="+fla, (byte)0);
        		but.get(tranz.get(i).tagB).count_rasxod=1;
        	}
    	//but.get(tranz.get(i).tagB).tb.setTextOff(text);//(but.get(tranz.get(i).tagB).tmc_name+"\n"+but.get(tranz.get(i).tagB).ost+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+but.get(tranz.get(i).tagB).price);

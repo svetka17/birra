@@ -73,10 +73,12 @@
  		    android:text="КЕГА"/>
 <TextView
  		    style="@style/lv_h"
+            android:id="@+id/tvOstat_izl_move"
             android:layout_weight="0.5"
  		    android:text="ИЗЛИШКИ"/>
 <TextView
  		    style="@style/lv_h"
+ 		    android:id="@+id/tvOstat_nedo_brak"
             android:layout_weight="0.5"
  		    android:text="НЕДОСТАЧА"/>
 <TextView

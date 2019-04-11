@@ -44,11 +44,11 @@
         style="@style/lv_i"
         android:layout_weight="0.5" />
         <TextView
-        android:id="@+id/tvKolNedo_Brak"
+        android:id="@+id/tvKolIzl_Brak"
         style="@style/lv_i"
         android:layout_weight="0.5" />
         <TextView
-        android:id="@+id/tvKolIzl_Brak"
+        android:id="@+id/tvKolNedo_Brak"
         style="@style/lv_i"
         android:layout_weight="0.5" />
     <LinearLayout
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/B"
-            android:text="ПЕРЕМЕСТИТЬ" />
+            android:text="БРАК" />
 
         <Button
             android:id="@+id/btnDelBrak"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/B"
-            android:text="БРАК" />
+            android:text="ПЕРЕМЕСТИТЬ" />
     </LinearLayout>
 
 </TableRow>
