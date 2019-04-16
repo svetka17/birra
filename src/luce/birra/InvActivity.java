@@ -12,11 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
 import luce.birra.AdapterLV.CambiareListener;
 import luce.birra.DialogScreen.DialogListener;
  
@@ -29,8 +32,10 @@ public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cur
   AdapterLV scAdapter;
   //static CheckBox cbVis;
 //  static TextView tvIdPgr;
-static TextView tvIdInv, itogRaz, itogSumFact, itogSumReal;
+static TextView tvIdInv, itogRaz, itogSumFact, itogSumReal, itogIzlNedo;
 TextView tvTextInv;
+static TextView tvIdPgr;
+Spinner spPgr;
 //  Spinner spPgr;
   
   void showMessage(String s, byte dur){
@@ -68,11 +73,11 @@ TextView tvTextInv;
     itogSumFact = (TextView) findViewById(R.id.itogInvSumFact);
     itogSumReal = (TextView) findViewById(R.id.itogInvSumReal);
     itogRaz = (TextView) findViewById(R.id.itogInvRaznica);
-/*    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
-    spPgr = (Spinner) findViewById(R.id.sp_Pgr_Inv);
+    itogIzlNedo = (TextView) findViewById(R.id.itogInvSumIzlNedo);
     
-    tvIdInv = (TextView) findViewById(R.id.tv_Id_Inv);
-    tvIdInv.setText("0");*/
+    Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
+    spPgr = (Spinner) findViewById(R.id.sp_Pgr_Inv);
+
     /*cbVis = (CheckBox) findViewById(R.id.cb_Kol_Inv);
     cbVis.setChecked(false);
     cbVis.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -81,35 +86,35 @@ TextView tvTextInv;
 			getSupportLoaderManager().getLoader(0).forceLoad();
 		}
 	});*/
- //   tvIdPgr = (TextView) findViewById(R.id.et_Id_PgrInv);
-  //  tvIdPgr.setText("0");
+    tvIdPgr = (TextView) findViewById(R.id.et_Id_PgrInv);
+    tvIdPgr.setText("0");
     // make an adapter from the cursor
-/*    String[] fromPgr = new String[] {"name"};
+    String[] fromPgr = new String[] {"name"};
     int[] toPgr = new int[] {android.R.id.text1};
     SimpleCursorAdapter sca = new SimpleCursorAdapter(this, R.layout.spinner_item, c, fromPgr, toPgr);
 
     // set layout for activated adapter
     sca.setDropDownViewResource(R.layout.spinner_drop_down); 
-*/    
+    
     // get xml file spinner and set adapter 
- //   spPgr.setAdapter(sca);
+    spPgr.setAdapter(sca);
 
-    // set spinner listener to display the selected item id
-    //mContext = this;
- /*   spPgr.setOnItemSelectedListener(new OnItemSelectedListener() {
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    spPgr.setOnItemSelectedListener(new OnItemSelectedListener() {
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
             //Toast.makeText(mContext, "Selected ID=" + id, Toast.LENGTH_LONG).show();
         	spPgr.setTag(id);
         	tvIdPgr.setText(String.valueOf(id));
         	getSupportLoaderManager().getLoader(0).forceLoad();
+        	setItog();
         }
         public void onNothingSelected(AdapterView<?> parent) {
         	spPgr.setTag(0);
-        	tvIdPgr.setText("0");
+        	tvIdPgr.setText(String.valueOf("0"));
         	getSupportLoaderManager().getLoader(0).forceLoad();
+        	setItog();
         }
         });
-   */ 
+    
     btnAdd = (Button) findViewById(R.id.btnAddInv);
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
@@ -155,8 +160,8 @@ TextView tvTextInv;
         	MainActivity.db.delAll("ostat");
         	Cursor cOst = MainActivity.db.getRawData ("select O._id as id, O.id_tmc as oid_tmc, O.keg as okeg, O.kol_ostat as okol, O.kol_nedo as okol_nedo, O.kol_izl as okol_izl, O.ed as oed, O.id_post as oid_post, O.kol_real kol_real, O.price_vendor ttprice, O.data_ins data_ins "
         	                	    		+ "from invent as O where O.id_inv="+MainActivity.invent/*tvIdInv.getText().toString()*/+" and ifnull(O.kol_real,0)!=0",null);
-        	        	    byte ib=0;
-        	        	    byte tmp=0;
+        	        	   // byte ib=0;
+        	        	   // byte tmp=0;
         	        	    
         	        	    if (cOst.moveToFirst()) { 
         	        	    	 
@@ -179,11 +184,11 @@ TextView tvTextInv;
 	//bll.setVisibility(LinearLayout.GONE);
     // формируем столбцы сопоставления
     String[] from = new String[] { 
-    		/*"_id",*/"name_pgr","id_tmc","name_tmc","postname","keg","edname",/*"price",*/"price_vendor","kol_ostat","kol_real","summa","summa_fact"/*"kol_n","summa_n",
+    		/*"_id",*/"name_pgr","id_tmc","name_tmc","postname","keg","edname",/*"price",*/"price_vendor","kol_izl","kol_nedo","kol_ostat","kol_real","summa","summa_fact","izlnedo"/*"kol_n","summa_n",
     		"kol_p","summa_p","kol_r","summa_r","kol_brak","summa_brak","kol_move","summa_move","kol_izl","summa_izl","kol_nedo","summa_nedo","summa_skidka",
     		"kol_k","summa_k"*/ //,"prim" //,"prim","ok"
     		};
-    int[] to = new int[] {/*R.id.tvId_Inv,*/R.id.tvNamePgr_Inv, R.id.tvId_Tmc_Inv, R.id.tvNameTmc_Inv, R.id.tvNamePost_Inv, R.id.tvKeg_Inv, R.id.tvTed_Inv, /*R.id.tvPrice_Inv,*/ R.id.tvPriceVen_Inv, R.id.tvKol_Inv, R.id.tvKolReal_Inv,R.id.tvSumma_Inv,R.id.tvSummaFact_Inv /* R.id.tvKolN_Inv, R.id.tvSummaN_Inv,
+    int[] to = new int[] {/*R.id.tvId_Inv,*/R.id.tvNamePgr_Inv, R.id.tvId_Tmc_Inv, R.id.tvNameTmc_Inv, R.id.tvNamePost_Inv, R.id.tvKeg_Inv, R.id.tvTed_Inv, /*R.id.tvPrice_Inv,*/ R.id.tvPriceVen_Inv,R.id.tvKol_Inv_Izl,R.id.tvKol_Inv_Nedo,R.id.tvKol_Inv, R.id.tvKolReal_Inv,R.id.tvSumma_Inv,R.id.tvSummaFact_Inv,R.id.tvSummaIzlNedo_Inv /* R.id.tvKolN_Inv, R.id.tvSummaN_Inv,
     		R.id.tvKolP_Inv, R.id.tvSummaP_Inv, R.id.tvKolR_Inv, R.id.tvSummaR_Inv, R.id.tvKolBrak_Inv, R.id.tvSummaBrak_Inv, R.id.tvKolMove_Inv, R.id.tvSummaMove_Inv, R.id.tvKolIzl_Inv, R.id.tvSummaIzl_Inv, R.id.tvKolNedo_Inv, R.id.tvSummaNedo_Inv,
     		R.id.tvSummaSkidka_Inv, R.id.tvKolK_Inv, R.id.tvSummaK_Inv*/ };
     //int[] toH = new int[] {R.id.tvId_Ostat,R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,R.id.tvNamePost_Ostat,R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat,R.id.tvDataIns_Ostat};
@@ -279,6 +284,7 @@ TextView tvTextInv;
     itogSumFact.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
     itogSumReal.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
     itogRaz.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogIzlNedo.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
     
   }
   
@@ -326,7 +332,7 @@ TextView tvTextInv;
     			+ "round(O.kol_ostat,3) kol_ostat, O.kol_real kol_real, round(O.kol_ostat*O.price_vendor,2) summa, round(O.kol_real*O.price_vendor,2) summa_fact,"
     			+ "O.kol_n kol_n, O.summa_n summa_n, "
     			+ "O.kol_p kol_p, O.summa_p summa_p, O.kol_r kol_r, O.summa_r summa_r, "
-    			+ "O.kol_brak kol_brak, O.summa_brak summa_brak, O.kol_move kol_move, O.summa_move summa_move, O.kol_izl kol_izl, O.summa_izl summa_izl, O.kol_nedo kol_nedo, O.summa_nedo summa_nedo, O.kol_skidka kol_skidka, O.summa_skidka summa_skidka, "
+    			+ "O.kol_brak kol_brak, O.summa_brak summa_brak, O.kol_move kol_move, O.summa_move summa_move, O.kol_izl kol_izl, O.summa_izl summa_izl, O.kol_nedo kol_nedo, ifnull(O.summa_izl,0)-ifnull(O.summa_nedo,0) izlnedo, O.summa_nedo summa_nedo, O.kol_skidka kol_skidka, O.summa_skidka summa_skidka, "
     			+ "O.kol_k kol_k, O.summa_k summa_k, "
     			+ "O.ed ed, E.name edname, O.price price, O.price_vendor price_vendor, O.id_post id_post, P.name postname, O.prim prim, O.data_ins data_ins, O.ok ok "
     			+ "from invent as O "			
@@ -338,7 +344,9 @@ TextView tvTextInv;
     			+ "on O.ed=E._id "
     			+ "left join tmc_pgr as TP "
     			+ "on O.pgr=TP._id "
-    			+ "where O.id_inv="+ ((Long.parseLong(tvIdInv.getText().toString())<=0)?"-1":tvIdInv.getText().toString()) + " order by O.pgr, O.name_tmc, O.id_post, O.keg"
+    			+ "where O.id_inv="+ ((Long.parseLong(tvIdInv.getText().toString())<=0)?"-1":tvIdInv.getText().toString()) 
+    			+ ((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString()) 
+    			+ " order by O.pgr, O.name_tmc, O.id_post, O.keg"
     			, null);
 /*    	
     	Cursor cOst = MainActivity.db.getRawData ("select count(*) c from invent as O "			
@@ -370,10 +378,10 @@ if (cOst.moveToFirst()) {
   
   void setItog () {
   	Cursor cursor = MainActivity.db.getRawData (
-  			"select sum(round(ifnull(O.kol_ostat,0)*ifnull(O.price_vendor,0),2)) summa, sum(round(ifnull(O.kol_real,0)*ifnull(O.price_vendor,0),2)) summa_fact "
+  			"select sum(round(ifnull(O.kol_ostat,0)*ifnull(O.price_vendor,0),2)) summa, sum(round(ifnull(O.kol_real,0)*ifnull(O.price_vendor,0),2)) summa_fact, sum(ifnull(O.summa_izl,0)-ifnull(O.summa_nedo,0)) summa_izlnedo "
   			+ "from invent as O "			
-  			//+ "left join tmc as T "
-  			//+ "on O.id_tmc=T._id "
+  			+ "left join tmc as T "
+  			+ "on O.id_tmc=T._id "
   			//+ "left join postav as P "
   			//+ "on O.id_post=P._id "
   		//	+ "left join tmc_ed as E "
@@ -381,6 +389,7 @@ if (cOst.moveToFirst()) {
   //			+ "left join tmc_pgr as TP "
 //  			+ "on O.pgr=TP._id "
   			+ "where O.id_inv="+ ((Long.parseLong(tvIdInv.getText().toString())<=0)?"-1":tvIdInv.getText().toString()) 
+  			+ ((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString()) 
   			, null);
       			
           	 if (cursor.moveToFirst())  
@@ -388,7 +397,8 @@ if (cOst.moveToFirst()) {
        	        do {
        	        	itogSumReal.setText(String.valueOf( MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa")) )) );
        	        	itogSumFact.setText(String.valueOf( MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa_fact")) )) );
-       	        	itogRaz.setText(String.valueOf(MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa"))-cursor.getDouble(cursor.getColumnIndex("summa_fact") ))) );
+       	        	itogRaz.setText(String.valueOf(MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa_fact"))-cursor.getDouble(cursor.getColumnIndex("summa") ))) );
+       	        	itogIzlNedo.setText(String.valueOf( MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa_izlnedo")) )) );
        	        } while (cursor.moveToNext());
           	        cursor.close();
        	     

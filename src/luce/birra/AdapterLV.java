@@ -55,6 +55,7 @@ public AdapterLV(/*int[] r,*/ int bD, int bU, byte nT, Context context, int layo
     case 13: namT="rasxod_del"; break;
     case 14: namT="invent_head"; break;
     case 15: namT="invent"; break;
+    case 16: namT="rasxod"; break;
     case 17: namT="ostat"; break;
     }
 }
@@ -393,6 +394,14 @@ tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("d
         tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
 		
     	break;
+    case 16:
+    	((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);
+    	//tv = (TextView) view.findViewById(R.id.tvNamePostPrixod_);  	
+        //tv.setText( ((cursor.getString(cursor.getColumnIndex("pname")).equals("-нет-"))?"":cursor.getString(cursor.getColumnIndex("pname"))) );
+        tv = (TextView) view.findViewById(R.id.tvDataIns_BrakMoveHist);  	
+        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+		
+    	break;
     case 13:
 
     	//tv = (TextView) view.findViewById(R.id.tvNamePostPrixod_);  	
@@ -584,6 +593,9 @@ tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("d
                 	listenerFlag.OnCambiare((byte)3, getItemId(position));
                     break;
                 case 0:
+                	listenerFlag.OnCambiare((byte)2, getItemId(position));
+                    break;
+                case 16:
                 	listenerFlag.OnCambiare((byte)2, getItemId(position));
                     break;
                 case 17:

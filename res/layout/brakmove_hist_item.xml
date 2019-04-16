@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/brakmove_hist_item_tr"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvId_BrakMoveHist"
+        style="@style/lv_i"
+        android:layout_weight="0.5"/>
+
+    <TextView
+        android:id="@+id/tvNamePgr_BrakMoveHist"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    
+    <TextView
+        android:id="@+id/tvNameTmc_Brak"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    
+    <TextView
+        android:id="@+id/tvNamePost_BrakMoveHist"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvKol_BrakMoveHist"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvTed_BrakMoveHist"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+
+    <TextView
+        android:id="@+id/tvDataIns_BrakMoveHist"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+        <TextView
+        android:id="@+id/tvPrim_BrakMoveHist"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvKeg_BrakMoveHist"
+        style="@style/lv_i"
+        android:layout_weight="0.5" />
+        
+    <LinearLayout
+        style="@style/_m1"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnUpdBrakMoveHist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="БРАК" />
+
+        <Button
+            android:id="@+id/btnDelBrakMoveHist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="УДАЛИТЬ" />
+    </LinearLayout>
+
+</TableRow>

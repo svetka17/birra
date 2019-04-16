@@ -919,16 +919,18 @@ static File rasxod_ostat (int dat1, int dat2, int pgr, String dirN) {
 			//Log.d("MyLog", "where="+where+" 0="+str[0]+" 1="+str[1]+" 2="+str[2]);
 			Cursor cc = 
 					 MainActivity.db.getRawData 
-			         ("select kkeg,keg,_id,pgr,name,post,kol,ed,sumka,price,skidka,ostat,sumkanonal,sumkanal from "+
+			         ("select kkeg,keg,_id,pgr,name,post,kol,ed,sumka,price,skidka,ostat,sumkanonal,sumkanal,brak,move from "+
 			                 "("+
-			                 "select sum(CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END) as sumkanonal, sum(CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END) as sumkanal, K.keg as kkeg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(ifnull(T.kol,0)) as kol,E.name as ed,sum(T.price*T.kol) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat "+ 
-			                 "from ostat as K left join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and T.ok=0 and "+str[1]+" and "+str[2]+ 
+			                 "select sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END else 0 end) as sumkanonal, sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END else 0 end) as sumkanal, K.keg as kkeg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(ifnull(T.kol,0)) as kol,E.name as ed,sum(T.price*T.kol) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat, "+ 
+			                 "sum(ifnull(case T.ok when 1 then T.kol_brak else 0 end,0)) as brak, sum(ifnull(case T.ok when 2 then T.kol_move else 0 end,0)) as move "+ 
+			                 "from ostat as K left join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and "+str[1]+" and "+str[2]+ 
 			                 " left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on K.ed = E._id left join postav as KK on K.id_post=KK._id "+
 			                 "where K.kol<>0 and "+str[0]+
 			                 " group by K.keg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')', TP._id,TT.name,TP.name,KK.name,E.name,round(K.kol,3) "+ 
 			                 " union all "+
-			                 "select sum(CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END) as sumkanonal, sum(CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END) as sumkanal, K.keg as kkeg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(ifnull(T.kol,0)) as kol,E.name as ed,sum(T.price*T.kol) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat "+ 
-			                 "from ostat as K left join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and T.ok=0 and "+str[1]+" and "+str[2]+ 
+			                 "select sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END else 0 end) as sumkanonal, sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END else 0 end) as sumkanal, K.keg as kkeg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(ifnull(T.kol,0)) as kol,E.name as ed,sum(T.price*T.kol) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat, "+ 
+			                 "sum(ifnull(case T.ok when 1 then T.kol_brak else 0 end,0)) as brak, sum(ifnull(case T.ok when 2 then T.kol_move else 0 end,0)) as move "+ 
+			                 "from ostat as K left join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and "+str[1]+" and "+str[2]+ 
 			                 " left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on K.ed = E._id left join postav as KK on K.id_post=KK._id "+
 			                 "where K.kol=0 and "+str[0]+
 			                 " group by K.keg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')', TP._id,TT.name,TP.name,KK.name,E.name,round(K.kol,3) "+ 
@@ -978,15 +980,17 @@ row.createCell(1).setCellValue("цпсоою");
 row.createCell(2).setCellValue("мюгбюмхе");
 row.createCell(3).setCellValue("онярюбыхй");
 row.createCell(4).setCellValue("опндюмн йнк-бн гю оепхнд");
-row.createCell(5).setCellValue("ед.хгл");
-row.createCell(6).setCellValue("опндюмн ясллю гю оепхнд");
-row.createCell(7).setCellValue("опндюмн ясллю мюк");
-row.createCell(8).setCellValue("опндюмн ясллю аегмюк");
-row.createCell(9).setCellValue("нярюрнй мю "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR));
-row.createCell(10).setCellValue("ясллю яйхдйх");
-row.createCell(11).setCellValue("жемю опндюфх");
-row.createCell(12).setCellValue("йецю");
-for (int i=0; i<13; i++) row.getCell(i).setCellStyle(style);
+row.createCell(5).setCellValue("апюй");
+row.createCell(6).setCellValue("оепелеыемн");
+row.createCell(7).setCellValue("ед.хгл");
+row.createCell(8).setCellValue("опндюмн ясллю гю оепхнд");
+row.createCell(9).setCellValue("опндюмн ясллю мюк");
+row.createCell(10).setCellValue("опндюмн ясллю аегмюк");
+row.createCell(11).setCellValue("нярюрнй мю "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR));
+row.createCell(12).setCellValue("ясллю яйхдйх");
+row.createCell(13).setCellValue("жемю опндюфх");
+row.createCell(14).setCellValue("йецю");
+for (int i=0; i<15; i++) row.getCell(i).setCellStyle(style);
 row.setHeight((short)1000);
 sheet.createFreezePane(0, 1);
 if (cc.moveToFirst())  
@@ -998,26 +1002,31 @@ row.createCell(1).setCellValue(cc.getString(cc.getColumnIndex("pgr")));
 row.createCell(2).setCellValue(cc.getString(cc.getColumnIndex("name")));
 row.createCell(3).setCellValue(cc.getString(cc.getColumnIndex("post")));
 row.createCell(4).setCellValue(cc.getDouble(cc.getColumnIndex("kol")));row.getCell(4).setCellStyle(styleN3);
-row.createCell(5).setCellValue(cc.getString(cc.getColumnIndex("ed")));
-row.createCell(6).setCellValue(cc.getDouble(cc.getColumnIndex("sumka")));row.getCell(6).setCellStyle(styleN2);
-row.createCell(7).setCellValue(cc.getDouble(cc.getColumnIndex("sumkanal")));row.getCell(7).setCellStyle(styleN2);
-row.createCell(8).setCellValue(cc.getDouble(cc.getColumnIndex("sumkanonal")));row.getCell(8).setCellStyle(styleN2);
-row.createCell(9).setCellValue(cc.getDouble(cc.getColumnIndex("ostat")));row.getCell(9).setCellStyle(styleN3);
+row.createCell(5).setCellValue(cc.getDouble(cc.getColumnIndex("brak")));row.getCell(5).setCellStyle(styleN3);
+row.createCell(6).setCellValue(cc.getDouble(cc.getColumnIndex("move")));row.getCell(6).setCellStyle(styleN3);
+row.createCell(7).setCellValue(cc.getString(cc.getColumnIndex("ed")));
+row.createCell(8).setCellValue(cc.getDouble(cc.getColumnIndex("sumka")));row.getCell(8).setCellStyle(styleN2);
+row.createCell(9).setCellValue(cc.getDouble(cc.getColumnIndex("sumkanal")));row.getCell(9).setCellStyle(styleN2);
+row.createCell(10).setCellValue(cc.getDouble(cc.getColumnIndex("sumkanonal")));row.getCell(10).setCellStyle(styleN2);
+row.createCell(11).setCellValue(cc.getDouble(cc.getColumnIndex("ostat")));row.getCell(11).setCellStyle(styleN3);
 
-row.createCell(10).setCellValue(cc.getDouble(cc.getColumnIndex("skidka")));row.getCell(10).setCellStyle(styleN2);
-row.createCell(11).setCellValue(cc.getDouble(cc.getColumnIndex("price")));row.getCell(11).setCellStyle(styleN2);
-row.createCell(12).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
+row.createCell(12).setCellValue(cc.getDouble(cc.getColumnIndex("skidka")));row.getCell(12).setCellStyle(styleN2);
+row.createCell(13).setCellValue(cc.getDouble(cc.getColumnIndex("price")));row.getCell(13).setCellStyle(styleN2);
+row.createCell(14).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
 } while (cc.moveToNext());
 cc.close();
 rowNum++;
 row = sheet.createRow(rowNum);
 FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
 row.createCell(4).setCellFormula("SUM(E2:E"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(4));row.getCell(4).setCellStyle(styleN3);
-row.createCell(6).setCellFormula("SUM(G2:G"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(6));row.getCell(6).setCellStyle(styleN2);
-row.createCell(7).setCellFormula("SUM(H2:H"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(7));row.getCell(7).setCellStyle(styleN2);
-row.createCell(8).setCellFormula("SUM(I2:I"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(8));row.getCell(8).setCellStyle(styleN2);
-row.createCell(10).setCellFormula("SUM(K2:K"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(10));row.getCell(10).setCellStyle(styleN2);
-sheet.setAutoFilter(CellRangeAddress.valueOf("A1:M"+rowNum));
+row.createCell(5).setCellFormula("SUM(F2:F"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(5));row.getCell(5).setCellStyle(styleN3);
+row.createCell(6).setCellFormula("SUM(G2:G"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(6));row.getCell(6).setCellStyle(styleN3);
+
+row.createCell(8).setCellFormula("SUM(J2:J"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(8));row.getCell(8).setCellStyle(styleN2);
+row.createCell(9).setCellFormula("SUM(K2:K"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(9));row.getCell(9).setCellStyle(styleN2);
+row.createCell(10).setCellFormula("SUM(L2:L"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(10));row.getCell(10).setCellStyle(styleN2);
+row.createCell(12).setCellFormula("SUM(M2:M"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(12));row.getCell(12).setCellStyle(styleN2);
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:O"+rowNum));
 workbook.write(out);// workbook.close();
 out.close();
 } catch (FileNotFoundException ef) {

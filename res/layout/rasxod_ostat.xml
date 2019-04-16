@@ -80,7 +80,15 @@
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
- 		    android:text="КОЛ"/>
+ 		    android:text="КОЛ ПРОДАНО"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="БРАК"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ПЕРЕМЕЩЕНО"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
@@ -149,6 +157,16 @@
  		    android:text="0"/>
 <TextView
  		    style="@style/lv_h"
+ 		    android:id="@+id/itogBrakRO"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogMoveRO"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+<TextView
+ 		    style="@style/lv_h"
             android:layout_weight="1"
  		    android:text=""/>
 <TextView
@@ -160,6 +178,7 @@
  		    style="@style/lv_h"
  		    android:id="@+id/itogNalRO"
             android:layout_weight="1"
+            android:background="@drawable/summa_chek"
  		    android:text="0"/>
 <TextView
  		    style="@style/lv_h"
@@ -188,7 +207,6 @@
             android:id="@+id/itogRasxodOstNoSkidka"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/summa_chek"
             android:text=""/>
     </TableRow>
     

@@ -33,7 +33,7 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
   ListView lvData;
   Button btnExit, btnAdd;
   AdapterLV scAdapter;
-  static TextView tvIdPgr, itogKol, itogSum, itogSkidka, itogNoSkidka, itogNalRO,itogNoNalRO;//, tvIdKlient; 
+  static TextView tvIdPgr, itogKol, itogSum, itogSkidka, itogNoSkidka, itogNalRO,itogNoNalRO, itogBrak, itogMove;//, tvIdKlient; 
   //static EditText tvDataIns;
   static TextView tvDataIns,tvDataIns2, tvd1, tvd2;
   Spinner spPgr;//, spKlient;
@@ -61,6 +61,8 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
     itogNoSkidka = (TextView) findViewById(R.id.itogRasxodOstNoSkidka);
     itogNoNalRO = (TextView) findViewById(R.id.itogNoNalRO);
     itogNalRO = (TextView) findViewById(R.id.itogNalRO);
+    itogBrak = (TextView) findViewById(R.id.itogBrakRO);
+    itogMove = (TextView) findViewById(R.id.itogMoveRO);
     
     tvDataIns = (TextView) findViewById(R.id.tv_Data_RasOst);
     tvDataIns.setText(MainActivity.getStringData(MainActivity.getIntData()));
@@ -134,8 +136,8 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
         	}
       });
     // формируем столбцы сопоставления
-    String[] from = new String[] { /*"_id",*/"_id","pgr","name","post","kol","ed","sumka","sumkanal","sumkanonal","price","skidka","ostat","keg"};
-    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Ost, R.id.tv_Pgr_Rasxod_Ost, R.id.tv_Name_Rasxod_Ost,R.id.tv_Post_Rasxod_Ost,R.id.tv_Kol_Rasxod_Ost,R.id.tv_Ed_Rasxod_Ost,R.id.tv_Sumka_Rasxod_Ost,R.id.tv_Sumka_NalRasxod_Ost,R.id.tv_Sumka_NoNalRasxod_Ost,R.id.tv_Price_Rasxod_Ost,R.id.tv_Skidka_Rasxod_Ost,R.id.tv_Ostat_Rasxod_Ost,R.id.tv_Keg_Rasxod_Ost};
+    String[] from = new String[] { /*"_id",*/"_id","pgr","name","post","kol","brak","move","ed","sumka","sumkanal","sumkanonal","price","skidka","ostat","keg"};
+    int[] to = new int[] {/*R.id.tv_Id_Rasxod_Hist,*/ R.id.tv_Nnom_Rasxod_Ost, R.id.tv_Pgr_Rasxod_Ost, R.id.tv_Name_Rasxod_Ost,R.id.tv_Post_Rasxod_Ost,R.id.tv_Kol_Rasxod_Ost,R.id.tv_Brak_Rasxod_Ost,R.id.tv_Move_Rasxod_Ost,R.id.tv_Ed_Rasxod_Ost,R.id.tv_Sumka_Rasxod_Ost,R.id.tv_Sumka_NalRasxod_Ost,R.id.tv_Sumka_NoNalRasxod_Ost,R.id.tv_Price_Rasxod_Ost,R.id.tv_Skidka_Rasxod_Ost,R.id.tv_Ostat_Rasxod_Ost,R.id.tv_Keg_Rasxod_Ost};
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
@@ -164,6 +166,8 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
     itogNoSkidka.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
     itogNoNalRO.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
     itogNalRO.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogBrak.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogMove.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
   }
   
   protected Dialog onCreateDialog(int id) {
@@ -286,21 +290,23 @@ public class RasxodOstatActivity extends FragmentActivity implements LoaderCallb
         Cursor //cursor;
       //  if (cbOst.isChecked())
          cursor = db.getRawData 
-         ("select kkeg,keg,_id,pgr,name,post,kol,ed,sumka,price,skidka,ostat,sumkanonal,sumkanal from "+
+         ("select kkeg,keg,_id,pgr,name,post,kol,ed,sumka,price,skidka,ostat,sumkanonal,sumkanal, brak, move from "+
          "("+
-         "select sum(CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END) as sumkanonal, sum(CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END) as sumkanal, K.keg as kkeg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(ifnull(T.kol,0)) as kol,E.name as ed,sum(T.price*T.kol) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat "+ 
-         "from ostat as K left join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and T.ok=0 and "+str[1]+" and "+str[2]+ 
+         "select sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END else 0 end) as sumkanonal, sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END else 0 end) as sumkanal, K.keg as kkeg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(case T.ok when 0 then ifnull(T.kol,0) else 0 end) as kol,E.name as ed,sum(T.price*T.kol) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat, "
+         + "sum(ifnull(case T.ok when 1 then T.kol_brak else 0 end,0)) as brak, sum(ifnull(case T.ok when 2 then T.kol_move else 0 end,0)) as move "+ 
+         "from ostat as K left join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and "+str[1]+" and "+str[2]+ 
          " left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on K.ed = E._id left join postav as KK on K.id_post=KK._id "+
          "where K.kol<>0 and "+str[0]+
          " group by K.keg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')', TP._id,TT.name,TP.name,KK.name,E.name,round(K.kol,3) "+ 
          " union all "+
-         "select sum(CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END) as sumkanonal, sum(CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END) as sumkanal, K.keg as kkeg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(ifnull(T.kol,0)) as kol,E.name as ed,sum(T.price*T.kol) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat "+ 
-         "from ostat as K left join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and T.ok=0 and "+str[1]+" and "+str[2]+ 
+         "select sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END else 0 end) as sumkanonal, sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END else 0 end) as sumkanal, K.keg as kkeg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(case T.ok when 0 then ifnull(T.kol,0) else 0 end) as kol,E.name as ed,sum(T.price*T.kol) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat, "
+         + "sum(ifnull(case T.ok when 1 then T.kol_brak else 0 end,0)) as brak, sum(ifnull(case T.ok when 2 then T.kol_move else 0 end,0)) as move "+ 
+         "from ostat as K left join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and "+str[1]+" and "+str[2]+ 
          " left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on K.ed = E._id left join postav as KK on K.id_post=KK._id "+
          "where K.kol=0 and "+str[0]+
          " group by K.keg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')', TP._id,TT.name,TP.name,KK.name,E.name,round(K.kol,3) "+ 
          ") "+
-         "where ifnull(ostat,0)+ifnull(kol,0)!=0 order by name, keg"
+         "where ifnull(ostat,0)+ifnull(kol,0)+ifnull(brak,0)+ifnull(move,0)!=0 order by name, keg"
          ,null);
          /*(
     			"select keg, kkeg, _id, pgr, name, post, kol, ed, sumka, price, skidka, ifnull(ostat,0) ostat from (" +
@@ -349,16 +355,18 @@ void setItog () {
     Cursor cursor;
     //if (cbOst.isChecked()) 
     	cursor = MainActivity.db.getRawData 
-    	("select round(sum(kol),3) as kol, round(sum(price*kol),2) as sumka, round(sum(skidka),2) as skidka, round(sum(sumkanonal),2) as sumkanonal, round(sum(sumkanal),2) as sumkanal from "+
+    	("select round(sum(kol),3) as kol, round(sum(price*kol),2) as sumka, round(sum(skidka),2) as skidka, round(sum(sumkanonal),2) as sumkanonal, round(sum(sumkanal),2) as sumkanal, round(sum(brak),3) as sumkabrak, round(sum(move),3) as sumkamove  from "+
     			"("+
-    	         "select T.price as price, CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END as sumkanonal, CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END as sumkanal, ifnull(T.kol,0) as kol,T.price*T.kol as sumka,round(ifnull(T.skidka,0),2) as skidka "+ 
-    	         "from ostat as K left  join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and T.ok=0 and "+str[1]+" and "+str[2]+ 
+    	         "select T.price as price, case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END else 0 end as sumkanonal, case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END else 0 end as sumkanal, case T.ok when 0 then ifnull(T.kol,0) else 0 end as kol,T.price*T.kol as sumka,round(ifnull(T.skidka,0),2) as skidka, "
+    	         + "ifnull(case T.ok when 1 then T.kol_brak else 0 end,0) as brak, ifnull(case T.ok when 2 then T.kol_move else 0 end,0) as move "+ 
+    	         "from ostat as K left  join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and "+str[1]+" and "+str[2]+ 
     	         " left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id "+
     	         " where K.kol<>0 and "+str[0]+
     	         //" group by K.keg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')', TP._id,TT.name,TP.name,KK.name,E.name,round(K.kol,3) "+ 
     	         " union all "+
-    	         "select T.price as price, CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END as sumkanonal, CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END as sumkanal, ifnull(T.kol,0) as kol,T.price*T.kol as sumka,round(ifnull(T.skidka,0),2) as skidka "+ 
-    	         "from ostat as K left  join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and T.ok=0 and "+str[1]+" and "+str[2]+
+    	         "select T.price as price, case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END else 0 end as sumkanonal, case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END else 0 end as sumkanal, case T.ok when 0 then ifnull(T.kol,0) else 0 end as kol,T.price*T.kol as sumka,round(ifnull(T.skidka,0),2) as skidka, "
+    	         + "ifnull(case T.ok when 1 then T.kol_brak else 0 end,0) as brak, ifnull(case T.ok when 2 then T.kol_move else 0 end,0) as move "+ 
+    	         "from ostat as K left  join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and "+str[1]+" and "+str[2]+
     	         " left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id "+
     	         " where K.kol=0 and "+str[0]+
     	         //" group by K.keg, K.keg||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')', TP._id,TT.name,TP.name,KK.name,E.name,round(K.kol,3) "+ 
@@ -393,6 +401,8 @@ void setItog () {
      	        	itogNoSkidka.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("sumka"))-cursor.getDouble(cursor.getColumnIndex("skidka") )) );
      	        	itogNoNalRO.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("sumkanonal")) ) );
      	        	itogNalRO.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("sumkanal")) ) );
+     	        	itogBrak.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("sumkabrak")) ) );
+     	        	itogMove.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("sumkamove")) ) );
      	        } while (cursor.moveToNext());
      	      
         	        cursor.close();

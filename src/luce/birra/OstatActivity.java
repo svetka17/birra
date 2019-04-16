@@ -28,7 +28,7 @@ import luce.birra.DialogScreen.DialogListener;
 public class OstatActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
   ListView lvData;
-  Button btnExit, btnAdd;
+  Button btnExit, btnAdd, btnDetail;
   AdapterLV scAdapter;
   static CheckBox cbVis;
   static TextView tvIdPgr;
@@ -106,6 +106,9 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
         	finish();
         }
       });
+    
+    btnDetail = (Button) findViewById(R.id.btnDetailOstat);
+    btnDetail.setVisibility(LinearLayout.GONE);
     // формируем столбцы сопоставления
     String[] from = new String[] { "_id","tname","pgr",/*"pname",*/"kol","kol_nedo","kol_izl","ted","price", "keg" };
     int[] to = new int[] {R.id.tvId_Ostat, R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat, /*R.id.tvNamePost_Ostat,*/R.id.tvKol_Ostat,R.id.tvKolNedo_Ostat,R.id.tvKolIzl_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat, R.id.tvKeg_Ostat };

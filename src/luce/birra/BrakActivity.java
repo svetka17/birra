@@ -1,5 +1,6 @@
 package luce.birra;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -28,7 +29,7 @@ import luce.birra.DialogScreen.DialogListener;
 public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
   ListView lvData;
-  Button btnExit, btnAdd;
+  Button btnExit, btnAdd, btnDetail;
   AdapterLV scAdapter;
   static CheckBox cbVis;
   static TextView tvIdPgr;
@@ -103,6 +104,15 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
         public void onClick(View v) {
         	MainActivity.excel(BrakActivity.this, BrakActivity.this, "","", 
         			tvIdPgr.getText().toString(), "Перемещение и брак", (byte)11);
+        }
+      });
+    
+    btnDetail = (Button) findViewById(R.id.btnDetailOstat);
+    btnDetail.setOnClickListener(new OnClickListener() {
+        public void onClick(View v) {
+        	Intent intent = new Intent(BrakActivity.this, BrakMoveHistActivity.class);
+			   startActivity(intent);
+			   
         }
       });
     

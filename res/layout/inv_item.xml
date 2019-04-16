@@ -43,6 +43,14 @@
         style="@style/lv_i"
         android:layout_weight="1" />
     <TextView
+        android:id="@+id/tvKol_Inv_Izl"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
+        android:id="@+id/tvKol_Inv_Nedo"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+    <TextView
         android:id="@+id/tvKol_Inv"
         style="@style/lv_i"
         android:layout_weight="1" />
@@ -56,6 +64,10 @@
         android:layout_weight="1" />
     <TextView
         android:id="@+id/tvSummaFact_Inv"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+        <TextView
+        android:id="@+id/tvSummaIzlNedo_Inv"
         style="@style/lv_i"
         android:layout_weight="1" />
     

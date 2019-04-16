@@ -31,7 +31,14 @@
         android:id="@+id/tv_Kol_Rasxod_Ost"
         style="@style/lv_i"
         android:layout_weight="1" />
-    
+        <TextView
+        android:id="@+id/tv_Brak_Rasxod_Ost"
+        style="@style/lv_i"
+        android:layout_weight="1" />    
+        <TextView
+        android:id="@+id/tv_Move_Rasxod_Ost"
+        style="@style/lv_i"
+        android:layout_weight="1" />
     <TextView
         android:id="@+id/tv_Ed_Rasxod_Ost"
         style="@style/lv_i"

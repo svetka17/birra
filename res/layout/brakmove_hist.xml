@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/brakmove_hist_ll"
+    android:orientation="vertical" >
+    <LinearLayout
+        style="@style/mw0"
+        android:orientation="horizontal" >
+                
+                <Spinner
+                    android:id="@+id/sp_Pgr_BrakHist"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_Id_PgrBrakHist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:visibility="invisible" />
+  
+                <RadioGroup 
+                    android:id="@+id/rgBrakMoveHist"
+                    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">>
+                <RadioButton
+                    android:id="@+id/rbBrak"
+                    android:checked="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="БРАК" />
+
+                <RadioButton
+                    android:id="@+id/rbMove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ПЕРЕМЕЩЕНИЕ" />
+                </RadioGroup>
+
+    </LinearLayout>
+<TableRow  style="@style/mw0">
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="№ ТОВАРА"/>
+ 		 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ПОДГРУППА"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="НАИМЕНОВАНИЕ"/>
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ПОСТАВЩИК"/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="КОЛ"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="ЕД.ИЗМ"/>
+
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ДАТА"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text="ПРИМЕЧАНИЕ"/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text="КЕГА"/>
+<TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+    </TableRow>
+    <ListView
+        android:id="@+id/lvBrakHist"
+            style="@style/mm1" />
+
+        <TableRow  style="@style/mw0">
+
+ 		<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text=""/>
+ <TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+ 				<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+ 				<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+
+<TextView
+ 		    style="@style/lv_h"
+ 		    android:id="@+id/itogBrakKol"
+            android:layout_weight="1"
+ 		    android:text="0"/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text=""/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="0.5"
+ 		    android:text=""/>
+<TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text=""/>
+    </TableRow>
+    
+    <LinearLayout
+            style="@style/mw0"
+        android:orientation="horizontal" >
+<!--  
+        <Button
+            android:id="@+id/btnAddPrixodHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="ДОБАВИТЬ НОВЫЙ" />
+--><Button
+            android:id="@+id/btnExcelBrakHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="В EXCEL" />
+        <Button
+            android:id="@+id/btnExitBrakHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            style="@style/B"
+            android:text="НАЗАД" />
+    </LinearLayout>
+
+</LinearLayout>
+

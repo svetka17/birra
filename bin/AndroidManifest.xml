@@ -194,6 +194,12 @@
             android:windowSoftInputMode="stateHidden"
             android:label="НОВАЯ ИНВЕНТАРИЗАЦИЯ"
             android:screenOrientation="landscape" />
+                                                <activity
+            android:name="luce.birra.BrakMoveHistActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="stateHidden"
+            android:label="ПЕРЕМЕЩЕНИЕ И БРАК УДАЛЕНИЕ"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>
