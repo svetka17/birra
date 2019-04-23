@@ -32,7 +32,7 @@ public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cur
   AdapterLV scAdapter;
   //static CheckBox cbVis;
 //  static TextView tvIdPgr;
-static TextView tvIdInv, itogRaz, itogSumFact, itogSumReal, itogIzlNedo;
+static TextView tvIdInv, itogRaz, itogSumFact, itogSumReal, itogIzlNedo, itogIN;
 TextView tvTextInv;
 static TextView tvIdPgr;
 Spinner spPgr;
@@ -74,6 +74,7 @@ Spinner spPgr;
     itogSumReal = (TextView) findViewById(R.id.itogInvSumReal);
     itogRaz = (TextView) findViewById(R.id.itogInvRaznica);
     itogIzlNedo = (TextView) findViewById(R.id.itogInvSumIzlNedo);
+    itogIN = (TextView) findViewById(R.id.itogInvRaznicaSum);
     
     Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
     spPgr = (Spinner) findViewById(R.id.sp_Pgr_Inv);
@@ -184,15 +185,9 @@ Spinner spPgr;
 	//bll.setVisibility(LinearLayout.GONE);
     // формируем столбцы сопоставления
     String[] from = new String[] { 
-    		/*"_id",*/"name_pgr","id_tmc","name_tmc","postname","keg","edname",/*"price",*/"price_vendor","kol_izl","kol_nedo","kol_ostat","kol_real","summa","summa_fact","izlnedo"/*"kol_n","summa_n",
-    		"kol_p","summa_p","kol_r","summa_r","kol_brak","summa_brak","kol_move","summa_move","kol_izl","summa_izl","kol_nedo","summa_nedo","summa_skidka",
-    		"kol_k","summa_k"*/ //,"prim" //,"prim","ok"
+    		/*"_id",*/"name_pgr","id_tmc","name_tmc","postname","keg","edname",/*"price",*/"price_vendor","kol_izl","kol_nedo","kol_ostat","kol_real","summa","summa_fact","izlnedo","izlnedokol","izlnedosum"
     		};
-    int[] to = new int[] {/*R.id.tvId_Inv,*/R.id.tvNamePgr_Inv, R.id.tvId_Tmc_Inv, R.id.tvNameTmc_Inv, R.id.tvNamePost_Inv, R.id.tvKeg_Inv, R.id.tvTed_Inv, /*R.id.tvPrice_Inv,*/ R.id.tvPriceVen_Inv,R.id.tvKol_Inv_Izl,R.id.tvKol_Inv_Nedo,R.id.tvKol_Inv, R.id.tvKolReal_Inv,R.id.tvSumma_Inv,R.id.tvSummaFact_Inv,R.id.tvSummaIzlNedo_Inv /* R.id.tvKolN_Inv, R.id.tvSummaN_Inv,
-    		R.id.tvKolP_Inv, R.id.tvSummaP_Inv, R.id.tvKolR_Inv, R.id.tvSummaR_Inv, R.id.tvKolBrak_Inv, R.id.tvSummaBrak_Inv, R.id.tvKolMove_Inv, R.id.tvSummaMove_Inv, R.id.tvKolIzl_Inv, R.id.tvSummaIzl_Inv, R.id.tvKolNedo_Inv, R.id.tvSummaNedo_Inv,
-    		R.id.tvSummaSkidka_Inv, R.id.tvKolK_Inv, R.id.tvSummaK_Inv*/ };
-    //int[] toH = new int[] {R.id.tvId_Ostat,R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,R.id.tvNamePost_Ostat,R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat,R.id.tvDataIns_Ostat};
-
+    int[] to = new int[] {/*R.id.tvId_Inv,*/R.id.tvNamePgr_Inv, R.id.tvId_Tmc_Inv, R.id.tvNameTmc_Inv, R.id.tvNamePost_Inv, R.id.tvKeg_Inv, R.id.tvTed_Inv, /*R.id.tvPrice_Inv,*/ R.id.tvPriceVen_Inv,R.id.tvKol_Inv_Izl,R.id.tvKol_Inv_Nedo,R.id.tvKol_Inv, R.id.tvKolReal_Inv,R.id.tvSumma_Inv,R.id.tvSummaFact_Inv,R.id.tvSummaIzlNedo_Inv,R.id.tvSummaIzlNedo_InvKol,R.id.tvSummaIzlNedo_InvSum} ;
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
     scAdapter = new AdapterLV(R.id.btnDelInv, R.id.btnUpdInv, (byte)15, this, R.layout.inv_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
@@ -285,6 +280,7 @@ Spinner spPgr;
     itogSumReal.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
     itogRaz.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
     itogIzlNedo.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
+    itogIN.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butName);
     
   }
   
@@ -332,7 +328,11 @@ Spinner spPgr;
     			+ "round(O.kol_ostat,3) kol_ostat, O.kol_real kol_real, round(O.kol_ostat*O.price_vendor,2) summa, round(O.kol_real*O.price_vendor,2) summa_fact,"
     			+ "O.kol_n kol_n, O.summa_n summa_n, "
     			+ "O.kol_p kol_p, O.summa_p summa_p, O.kol_r kol_r, O.summa_r summa_r, "
-    			+ "O.kol_brak kol_brak, O.summa_brak summa_brak, O.kol_move kol_move, O.summa_move summa_move, O.kol_izl kol_izl, O.summa_izl summa_izl, O.kol_nedo kol_nedo, ifnull(O.summa_izl,0)-ifnull(O.summa_nedo,0) izlnedo, O.summa_nedo summa_nedo, O.kol_skidka kol_skidka, O.summa_skidka summa_skidka, "
+    			+ "O.kol_brak kol_brak, O.summa_brak summa_brak, O.kol_move kol_move, O.summa_move summa_move, round(O.kol_izl,3) kol_izl, round(O.summa_izl,2) summa_izl, "
+    			+ "round(O.kol_nedo,3) kol_nedo, "
+    			+ "round((-ifnull(O.kol_ostat,0)+ifnull(O.kol_real,0)+ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0))*O.price_vendor,2)+round(O.kol_real*O.price_vendor,2) izlnedo, round(O.summa_nedo,2) summa_nedo, "
+    			+ "round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3) izlnedokol, "
+    			+ "round((case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0))*O.price_vendor,2) izlnedosum, O.kol_skidka kol_skidka, O.summa_skidka summa_skidka, "
     			+ "O.kol_k kol_k, O.summa_k summa_k, "
     			+ "O.ed ed, E.name edname, O.price price, O.price_vendor price_vendor, O.id_post id_post, P.name postname, O.prim prim, O.data_ins data_ins, O.ok ok "
     			+ "from invent as O "			
@@ -378,7 +378,9 @@ if (cOst.moveToFirst()) {
   
   void setItog () {
   	Cursor cursor = MainActivity.db.getRawData (
-  			"select sum(round(ifnull(O.kol_ostat,0)*ifnull(O.price_vendor,0),2)) summa, sum(round(ifnull(O.kol_real,0)*ifnull(O.price_vendor,0),2)) summa_fact, sum(ifnull(O.summa_izl,0)-ifnull(O.summa_nedo,0)) summa_izlnedo "
+  			"select round(sum(ifnull(O.kol_ostat,0)*ifnull(O.price_vendor,0)),2) summa, round(sum(ifnull(O.kol_real,0)*ifnull(O.price_vendor,0)),2) summa_fact, "
+  			+ "round(sum((case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0))*O.price_vendor),2)+round(sum(ifnull(O.kol_real,0)*ifnull(O.price_vendor,0)),2) summa_izlnedo, "
+  			+ " round(sum((case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0))*O.price_vendor),2) sumin "
   			+ "from invent as O "			
   			+ "left join tmc as T "
   			+ "on O.id_tmc=T._id "
@@ -397,8 +399,9 @@ if (cOst.moveToFirst()) {
        	        do {
        	        	itogSumReal.setText(String.valueOf( MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa")) )) );
        	        	itogSumFact.setText(String.valueOf( MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa_fact")) )) );
-       	        	itogRaz.setText(String.valueOf(MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa_fact"))-cursor.getDouble(cursor.getColumnIndex("summa") ))) );
+       	        	itogRaz.setText(String.valueOf(MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa_izlnedo"))-cursor.getDouble(cursor.getColumnIndex("summa") ))) );
        	        	itogIzlNedo.setText(String.valueOf( MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("summa_izlnedo")) )) );
+       	        	itogIN.setText(String.valueOf( MainActivity.round2(cursor.getDouble(cursor.getColumnIndex("sumin")) )) );
        	        } while (cursor.moveToNext());
           	        cursor.close();
        	     

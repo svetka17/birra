@@ -28,7 +28,7 @@ import luce.birra.DialogScreen.DialogListener;
 public class OstatActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
   ListView lvData;
-  Button btnExit, btnAdd, btnDetail;
+  Button btnExit, btnAdd;//, btnDetail;
   AdapterLV scAdapter;
   static CheckBox cbVis;
   static TextView tvIdPgr;
@@ -107,11 +107,11 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
         }
       });
     
-    btnDetail = (Button) findViewById(R.id.btnDetailOstat);
-    btnDetail.setVisibility(LinearLayout.GONE);
+    //btnDetail = (Button) findViewById(R.id.btnDetailOstat);
+    //btnDetail.setVisibility(LinearLayout.GONE);
     // формируем столбцы сопоставления
     String[] from = new String[] { "_id","tname","pgr",/*"pname",*/"kol","kol_nedo","kol_izl","ted","price", "keg" };
-    int[] to = new int[] {R.id.tvId_Ostat, R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat, /*R.id.tvNamePost_Ostat,*/R.id.tvKol_Ostat,R.id.tvKolNedo_Ostat,R.id.tvKolIzl_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat, R.id.tvKeg_Ostat };
+    int[] to = new int[] {R.id.tvId_Ostat, R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,/* R.id.tvNamePost_Ostat,*/R.id.tvKol_Ostat,R.id.tvKolNedo_Ostat,R.id.tvKolIzl_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat, R.id.tvKeg_Ostat };
     //int[] toH = new int[] {R.id.tvId_Ostat,R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,R.id.tvNamePost_Ostat,R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat,R.id.tvDataIns_Ostat};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
@@ -177,14 +177,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
     		});
     
     lvData = (ListView) findViewById(R.id.lvOstat);
-    //lvData.setOnItemClickListener(this);
-    /*lvData.setOnItemClickListener(new AdapterView.OnItemClickListener()
-    {
-        public void onItemClick(AdapterView<?> parent, View itemClicked, int position, long id)
-        {
-            Log.d("MyLog", position+" "+itemClicked.getId()+" FPgr click delete "+id);
-        }
-    });*/
+
     lvData.setAdapter(scAdapter);
      
     // создаем лоадер для чтения данных
@@ -227,16 +220,7 @@ public class OstatActivity extends FragmentActivity implements LoaderCallbacks<C
      
     @Override
     public Cursor loadInBackground() {
-    	//Cursor cursor = db.getQueryData("tmc as T left join tmc_pgr as TP on T.pgr=TP._id", 
-    		//	new String[] {"T._id as _id","T.name as name","T.pgr as pgr","TP.name as namepgr","T.price as price", "T.vis as vis"}, 
-    			// "? and T.vis = ?",new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"1=1":"T.pgr="+tvIdPgr.getText().toString(),cbVis.isChecked()?"1":"0"},null,null,null);
-/*no such column: O.keg (code 1): , 
-select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, O.kol as kol, E.name as ted, TT.price as price, O.id_post as id_post, O.data_ins as data_ins, P.name as pname, T.name as tname, TP.name as pgr 
-from ostat as O left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed left join tmc as T on O.id_tmc=T._id left join postav as P on O.id_post=P._id left join tmc_ed as E on O.ed=E._id left join tmc_pgr as TP on T.pgr=TP._id where  O.kol!=0
-*/   
-
-    	
-    	Cursor cursor = db.getRawData (
+    	    	Cursor cursor = db.getRawData (
     			"select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, round(O.kol,3) as kol, E.name as ted, TT.price as price, O.id_post as id_post, ifnull(O.data_upd,O.data_ins) as data_ins, "
     			+ "P.name as pname, T.name as tname, TP.name as pgr, sum(round(R.kol_nedo,3)) kol_nedo, sum(round(R.kol_izl,3)) kol_izl "
     			//+ " CASE O.ed WHEN 1 then round(O.kol_nedo,2) ELSE round(O.kol_nedo,3) END  as kol_nedo, CASE O.ed WHEN 1 then round(O.kol_izl,2) ELSE round(O.kol_izl,3) END as kol_izl "

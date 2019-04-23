@@ -586,7 +586,8 @@ tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("d
                 case  5: listenerFlag.OnCambiare((byte)2, getItemId(position));
                 		break;
                 case 10:
-                case 11:
+                case 11:listenerFlag.OnCambiare((byte)2, getItemId(position));
+        		break;
                 case 14: MainActivity.no_inv=0; break;
                 case 15:
                 	

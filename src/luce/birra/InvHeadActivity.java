@@ -155,7 +155,7 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
         	        	if (MainActivity.invent!=0)
                     	{
                 	    tmp=0;
-                	    Cursor cOst1 = MainActivity.db.getRawData ("select O.id_inv as id_inv, O._id as id, O.id_tmc as oid_tmc, O.keg as okeg, O.kol_ostat as okol, O.kol_nedo as okol_nedo, O.kol_izl as okol_izl, O.ed as oed, O.id_post as oid_post "
+                	    Cursor cOst1 = MainActivity.db.getRawData ("select ifnull(O.kol_real,0) as kol_real, O.kol_real kol_real1, O.id_inv as id_inv, O._id as id, O.id_tmc as oid_tmc, O.keg as okeg, O.kol_ostat as okol, O.kol_nedo as okol_nedo, O.kol_izl as okol_izl, O.ed as oed, O.id_post as oid_post "
                 	    		+ " from invent as O where O.id_inv="+MainActivity.invent+" and O.id_tmc="+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" and O.id_post="+cOst.getInt(cOst.getColumnIndex("oid_post"))+" and O.keg="+cOst.getInt(cOst.getColumnIndex("okeg"))+" and O.ed="+cOst.getInt(cOst.getColumnIndex("oed")),/*order by T.tara*/null);
                 	    if (cOst1.moveToFirst()) {
                 	    	do {
@@ -175,7 +175,9 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
                 	    					"kol_nedo",
                 	    					"summa_nedo",
                 	    					"kol_skidka",
-                	    					"summa_skidka"}, 
+                	    					"summa_skidka"//,
+                	    					//"kol_real"
+                	    					}, 
                 	    			new double[]{cOst.getDouble(cOst.getColumnIndex("okol")),
                 	    					cOst.getDouble(cOst.getColumnIndex("pkol")), 
                 	    					cOst.getDouble(cOst.getColumnIndex("psum")),
@@ -190,9 +192,22 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
                 	    					cOst.getDouble(cOst.getColumnIndex("rkol_nedo")), 
                 	    					cOst.getDouble(cOst.getColumnIndex("rsum_nedo")),
                 	    					cOst.getDouble(cOst.getColumnIndex("rkol_skidka")), 
-                	    					cOst.getDouble(cOst.getColumnIndex("rsum_skidka"))});
+                	    					cOst.getDouble(cOst.getColumnIndex("rsum_skidka"))//,
+                	    					//(cOst.getDouble(cOst.getColumnIndex("okol"))==0 && cOst1.getDouble(cOst1.getColumnIndex("kol_real1"))==Double.NaN )?0:cOst1.getDouble(cOst1.getColumnIndex("kol_real1"))/*(cOst1.getDouble(cOst1.getColumnIndex("kol_real"))==Double.NaN?Double.NaN:cOst1.getDouble(cOst1.getColumnIndex("kol_real")) )*/
+                	    							});
                 	    	MainActivity.db.updRec("invent", cOst1.getLong(cOst1.getColumnIndex("id")), 
                 	    			new String[]{"data_ins"},new int[]{cOst.getInt(cOst.getColumnIndex("odata_ins"))});
+                	    	//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
+                	    	} while (cOst1.moveToNext());
+                    	}
+        	        	else cOst1.close();
+                	    
+                	    cOst1 = MainActivity.db.getRawData ("select O._id as id "
+                	    		+ " from invent as O where O.id_inv="+MainActivity.invent+" and O.kol_ostat==0 and O.kol_real is null",null);
+                	    if (cOst1.moveToFirst()) {
+                	    	do {
+                	    	MainActivity.db.updRec("invent", cOst1.getLong(cOst1.getColumnIndex("id")), 
+                	    			new String[]{"kol_real"},new double[]{0});
                 	    	//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
                 	    	} while (cOst1.moveToNext());
                     	}

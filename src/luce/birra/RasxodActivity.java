@@ -52,23 +52,18 @@ public class RasxodActivity extends FragmentActivity implements OnCheckedChangeL
 SeekBar.OnSeekBarChangeListener
 {
   Button butAdd, butDel, tbHist, tbXX, btnOk,btnOkOk, btnBack, bt0, bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, btComa, btDD, btXD;
-  static TextView  // tvDKol, 
-  tvIdPgr, tvNamePgr;//, tvCombo;
-  TextView titleD, tvNal, tvSkidka, tvIdKlient, etCheckCheck;//, tvComboName;
+  static TextView  tvIdPgr, tvNamePgr;
+  TextView titleD, tvNal, tvSkidka, tvIdKlient, etCheckCheck;
   SimpleCursorAdapter scaKlient;
   Spinner spKlient;
   ListView lvComboD;
   LinearLayout Dview;
-   
-  //LinearLayout llbut;
+
   ScrollView svBut;
- // LinearLayout llr;
   TableLayout llbut;
   TableRow row;
-  //LinearLayout row;
-  //TableRow.LayoutParams params;
   
-  LinearLayout /*lltara,*/ llL, llR, llRR;
+  LinearLayout llL, llR, llRR;
   LinearLayout svPgr;
   LinearLayout.LayoutParams llLP;
   LinearLayout.LayoutParams llRP;
@@ -76,7 +71,6 @@ SeekBar.OnSeekBarChangeListener
   HorizontalScrollView hll_tara_button;
   LinearLayout ll_tara_button;
   LinearLayout lltarabutton;
-  //LinearLayout llR_;
   int Bpost=0,btnK=0,clrCheck=Color.WHITE;
   byte flag_cash=0;
   byte CountTara=0;
@@ -84,15 +78,13 @@ SeekBar.OnSeekBarChangeListener
   //double kol_in_chek=0;
   String tmcV;
   String kol_skidka="";
-  //String string_keg="";
   String strDialog="", strKol="";
   
   String regexp_numb = "\\-?\\d+(\\.\\d{0,})?";
   
   Dialog dialogg;
   AlertDialog dial;
-  //int display_h=0, display_w=0;
-  //float scale=0;
+
 //упаковываем данные в понятную для адаптера структуру
   ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
   int combo_pos=0, tvDialogN=0, clrNoCheck=Color.BLACK;
@@ -194,9 +186,9 @@ SeekBar.OnSeekBarChangeListener
 	   int id_post;
 	   int id_klient; //пока ничего не пишется
 	   String prim;
-	   //double nedo; недостачи проходят по кнопке <->
-	   //double izl;
-	  tranDB(byte brak, byte move, byte tag, byte tagL, byte tagB, int id_tmc, int keg, double kol, byte ed, double price, /*float skidka,*/ int id_post,int id_klient, String prim/*, double nedo, double izl*/){
+	   //double nedo;// недостачи проходят по кнопке <->
+	   double izl;
+	  tranDB(byte brak, byte move, byte tag, byte tagL, byte tagB, int id_tmc, int keg, double kol, byte ed, double price, /*float skidka,*/ int id_post,int id_klient, String prim, /*double nedo,*/ double izl){
 		  this.brak=brak;
 		  this.move=move;
 		  this.tag=tag;
@@ -212,7 +204,7 @@ SeekBar.OnSeekBarChangeListener
 		  this.id_klient=id_klient;
 		  this.prim=prim;
 		  //this.nedo=nedo;
-		  //this.izl=izl;
+		  this.izl=izl;
 		  }
 	  }
 
@@ -225,9 +217,7 @@ void makeDialog() {
 		}
 	}) ;getkol.show();
 }
-   
-   //ArrayList<ToggleButton> tbut = new ArrayList<ToggleButton>();
-   //ArrayList<LinearLayout> ll = new ArrayList<LinearLayout>();
+
    
    public void onCreate(Bundle savedInstanceState) {
 
@@ -298,8 +288,6 @@ void makeDialog() {
 	llL.requestLayout();
     sbar.setOnSeekBarChangeListener(this);
     
-    //lltara = (LinearLayout) findViewById(R.id.llTara);
-    
     tvNamePgr = (TextView) findViewById(R.id.tvNamePgrBack);
     btnBack = (Button) findViewById(R.id.btnBackPgr_);
     btnBack.setTag(-1);
@@ -328,10 +316,7 @@ void makeDialog() {
         do {
         	LinearLayout.LayoutParams PB = new LinearLayout.LayoutParams(/*LinearLayout.LayoutParams.WRAP_CONTENT*/(int)MainActivity.w/8, LinearLayout.LayoutParams.MATCH_PARENT,1);
             PB.weight=1;
-            //PB.leftMargin=5;
-            //PB.rightMargin=5;
-        	//but.add(new chB(byte indBT, int id_tmc, String tmc_name, float val, float ost, int post, float kol, float price, byte ed, String ted, ToggleButton tb))
-        	but.add(new chB(
+          	but.add(new chB(
         			ib, 							//indBT
         			cTara.getInt(cTara.getColumnIndex("_id")), //id_tmc
         			0,//keg
@@ -372,10 +357,7 @@ void makeDialog() {
         	but.get(ib).tb.setTag(ib);
         	but.get(ib).tb.setOnCheckedChangeListener(this);
         	/*lltara*/ll_tara_button.addView(but.get(ib).tb,PB);
-        	/*GridLayout.LayoutParams params = (GridLayout.LayoutParams)but.get(ib).tb.getLayoutParams();
-        	if (cTara.getString(cTara.getColumnIndex("name")).length()>5) {params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 2); params.setGravity(Gravity.FILL_HORIZONTAL); } 
-        	else params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1); 
-            but.get(ib).tb.setLayoutParams(params);*/
+
         	ib++;
         } while (cTara.moveToNext());
         
@@ -383,12 +365,6 @@ void makeDialog() {
     
     CountTara=ib;
     
-    /*get_count_but = MainActivity.db.getRawData ("select count(*) as c from tmc T left join ostat as O on O.id_tmc=T._id where O.kol>0 and T.ok=1 and T.vis=1 ",null);
-    if (get_count_but.moveToFirst()) { 
-        do {CountTara=(byte)(CountTara-get_count_but.getInt(get_count_but.getColumnIndex("c")));
-        } while (get_count_but.moveToNext());
-      }; 
-    	get_count_but.close();*/
     	//Log.d("MyLog", " CountTara "+CountTara);
     setPgr();
 
@@ -414,7 +390,6 @@ void makeDialog() {
 			 buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 			 tara((byte)-2); 
 			 tvDialogN=R.id.tvOtherKol_;
-			
 			    //showDialog(1);
 			 makeDialog();
 			     }
@@ -436,48 +411,7 @@ void makeDialog() {
 				{buttonView.setTextColor(clrNoCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittexth_style)); }
 		}
 	} );
- /*
-    tbBrak = (ToggleButton) findViewById(R.id.btnBrak);
-    tbBrak.setTextSize(TypedValue.COMPLEX_UNIT_PX, MainActivity.butTara );
-    tbBrak.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-		@Override
-		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			if (isChecked)
-			 {DialogScreen getYes = new DialogScreen(RasxodActivity.this,RasxodActivity.this,-9).setDialogScreenListener(new DialogListener() {
-					
-					@Override
-					public void OnSelectedKol(double k) {
-						if (k==1) 
-							{tbBrak.setTextColor(clrCheck); tbBrak.setBackground(getResources().getDrawable(R.drawable.tara_chek));}
-					}
-				}); 
-				getYes.show();
-				}
-			else
-				{buttonView.setTextColor(clrNoCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittexth_style)); }
-		}
-	} ); 
-   
-    tbMove = (ToggleButton) findViewById(R.id.btnMove);
-    tbMove.setTextSize(TypedValue.COMPLEX_UNIT_PX, MainActivity.butTara );
-    tbMove.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-		@Override
-		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			if (isChecked)
-			 {DialogScreen getYes = new DialogScreen(RasxodActivity.this,RasxodActivity.this,-10).setDialogScreenListener(new DialogListener() {
-					
-					@Override
-					public void OnSelectedKol(double k) {
-						if (k==1) 
-							{tbMove.setTextColor(clrCheck); tbMove.setBackground(getResources().getDrawable(R.drawable.tara_chek));}
-					}
-				}); 
-				getYes.show();}
-			else
-				{buttonView.setTextColor(clrNoCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.edittexth_style)); }
-		}
-	} );
-    */
+ 
    lvCombo = (ListView) findViewById(R.id.lvCombo);
    String[] from = { "name", "kol","price","summakp","summa", "tara","itog",  /*"button",*/"summa2","skidka_but_text","skidka_sum_itog"};
    int[] to = {  R.id.comboName, R.id.comboKol,R.id.comboPrice,R.id.comboSummaKP, R.id.comboSumma, R.id.comboTara,R.id.comboItog,  /*R.id.comboX,*/R.id.comboSumma2,R.id.comboSkidka, R.id.comboSkidkaSum };
@@ -494,14 +428,7 @@ void makeDialog() {
     tvSum = (TextView) findViewById(R.id.tvSumSum);
     tvSum.setText("");
     
-/*    tbHist = (Button) findViewById(R.id.btnRasxodHistory);
-    tbHist.setOnClickListener(new OnClickListener() {
-        public void onClick(View v) {
-        	Intent intent = new Intent(RasxodActivity.this, RasxodHistActivity.class);
-     	   	startActivity(intent);
-        }
-      });
-*/    
+  
     tbXX = (Button) findViewById(R.id.btnXRasxod_x);
     tbXX.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
@@ -559,9 +486,6 @@ void makeDialog() {
 						intent.putExtra("PrixodPrim", "ДОБАВЛЕНИЕ ТОВАРА ИЗ МЕНЮ "+MainActivity.usr);
 						intent.putExtra("PrixodDataIns", String.valueOf( MainActivity.getIntDataTime() ));
 						if (Btovar!=-1) {
-							//Log.d("MyLog", "_IdPgr="+String.valueOf( tvIdPgr.getTag() ));
-						//intent.putExtra("PrixodPgr", tvIdPgr.getText() );							
-						//intent.putExtra("PrixodClose", /*tvIdPgr.getText()*/"1" );
 						intent.putExtra("PrixodPost", String.valueOf(but.get(Btovar).post));
 						intent.putExtra("PrixodEd", String.valueOf( but.get(Btovar).ed ) );
 						//Log.d("MyLog", "ed="+String.valueOf( but.get(Btovar).ed ));
@@ -582,22 +506,6 @@ void makeDialog() {
 						}
     					      //Log.d("MyLog", "id="+id);
     					      startActivity(intent);
-    					      
-						//btnBack.setTag(-1);
-		        		//tvNamePgr.setText("");
-		        		//setPgr();
-    					      //tvIdPgr.setText(matcher.find()?matcher.group():"-1");
-    					      //Log.d("MyLog", tmp_pgr+" IdPgr="+String.valueOf( tvIdPgr.getText() ));
-    					      /*ArrayList<View> alv = MainActivity.getViewsByTag(svPgr);//(LinearLayout)findViewById(R.id.svPgr));
-    							for (int i=0; i<alv.size(); i++)
-    						    //{
-    							//if (!(alv.get(i) instanceof SeekBar || alv.get(i) instanceof NumberPicker))
-    						    	if (((Button)alv.get(i)).getTag().equals(tvIdPgr.getTag()) )
-    								{
-    						    	((Button)alv.get(i)).setBackground(getResources().getDrawable(R.drawable.btn_chek));
-    						    	((Button)alv.get(i)).setTextColor(clrCheck);
-    								}*/
-    					      //tvIdPgr.setText(tmp_pgr);  
     					      setBut();
 					} else setBut();
 				}
@@ -624,13 +532,14 @@ void makeDialog() {
 							        		
 							        		MainActivity.db.addRecRASXODcount
 							        		(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 
-							        				(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0), (cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0), 0,0,(byte)0, (byte)cc.getInt(cc.getColumnIndex("ed")), but.get(Btovar).price,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "удаление по кнопке из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 5);
+							        				(but.get(Btovar).ost>0?/*cc.getDouble(cc.getColumnIndex("kol"))*/but.get(Btovar).ost:0),
+							        				//tranz.size()>0?( (but.get(Btovar).ost>0?/*cc.getDouble(cc.getColumnIndex("kol"))*/but.get(Btovar).ost:0) ):0, 
+							        				0,//(but.get(Btovar).ost<0?/*cc.getDouble(cc.getColumnIndex("kol"))*/-but.get(Btovar).ost:0), 
+							        				0,0,(byte)0, (byte)cc.getInt(cc.getColumnIndex("ed")), but.get(Btovar).price,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "удаление по кнопке из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 5);
 							        } while (cc.moveToNext());
 							      };
 							if (countT!=0) showMessage("Остаток обнулен", (byte)1);
-							//btnBack.setTag(-1);
-			        		//tvNamePgr.setText("");
-			        		//setPgr();
+
 			        		setBut();
 						}	
 					}
@@ -668,19 +577,7 @@ void makeDialog() {
    void setKeg() {
 	   llbut.removeAllViewsInLayout();
 	   svBut.removeAllViewsInLayout();
-	   
-	   /*int l=1;
-	   if (c.moveToFirst()) { 
-		   
-	        do {	        	
-	        	String[] n = (c.getString(c.getColumnIndex("name"))).split(" ");
-	        	for (int i=0; i<n.length; i++ )
-	        		if (n[i].length()>l) l=n[i].length();
-	        } while (c.moveToNext());
-	        
-	      }*/
-	   //float sText=((display_w)/(4*scale*scale*l))+scale*5;
-	   //float sText=MainActivity.sizeSmallButton;
+
 	    if (count_but_pgr<16)
 	    {  // llbut = new TableLayout(this);
 	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
@@ -692,9 +589,6 @@ void makeDialog() {
 	    	}
 	    else
 	    {
-	    	//llbut = new TableLayout(this);
-	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
-	    	
 	    	llR.removeView(llbut);
 	    	llR.removeView(svBut);
 	    	
@@ -705,93 +599,20 @@ void makeDialog() {
 	    	svBut.addView(llbut,
 	    			new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.MATCH_PARENT,1));
 	    }
-	   //Cursor cc = MainActivity.db.getRawData 
-		//	   ("select S.id_tmc as _id, S.keg as keg, T.name as name, P.name as namep, TP.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted "
-			// 						+ " from ostat S left join tmc T on T._id=S.id_tmc left join tmc_price as TP on S.id_tmc=TP.id_tmc and S.id_post=TP.id_post and S.ed=TP.ed left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol!=0 and T.pgr="+tvIdPgr.getText()+" order by T.pos, S.id_tmc",null);
-
+	   
 	  } 
    
    void setPgr() {
-	   //llbut.removeAllViewsInLayout();
-	   //svBut.removeAllViewsInLayout();
-	   
-	   /*int l=1;
-	   if (c.moveToFirst()) { 
-		   
-	        do {	        	
-	        	String[] n = (c.getString(c.getColumnIndex("name"))).split(" ");
-	        	for (int i=0; i<n.length; i++ )
-	        		if (n[i].length()>l) l=n[i].length();
-	        } while (c.moveToNext());
-	        
-	      }*/
-	   //float sText=((display_w)/(4*scale*scale*l))+scale*5;
-	   //float sText=MainActivity.sizeSmallButton;
-	    /*if (count_but_pgr<16)
-	    {  // llbut = new TableLayout(this);
-	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
-	    	llR.removeView(llbut);
-	    	llR.removeView(svBut);	    	
-
-	    	llR.addView(llbut,
-				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1)); 
-	    	}
-	    else
-	    {
-	    	//llbut = new TableLayout(this);
-	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
-	    	
-	    	llR.removeView(llbut);
-	    	llR.removeView(svBut);
-	    	
-	    	//svBut = new ScrollView(this);
-	    	//hll_tara_button.setHorizontalScrollBarEnabled(true); //setScrollBarStyle(HorizontalScrollView. HORIZONTAL);
-	    	llR.addView(svBut,
-				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1));
-	    	svBut.addView(llbut,
-	    			new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.MATCH_PARENT,1));
-	    }*/
-	   /*
-	    
-*/
-	//llR.removeView(llbut);
-   	//llR.removeView(svBut);
+	  
    	svPgr.removeAllViewsInLayout();
-	   
-	   //byte ib=CountTara;
-	   //llbut.removeAllViewsInLayout();
+
 	   int i=1;
 	   Cursor c = MainActivity.db.getRawData ("select distinct T._id as _id, T.name as name from tmc_pgr T left join tmc as TM on T._id=TM.pgr left join ostat as O on O.id_tmc=TM._id where O.kol<>0 and TM.vis=1 order by T.name",null); 
 	   
 	   if (c.moveToFirst()) { 
 		   
 	        do {
-	        	//TableLayout.LayoutParams params = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT);
- 	    		//params.weight=1;
- 	    		
-	        	/*if (i%2==1) {
-	        		row = new TableRow(this);
-	                //row.setGravity(Gravity.CENTER);
-	                //row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,1.0f));
-    		 
-	                llbut.addView(row,
-	                		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 0,1));
-	                //row.addView(llbut, params);
-	        	}*/
-	        	//LinearLayout.LayoutParams PL = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT );
-	    		//PL.weight=1;
-	        	//LinearLayout.LayoutParams PB = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-	    		//PB.weight=1;
-	    		//PB.gravity=Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
-	        	/*if (ib%2==mib) {
-	        		ll.add(new LinearLayout(this));
-	        		llbut.addView(ll.get(il),PL);
-	        		ll.get(il).setOrientation(LinearLayout.HORIZONTAL);
-	        		il++;
-	        	}*/
-	        	//but.add(new chB(byte indBT, int id_tmc, String tmc_name, float val, float ost, int post, float kol, float price, byte ed, String ted, ToggleButton tb))
-////////////////////
-	        	
+	        	        	
 	        	Button btnPgr = new Button(this);
 	        	
 	        	btnPgr.setText(c.getString(c.getColumnIndex("name")));
@@ -809,19 +630,7 @@ void makeDialog() {
 			Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(v.getTag().toString());
 			tvIdPgr.setText(matcher.find()?matcher.group():"-1");
-			//tmp_pgr=(int)MainActivity.StrToFloat2(matcher.find()?matcher.group():"-1");
-			/*btnBack.setTag(matcher.find()?matcher.group():"-1");
-			//Log.d("MyLog", matcher.find()?matcher.group()+" starting at index "+matcher.start()+" and ending at index "+matcher.end()+".":"no");
-			regexp="-([а-яА-ЯёЁa-zA-Z0-9 \\.\\(\\),-]+)$";
-			pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
-			matcher = pattern.matcher(v.getTag().toString());
-			//Log.d("MyLog", matcher.find()?matcher.group()+" starting at index "+matcher.start()+" and ending at index "+matcher.end()+".":"no");
-			tvNamePgr.setText(matcher.find()?matcher.group():"-1");
-	         */       	
-			/*for (int i=0; i<CountTara; i++) 
-				  if (Byte.parseByte(but.get(i).tb.getTag().toString())!=ii) 
-				  {but.get(i).tb.setChecked(false);but.get(i).tb.setTextColor(clrNoCheck); 
-				  but.get(i).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}*/
+			
 			ArrayList<View> alv = MainActivity.getViewsByTag(svPgr);//(LinearLayout)findViewById(R.id.svPgr));
 			for (int i=0; i<alv.size(); i++)
 		    {
@@ -832,8 +641,7 @@ void makeDialog() {
 	        
 			v.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 	    	((Button)v).setTextColor(clrCheck);
-			
-	    	//Log.d("MyLog", String.valueOf((new Date()).getTime()) );
+
 	                	setBut();
 	                	//Log.d("MyLog", String.valueOf((new Date()).getTime()) );
 	                }
@@ -841,9 +649,7 @@ void makeDialog() {
 	        	
 	        	svPgr.addView(btnPgr, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0) );
 	        	
-	        	i++;//ib++;
-	        	
-///////////////////////////////////	        	
+	        	i++;        	
 	        } while (c.moveToNext());
 	        
 	      } 
@@ -886,27 +692,7 @@ void makeDialog() {
 				+ " left join rasxod as R on R.id_tmc=O.id_tmc and R.id_post=O.id_post and R.ed=O.ed and R.keg=O.keg where O.kol!=0 " +
 				" group by G._id, G.countkeg, G.name, G.namep, G.price, G.id_post, G.minkol, G.ed, G.ted, G.pos order by G.pos, G._id",null);
 
-/*	   ( "select G._id as _id, O.keg as keg, G.data_ins as data_ins, ifnull(O.data_upd,0) as count_rasxod, "+ 
-			   "G.countkeg as countkeg, G.name as name, G.namep as namep, G.price as price, G.id_post as id_post, "+ 
-			   "O.kol as kol, round(O.kol,2) as kol2, round(O.kol,3) as kol3, G.ed as ed, G.ted as ted, G.pos as pos from ( "+
-			   "select O.id_tmc as _id, min(O.data_ins) data_ins, min(ifnull(O.data_upd,O.data_ins)) as mindat, "+
-			   "count(O.kol) as countkeg, T.name as name, P.name as namep, TP.price as price, O.id_post as id_post, "+ 
-			   "O.ed as ed, E.name as ted, T.pos as pos "+
-			   "from ostat as O left join tmc T on T._id=O.id_tmc "+
-			   "left join tmc_price as TP on O.id_tmc=TP.id_tmc and O.id_post=TP.id_post and O.ed=TP.ed "+ 
-			   "left join tmc_ed E on O.ed=E._id left join postav P on O.id_post=P._id "+
-			   "where O.kol!=0 and T.vis=1 and T.pgr="+tvIdPgr.getText()+
-			   " group by O.id_tmc, T.name, P.name, TP.price, O.id_post, O.ed, E.name, T.pos "+
-			   ") as G left join ostat as O on G._id=O.id_tmc and G.id_post=O.id_post and G.ed=O.ed and G.mindat=ifnull(O.data_upd,O.data_ins) and G.data_ins=O.data_ins "+
-			   "order by G.pos, G._id"
-			   ,null);
-*/	   
-	   //cc = MainActivity.db.getRawData ("select T._id as _id, T.name as name, P.name as namep, T.price as price, S.id_post as id_post, S.kol as kol, S.ed as ed, E.name as ted from tmc T left join ostat S on T._id=S.id_tmc left join tmc_ed E on S.ed=E._id left join postav P on S.id_post=P._id where T.vis=1 and S.kol>0 and T.pgr="+tvIdPgr.getText(),null);
-	   // scale size font
-/*
-*/
-		   //float sText=((display_w)/(6*scale*scale*l))+scale*5;
-	    	//float sText=MainActivity.sizeSmallButton;
+
 	    llR.removeView(llbut);
 	    llR.removeView(svBut);
 	    if (cc.moveToFirst()) { 
@@ -915,29 +701,12 @@ void makeDialog() {
 	        } while (cc.moveToNext());
 	      };
 	    if (count_but<16)
-	    {   //llbut = new TableLayout(this);
-	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
-	    	//llbut.setStretchAllColumns(true);
-	        //llbut.setShrinkAllColumns(true);
-	    	//llR.removeView(llbut);
-	    	//llR.removeView(svBut);
-	    
+	    {  
 	    	llR.addView(llbut,
 				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1));  
-	    //	llR_.setVisibility(LinearLayout.VISIBLE);
 	    }
 	    else
 	    {
-	    	//llbut = new TableLayout(this);
-	    	//llbut.setOrientation(TableLayout.HORIZONTAL);
-	    	//llbut.setStretchAllColumns(true);
-	        //llbut.setShrinkAllColumns(true);
-	    	//llR.removeView(llbut);
-	    	//llR.removeView(svBut);
-	    	
-	    	//svBut = new ScrollView(this);
-	    	//hll_tara_button.setHorizontalScrollBarEnabled(true); //setScrollBarStyle(HorizontalScrollView. HORIZONTAL);
-	    	
 	    	llR.addView(svBut,
 				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT,1));
 	    	svBut.addView(llbut,
@@ -963,83 +732,7 @@ void makeDialog() {
 			   
 		   ib=(byte)but.size();
 		   }
-	   //llbut.removeAllViewsInLayout();  
 	   
-	   //Log.d("MyLog", "setbut_del_count_tara="+CountTara+" but.size="+but.size()+" idPgr="+tvIdPgr.getText());
-
-	   
-	   //Log.d("MyLog", "setBut id_pgr="+tvIdPgr.getText()+" cc.count="+cc.getCount()+" but.size="+but.size());
-	   //llbut.setMeasureWithLargestChildEnabled(true); 
-	   //кнопки дабавления и удаления кнопок меню 
-	   /*row = new TableRow(this);
-       //row.setMinimumHeight(w);
-       llbut.addView(row,
-       		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT,0));
-       Button b = new Button(this);
-       b.setText("ДОБАВИТЬ ТОВАР");
-       b.setOnClickListener(new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			DialogScreen getYes = new DialogScreen(RasxodActivity.this,RasxodActivity.this,-6).setDialogScreenListener(new DialogListener() {
-				
-				@Override
-				public void OnSelectedKol(double k) {
-					if (k==1) {
-						Intent intent = new Intent(RasxodActivity.this, PrixodActivity.class);
-    					      //Log.d("MyLog", "id="+id);
-    					      startActivity(intent);
-    					      
-						btnBack.setTag(-1);
-		        		tvNamePgr.setText("");
-		        		setPgr();
-					}	
-				}
-			}); 
-			getYes.show();
-			
-		}
-	});
-       
-       
-       row.addView(b,
-   			new TableRow.LayoutParams(0,TableRow.LayoutParams.MATCH_PARENT,1) );
-      
-       b = new Button(this);
-       b.setText("УДАЛИТЬ ТОВАР");
-       b.setOnClickListener(new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			if (Btovar!=-1) {
-				DialogScreen getYes = new DialogScreen(RasxodActivity.this,RasxodActivity.this,-5).setDialogScreenListener(new DialogListener() {
-					
-					@Override
-					public void OnSelectedKol(double k) {
-						if (k==1) {
-						
-							long countT=0;
-							Cursor cc = MainActivity.db.getRawData ("select id_tmc, kol, ed, id_post from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and ed="+but.get(Btovar).ed , null);
-							   if (cc.moveToFirst()) { 
-							        do {countT=
-							        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "обнуление остатка из меню "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
-							        } while (cc.moveToNext());
-							      };
-							if (countT!=0) showMessage("Остаток обнулен", (byte)1);
-							btnBack.setTag(-1);
-			        		tvNamePgr.setText("");
-			        		setPgr();
-						}	
-					}
-				}); 
-				getYes.show();
-
-			}
-		}
-	});
-       row.addView(b,
-      			new TableRow.LayoutParams(0,TableRow.LayoutParams.MATCH_PARENT,1) );
-       */
        int w = (int)((4*MainActivity.h/5)/8);
 	   
 	   int tmp_row=1;
@@ -1058,28 +751,12 @@ void makeDialog() {
 	                
 	        		//int w = (int)(4*MainActivity.h/5)/8;
 	                row.setMinimumHeight(w);
-	        		
-	                //row.setGravity(Gravity.CENTER);
-	                //row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,1));
-	        		 //TableRow.LayoutParams params = new TableRow.LayoutParams();//(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT);
-	 	    		//params.weight=1;
-	        		 
 	                llbut.addView(row,
 	                		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, /*TableLayout.LayoutParams.MATCH_PARENT*/0,1));
 	                //row.addView(llbut, params);
 	        	}
 	        	
-	        	//LinearLayout.LayoutParams PB = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
-	    		//PB.weight=1;
-	    		//PB.gravity=Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
-	        	//TableLayout.LayoutParams PB = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT);
-	    		//PB.weight=1;
-	    		//PB.gravity=Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
-	        	//params = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.MATCH_PARENT);
-	            //params.span = 6;
-	        	//but.add(new chB(byte indBT, int id_tmc, String tmc_name, float val, float ost, int post, float kol, float price, byte ed, String ted, ToggleButton tb))
-	        
-	        	but.add(new chB(
+	        		        	but.add(new chB(
 	        			ib, 							//indBT
 	        			cc.getInt(cc.getColumnIndex("_id")), //id_tmc
 	        			cc.getInt(cc.getColumnIndex("keg")), //keg
@@ -1207,10 +884,10 @@ void makeDialog() {
 		 							        MainActivity.db.addRecRASXODcount
 		 							        (cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 
 		 							        		0,//MainActivity.round3(cc.getDouble(cc.getColumnIndex("kol")))>0.001?cc.getDouble(cc.getColumnIndex("kol")):0,
-		 							        		cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0,
+		 							        		0,//cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0,
 		 							        		0,0,/*(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0),
 		 							        		 (cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0),*/ 
-		 							        		(byte)0,(byte)cc.getInt(cc.getColumnIndex("ed")), but.get(Btovar).price, 0, cc.getInt(cc.getColumnIndex("id_post")), 0, MainActivity.usr+"новая кега - обнуление из меню продаж ", MainActivity.getIntDataTime(), 3);
+		 							        		(byte)0,(byte)cc.getInt(cc.getColumnIndex("ed")), but.get(Btovar).price, 0, cc.getInt(cc.getColumnIndex("id_post")), 0, MainActivity.usr+"новая кега - обнуление из меню продаж ", MainActivity.getIntDataTime(), 5);
 		 							        showMessage("Кнопка с текущей кегой обнулена", (byte)5);
 		 							       Btovar=-1; Btara=-1;
 		 							        //Log.d("MyLog", "countT="+countT+" "+String.valueOf(cc.getDouble(cc.getColumnIndex("kol")))-kol+" "+but.get(Btovar).keg+" keg="+cc.getInt(cc.getColumnIndex("keg")) );
@@ -1251,8 +928,8 @@ void makeDialog() {
 								        do {countT2=
 								        		MainActivity.db.addRecRASXODcount
 								        		(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), 
-								        				 (cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0),//0, 
-								        				 (cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0),//0,
+								        				 /*(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0),*/0, 
+								        				 /*(cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0),*/0,
 								        				 0,0,(byte)0,
 								        				(byte)cc.getInt(cc.getColumnIndex("ed")), but.get(Btovar).price,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "кпнопка с 0 кол-ом - обнуление из меню продаж "+MainActivity.usr, MainActivity.getIntDataTime(), 5);
 								        
@@ -1280,39 +957,6 @@ void makeDialog() {
 	    				getYes.show();
 	        			}
 	        			}
-	        			
-	        			/*if  (tmp_minus==2) 
-	        			{
-	        				Log.d("MyLog", "!!!tmp_minus=2"+tmp_minus+" "+String.valueOf((new Date()).getTime()) );
-	    				Cursor cc = MainActivity.db.getRawData ("select count(*) c from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and ed="+but.get(Btovar).ed , null);
-						long countT=0;   
-	    				if (cc.moveToFirst()) { 
-						        do {countT=cc.getInt(cc.getColumnIndex("c"));
-						        } while (cc.moveToNext());
-						      };
-						cc.close();
-						    if (countT>1) {
-						    	ArrayList<View> alv = MainActivity.getViewsByTag(svPgr);
-						    	for (int i=0; i<alv.size(); i++)
-						        {
-						    		if (((Button)alv.get(i)).getTag().toString()==tvIdPgr.getText()) 
-						    		{
-						    		tmp_minus=1;
-						    		Log.d("MyLog", "tmp_minus="+tmp_minus+" "+String.valueOf((new Date()).getTime()) );
-						    		cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<>0 and id_tmc="+but.get(Btovar).id_tmc+" and id_post="+but.get(Btovar).post+" and keg="+but.get(Btovar).keg+" and ed="+but.get(Btovar).ed , null);
-									   if (cc.moveToFirst()) { 
-									        do {countT=
-									        		MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")), cc.getDouble(cc.getColumnIndex("kol")), (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "да, в наличии другая кега, кпнопка - обнуление из меню "+MainActivity.usr, MainActivity.getIntDataTime(), 1);
-									        } while (cc.moveToNext());
-									      };
-									cc.close();
-									Log.d("MyLog", "tmp=2 update countT="+countT+" "+String.valueOf((new Date()).getTime()) );
-						    		((Button)alv.get(i)).callOnClick();
-						    		}
-						        }
-						    }
-	    				//////////
-	        			}*/
 
 	        			if (tmp_minus==0 || tmp_minus==3)
 	        			{//Log.d("MyLog", "tmp_minus!=1 "+but.get(Btovar).keg+" "+String.valueOf((new Date()).getTime()) );
@@ -1363,20 +1007,14 @@ void makeDialog() {
 	        	//Log.d("MyLog", "ib="+ib+" "+String.valueOf((new Date()).getTime()) );
 	        } while (cc.moveToNext());
 	        
-	      } //else c.close();
-	   //llbut.setWeightSum(5);
-	    //for (int i=0; i<c.getCount(); i++) {
-	    	
-	    //}
+	      } 
 	    cc.close();
 	    btnBack.setTag(Integer.parseInt(tvIdPgr.getText().toString()));
    }
   
-   //static Drawable getDraw() {
-	//   return getResources().getDrawable(R.drawable.edittexth_style);
-   //}
+  
   void fixV() {
-	   float tmp=0;
+	   float tmp=0, tmpkol=0;
 	   String l = "";
 	   String b = "";
 	   byte brak = 0;
@@ -1398,6 +1036,7 @@ void makeDialog() {
   		   m.put("price", MainActivity.round2(but.get(Btovar).price));
   		   if (Btara!=-2) 
   		   {m.put("kol", MainActivity.round3(but.get(Btara).val)+" "+but.get(Btovar).ted); 
+  		   tmpkol=MainActivity.round3(but.get(Btara).val);
   		   tmp=MainActivity.round2(but.get(Btovar).price*(but.get(Btara).val/*/0.5*/));
   		   m.put("summa", tmp/*/0.5*/);
   		m.put("summakp", tmp);
@@ -1406,6 +1045,7 @@ void makeDialog() {
   		   m.put("itog", MainActivity.round3(but.get(Btara).val)+" * "+MainActivity.round2(but.get(Btovar).price)+" = ");} 
   		   else
   		   {m.put("kol", tvKol.getText().toString()+" "+but.get(Btovar).ted); 
+  		   tmpkol=MainActivity.StrToFloat(tvKol.getText().toString());
   		   tmp = MainActivity.round2(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()));
   		   m.put("summa", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/)
   				   );
@@ -1439,9 +1079,9 @@ void makeDialog() {
   			but.get(Btovar).ed, 
   			but.get(Btovar).price, 
   			but.get(Btovar).post, 
-  			0, "своя тара"//,
+  			0, "своя тара",
   			//0,
-  			//(but.get(Btovar).ost<0?((but.get(Btovar).ost)>0?-(but.get(Btovar).ost+but.get(Btara).val):but.get(Btara).val):0) 
+  			(but.get(Btovar).ost<0?((but.get(Btovar).ost+but.get(Btara).val)>0?-but.get(Btovar).ost:but.get(Btara).val):0) 
   			));
   	
   	}
@@ -1463,9 +1103,10 @@ void makeDialog() {
   				MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())/*/0.5*/) 
   				,but.get(Btovar).ed, 
   				but.get(Btovar).price, 
-  				but.get(Btovar).post, 0, "своя тара"//,
+  				but.get(Btovar).post, 0, "своя тара",
   				//0,
-  	   			//(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-(but.get(Btovar).ost):MainActivity.StrToFloat(tvKol.getText().toString())):0) 
+  				(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-but.get(Btovar).ost:MainActivity.StrToFloat(tvKol.getText().toString())):0)
+  				//(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-(but.get(Btovar).ost):MainActivity.StrToFloat(tvKol.getText().toString())):0) 
   				) );
   	   		
   		}
@@ -1482,6 +1123,7 @@ void makeDialog() {
   	  	//m.put("name", but.get(Btovar).tmc_name);
   	 m.put("price", MainActivity.round2(but.get(Btovar).price));
   	 if (Btara!=-2) {m.put("kol", MainActivity.round3(but.get(Btara).val)+" "+but.get(Btovar).ted);
+  	 tmpkol=MainActivity.round3(but.get(Btara).val);
 		      m.put("tara", " + ТАРА "+but.get(Btara).tmc_name);
 		      m.put("name", but.get(Btovar).tmc_name+" (ТАРА "+but.get(Btara).tmc_name+")"+b);
 		      tmp = MainActivity.round2(but.get(Btovar).price*(but.get(Btara).val/*/0.5*/)+but.get(Btara).price);
@@ -1493,6 +1135,7 @@ void makeDialog() {
 		      m.put("itog", MainActivity.round3(but.get(Btara).val)+" * "+MainActivity.round2(but.get(Btovar).price)+" + "+MainActivity.round2(but.get(Btara).price)+" = ");}
   	 else
   	{m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted);
+  	tmpkol=MainActivity.StrToFloat(tvKol.getText().toString());
    m.put("tara", /*" + ПАКЕТ "*/"");
    m.put("name", but.get(Btovar).tmc_name+b);
    tmp = MainActivity.round2(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()));
@@ -1526,8 +1169,8 @@ void makeDialog() {
 			but.get(Btara).val,
 			but.get(Btovar).ed, 
 			but.get(Btovar).price, 
-			but.get(Btovar).post, 0, "с тарой"//,//0,
-			//(but.get(Btovar).ost<0?((but.get(Btovar).ost+but.get(Btara).val)>0?-(but.get(Btovar).ost):but.get(Btara).val):0)
+			but.get(Btovar).post, 0, "с тарой",//0,
+			(but.get(Btovar).ost<0?((but.get(Btovar).ost+but.get(Btara).val)>0?-but.get(Btovar).ost:but.get(Btara).val):0)
 			));	
 	//Log.d("MyLog", "Btovar4="+Btovar+" "+Btara);
   	tranz.add(new tranDB(
@@ -1542,8 +1185,8 @@ void makeDialog() {
   			but.get(Btara).ed, 
   			but.get(Btara).price, 
   			but.get(Btara).post, 
-  			0, "тара"//,//0,
-  			//0
+  			0, "тара",//0,
+  			(but.get(Btovar).ost<0?((but.get(Btovar).ost+but.get(Btara).kol)>0?-but.get(Btovar).ost:but.get(Btara).kol):0)
   			));
 
 		      }
@@ -1561,8 +1204,11 @@ void makeDialog() {
 		    			  Btovar,
 		    			  but.get(Btovar).id_tmc,
 		    			  but.get(Btovar).keg, 
-		    			  MainActivity.StrToFloat(tvKol.getText().toString()),but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "пакет"//,//0,
-		    			  //(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-(but.get(Btovar).ost):MainActivity.StrToFloat(tvKol.getText().toString())):0)
+		    			  MainActivity.StrToFloat(tvKol.getText().toString()),
+		    			  but.get(Btovar).ed, 
+		    			  but.get(Btovar).price, 
+		    			  but.get(Btovar).post, 0, "пакет",//0,
+		    			  (but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-but.get(Btovar).ost:MainActivity.StrToFloat(tvKol.getText().toString())):0)
 		    			  ));	
 		    	      // tranz.add(new tranDB((byte)(data.size()-1), Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "tara"));
 		    	  }
@@ -1599,346 +1245,7 @@ void makeDialog() {
   	//strKol="";
   lvCombo.smoothScrollToPosition(data.size()-1);
   }
-/*  
-  void fixV_checkKol() {
-	  byte z = 0;
-	   float tmp=0;
-	   String l = "";
-	   String b = "";
-	   byte brak = 0;
-	   byte move = 0;
-	   int l1=0,l2=0;
-	   SpannableStringBuilder text; 
-	   StyleSpan style2; 
-	   AbsoluteSizeSpan s12;
-	//if (but.get(Btovar).ost<1) {};   
-	   if (tbTara.isChecked()) 
-   	{	m = new HashMap<String, Object>();
-   	//if (tbBrak.isChecked()) {m.put("brak", 1); brak = 1;  b=b+" (БРАК)";} else m.put("brak", 0);
-   	//if (tbMove.isChecked()) {m.put("move", 1); move = 1; b=b+" (ПЕРЕМЕЩЕНИЕ)";} else m.put("move", 0);
-   		m.put("skidka_sum", 0);
-   		m.put("skidka_but", 0);
-   		m.put("skidka_but_text", "0%");
-   		  m.put("name", but.get(Btovar).tmc_name+" (СВОЯ ТАРА)"+b);
-   		//m.put("name", but.get(Btovar).tmc_name);
-   		   m.put("price", MainActivity.round2(but.get(Btovar).price));
-   		   if (Btara!=-2) 
-   		   {m.put("kol", MainActivity.round3(but.get(Btara).val)+" "+but.get(Btovar).ted); 
-   		   tmp=MainActivity.round2(but.get(Btovar).price*(but.get(Btara).val));
-   		   m.put("summa", tmp);
-   		m.put("summakp", tmp);
-   		m.put("summa2", tmp);
-   		m.put("skidka_sum_itog", tmp);
-   		   m.put("itog", MainActivity.round3(but.get(Btara).val)+" * "+MainActivity.round2(but.get(Btovar).price)+" = ");} 
-   		   else
-   		   {m.put("kol", tvKol.getText().toString()+" "+but.get(Btovar).ted); 
-   		   tmp = MainActivity.round2(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()));
-   		   m.put("summa", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
-   				   );
-   		m.put("summakp", tmp );
-   		m.put("summa2", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
-				   );
-   		m.put("skidka_sum_itog", tmp //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
-				   );
-   		m.put("itog", tvKol.getText().toString()//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
-   				+" * "+MainActivity.round2(but.get(Btovar).price)+" = ");}
-   		      m.put("tara", "СВОЯ ТАРА");
-   		      //data.add(m);
-   		      //sAdapter.notifyDataSetChanged();
-   		   if (Btara!=-2)	
-   	{ ///---
-   	  if (but.get(Btovar).ost>but.get(Btara).val) {
-      ///---			   
-   			//Log.d("MyLog", "Btovar1="+Btovar);
-   			sumI=sumI+but.get(Btovar).price*(but.get(Btara).val);
-   		   	
-   		   	but.get(Btovar).ost=but.get(Btovar).ost-but.get(Btara).val;
-   		   	but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+but.get(Btara).val;
-   		   	
-   	tranz.add(new tranDB(
-   			brak,
-   			move,
-   			(byte)(data.size()-1),
-   			(byte)(data.size()-1), 
-   			Btovar, 
-   			but.get(Btovar).id_tmc, 
-   			but.get(Btovar).keg, 
-   			but.get(Btara).val, 
-   			but.get(Btovar).ed, 
-   			but.get(Btovar).price, 
-   			but.get(Btovar).post, 
-   			0, "своя тара"//,
-   			//0,
-   			//(but.get(Btovar).ost<0?((but.get(Btovar).ost)>0?-(but.get(Btovar).ost+but.get(Btara).val):but.get(Btara).val):0) 
-   			));
-   	///---
-   	  z=1;
-   	  } else showMessage("Такого количества нет!", (byte)0);
-   	///---
-   	}
-   		   else
-   		{//Log.d("MyLog", "Btovar2="+Btovar);
-   			   ///---
-   			if (but.get(Btovar).ost>MainActivity.StrToFloat(tvKol.getText().toString())) {
-   			   ///---
-   			sumI=sumI+but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()) //((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
-   	   	   			;
-   	   	 but.get(Btovar).ost=but.get(Btovar).ost-MainActivity.StrToFloat(tvKol.getText().toString());
-   	   	 but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+MainActivity.StrToFloat(tvKol.getText().toString());
-   	   	 
-   			   tranz.add(new tranDB(
-   				brak,
-   				move,
-   				(byte)(data.size()-1),
-   				(byte)(data.size()-1), 
-   				Btovar, 
-   				but.get(Btovar).id_tmc, 
-   				but.get(Btovar).keg,
-   				MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString())) 
-   				,but.get(Btovar).ed, 
-   				but.get(Btovar).price, 
-   				but.get(Btovar).post, 0, "своя тара"//,
-   				//0,
-   	   			//(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-(but.get(Btovar).ost):MainActivity.StrToFloat(tvKol.getText().toString())):0) 
-   				) );
-   	   		///---
-   			   z=1;
-   		} else showMessage("Такого количества нет!", (byte)0);
-   			///---
-   		}
- ///---
-   	if (z==1) {data.add(m);
-    sAdapter.notifyDataSetChanged();}
- ///---
-   	}
-   	else
-   	{//Log.d("MyLog", "Btovar fixV1="+Btovar);
-   	  m = new HashMap<String, Object>();
-   	//if (tbBrak.isChecked()) {m.put("brak", 1); brak = 1;  b=b+" (БРАК)";} else m.put("brak", 0);
-   	//if (tbMove.isChecked()) {m.put("move", 1); move = 1; b=b+" (ПЕРЕМЕЩЕНИЕ)";} else m.put("move", 0);
-   	  	m.put("skidka_sum", 0);
-		m.put("skidka_but", 0);
-		m.put("skidka_but_text", "0%");
-   	  	//m.put("name", but.get(Btovar).tmc_name);
-   	 m.put("price", MainActivity.round2(but.get(Btovar).price));
-   	 if (Btara!=-2) {m.put("kol", MainActivity.round3(but.get(Btara).val)+" "+but.get(Btovar).ted);
-		      m.put("tara", " + ТАРА "+but.get(Btara).tmc_name);
-		      m.put("name", but.get(Btovar).tmc_name+" (ТАРА "+but.get(Btara).tmc_name+")"+b);
-		      tmp = MainActivity.round2(but.get(Btovar).price*(but.get(Btara).val)+but.get(Btara).price);
-		      //Log.d("MyLog", "price="+but.get(Btara).price);
-		      m.put("summa", tmp);
-		      m.put("summakp", tmp);
-		      m.put("summa2", tmp);
-		      m.put("skidka_sum_itog", tmp);
-		      m.put("itog", MainActivity.round3(but.get(Btara).val)+" * "+MainActivity.round2(but.get(Btovar).price)+" + "+MainActivity.round2(but.get(Btara).price)+" = ");}
-   	 else
-   	{m.put("kol", tvKol.getText()+" "+but.get(Btovar).ted);
-    m.put("tara", "");
-    m.put("name", but.get(Btovar).tmc_name+b);
-    tmp = MainActivity.round2(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString()));
-    m.put("summakp", tmp);
-    m.put("summa", tmp);
-    m.put("summa2", tmp);
-    m.put("skidka_sum_itog", tmp);
-    m.put("itog", tvKol.getText().toString()//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
-    		+" * "+MainActivity.round2(but.get(Btovar).price)+" = ");}
-		     // data.add(m);
-		     // sAdapter.notifyDataSetChanged();
-		      if (Btara!=-2) {
-		    	///---
-		   			if (but.get(Btovar).ost>but.get(Btara).val) {
-		   			   ///---
-		    	 // Log.d("MyLog", "tara1="+(byte)(data.size()-1));
-		    	 // Log.d("MyLog", "Btovar3="+Btovar);
-		    	  but.get(Btovar).ost=but.get(Btovar).ost-but.get(Btara).val;
-		    	   	but.get(Btovar).kol_in_chek=but.get(Btovar).kol_in_chek+but.get(Btara).val;
-		    	   	but.get(Btara).ost=but.get(Btara).ost-but.get(Btara).kol;
-		    	   	
-		    	   	sumI=sumI+(but.get(Btovar).price*(but.get(Btara).val)+but.get(Btara).price);
-		    	   	
-	tranz.add(new tranDB(
-			brak,
-			move,
-			(byte)(data.size()-1),
-			(byte)(data.size()-1), 
-			Btovar, 
-			but.get(Btovar).id_tmc, 
-			but.get(Btovar).keg, 
-			but.get(Btara).val,
-			but.get(Btovar).ed, 
-			but.get(Btovar).price, 
-			but.get(Btovar).post, 0, "с тарой"//,//0,
-			//(but.get(Btovar).ost<0?((but.get(Btovar).ost+but.get(Btara).val)>0?-(but.get(Btovar).ost):but.get(Btara).val):0)
-			));	
-	//Log.d("MyLog", "Btovar4="+Btovar+" "+Btara);
-   	tranz.add(new tranDB(
-   			brak,
-   			move,
-   			(byte)(data.size()-1),
-   			(byte) -1 , 
-   			Btara,
-   			but.get(Btara).id_tmc, 
-   			but.get(Btara).keg, 
-   			but.get(Btara).kol, 
-   			but.get(Btara).ed, 
-   			but.get(Btara).price, 
-   			but.get(Btara).post, 
-   			0, "тара"//,//0,
-   			//0
-   			));
-  ///---
-	   z=1;
-} else showMessage("Такого количества нет!", (byte)0);
-	///---
-		      }
-		      else
-			      
-		    	   	{//Log.d("MyLog", "Btovar5="+Btovar);
-		    	///---
-		   			if (but.get(Btovar).ost>MainActivity.StrToFloat(tvKol.getText().toString())) {
-		   			   ///---
-		    	  but.get(Btovar).ost=but.get(Btovar).ost-MainActivity.StrToFloat(tvKol.getText().toString());     
-		    	  sumI=sumI+(but.get(Btovar).price*MainActivity.StrToFloat(tvKol.getText().toString())//((tvKol.getText().length()==0||tvKol.getText().equals(""))?0:Float.parseFloat(tvKol.getText().toString()))
-		    	    		   +0);
-		    	  tranz.add(new tranDB(
-		    			  brak,
-		    			  move,
-		    			  (byte)(data.size()-1),
-		    			  (byte)(data.size()-1), 
-		    			  Btovar,
-		    			  but.get(Btovar).id_tmc,
-		    			  but.get(Btovar).keg, 
-		    			  MainActivity.StrToFloat(tvKol.getText().toString()),but.get(Btovar).ed, but.get(Btovar).price, but.get(Btovar).post, 0, "пакет"//,//0,
-		    			  //(but.get(Btovar).ost<0?((but.get(Btovar).ost+MainActivity.StrToFloat(tvKol.getText().toString()))>0?-(but.get(Btovar).ost):MainActivity.StrToFloat(tvKol.getText().toString())):0)
-		    			  ));	
-		    	      // tranz.add(new tranDB((byte)(data.size()-1), Btara,but.get(Btara).id_tmc, but.get(Btara).kol, but.get(Btara).ed, but.get(Btara).price, but.get(Btara).post, 0, "tara"));
-		    	///---
-	   			   z=1;
-	   		} else showMessage("Такого количества нет!", (byte)0);
-	   			///---
-		    	   	}
-		    ///---
-		     	if (z==1) {data.add(m);
-		      sAdapter.notifyDataSetChanged();}
-		   ///---
-   	}
 
-	   l = but.get(Btovar).tmc_name+"\n"
-			   	  +(but.get(Btovar).ed==1?MainActivity.round2(but.get(Btovar).ost):MainActivity.round3(but.get(Btovar).ost))
-			   	  +but.get(Btovar).ted+" ЦЕНА "+MainActivity.round2(but.get(Btovar).price)+but.get(Btovar).string_keg;
-				        	l1=(but.get(Btovar).tmc_name+"\n").length(); 
-				        	l2=l.length();
-				        	text = new SpannableStringBuilder(l); 
-				        	style2 = new StyleSpan(Typeface.BOLD); 
-				        	s12 = new AbsoluteSizeSpan(MainActivity.butNameS ,false);
-				        	text.setSpan(s12, l1, l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
-				        	text.setSpan(style2,l1,l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE);	  
-				        	but.get(Btovar).tb.setTextOff(text);
-				        	but.get(Btovar).tb.setTextOn(text);
-				        	
-   	tvSum.setText(String.valueOf(MainActivity.round2(sumI)));
-   	but.get(Btovar).tb.setChecked(false);
-   	but.get(Btovar).tb.setTextColor(clrNoCheck);
-   	but.get(Btovar).tb.setBackground(tvSum.getContext().getResources().getDrawable(R.drawable.edittexth_style));
-   	if (Btara!=-2)
-   	{but.get(Btara).tb.setChecked(false);
-   	but.get(Btara).tb.setTextColor(clrNoCheck);
-   	but.get(Btara).tb.setBackground(tvSum.getContext().getResources().getDrawable(R.drawable.edittexth_style));
-   	}
-   	else
-   	{tbnKol.setChecked(false);
-   	tbnKol.setTextColor(clrNoCheck);
-   	tbnKol.setBackground(tvSum.getContext().getResources().getDrawable(R.drawable.edittexth_style));
-   	tvKol.setText("");}
-   	Btovar=-1; Btara=-1;
-   	//strKol="";
-   lvCombo.smoothScrollToPosition(data.size()-1);
-   }*/
-  
-   /*void get_Check(byte cash) {
-	  
-	   if (data.size()==0) finish();
-   	else
-   	{//no klient
-   		long cou=0; cou=MainActivity.db.addRecKLIENTcount(MainActivity.num_id,"чек№ "+MainActivity.num_id, MainActivity.StrToFloat(tvSum.getText().toString()), 
-   				0, "чек автозакрыт", MainActivity.getIntDataTime(), 0, (byte)0);
-   		
-   	for (int i=0; i<tranz.size(); i++) {
-   		//Log.d("MyLog", "Btovar="+Btovar);//+" keg="+but.get(Btovar).keg);
-   		//public void addRecRASXOD(int id_tmc, float kol, float price, int id_post, int id_klient, String prim, int data_del, int data_ins, byte ok)
-   	//MainActivity.db.addRecRASXOD(but.get(Btovar).id_tmc,but.get(Btovar).keg,
-   		//	tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, (int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
-   		
-   	   	//Log.d("MyLog", "AtagB="+tranz.get(i).tagB+" i="+i);
-   	   	//Log.d("MyLog", " i="+i+" ost="+but.get(tranz.get(i).tagB).ost+" ost3="+MainActivity.round3(but.get(tranz.get(i).tagB).ost)+" ost2="+MainActivity.round2(but.get(tranz.get(i).tagB).ost)+" ost1="+MainActivity.roundd(but.get(tranz.get(i).tagB).ost,1));
-   	   	//ost=-0.49999 ost3=-0.499 ost2=-0.49 ost1=-0.4
-
-   	   	//but.get(tranz.get(i).tagB).ost=but.get(tranz.get(i).tagB).ost-tranz.get(i).kol;
-   		Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol=0 and id_tmc="+tranz.get(i).id_tmc+" and id_post="+tranz.get(i).id_post+" and keg="+tranz.get(i).keg+" and ed="+tranz.get(i).ed , null);
-		   if (cc.moveToFirst()) { 
-		        do {
-		        	MainActivity.db.addRecRASXODcount
-		        	(tranz.get(i).id_tmc, tranz.get(i).keg, -tranz.get(i).kol, (tranz.get(i).kol>0?tranz.get(i).kol:0), (tranz.get(i).kol<0?tranz.get(i).kol:0),0,0, (byte)0, (byte)tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, 0, "новая кега - товар в чеке "+MainActivity.usr, MainActivity.getIntDataTime(), 5);
-		   			//MainActivity.db.addRecPRIXOD(but.get(Btovar).id_tmc, but.get(Btovar).keg, but.get(tranz.get(i).tagB).kol_in_chek,0,0, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "0 остатка в кеге "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
-		   			//showMessage("kol_tranz "+tranz.get(i).kol, (byte)1);
-		        	}
-		        while (cc.moveToNext());
-		        }
-   		
-   		if (but.get(tranz.get(i).tagB).ost==0 && but.get(tranz.get(i).tagB).ed==1)//если кол-во =0 то добавляем остаток по приходу
-   	   	{
-   	   		//MainActivity.db.addRecPRIXOD(tranz.get(i).id_tmc, tranz.get(i).keg, -but.get(tranz.get(i).tagB).ost+0.00001,0,0, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "автоувеличение+1 остатка "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
-   	   		MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc, tranz.get(i).keg, but.get(tranz.get(i).tagB).ost-0.00001, 0,0,0,0,(byte)0, (byte)tranz.get(i).ed, 0,0, tranz.get(i).id_post, 0, MainActivity.usr+" новая кега - товар в чеке ", 1, 5);
-   	   		but.get(tranz.get(i).tagB).ost=0.00001;
-   	   		tranz.get(i).prim="из отрицательного остатка! "+tranz.get(i).prim;
-   	   	}
-   		MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
-   			tranz.get(i).kol, 
-   			0, 0, 0,0,(byte)0, tranz.get(i).ed, tranz.get(i).price,0, tranz.get(i).id_post, (int)cou, 
-   			MainActivity.usr+" авточек№ "+MainActivity.num_id+" на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" остаток:"+but.get(tranz.get(i).tagB).ost+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
-   	   	
-   	
-   	//Log.d("MyLog", "PtagB="+tranz.get(i).tagB+" ost="+but.get(tranz.get(i).tagB).ost);
-   	if (tranz.get(i).tagB>CountTara-1) {
-   		
-   	//Log.d("MyLog", but.get(tranz.get(i).tagB).tb.getTextOff().toString() );
-   		//первый расход, апдейтим дату остатка
-       	if (but.get(tranz.get(i).tagB).count_rasxod==0 && but.get(tranz.get(i).tagB).ed==1) {
-       		MainActivity.db.updOstatKeg(but.get(tranz.get(i).tagB).id_tmc, but.get(tranz.get(i).tagB).post, but.get(tranz.get(i).tagB).keg, but.get(tranz.get(i).tagB).ed);
-       		but.get(tranz.get(i).tagB).count_rasxod=1;
-       	}
-   	
-       	//but.get(tranz.get(i).tagB).tb.setTextOff(text);//(but.get(tranz.get(i).tagB).tmc_name+"\n"+but.get(tranz.get(i).tagB).ost+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+but.get(tranz.get(i).tagB).price);
-       	//but.get(tranz.get(i).tagB).tb.setTextOn(text);//(but.get(tranz.get(i).tagB).tmc_name+"\n"+but.get(tranz.get(i).tagB).ost+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+but.get(tranz.get(i).tagB).price);
-   	but.get(tranz.get(i).tagB).tb.setChecked(but.get(tranz.get(i).tagB).tb.isChecked());
-   	//Log.d("MyLog", but.get(tranz.get(i).tagB).tb.getTextOff().toString() );
-   	
-   	//Log.d("MyLog", but.get(tranz.get(i).tagB).tmc_name+"\n"+but.get(tranz.get(i).tagB).ost+but.get(tranz.get(i).tagB).ted+" ЦЕНА "+but.get(tranz.get(i).tagB).price );
-   	}
-   	//but.get(tranz.get(i).tagB).kol=but.get(tranz.get(i).tagB).kol-tranz.get(i).kol;
-   	//tbut.get(tranz.get(i).tagB-7).setTextOff(c.getString(c.getColumnIndex("name"))+"\nОСТ "+but.get(tranz.get(i).tagB).kol+"Л ЦЕНА "+c.getDouble(c.getColumnIndex("price")));
-   	//tbut.get(tranz.get(i).tagB-7).setTextOn(c.getString(c.getColumnIndex("name"))+"\nОСТ "+but.get(tranz.get(i).tagB).kol+"Л ЦЕНА "+c.getDouble(c.getColumnIndex("price")));
-   	}
-   	
-   	//tvCombo.setText("");
-   	
-   	//Toast.makeText(RasxodActivity.this, "ЧЕК № "+cou+" НА СУММУ:"+tvSum.getText().toString(), Toast.LENGTH_LONG).show();
-   	String sChek="";
-   	for (int i=0; i<data.size(); i++) 
-   	{sChek=sChek+"\n"+data.get(i).get("name").toString()+" "+data.get(i).get("kol").toString()+" "+data.get(i).get("price").toString()+" "+data.get(i).get("tara").toString(); }	
-   	
-   	showMessage("ЧЕК № "+MainActivity.num_id+" НА СУММУ:"+tvSum.getText().toString()+"\n"+sChek, (byte)1);
-   	MainActivity.num_id++;	
-   	data.clear();
-   	sAdapter.notifyDataSetChanged();
-   	tvSum.setText("");sumI=0;tranz.clear();
-   	tbTara.setChecked(false);
-   	//tbBrak.setChecked(false);
-   	//tbMove.setChecked(false);
-   	}
-	   
-   }*/
-  
    void getCheckDialog(byte cash) /*0-nalichnie, 1-karta*/ {
 	   
 	   if (data.size()!=0)
@@ -1956,17 +1263,6 @@ void makeDialog() {
     if (MainActivity.StrToFloat(etSkidka.getText().toString())!=0) sk=/*MainActivity.round(*/MainActivity.StrToFloat(etSkidka.getText().toString())/tranz.size()/*,2)*/;
     
     for (int i=0; i<tranz.size(); i++) {
-    	/*int fla=-1;
-  		Cursor cur = MainActivity.db.getRawData (
-  	  			"select ifnull(data_upd,0) c from ostat where id_tmc="+but.get(tranz.get(i).tagB).id_tmc+" and keg="+but.get(tranz.get(i).tagB).keg+" and id_post="+but.get(tranz.get(i).tagB).post+" and ed="+but.get(tranz.get(i).tagB).ed//+" and data_upd is null"
-  	  			, null);	
-  	          	 if (cur.moveToFirst())  
-  	       	        do {
-  	       	        	fla= cur.getInt(cur.getColumnIndex("c"));
-  	       	      showMessage("111_fla="+fla, (byte)0);
-  	       	        } while (cur.moveToNext());
-  	          	        cur.close();	*/     
-  	          	        ////////////////
     	
     	skid=0;	
     if (tranz.get(i).tagL!=-1) skid=MainActivity.StrToFloat( data.get(tranz.get(i).tag).get("skidka_sum").toString() );
@@ -1974,7 +1270,7 @@ void makeDialog() {
     Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol=0 and id_tmc="+tranz.get(i).id_tmc+" and id_post="+tranz.get(i).id_post+" and keg="+tranz.get(i).keg+" and ed="+tranz.get(i).ed , null);
 	   if (cc.moveToFirst()) { 
 	        do {
-	        	MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc, tranz.get(i).keg, -tranz.get(i).kol, (but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0), (but.get(tranz.get(i).tagB).ost<0?-but.get(tranz.get(i).tagB).ost:0),0,0,cash, (byte)tranz.get(i).ed, but.get(tranz.get(i).tagB).price,0, tranz.get(i).id_post, 0, "новая кега - товар в чеке "+MainActivity.usr, MainActivity.getIntDataTime(), 5);
+	        	MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc, tranz.get(i).keg, -tranz.get(i).kol, /*(but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0)*/0, /*(but.get(tranz.get(i).tagB).ost<0?-but.get(tranz.get(i).tagB).ost:0)*/0 ,0,0,cash, (byte)tranz.get(i).ed, but.get(tranz.get(i).tagB).price,0, tranz.get(i).id_post, 0, "новая кега - товар в чеке "+MainActivity.usr, MainActivity.getIntDataTime(), 5);
 	   			//MainActivity.db.addRecPRIXOD(but.get(Btovar).id_tmc, but.get(Btovar).keg, but.get(tranz.get(i).tagB).kol_in_chek,0,0, (byte)tranz.get(i).ed, tranz.get(i).price, tranz.get(i).price, tranz.get(i).id_post, "0 остатка в кеге "+but.get(tranz.get(i).tagB).ost+" чек "+cou, MainActivity.getIntDataTime(),(byte)0);
 	   			//showMessage("kol_tranz "+tranz.get(i).kol, (byte)1);
 	        	}
@@ -1992,7 +1288,8 @@ void makeDialog() {
     //long tmp = MainActivity.db.addRecRASXODcount(tranz.get(i).id_tmc,
    		//	tranz.get(i).kol, tranz.get(i).ed, tranz.get(i).price, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
     	MainActivity.db.addRecRASXOD(tranz.get(i).id_tmc,tranz.get(i).keg,
-       			tranz.get(i).kol,/*(but.get(tranz.get(i).tagB).ost<0?tranz.get(i).kol:0)*//*tranz.get(i).nedo*/0, /*(but.get(tranz.get(i).tagB).ost>0?but.get(tranz.get(i).tagB).ost:0)*//*tranz.get(i).izl*/0, /*(tranz.get(i).brak==1?tranz.get(i).kol:0),(tranz.get(i).move==1?tranz.get(i).kol:0)*/0,0, cash, tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
+       			tranz.get(i).kol,/*(but.get(tranz.get(i).tagB).ost<0?tranz.get(i).kol:0)*//*tranz.get(i).nedo*/0, 
+       			/*(tranz.get(i).ed==1)?*/tranz.get(i).izl, /*(tranz.get(i).brak==1?tranz.get(i).kol:0),(tranz.get(i).move==1?tranz.get(i).kol:0)*/0,0, cash, tranz.get(i).ed, tranz.get(i).price, sk+skid, tranz.get(i).id_post, /*tranz.get(i).id_klient*/(int)cou, 
        			MainActivity.usr+" чек№ "+MainActivity.num_id+" на сумму "+MainActivity.StrToFloat(tvSum.getText().toString())+" остаток:"+MainActivity.round3(but.get(tranz.get(i).tagB).ost)+" "+tranz.get(i).prim, MainActivity.getIntDataTime(), (byte)0);	
        	
   	//Log.d("MyLog", "data="+data.get(tranz.get(i).tagL).get("skidka_sum").toString());
@@ -2060,6 +1357,7 @@ void makeDialog() {
    	tbTara.setChecked(false);
    	//tbBrak.setChecked(false);
    	//tbMove.setChecked(false);
+   	sAdapter.notifyDataSetChanged();
    	}
 	   tvDialogN=0;
 	 //  sAdapter.notifyDataSetChanged();
@@ -2367,22 +1665,9 @@ void makeDialog() {
             }
             });
         spKlient.setAdapter(scaKlient);
-        
-      	
-      	//etSkidka.clearFocus();
-      	
-      	//getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); 
-      	/*
-      	InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-      	imm.hideSoftInputFromWindow(etNal.getWindowToken(),
-      			InputMethodManager.HIDE_NOT_ALWAYS);*/
+
       	lvComboD = (ListView) Dview.findViewById(R.id.lvComboDia);
-        /*String[] from = { "name", "kol","price", "tara","itog", "summa","button"};
-        int[] to = { R.id.comboName, R.id.comboKol,R.id.comboPrice, R.id.comboTara, R.id.comboItog, R.id.comboSumma, R.id.comboX };
-             // создаем адаптер
-             sAdapterD = new MySimpleAdapter(this, data, R.layout.combo_item, from, to);
-             // определяем список и присваиваем ему адаптер
-             sAdapterD.setViewBinder(new MyViewBinder());*/
+
              lvComboD.setAdapter(sAdapter);
 
          adb.setNegativeButton("ОТМЕНА", new DialogInterface.OnClickListener() {
@@ -2393,9 +1678,6 @@ void makeDialog() {
              	etSkidkaPerSum.setText("");
              	etCheckCheck.setText("");
             	 tvDialogN=0;
-            	 // Log.d("MyLog", "Cancel");
-            	 //tvKol.setText("");
-            	 //tbnKol.setChecked(false); tbnKol.setTextColor(clrNoCheck); tbnKol.setBackground(getResources().getDrawable(R.drawable.edittexth_style));
              }
          })
          .setPositiveButton("ЗАКРЫТЬ ЧЕК", new DialogInterface.OnClickListener() {
@@ -2428,34 +1710,8 @@ void makeDialog() {
          
         
          dialogg = adb.create();
-         
-         //dialogg;
-         
-        // WindowManager.LayoutParams lp = dialogg.getWindow().getAttributes();
-     	//lp.dimAmount = 0.6f; // уровень затемнения от 1.0 до 0.0
-     	//lp.width=display_w-(int)(display_w/7);
-     	//lp.height=display_h-(int)(display_h/7);
-        // WindowManager.LayoutParams lp = dialogg.getWindow().getAttributes();
-       //  lp.width=display_h;
-       //  lp.height=display_h;
-     	//dialogg.getWindow().setAttributes(//lp
-     	//		new WindowManager.LayoutParams( WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-     	//		); //setLayout(display_w, display_h); 
-
-     	//dialogg.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-     	// Установите заголовок
-     	//dialogg.setTitle("ПРОВЕРЬТЕ ЧЕК ПЕРЕД ЗАКРЫТИЕМ");
-         // обработчик отображения
-         /*dialogg.setOnShowListener(new OnShowListener() {
-           public void onShow(DialogInterface dialog) {
-          	 
-           }
-         });*/
 
          return dialogg;
-       //}
-     
-     //return super.onCreateDialog(id);
    }
    
  
@@ -2463,16 +1719,7 @@ void makeDialog() {
    @Override
    protected void onPrepareDialog(int id, Dialog dialog) {
      super.onPrepareDialog(id, dialog);
-     //Log.d("MyLog", "Prepare");
-     //if (id == 1) { strDialog=""; tvDKol.setText("");  titleD.setText(dialogNumTitle(tvDialogN)); }
-    // if (id == 2 || id ==3) {
-    	 //etSkidkaPerSum.setText("");
-    	 //etSkidkaPer.setText(""); 
-    	 //etSkidka.setText("0"); 
-    	 //tvIdKlient.setText("0"); 
-    	 //etNal.setText("0"); 
-    	 //tvSdacha.setText("0");
-     //showMessage("prepare "+tvDialogN, (byte)1);
+
      if (tvDialogN==R.id.btnOkRasxod_okok)
      { dialog.setTitle("ЧЕК НАЛИЧНЫЙ");
      //showMessage("R.id.btnOkRasxod_okok "+R.id.btnOkRasxod_okok, (byte)1);
@@ -2494,11 +1741,6 @@ void makeDialog() {
     	 //tvDItogo.setText(tvSum.getText());  
     	 tvDItogo.setText( String.valueOf( MainActivity.StrToFloat(tvSum.getText().toString()) - MainActivity.StrToFloat(etSkidka.getText().toString()) - MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())
     			 ));
-    	 /*float vals=0;
-	      for (int i=0; i<data.size(); i++) 
-	     		vals=vals+MainActivity.StrToFloat(data.get(i).get("skidka_sum").toString() ) ;
-	     		
-	      	if (vals!=0) etSkidkaPerSum.setText(String.valueOf(vals)); else etSkidkaPerSum.setText("");*/
 	      	tvSdacha.setText( String.valueOf (
 	      		MainActivity.round2(MainActivity.StrToFloat(etNal.getText().toString())-MainActivity.StrToFloat(tvDItogo.getText().toString())/*+MainActivity.StrToFloat(etSkidka.getText().toString()) + MainActivity.StrToFloat(etSkidkaPerSum.getText().toString())*//*vals*/)
 	      		) );
@@ -2552,43 +1794,7 @@ void makeDialog() {
         	makeDialog();
         }
       });
-   	
-     //strDialog="";
-     
-     //spKlient.setSelection((int) MainActivity.StrToFloat(tvIdKlient.getText().toString())-1);
-     //etSkidkaPer.setText( (int)MainActivity.StrToFloat(etSkidkaPer.getTag().toString()) );
-     //}
- 	
-     /*if (id == 1) {
-       // Находим TextView для отображения времени и показываем текущее
-       // время
-       TextView tvTime = (TextView) dialog.getWindow().findViewById(
-           R.id.tvTime);
-       tvTime.setText(sdf.format(new Date(System.currentTimeMillis())));
-       // если была нажата кнопка Добавить
-       if (btn == R.id.btnAdd) {
-         // создаем новое TextView, добавляем в диалог, указываем текст
-         TextView tv = new TextView(this);
-         view.addView(tv, new LayoutParams(LayoutParams.MATCH_PARENT,
-             LayoutParams.WRAP_CONTENT));
-         tv.setText("TextView " + (textViews.size() + 1));
-         // добавляем новое TextView в коллекцию
-         textViews.add(tv);
-         // иначе
-       } else {
-         // если коллекция созданных TextView непуста
-         if (textViews.size() > 0) {
-           // находим в коллекции последний TextView
-           TextView tv = textViews.get(textViews.size() - 1);
-           // удаляем из диалога
-           view.removeView(tv);
-           // удаляем из коллекции
-           textViews.remove(tv);
-         }
-       }
-       // обновляем счетчик
-       tvCount.setText("Кол-во TextView = " + textViews.size());
-     }*/
+
    } 
    
   @Override
@@ -2624,11 +1830,6 @@ void makeDialog() {
   @Override
   protected void onRestart() {
     super.onRestart();
-    
-   // btnBack.setTag(-1);
-    //Log.d("MyLog", "restart "+btnBack.getTag().toString());
-//    c.requery();
-    //getSupportLoaderManager().getLoader(0).forceLoad();
   } 
   
   class MySimpleAdapter extends SimpleAdapter {
@@ -2762,9 +1963,11 @@ void makeDialog() {
                 						        	text.setSpan(s12, l1, l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE); 
                 						        	text.setSpan(style2,l1,l2, Spannable.SPAN_INCLUSIVE_INCLUSIVE);	
                 						        	//showMessage("text "+text, (byte)1);
+                						        	but.get(tranz.get(i).tagB).tb.setText(text);
+                						        	
                 						        	but.get(tranz.get(i).tagB).tb.setTextOff(text);
                 						        	but.get(tranz.get(i).tagB).tb.setTextOn(text);
-                						        	//but.get(tranz.get(i).tagB).tb.forceLayout();
+                						        	
                 			}
                 			tranz.remove(i);
                 			} 

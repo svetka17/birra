@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/ostat_ll"
+    android:id="@+id/brak_ll"
     android:orientation="vertical" >
 <LinearLayout
         android:layout_width="match_parent"
@@ -11,33 +11,21 @@
         android:orientation="horizontal" >
 
  		<TextView
- 		    android:id="@+id/et_Id_PgrOstat"
+ 		    android:id="@+id/et_Id_PgrBrak_Move_"
  		    android:layout_width="wrap_content"
  		    android:layout_height="wrap_content"
  		    android:visibility="invisible"
  		    android:layout_weight="0" />
                 
                 <Spinner
-                    android:id="@+id/sp_Pgr_Ostat"
+                    android:id="@+id/sp_Pgr_Brak_Move_"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0" />
-         <CheckBox
-                    android:id="@+id/cb_Kol_Ostat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
- 		    		style="@style/TV_h"
-                    android:clickable="true"
-                    android:editable="false"
-                    android:text="ПОКАЗЫВАТЬ ТОЛЬКО НЕ НУЛЕВЫЕ ОСТАТКИ" />
+
     </LinearLayout>
 <TableRow  style="@style/mw0">
 
- 		<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="0.5"
- 		    android:text="№ИД"/>
  		 		<TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
@@ -55,15 +43,12 @@
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
- 		    android:text="КОЛ"/>
+ 		    android:text="КОЛ ОСТАТКА"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
  		    android:text="ЕД.ИЗМ"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="ЦЕНА"/>
+
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
@@ -74,14 +59,14 @@
  		    android:text="КЕГА"/>
 <TextView
  		    style="@style/lv_h"
-            android:id="@+id/tvOstat_izl_izl"
-            android:layout_weight="0.5"
- 		    android:text="ИЗЛИШКИ"/>
+            android:layout_weight="1"
+ 		    android:text="ПЕРЕМЕЩЕНО"/>
 <TextView
  		    style="@style/lv_h"
- 		    android:id="@+id/tvOstat_nedo_nedo"
-            android:layout_weight="0.5"
- 		    android:text="НЕДОСТАЧА"/>
+            android:layout_weight="1"
+ 		    android:text="БРАК"/>
+
+
 <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -90,16 +75,22 @@
 
 </TableRow>
     <ListView
-        android:id="@+id/lvOstat"
+        android:id="@+id/lvBrak"
  		    style="@style/mm1" />
 
     <LinearLayout
  		    style="@style/mw0"
         android:orientation="horizontal" >
-
+<Button
+            android:id="@+id/btnDetailBrak_Move"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/B"
+            android:text="ОТЧЕТ ПОДРОБНО" />
 
         <Button
-            android:id="@+id/btnAddOstat"
+            android:id="@+id/btnAddBrak_Move"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -107,7 +98,7 @@
             android:text="ВЫГРУЗИТЬ В EXCEL" />
 
         <Button
-            android:id="@+id/btnExitOstat"
+            android:id="@+id/btnExitBrak_Move"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

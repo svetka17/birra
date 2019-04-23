@@ -1184,7 +1184,7 @@ font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 HSSFCellStyle style = workbook.createCellStyle();
 //и применяем к этому стилю жирный шрифт
 style.setFont(font);
-style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
+//style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
 style.setAlignment(HSSFCellStyle.ALIGN_FILL );
 style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
 int rowNum = 0;
@@ -1537,7 +1537,7 @@ font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 HSSFCellStyle style = workbook.createCellStyle();
 //и применяем к этому стилю жирный шрифт
 style.setFont(font);
-style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
+//style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
 style.setAlignment(HSSFCellStyle.ALIGN_FILL );
 style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
 int rowNum = 0;

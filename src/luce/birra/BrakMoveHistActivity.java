@@ -8,7 +8,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -19,6 +21,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import luce.birra.AdapterLV.CambiareListener;
 import luce.birra.DialogScreen.DialogListener;
  
@@ -37,6 +40,20 @@ public class BrakMoveHistActivity extends FragmentActivity implements LoaderCall
   static int tmp=0;
   //LinearLayout ll;
  static long idd=0;
+ //RadioButton checkedRadioButton;
+ /*void showMessage(String s, byte dur){
+	  LayoutInflater inflater = getLayoutInflater();
+	  View layout = inflater.inflate(R.layout.custom_message ,
+	  		(ViewGroup) findViewById(R.id.toast_layout));
+	  Toast toast = new Toast(BrakMoveHistActivity.this); 
+	  TextView tv=(TextView) layout.findViewById(R.id.textView);
+	  tv.setText(s);
+	  //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0); 
+	  toast.setDuration((dur==0)?Toast.LENGTH_SHORT:Toast.LENGTH_LONG);
+	  toast.setView(layout); 
+	  toast.show();
+ }*/
+ 
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.brakmove_hist);
@@ -53,26 +70,44 @@ public class BrakMoveHistActivity extends FragmentActivity implements LoaderCall
     {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-        	View radioButton = radioGroup.findViewById(checkedId);
-            int index = radioGroup.indexOfChild(radioButton);
-
-            // Add logic here
-
-            switch (index) {
-            case 0: // first button
-brak=1;
-getSupportLoaderManager().getLoader(0).forceLoad();
-setItog();
-                //Toast.makeText(getApplicationContext(), "Selected button number " + index, 500).show();
+        	//View radioButton = radioGroup.findViewById(checkedId);
+            //int index = radioGroup.indexOfChild(radioButton);
+        	//RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
+//showMessage("index="+index, (byte)0);
+            //boolean isChecked = checkedRadioButton.isChecked();
+            // If the radiobutton that has changed in check state is now checked...
+        	switch (checkedId) {
+            case R.id.rbBrak:
+            	brak=1;
+            	//group.clearCheck();
+            	//checkedRadioButton = (RadioButton)group.findViewById(R.id.rbBrak);
+            	//checkedRadioButton.setChecked(true);
+            	getSupportLoaderManager().getLoader(0).forceLoad();
+            	setItog();
                 break;
-            case 1: // secondbutton
-brak=2;
-getSupportLoaderManager().getLoader(0).forceLoad();
-setItog();
+            case R.id.rbMove:
+            	brak=2;
+            	//group.clearCheck();
+            	//checkedRadioButton = (RadioButton)group.findViewById(R.id.rbMove);
+            	//checkedRadioButton.setChecked(true);
+            	getSupportLoaderManager().getLoader(0).forceLoad();
+            	setItog();
                 break;
-            }
+           
+            default:
+            	brak=1;
+            	//group.clearCheck();
+            	//checkedRadioButton = (RadioButton)group.findViewById(R.id.rbBrak);
+            	//checkedRadioButton.setChecked(true);
+            	getSupportLoaderManager().getLoader(0).forceLoad();
+            	setItog();
+                break;
+        }
+
+
         }
     });
+           
     
     /*    rbBrak = (RadioButton) findViewById(R.id.rbBrak);
     rbMove = (RadioButton) findViewById(R.id.rbMove);
@@ -236,20 +271,20 @@ rbMove.setOnClickListener(new OnClickListener() {
      
     @Override
     public Cursor loadInBackground() {
-    	String str = (tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?" 1=1 ":" TP.pgr="+tvIdPgr.getText().toString() + " and T.ok = "+brak;//(rbBrak.isChecked()?1:(rbMove.isChecked()?2:-1));
+    	String str = ((tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?" 1=1 ":" TP.pgr="+tvIdPgr.getText().toString()) + " and T.ok = "+brak;//(rbBrak.isChecked()?1:(rbMove.isChecked()?2:-1));
 
             	 Cursor cursor = db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join postav as P on T.id_post=P._id", 
              			new String[] {"T.keg as keg","P.name as pname","T._id as _id","T.id_tmc as id_tmc","TP.name as name","T.data_ins as data_ins","round(T.kol,3) as kol",
             			 "E.name as ted", "T.ed as ed","T.price as price","T.prim as prim","TT.name as pgr"}, 
              			 //"TP.pgr = ?"
-            			 str, null,null,null,"T.data_ins desc, TP.name,T.keg");
+            			 str, null,null,null,"T.data_ins desc");
       return cursor;
     }
      
   }
   
   void setItog () {
-	  String str = (tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?" 1=1 ":" TP.pgr="+tvIdPgr.getText().toString() + " and T.ok = "+brak;//(rbBrak.isChecked()?1:(rbMove.isChecked()?2:-1));
+	  String str = ((tvIdPgr.getText().toString().equals("0")||tvIdPgr.getText().length()==0)?" 1=1 ":" TP.pgr="+tvIdPgr.getText().toString()) + " and T.ok = "+brak;//(rbBrak.isChecked()?1:(rbMove.isChecked()?2:-1));
 
 	  Cursor cursor = MainActivity.db.getQueryData("rasxod as T left join tmc as TP on T.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on T.ed = E._id left join postav as P on T.id_post=P._id", 
    			new String[] {"sum(round(T.kol,3)) as kol"}, 
@@ -259,7 +294,7 @@ rbMove.setOnClickListener(new OnClickListener() {
 	        	 if (cursor.moveToFirst())  
 	      		   
 	     	        do {
-	     	        	itogKol.setText(String.valueOf( cursor.getDouble(cursor.getColumnIndex("kol")) ) );
+	     	        	itogKol.setText(String.valueOf(MainActivity.round3( cursor.getDouble(cursor.getColumnIndex("kol"))) ) );
 	     	        } while (cursor.moveToNext());
 	     	      
 	        	        cursor.close();

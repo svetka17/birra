@@ -70,6 +70,15 @@
         android:id="@+id/tvSummaIzlNedo_Inv"
         style="@style/lv_i"
         android:layout_weight="1" />
+        <TextView
+        android:id="@+id/tvSummaIzlNedo_InvSum"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+        <TextView
+        android:id="@+id/tvSummaIzlNedo_InvKol"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+        
     
     <LinearLayout
         style="@style/_m1"

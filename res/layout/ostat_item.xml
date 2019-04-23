@@ -8,14 +8,13 @@
         android:id="@+id/tvId_Ostat"
         style="@style/lv_i"
         android:layout_weight="0.5"/>
-
-    <TextView
-        android:id="@+id/tvNameTmc_Ostat"
-        style="@style/lv_i"
-        android:layout_weight="1" />
     
     <TextView
         android:id="@+id/tvNamePgr_Ostat"
+        style="@style/lv_i"
+        android:layout_weight="1" />
+        <TextView
+        android:id="@+id/tvNameTmc_Ostat"
         style="@style/lv_i"
         android:layout_weight="1" />
     

@@ -31,9 +31,9 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
   ListView lvData;
   Button btnExit, btnAdd, btnDetail;
   AdapterLV scAdapter;
-  static CheckBox cbVis;
+  //static CheckBox cbVis;
   static TextView tvIdPgr;
-  TextView nedo,izl;
+  //TextView nedo,izl;
   Spinner spPgr;
   //int tvDialogN=0;
   //LinearLayout ll;
@@ -54,24 +54,24 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
   
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.ostat);
+    setContentView(R.layout.brak);
     Cursor c = MainActivity.db.getRawData("select _id, name from tmc_pgr order by name", null);
-    spPgr = (Spinner) findViewById(R.id.sp_Pgr_Ostat);
-    cbVis = (CheckBox) findViewById(R.id.cb_Kol_Ostat);
-    cbVis.setChecked(false);
+    spPgr = (Spinner) findViewById(R.id.sp_Pgr_Brak_Move_);
+    //cbVis = (CheckBox) findViewById(R.id.cb_Kol_Ostat);
+    /*cbVis.setChecked(false);
     cbVis.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			getSupportLoaderManager().getLoader(0).forceLoad();
 		}
-	});
-    tvIdPgr = (TextView) findViewById(R.id.et_Id_PgrOstat);
+	});*/
+    tvIdPgr = (TextView) findViewById(R.id.et_Id_PgrBrak_Move_);
     tvIdPgr.setText("0");
     
-    nedo = (TextView) findViewById(R.id.tvOstat_nedo_brak);
+    /*nedo = (TextView) findViewById(R.id.tvOstat_nedo_brak);
     nedo.setText("БРАК");
     izl = (TextView) findViewById(R.id.tvOstat_izl_move);
-    izl.setText("ПЕРЕМЕЩЕНИЕ");
+    izl.setText("ПЕРЕМЕЩЕНИЕ");*/
     // make an adapter from the cursor
     String[] fromPgr = new String[] {"name"};
     int[] toPgr = new int[] {android.R.id.text1};
@@ -99,7 +99,7 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
         }
         });
     
-    btnAdd = (Button) findViewById(R.id.btnAddOstat);
+    btnAdd = (Button) findViewById(R.id.btnAddBrak_Move);
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	MainActivity.excel(BrakActivity.this, BrakActivity.this, "","", 
@@ -107,7 +107,7 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
         }
       });
     
-    btnDetail = (Button) findViewById(R.id.btnDetailOstat);
+    btnDetail = (Button) findViewById(R.id.btnDetailBrak_Move);
     btnDetail.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	Intent intent = new Intent(BrakActivity.this, BrakMoveHistActivity.class);
@@ -116,15 +116,15 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
         }
       });
     
-    btnExit = (Button) findViewById(R.id.btnExitOstat);
+    btnExit = (Button) findViewById(R.id.btnExitBrak_Move);
     btnExit.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	finish();
         }
       });
     // формируем столбцы сопоставления
-    String[] from = new String[] { "_id","tname","pgr",/*"pname",*/"kol","kol_nedo","kol_izl","ted","price", "keg" };
-    int[] to = new int[] {R.id.tvId_Brak, R.id.tvNameTmc_Brak,R.id.tvNamePgr_Brak, /*R.id.tvNamePost_Ostat,*/R.id.tvKol_Brak,R.id.tvKolNedo_Brak,R.id.tvKolIzl_Brak,R.id.tvTed_Brak,R.id.tvPrice_Brak, R.id.tvKeg_Brak };
+    String[] from = new String[] { /*"_id",*/"pgr","tname",/*"pname",*/"kol","ted", "keg","kol_izl","kol_nedo" };
+    int[] to = new int[] {/*R.id.tvId_Brak,*/ R.id.tvNamePgr_Brak,R.id.tvNameTmc_Brak, /*R.id.tvNamePost_Ostat,*/R.id.tvKol_Brak,R.id.tvTed_Brak,R.id.tvKeg_Brak,R.id.tvKolIzl_Brak,R.id.tvKolNedo_Brak };
     //int[] toH = new int[] {R.id.tvId_Ostat,R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,R.id.tvNamePost_Ostat,R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat,R.id.tvDataIns_Ostat};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
@@ -190,7 +190,7 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
     				}
     		});
     
-    lvData = (ListView) findViewById(R.id.lvOstat);
+    lvData = (ListView) findViewById(R.id.lvBrak);
     //lvData.setOnItemClickListener(this);
     /*lvData.setOnItemClickListener(new AdapterView.OnItemClickListener()
     {
@@ -203,7 +203,7 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
      
     // создаем лоадер для чтения данных
     getSupportLoaderManager().initLoader(0, null, this);
-    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.ostat_ll));
+    MainActivity.setSizeFontMain((LinearLayout)findViewById(R.id.brak_ll));
   }
   
   @Override
@@ -251,7 +251,8 @@ from ostat as O left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT
 
     	
     	Cursor cursor = db.getRawData (
-    			"select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, round(O.kol,3) as kol, E.name as ted, TT.price as price, O.id_post as id_post, ifnull(O.data_upd,O.data_ins) as data_ins, "
+    			"select _id, id_tmc, keg, kol, ted, price, id_post, data_ins, pname, tname, pgr, kol_nedo, kol_izl from ( "
+    			+" select O._id as _id, O.id_tmc as id_tmc, O.keg as keg, round(O.kol,3) as kol, E.name as ted, TT.price as price, O.id_post as id_post, ifnull(O.data_upd,O.data_ins) as data_ins, "
     			+ "P.name as pname, T.name as tname, TP.name as pgr, sum(CASE R.ok WHEN 1 then round(R.kol,3) ELSE 0 END) as kol_nedo, sum(CASE R.ok WHEN 2 then round(R.kol,3) ELSE 0 END) as kol_izl "
     			+ "from ostat as O "
     			+ "left join tmc_price as TT "
@@ -266,9 +267,10 @@ from ostat as O left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT
     			+ "on T.pgr=TP._id "
     			+ "left join rasxod as R "
     			+ "on O.id_tmc=R.id_tmc and O.id_post=R.id_post and O.ed=R.ed and O.keg=R.keg and ifnull(R.ok,0) in (1,2)"
-    			+ "where "+(cbVis.isChecked()?" O.kol!=0 ":" (O.kol!=0 or O.kol_nedo!=0 or O.kol_izl!=0) ")+((Integer.parseInt(tvIdPgr.getText().toString())==0)?"":" and T.pgr="+tvIdPgr.getText().toString())  
+    			+ "where "+((Integer.parseInt(tvIdPgr.getText().toString())==0)?" 1=1 ":"T.pgr="+tvIdPgr.getText().toString())  
     			+ " group by O._id, O.id_tmc, O.keg, round(O.kol,3), E.name, TT.price, O.id_post, ifnull(O.data_upd,O.data_ins), P.name, T.name, TP.name"
-    			+" order by T.pgr, T.name, O.id_post, O.keg"
+    			+ " ) where ifnull(kol,0)+ifnull(kol_nedo,0)+ifnull(kol_izl,0)!=0 "
+    			+" order by pgr, tname, id_post, keg"
     			, null);//new String[] {(Integer.parseInt(tvIdPgr.getText().toString())==0)?"T.pgr ":tvIdPgr.getText().toString()});// new String[] {,});
       return cursor;
     }

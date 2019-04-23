@@ -20,9 +20,9 @@ import org.apache.poi.ss.usermodel.Row;
 
 import android.content.Context;
 import android.database.Cursor;
-//import android.util.Log;
+
 import android.widget.Toast;
-//import android.util.Log;
+
 
 public class Import2Excel {
 	
@@ -53,7 +53,7 @@ public class Import2Excel {
         return result.toString().trim();
     }
 	
-	@SuppressWarnings("deprecation")
+//	@SuppressWarnings("deprecation")
 	static void load_tmc (String file, Context cnt) {
 				int flag=0; 
 try { //Log.d("MyLog", "1");
