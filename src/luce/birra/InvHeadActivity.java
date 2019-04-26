@@ -137,13 +137,13 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
 //_id, id_inv, id_tmc, name_tmc, pgr, name_pgr, keg, kol_ostat, kol_real, kol_n, summa_n, kol_p, summa_p, kol_r, summa_r, kol_brak, summa_brak, kol_move, summa_move,
 //kol_izl, summa_izl, kol_nedo, summa_nedo, kol_skidka, summa_skidka, kol_k, summa_k, ed, price, price_vendor, id_post, prim, data_ins, ok        		
         		        		        	    
-        		Cursor cOst = MainActivity.db.getRawData ("select TT.price as ttprice, T.name as tname, T.pgr as tpgr, TP.name as tpname, O.id_tmc as oid_tmc, O.keg as okeg, O.kol as okol, O.kol_nedo as okol_nedo, O.kol_izl as okol_izl, O.ed as oed, O.id_post as oid_post, ifnull(O.data_upd,O.data_ins) as odata_ins, O.data_ins as odata_upd, "
+        		Cursor cOst = MainActivity.db.getRawData ("select TT.price as ttprice, T.name as tname, T.pgr as tpgr, TP.name as tpname, O.id_tmc as oid_tmc, O.keg as okeg, O.kol as okol, O.kol_nedo as okol_nedo, O.kol_izl as okol_izl, O.ed as oed, O.id_post as oid_post, ifnull(O.data_upd,O.data_ins) as odata_ins, O.data_ins as odata_upd, ifnull(O.ok,0) ok, "
 		+ "sum(I.kol_k) as ikol_n, sum(I.summa_k) as isum_n, sum(R.kol) as rkol, sum(R.kol*R.price) as rsum, sum(R.kol_brak) as rkol_brak, sum(R.kol_brak*R.price) as rsum_brak, sum(R.kol_move) as rkol_move, sum(R.kol_move*R.price) as rsum_move, sum(R.kol_nedo) as rkol_nedo, sum(R.kol_nedo*R.price) as rsum_nedo, sum(R.kol_izl) as rkol_izl, sum(R.kol_izl*R.price) as rsum_izl, count(CASE WHEN ifnull(skidka,0) > 0 THEN 1 ELSE 0 END) as rkol_skidka, sum(R.skidka) as rsum_skidka, sum(P.kol) as pkol, sum(P.price_vendor*P.kol) as psum "
 		+ "from ostat O left join rasxod as R on O.id_tmc=R.id_tmc and O.keg=R.keg and O.id_post=R.id_post and O.ed=R.ed "
 		+ "left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed left join tmc as T on T._id=O.id_tmc left join tmc_pgr as TP on TP._id=T.pgr "
 		+ "left join prixod as P on O.id_tmc=P.id_tmc and O.keg=P.keg and O.id_post=P.id_post and O.ed=P.ed "
 		+ "left join invent as I on O.id_tmc=I.id_tmc and O.keg=I.keg and O.id_post=I.id_post and O.ed=I.ed and I.id_inv="+MainActivity.invent
-		+ " group by TT.price, T.name, T.pgr, TP.name, O.id_tmc, O.keg, O.kol, O.kol_nedo, O.kol_izl, O.ed, O.id_post, O.data_ins, O.data_upd ",/*order by T.tara*/null);
+		+ " group by TT.price, T.name, T.pgr, TP.name, O.id_tmc, O.keg, O.kol, O.kol_nedo, O.kol_izl, O.ed, O.id_post, O.data_ins, O.data_upd, ifnull(O.ok,0) ",/*order by T.tara*/null);
         	    byte ib=0;
         	    byte tmp=0;
         	    
@@ -175,7 +175,9 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
                 	    					"kol_nedo",
                 	    					"summa_nedo",
                 	    					"kol_skidka",
-                	    					"summa_skidka"//,
+                	    					"summa_skidka",
+                	    					"price_vendor",
+                	    					"price"//,
                 	    					//"kol_real"
                 	    					}, 
                 	    			new double[]{cOst.getDouble(cOst.getColumnIndex("okol")),
@@ -192,7 +194,9 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
                 	    					cOst.getDouble(cOst.getColumnIndex("rkol_nedo")), 
                 	    					cOst.getDouble(cOst.getColumnIndex("rsum_nedo")),
                 	    					cOst.getDouble(cOst.getColumnIndex("rkol_skidka")), 
-                	    					cOst.getDouble(cOst.getColumnIndex("rsum_skidka"))//,
+                	    					cOst.getDouble(cOst.getColumnIndex("rsum_skidka")),
+                	    					cOst.getDouble(cOst.getColumnIndex("ttprice")),
+                	    					cOst.getDouble(cOst.getColumnIndex("ttprice"))
                 	    					//(cOst.getDouble(cOst.getColumnIndex("okol"))==0 && cOst1.getDouble(cOst1.getColumnIndex("kol_real1"))==Double.NaN )?0:cOst1.getDouble(cOst1.getColumnIndex("kol_real1"))/*(cOst1.getDouble(cOst1.getColumnIndex("kol_real"))==Double.NaN?Double.NaN:cOst1.getDouble(cOst1.getColumnIndex("kol_real")) )*/
                 	    							});
                 	    	MainActivity.db.updRec("invent", cOst1.getLong(cOst1.getColumnIndex("id")), 
@@ -203,7 +207,7 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
         	        	else cOst1.close();
                 	    
                 	    cOst1 = MainActivity.db.getRawData ("select O._id as id "
-                	    		+ " from invent as O where O.id_inv="+MainActivity.invent+" and O.kol_ostat==0 and O.kol_real is null",null);
+                	    		+ " from invent as O where O.id_inv="+MainActivity.invent+" and round(O.kol_ostat,3)==0 and O.kol_real is null",null);
                 	    if (cOst1.moveToFirst()) {
                 	    	do {
                 	    	MainActivity.db.updRec("invent", cOst1.getLong(cOst1.getColumnIndex("id")), 
@@ -221,7 +225,7 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
                 	    			cOst.getDouble(cOst.getColumnIndex("rkol")), cOst.getDouble(cOst.getColumnIndex("rsum")), cOst.getDouble(cOst.getColumnIndex("rkol_brak")), cOst.getDouble(cOst.getColumnIndex("rsum_brak")), 
                 	    			cOst.getDouble(cOst.getColumnIndex("rkol_move")), cOst.getDouble(cOst.getColumnIndex("rsum_move")), (double)0,(double)0,/*kol_cash sumcash*/cOst.getDouble(cOst.getColumnIndex("rkol_izl")), cOst.getDouble(cOst.getColumnIndex("rsum_izl")), 
                 	    			cOst.getDouble(cOst.getColumnIndex("rkol_nedo")), cOst.getDouble(cOst.getColumnIndex("rsum_nedo")), cOst.getDouble(cOst.getColumnIndex("rkol_skidka")), cOst.getDouble(cOst.getColumnIndex("rsum_skidka")), 
-                	    			(double)0, (double)0, cOst.getDouble(cOst.getColumnIndex("ttprice")), (double)0, "", cOst.getInt(cOst.getColumnIndex("odata_ins")), (byte)0
+                	    			(double)0, (double)0, cOst.getDouble(cOst.getColumnIndex("ttprice")), (double)0, "", cOst.getInt(cOst.getColumnIndex("odata_ins")), (byte)cOst.getInt(cOst.getColumnIndex("ok"))
                 	    			);
                 	    }
                 	    

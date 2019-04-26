@@ -20,7 +20,6 @@ import org.apache.poi.ss.usermodel.Row;
 
 import android.content.Context;
 import android.database.Cursor;
-
 import android.widget.Toast;
 
 
@@ -61,12 +60,12 @@ try { //Log.d("MyLog", "1");
 	HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(file));
 				//Log.d("MyLog", "2");
 		        HSSFSheet sheet = wb.getSheetAt(0);
-		        //Log.d("MyLog", "3");  
+		       // Log.d("MyLog", "3");  
 		        Iterator<Row> rowIter = sheet.rowIterator();
-		        //Log.d("MyLog", "4");
+		       // Log.d("MyLog", "4");
 		        String value="";
 		        if (rowIter.hasNext()) rowIter.next();
-		        //Log.d("MyLog", "5");
+		       // Log.d("MyLog", "5");
 	            while(rowIter.hasNext()) {
 	            	flag=0;
 	                //HSSFRow myRow = (HSSFRow) rowIter.next();
@@ -98,9 +97,10 @@ try { //Log.d("MyLog", "1");
 	                        //Log.d("MyLog", "value="+value);
 	                        if (value.equals(""))
 	                        {flag=1;
-	                        Toast.makeText(cnt , "колонка " +i+" пустая" , Toast.LENGTH_SHORT).show();}
+	                        Toast.makeText(cnt , "колонка " +i+" пустая" , Toast.LENGTH_SHORT).show();
+	                        }
 	                        else
-	                        	
+	                        	//Log.d("MyLog", "i="+i);	
 	                		switch (i) {
 							case 0: id = (int) MainActivity.StrToFloat(value);
 							//Log.d("MyLog", "0="+id);
@@ -113,6 +113,7 @@ try { //Log.d("MyLog", "1");
 						        } 
 						        while (c.moveToNext());
 						      }
+							else c.close();
 							if (id_pgr==-1 && id!=0 && !value.equals("")) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 							//Log.d("MyLog", "id_pgr="+id_pgr);	
 							break;
@@ -120,10 +121,11 @@ try { //Log.d("MyLog", "1");
 							c = MainActivity.db.getRawData ("select _id from tmc where trim(name)=trim('"+value +"')", null);
 							if (c.moveToFirst()) {   
 						        do { idtmc = c.getInt(c.getColumnIndex("_id"));
-						        //Log.d("MyLog", "idtmc1="+idtmc);
+						       // Log.d("MyLog", "idtmc1="+idtmc);
 						        } 
 						        while (c.moveToNext());
 						      }
+							else c.close();
 							//Log.d("MyLog", "idtmc2="+idtmc);
 							//if (idtmc==-1) idtmc = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 								break;
@@ -133,6 +135,7 @@ try { //Log.d("MyLog", "1");
 						        do { ed = (int)c.getInt(c.getColumnIndex("_id"));} 
 						        while (c.moveToNext());
 						      }
+							else c.close();
 							if (ed==-1 && !value.equals("")) ed = (int) MainActivity.db.addRecTMC_EDcount(value/*, MainActivity.getIntDataTime()*/);
 							//Log.d("MyLog", "3="+ed);	
 							break;
@@ -169,6 +172,7 @@ try { //Log.d("MyLog", "1");
 	            	 //}
 	            	 else Toast.makeText(cnt , "наименование " +n+" уже есть с другим номенклатурным номером" , Toast.LENGTH_SHORT).show();
 	            	 //Log.d("MyLog", "exists other "+n);
+	            	 //}
 	            	 }
 	            	 
 	             }
@@ -252,6 +256,7 @@ catch(IOException e) {};
 								        do { id_pgr = c.getInt(c.getColumnIndex("_id"));} 
 								        while (c.moveToNext());
 								      }
+									else c.close();
 									if (id_pgr==-1 && id!=0 && !value.equals("") ) id_pgr = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 										break;
 									case 2: n = value;
@@ -264,6 +269,7 @@ catch(IOException e) {};
 								        do { idtmc = c.getInt(c.getColumnIndex("_id"));} 
 								        while (c.moveToNext());
 								      }
+									else c.close();
 									//if (idtmc==-1) idtmc = (int) MainActivity.db.addRecTMC_PGRcount(value, MainActivity.getIntDataTime());
 										break;
 									case 3: //n_pgr = value.trim();
@@ -272,6 +278,7 @@ catch(IOException e) {};
 									        do { idpost = c.getInt(c.getColumnIndex("_id"));} 
 									        while (c.moveToNext());
 									      }
+										else c.close();
 										if (idpost==-1 && !value.equals("")) idpost = (int) MainActivity.db.addRecPOSTAVcount(value,"","","загружено с остатками", MainActivity.getIntDataTime(),(byte)0);
 											break;
 									case 4: kol = MainActivity.StrToFloat(value);
@@ -281,6 +288,7 @@ catch(IOException e) {};
 								        do { ed = (int)c.getInt(c.getColumnIndex("_id"));} 
 								        while (c.moveToNext());
 								      }
+									else c.close();
 									if (ed==-1 && !value.equals("")) ed = (int) MainActivity.db.addRecTMC_EDcount(value/*, MainActivity.getIntDataTime()*/);
 										break;
 									case 6: price = MainActivity.StrToFloat2(value);
@@ -313,6 +321,18 @@ catch(IOException e) {};
 			            int kegs=0;
 			            if (ed==1) kegs=(int)MainActivity.db.addRecKEGSCount("загрузка остатков "+n, kol, "из файла", MainActivity.getIntDataTime(), (byte)0);
 			             MainActivity.db.addRecPRIXOD(idtmc,kegs, kol,/*0,0,*/ (byte)ed, price, price, idpost, "загрузка остатка из файла "+file, MainActivity.getIntDataTime(), (byte)0); 
+			             //////
+			             if (ed==1) {
+	                			Cursor cOst_ = MainActivity.db.getRawData ("select count(*) c from ostat O where O.id_tmc="+idtmc+" and O.id_post="+idpost+" and O.ed=1 ",null);
+	            	   int countkeg=-1;    	    
+	            	    if (cOst_.moveToFirst()) { 
+	            	        do {
+	            	        	countkeg=cOst_.getInt(cOst_.getColumnIndex("c"));
+	            	        	MainActivity.db.updOstatOk(idtmc, idpost,kegs, 1, countkeg);
+	            	        } while (cOst_.moveToNext());
+	            	      } else cOst_.close();
+	                		}
+			             //////
 			            Toast.makeText(cnt , "загрузка остатка " +n+" кол-во:"+kol+" цена продажи:"+price , Toast.LENGTH_SHORT).show();
 			            }
 			            }

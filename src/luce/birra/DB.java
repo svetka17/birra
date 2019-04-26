@@ -446,6 +446,12 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
 			    cv.put("data_upd", data_upd);
 		    return mDB.update("ostat", cv, "id_tmc = "+id_tmc+" and id_post = "+id_post+" and keg = "+keg+" and ed = "+ed, null);
 		  }
+	  public int updOstatOk(int id_tmc, int id_post, int keg, int ed, int ok) {
+		    ContentValues cv = new ContentValues();
+			    cv.put("ok", ok);
+		    return mDB.update("ostat", cv, "id_tmc = "+id_tmc+" and id_post = "+id_post+" and keg = "+keg+" and ed = "+ed, null);
+		  }
+	  
 	  public int delAll(String namT) {
 		    return mDB.delete(namT, "1", null);
 		  }
@@ -643,7 +649,7 @@ public Cursor getQueryData(String namTable, String[] columns, String selection, 
                   + "id_post integer DEFAULT 0 REFERENCES postav(_id) ON DELETE SET DEFAULT ON UPDATE CASCADE,"
                   + "data_ins integer,"
                   + "data_upd integer,"
-                  + "ok integer default 0);");
+                  + "ok integer default 0);"); //порядковый номер кеги
 /* поле ostat.data_upd содержит дату первой продажи кеги и апдейтится в форме расхода при первой продаже*/
           db.execSQL("create table klient ("
                   + "_id integer primary key autoincrement,"

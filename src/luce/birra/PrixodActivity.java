@@ -322,6 +322,18 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         		//Log.d("MyLog", "datatime "+MainActivity.getIntDataTime()+" ddd"+tvDataIns.getText() );
         		//Toast.makeText(PrixodActivity.this, "опхунд "+s+" йнк-бн:"+tvKol.getText().toString()+" жемю:"+tvPrice.getText().toString(), Toast.LENGTH_LONG).show();
         		tvOst.setText(String.valueOf(MainActivity.StrToFloat(tvOst.getText().toString())+MainActivity.StrToFloat(tvKol.getText().toString()) ));
+        		
+        		if (Byte.parseByte(tvEd.getText().toString())==1) {
+        			Cursor cOst = MainActivity.db.getRawData ("select count(*) c from ostat O where O.id_tmc="+Integer.parseInt(tvIdProd.getText().toString())+" and O.id_post="+Integer.parseInt(tvIdPost.getText().toString())+" and O.ed=1 ",null);
+    	   int countkeg=-1;    	    
+    	    if (cOst.moveToFirst()) { 
+    	        do {
+    	        	countkeg=cOst.getInt(cOst.getColumnIndex("c"));
+    	        	MainActivity.db.updOstatOk(Integer.parseInt(tvIdProd.getText().toString()), Integer.parseInt(tvIdPost.getText().toString()),Integer.parseInt(tvKeg.getText().toString()), 1, countkeg);
+    	        } while (cOst.moveToNext());
+    	      } else cOst.close();
+        		}
+        		
         		showMessage("опхунд "+s+" йнк-бн:"+tvKol.getText().toString()+" жемю:"+tvPrice.getText().toString(), (byte)0);
         		tvPrim.setText("");
         		if (tmp_close==1) {tmp_close=0;finish();}

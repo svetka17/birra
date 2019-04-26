@@ -102,14 +102,7 @@
  		    style="@style/lv_h"
             android:layout_weight="1"
  		    android:text="ЦЕНА ПРОДАЖИ"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="ИЗЛИШКИ"/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text="НЕДОСТАЧИ"/>
+
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
@@ -126,18 +119,19 @@
  		    style="@style/lv_h"
             android:layout_weight="1"
  		    android:text="СУММА ПО ФАКТУ"/>
+
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
- 		    android:text="СУММА НАЛИЧКА"/>
+ 		    android:text="РАЗНИЦА СУММА"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
- 		    android:text="ИЗЛ/НЕДО КОЛ"/>
+ 		    android:text="ИЗЛИШКИ"/>
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
- 		    android:text="ИЗЛ/НЕДО СУММА"/>
+ 		    android:text="НЕДОСТАЧИ"/>
 <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -171,14 +165,7 @@
  		    style="@style/lv_h"
             android:layout_weight="0.5"
  		    android:text=""/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text=""/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text=""/>
+
 <TextView
  		    style="@style/lv_h"
             android:layout_weight="1"
@@ -209,24 +196,24 @@
  		    android:id="@+id/itogInvSumFact"
             android:layout_weight="1"
  		    android:text=""/>
-<TextView
- 		    style="@style/lv_h"
- 		    android:id="@+id/itogInvSumIzlNedo"
-            android:layout_weight="1"
- 		    android:text=""/>
-<TextView
- 		    style="@style/lv_h"
-            android:layout_weight="1"
- 		    android:text=""/>
+
 <TextView
  		    style="@style/lv_h"
  		    android:id="@+id/itogInvRaznicaSum"
  		    android:background="@drawable/summa_chek"
             android:layout_weight="1"
  		    android:text=""/>
+
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
+<TextView
+ 		    style="@style/lv_h"
+            android:layout_weight="1"
+ 		    android:text=""/>
 <TextView
             android:layout_width="0dp"
-            android:id="@+id/itogInvRaznica"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text=""/>

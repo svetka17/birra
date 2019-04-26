@@ -248,7 +248,7 @@ tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("d
     	if (MainActivity.no_inv==0)
     	{((Button) view.findViewById(bD)).setVisibility(LinearLayout.GONE); ((Button) view.findViewById(bU)).setVisibility(LinearLayout.GONE);}
     	tv = (TextView) view.findViewById(R.id.tvDataIns_Inv);  	
-        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+        tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("data_ins"))).substring(0, 5) );
         
         tv = (TextView) view.findViewById(R.id.tvKolReal_Inv);  	
         tv.setBackgroundColor(Color.TRANSPARENT);
