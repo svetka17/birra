@@ -32,10 +32,6 @@ import android.widget.Toast;
 
 /**
  * https://habrahabr.ru/post/203884/
- * Created with IntelliJ IDEA.
- * User: Scogun
- * Date: 27.11.13
- * Time: 10:47
  */
 public class OpenFileDialog extends AlertDialog.Builder {
 

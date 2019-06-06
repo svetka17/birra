@@ -132,7 +132,7 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	MainActivity.excel(DelOtchetActivity.this, DelOtchetActivity.this, tvDataIns.getText().toString(), 
-        			tvDataIns2.getText().toString(),"", "Удаленные за период", (byte)9);
+        			tvDataIns2.getText().toString(),"", "Удаленные за период", 9);
         	}
       });
     // формируем столбцы сопоставления
@@ -141,7 +141,7 @@ public class DelOtchetActivity extends FragmentActivity implements LoaderCallbac
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelDelHist, R.id.btnUpdDelHist, (byte)13, this, R.layout.del_hist_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btnDelDelHist, R.id.btnUpdDelHist, 13, this, R.layout.del_hist_item, null, from, to, 0)
     		/*.setCamdiareListener(new CambiareListener() {
     			@Override
     			public void OnCambiare(byte flag, long id) {

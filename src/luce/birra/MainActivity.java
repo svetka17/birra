@@ -71,8 +71,8 @@ static int red2=50;
 static int green2=50;
 static int blue2=50;
 static String usr = "";
-static byte access=0;
-static byte postlitr=0;
+static int access=0;
+static int postlitr=0;
 static int num_id=1;
 static int day=1;
 int but_menu=0;
@@ -144,13 +144,13 @@ gradient.setShape(GradientDrawable.RECTANGLE);
 }*/
 
 
-static void excel(Context cntx, Activity act, String dat1, String dat2, String pgr, String tit, byte metod )
+static void excel(Context cntx, Activity act, String dat1, String dat2, String pgr, String tit, int metod )
 {
 	final String dat11=dat1;
 	final String dat22=dat2;
 	final String pgrr=pgr;
 	final String titt=tit;
-	final byte met=metod;
+	final int met=metod;
 	final Context context=cntx;
 	//final Intent sendIntent;
 	final Activity activity=act;
@@ -161,12 +161,13 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 	 		//Log.d("MyLog", "k="+k+" met="+met);
 			File file = null; //Uri u1; 
 			Intent sendIntent;
-			switch((byte)k) {
+			switch((int)k) {
 			//case 0: 
 			case 1:
 				switch(met) {
 				case 1:
-				file=Export2Excel.oborotka(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
+					//Log.d("MyLog", "dat11="+dat11+" len="+dat11.length);	
+				file=Export2Excel.oborotka(/*getIntData(dat11),getIntData(dat22)*/0,0,(int) StrToFloat(pgrr), ""); break;
 				case 2:
 					file=Export2Excel.rasxod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
 				case 3:
@@ -204,7 +205,7 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 					public void OnSelectedDir(String dirName) {
 						switch(met){
 						case 1:
-						Export2Excel.oborotka(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), dirName); break;
+						Export2Excel.oborotka(/*getIntData(dat11),getIntData(dat22)*/0,0,(int) StrToFloat(pgrr), dirName); break;
 						case 2:
 						Export2Excel.rasxod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), dirName); break;
 						case 3:
@@ -234,7 +235,7 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 				//Log.d("MyLog", "met="+met);
 				switch(met){
 				case 1:
-				file=Export2Excel.oborotka(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
+				file=Export2Excel.oborotka(/*getIntData(dat11),getIntData(dat22)*/0,0,(int) StrToFloat(pgrr), ""); break;
 				case 2:
 					file=Export2Excel.rasxod(getIntData(dat11),getIntData(dat22),(int) StrToFloat(pgrr), ""); break;
 				case 3:
@@ -269,10 +270,10 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 	}) ;getkol.show();
 }
 
-static void excel_import(Context cntx, Activity act, byte metod )
+static void excel_import(Context cntx, Activity act, int metod )
 {
 
-	final byte met=metod;
+	final int met=metod;
 	final Context context=cntx;
 	//final Intent sendIntent;
 	final Activity activity=act;
@@ -282,7 +283,7 @@ static void excel_import(Context cntx, Activity act, byte metod )
 		public void OnSelectedKol(double k) {
 			//File file = null; //Uri u1; 
 			//Intent sendIntent;
-			switch((byte)k) {
+			switch((int)k) {
 			//case 0: 
 			
 			case 1:
@@ -306,7 +307,8 @@ static void excel_import(Context cntx, Activity act, byte metod )
 			default:
 			}
 		}
-	}) ;getkol.show();
+	}) ;
+	getkol.show();
 }
 
 static void setSizeFontMain(ViewGroup mlayout) {
@@ -422,11 +424,14 @@ float PxToDp(float px) {
 }
  
 static String getStringData(int dat){
+	if (dat<10000) return ""; else
 	return String.valueOf(dat).substring(4, 6)+"."+String.valueOf(dat).substring(2, 4)+"."+String.valueOf(dat).substring(0, 2);
 }
 
 static String getStringDataTime(int dat){
-	if (String.valueOf(dat).length()==0||dat==0) return ""; else
+	if (String.valueOf(dat).length()==0||dat==0) return ""; 
+	//if (dat<10000) return ""; 
+	else
 	return String.valueOf(dat).substring(4, 6)+"."+String.valueOf(dat).substring(2, 4)+"."+String.valueOf(dat).substring(0, 2)+" "+String.valueOf(dat).substring(6, 8)+":"+String.valueOf(dat).substring(8, 10);
 }
 
@@ -487,6 +492,8 @@ static float round3(double number/*, int scale*/) {
 
 static int getIntData(String dat){
 	try{
+		//Log.d("MyLog","len="+dat.length());	
+		if (dat.length()<6) return 0; else
 		return Integer.parseInt(dat.substring(6, 8).concat(dat.substring(3, 5)).concat(dat.substring(0, 2))) ;
 		}catch(Exception ex){
 		    // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
@@ -614,7 +621,7 @@ void saveSetting() {
     green2 = sPref.getInt("green2", 50);
     blue1 = sPref.getInt("blue1", 50);
     blue2 = sPref.getInt("blue2", 50);
-    postlitr = (byte)sPref.getInt("postlitr", 0);
+    postlitr = sPref.getInt("postlitr", 0);
     num_id = sPref.getInt("num_id", num_id);
     day = sPref.getInt("day", day);
     if (day!=Calendar.getInstance().get(Calendar.DATE))

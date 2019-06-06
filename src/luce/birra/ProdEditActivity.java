@@ -26,7 +26,7 @@ public class ProdEditActivity extends FragmentActivity {
   TextView tvId, tvEd, tvIdPgr;//, tvData;
   EditText etName, tvTara, etPrice, etPos;
   
-  void showMessage(String s, byte dur){
+  void showMessage(String s, int dur){
 	  LayoutInflater inflater = getLayoutInflater();
 	  View layout = inflater.inflate(R.layout.custom_message ,
 	  		(ViewGroup) findViewById(R.id.toast_layout));
@@ -151,17 +151,17 @@ public class ProdEditActivity extends FragmentActivity {
         				Integer.parseInt(tvIdPgr.getText().toString()/*spPgr.getTag().toString()*/),
         				Integer.parseInt(tvEd.getText().toString()/*spPgr.getTag().toString()*/), 
         				Float.parseFloat(etPrice.getText().toString()), 
-        				cbVis.isChecked()?(byte)1:(byte)0, 
-        				(byte)count,		
+        				cbVis.isChecked()?1:0, 
+        				count,		
         				(tvTara.getText().toString().length()==0||tvTara.getText().equals("0"))?0:Float.parseFloat(tvTara.getText().toString()), 
         				MainActivity.getIntDataTime(), 
-        				cbOk.isChecked()?(byte)1:(byte)0); 
+        				cbOk.isChecked()?1:0); 
         		/*Log.d("MyLog", "new "+etName.getText().toString()+" "+
         				Integer.parseInt(spPgr.getTag().toString())+" "+ 
         				Float.parseFloat(etPrice.getText().toString())+" "+
         				(cbVis.isChecked()?(byte)1:(byte)0)+" count="+i );*/
   				//Toast.makeText(ProdEditActivity.this, "мнбши рнбюп: "+etName.getText().toString()+" жемю опндюфх:"+etPrice.getText().toString(), Toast.LENGTH_LONG).show();
-  				 showMessage("мнбши рнбюп: "+etName.getText().toString()+" жемю опндюфх:"+etPrice.getText().toString(), (byte)0);
+  				 showMessage("мнбши рнбюп: "+etName.getText().toString()+" жемю опндюфх:"+etPrice.getText().toString(), 0);
   				etPos.setText("");
   				 //finish();
         		}
@@ -173,15 +173,15 @@ public class ProdEditActivity extends FragmentActivity {
         	MainActivity.db.updRec("tmc", Integer.parseInt(tvId.getText().toString()), 
         			new String[] {"data_ins","vis","pos","pgr","ed","ok"}, 
         			new int[] {MainActivity.getIntDataTime(),
-        					cbVis.isChecked()?(byte)1:(byte)0,
+        					cbVis.isChecked()?1:0,
         							count,
         					Integer.parseInt(tvIdPgr.getText().toString()),
         					Integer.parseInt(tvEd.getText().toString()),
-        					cbOk.isChecked()?(byte)1:(byte)0}); 
+        					cbOk.isChecked()?1:0}); 
         	MainActivity.db.updRec("tmc", Integer.parseInt(tvId.getText().toString()), 
         			new String[] {"price","tara"}, new double[] {Float.parseFloat(etPrice.getText().toString()),Float.parseFloat(tvTara.getText().toString())});
         	//Toast.makeText(ProdEditActivity.this, "рнбюп хглемем: "+etName.getText().toString()+" жемю опндюфх:"+etPrice.getText().toString(), Toast.LENGTH_LONG).show();
-        	showMessage("рнбюп хглемем: "+etName.getText().toString()+" жемю опндюфх:"+etPrice.getText().toString(), (byte)0);
+        	showMessage("рнбюп хглемем: "+etName.getText().toString()+" жемю опндюфх:"+etPrice.getText().toString(),0);
 				finish();
   			 }
         	//finish();

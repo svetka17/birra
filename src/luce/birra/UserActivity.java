@@ -30,7 +30,7 @@ public class UserActivity extends FragmentActivity implements /*OnItemClickListe
   TextView tv;
   LinearLayout ll;
   
-  void showMessage(String s, byte dur){
+  void showMessage(String s, int dur){
 	  LayoutInflater inflater = getLayoutInflater();
 	  View layout = inflater.inflate(R.layout.custom_message ,
 	  		(ViewGroup) findViewById(R.id.toast_layout));
@@ -70,10 +70,10 @@ public class UserActivity extends FragmentActivity implements /*OnItemClickListe
     //int[] toH = new int[] {R.id.tvIdPgr, R.id.tvNamePgr, R.id.tvDataInsPgr  };
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
     scAdapter = 
-    new AdapterLV(R.id.btnDelUser, R.id.btnUpdUser, (byte)9, this, R.layout.user_item, null, from, to, 0)
+    new AdapterLV(R.id.btnDelUser, R.id.btnUpdUser, 9, this, R.layout.user_item, null, from, to, 0)
     .setCamdiareListener(new CambiareListener() {
 		@Override
-		public void OnCambiare(byte flag, long id) {
+		public void OnCambiare(int flag, long id) {
 			if (flag==1) {
 				/*int countT=0;
 				Cursor cc = MainActivity.db.getRawData ("select count(*) c from tmc T where T.pgr="+id,null);

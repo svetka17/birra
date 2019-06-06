@@ -71,21 +71,22 @@ try { //Log.d("MyLog", "1");
 	                //HSSFRow myRow = (HSSFRow) rowIter.next();
 	            	HSSFRow myRow = (HSSFRow) rowIter.next();
 	                Iterator<Cell> cellIter = myRow.cellIterator();
-	                Cursor c; int id=0, idtmc=-1; String n="";  int id_pgr=-1; int ed=-1; //String ted=""; String n_pgr="";
-	                float price=0; byte vis=0; byte ok=0; byte pos=0; float tara=0; int i=0;
+	                int id=0, idtmc=-1; String n="";  int id_pgr=-1; int ed=-1; //String ted=""; String n_pgr="";
+	                float price=0; int vis=0; int ok=0; int pos=0; float tara=0; int i=0;
 	                while(cellIter.hasNext()) {
 	                    //HSSFCell cell = (HSSFCell) cellIter.next();
 	                	HSSFCell cell = (HSSFCell) cellIter.next();
 	                //for ( short c = myRow.getFirstCellNum(); c <= myRow.getLastCellNum(); c++ ) {
 	                	//HSSFCell cell = myRow.getCell( c );
 	                	if ( cell != null ) {
+	                		Cursor c;
 	                		value="";
 	                        if ( cell.getCellType() == HSSFCell.CELL_TYPE_BLANK ) {
 	                          value = "";
 	                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN ) {
 	                          value = Boolean.toString( cell.getBooleanCellValue() );
 	                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_ERROR ) {
-	                          value = Byte.toString( cell.getErrorCellValue() );
+	                          value = Integer.toString( cell.getErrorCellValue() );
 	                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_FORMULA ) {
 	                          value = cell.getCellFormula().toString();
 	                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC ) {
@@ -106,7 +107,7 @@ try { //Log.d("MyLog", "1");
 							//Log.d("MyLog", "0="+id);
 							break;
 							case 1: //n_pgr = value.trim();
-							c = MainActivity.db.getRawData ("select _id from tmc_pgr where trim(name)=trim('"+value +"')", null);
+								c = MainActivity.db.getRawData ("select _id from tmc_pgr where trim(name)=trim('"+value +"')", null);
 							if (c.moveToFirst()) {   
 						        do { id_pgr = c.getInt(c.getColumnIndex("_id"));
 						        //Log.d("MyLog", "id_pgr="+id_pgr);
@@ -142,16 +143,16 @@ try { //Log.d("MyLog", "1");
 							case 4: price = MainActivity.StrToFloat2(value);
 							//Log.d("MyLog", "4="+price);
 							break;
-							case 5: vis = (byte) MainActivity.StrToFloat(value);
+							case 5: vis =  (int)MainActivity.StrToFloat(value);
 							//Log.d("MyLog", "5="+vis);
 							break;
-							case 6: ok = (byte) MainActivity.StrToFloat(value);
+							case 6: ok = (int) MainActivity.StrToFloat(value);
 							//Log.d("MyLog", "6="+ok);
 							break;
 							case 7: tara = MainActivity.StrToFloat(value);
 							//Log.d("MyLog", "7="+tara);
 							break;
-							case 8: pos = (byte) MainActivity.StrToFloat(value);
+							case 8: pos = (int) MainActivity.StrToFloat(value);
 							//Log.d("MyLog", "8="+pos);
 							break;
 							default:
@@ -234,7 +235,7 @@ catch(IOException e) {};
 			                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN ) {
 			                          value = Boolean.toString( cell.getBooleanCellValue() );
 			                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_ERROR ) {
-			                          value = Byte.toString( cell.getErrorCellValue() );
+			                          value = Integer.toString( cell.getErrorCellValue() );
 			                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_FORMULA ) {
 			                          value = cell.getCellFormula().toString();
 			                        } else if ( cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC ) {
@@ -279,7 +280,7 @@ catch(IOException e) {};
 									        while (c.moveToNext());
 									      }
 										else c.close();
-										if (idpost==-1 && !value.equals("")) idpost = (int) MainActivity.db.addRecPOSTAVcount(value,"","","загружено с остатками", MainActivity.getIntDataTime(),(byte)0);
+										if (idpost==-1 && !value.equals("")) idpost = (int) MainActivity.db.addRecPOSTAVcount(value,"","","загружено с остатками", MainActivity.getIntDataTime(),0);
 											break;
 									case 4: kol = MainActivity.StrToFloat(value);
 									case 5: //ted = value.trim();
@@ -307,7 +308,7 @@ catch(IOException e) {};
 			             if (flag!=1) {
 			                if (idtmc==-1)
 			                { if (!n.equals(""))
-			            	{idtmc=(int) MainActivity.db.addRecTMCcount(n, id_pgr, ed, price, /*vis*/(byte)1, /*pos*/(byte)1, /*tara*/0, MainActivity.getIntDataTime(), /*ok*/(byte)0);
+			            	{idtmc=(int) MainActivity.db.addRecTMCcount(n, id_pgr, ed, price, /*vis*/1, /*pos*/1, /*tara*/0, MainActivity.getIntDataTime(), /*ok*/0);
 			                Toast.makeText(cnt , "добавлено наименование " +n, Toast.LENGTH_SHORT).show();
 				            }
 			                }
@@ -319,8 +320,8 @@ catch(IOException e) {};
 			            	 }*/
 			            if (kol>0 && idtmc!=-1 && idpost!=-1 && ed!=-1 && id_pgr!=-1) {
 			            int kegs=0;
-			            if (ed==1) kegs=(int)MainActivity.db.addRecKEGSCount("загрузка остатков "+n, kol, "из файла", MainActivity.getIntDataTime(), (byte)0);
-			             MainActivity.db.addRecPRIXOD(idtmc,kegs, kol,/*0,0,*/ (byte)ed, price, price, idpost, "загрузка остатка из файла "+file, MainActivity.getIntDataTime(), (byte)0); 
+			            if (ed==1) kegs=(int)MainActivity.db.addRecKEGSCount("загрузка остатков "+n, kol, "из файла", MainActivity.getIntDataTime(), 0);
+			             MainActivity.db.addRecPRIXOD(idtmc,kegs, kol,/*0,0,*/ ed, price, price, idpost, "загрузка остатка из файла "+file, MainActivity.getIntDataTime(), 0); 
 			             //////
 			             if (ed==1) {
 	                			Cursor cOst_ = MainActivity.db.getRawData ("select count(*) c from ostat O where O.id_tmc="+idtmc+" and O.id_post="+idpost+" and O.ed=1 ",null);

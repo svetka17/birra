@@ -40,7 +40,7 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
   Spinner spPgr;
   static long idd=0;
   //LinearLayout ll;
-  void showMessage(String s, byte dur){
+  void showMessage(String s, int dur){
 	  LayoutInflater inflater = getLayoutInflater();
 	  View layout = inflater.inflate(R.layout.custom_message ,
 	  		(ViewGroup) findViewById(R.id.toast_layout));
@@ -124,7 +124,7 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
         public void onClick(View v) {
         	MainActivity.excel(PrixodHistActivity.this, PrixodHistActivity.this, tvDataIns.getText().toString(), 
         			tvDataIns2.getText().toString(), 
-        			tvIdPgr.getText().toString(), "Приход за период", (byte)4);
+        			tvIdPgr.getText().toString(), "Приход за период", 4);
         }
       });
     
@@ -140,10 +140,10 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
     //int[] toH = new int[] {R.id.tvNnomPrixod_,R.id.tvNamePrixod_,R.id.tvNamePostPrixod_,R.id.tvKolPrixod_,R.id.tvEdPrixod_,R.id.tvPricePrixod_,R.id.tvDataInsPrixod_};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelPrixodHist, R.id.btnUpdPrixodHist, (byte)3, this, R.layout.prixod_hist_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btnDelPrixodHist, R.id.btnUpdPrixodHist, 3, this, R.layout.prixod_hist_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				idd=id;
     				if (flag==1) {
     				DialogScreen getYes = new DialogScreen(PrixodHistActivity.this,PrixodHistActivity.this,-5).setDialogScreenListener(new DialogListener() {
@@ -173,7 +173,7 @@ public class PrixodHistActivity extends FragmentActivity implements LoaderCallba
 								        	s=s+"\nкол-во "+String.valueOf(cc.getDouble(cc.getColumnIndex("kolr")))+" чек ИД"+String.valueOf(cc.getInt(cc.getColumnIndex("id_klient")))+" от "+MainActivity.getStringDataTime(cc.getInt(cc.getColumnIndex("data_ins")));
 								        } while (cc.moveToNext());
 								      };
-		    						showMessage("Нельзя удалять, возникнет отрицательный остаток "+s+ss, (byte)1);
+		    						showMessage("Нельзя удалять, возникнет отрицательный остаток "+s+ss, 1);
 		    					}
 		    					cc.close();
 							}

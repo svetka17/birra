@@ -35,7 +35,7 @@ public class UserEditActivity extends FragmentActivity {
         public void onClick(View v) {
         	if  (!etName.getText().toString().equals("") && !etPass.getText().toString().equals("")) //(v.getId()==R.id.btnOkSpr)
   			 if ((tvId.getText().toString().length()==0)) 
-        		MainActivity.db.addRecUSER(etName.getText().toString(), etPass.getText().toString(), MainActivity.getIntDataTime(), cbOk.isChecked()?(byte)1:(byte)0, cbAdmin.isChecked()?(byte)1:(byte)0);
+        		MainActivity.db.addRecUSER(etName.getText().toString(), etPass.getText().toString(), MainActivity.getIntDataTime(), cbOk.isChecked()?1:0, cbAdmin.isChecked()?1:0);
   			 else
   			 {
         	MainActivity.db.updRec("user", Integer.parseInt(tvId.getText().toString()), new String[] {"name","password"}, new String[] {etName.getText().toString(),etPass.getText().toString()});	

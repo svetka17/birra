@@ -33,7 +33,7 @@ public class KlientEditActivity extends FragmentActivity {
   			 if (tvId.getText().toString().equals("")) 
         		MainActivity.db.addRecKARTA_KLIENT//(name, adres, telef, prim, data_ins, ok, sconto_sum, sconto_per); 
         	(tvName.getText().toString(), tvAdres.getText().toString(), tvTel.getText().toString(), tvPrim.getText().toString(),
-        				MainActivity.getIntData(), (byte)0, MainActivity.StrToFloat(tvScontoSum.getText().toString()),MainActivity.StrToFloat(tvScontoPer.getText().toString()));
+        				MainActivity.getIntData(), 0, MainActivity.StrToFloat(tvScontoSum.getText().toString()),MainActivity.StrToFloat(tvScontoPer.getText().toString()));
   			 else
   			 {
         	MainActivity.db.updRec("karta_klient", Integer.parseInt(tvId.getText().toString()), 

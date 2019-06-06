@@ -36,7 +36,7 @@ public class PriceActivity extends FragmentActivity implements LoaderCallbacks<C
   //int tvDialogN=0;
   //LinearLayout ll;
   
-  void showMessage(String s, byte dur){
+  void showMessage(String s, int dur){
 	  LayoutInflater inflater = getLayoutInflater();
 	  View layout = inflater.inflate(R.layout.custom_message ,
 	  		(ViewGroup) findViewById(R.id.toast_layout));
@@ -96,7 +96,7 @@ public class PriceActivity extends FragmentActivity implements LoaderCallbacks<C
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	MainActivity.excel(PriceActivity.this, PriceActivity.this, "","", 
-        			tvIdPgr.getText().toString(), "Цены в магазине", (byte)7);
+        			tvIdPgr.getText().toString(), "Цены в магазине", 7);
         }
       });
     
@@ -112,10 +112,10 @@ public class PriceActivity extends FragmentActivity implements LoaderCallbacks<C
     //int[] toH = new int[] {R.id.tvId_Ostat,R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,R.id.tvNamePost_Ostat,R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat,R.id.tvDataIns_Ostat};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelPrice, R.id.btnUpdPrice, (byte)11, this, R.layout.price_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btnDelPrice, R.id.btnUpdPrice, 11, this, R.layout.price_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				if (flag==1) {
     					long countT=0;
     					Cursor cc = MainActivity.db.getRawData ("select id_tmc, id_post from tmc_price where _id="+id,null);
@@ -130,7 +130,7 @@ public class PriceActivity extends FragmentActivity implements LoaderCallbacks<C
     					{//MainActivity.db.delRec("tmc_pgr",id);
     					getSupportLoaderManager().getLoader(0).forceLoad();
     					//else 
-    						showMessage("Цена обнулена", (byte)1);
+    						showMessage("Цена обнулена", 1);
     					//MainActivity.db.delRec("ostat",id);
     					//getSupportLoaderManager().getLoader(0).forceLoad();
     					}
@@ -156,7 +156,7 @@ public class PriceActivity extends FragmentActivity implements LoaderCallbacks<C
     				    					if (countT!=0)      
     				    					{
     				    					getSupportLoaderManager().getLoader(0).forceLoad();
-    				    						showMessage("Цена изменена", (byte)1);
+    				    						showMessage("Цена изменена", 1);
     				    					}
     									}
     									//else dialogNumCancel(R.id.cb_Kol_Ostat);					

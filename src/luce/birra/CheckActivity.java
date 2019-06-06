@@ -215,7 +215,7 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	MainActivity.excel(CheckActivity.this, CheckActivity.this, tvDataIns.getText().toString(), 
-        			tvDataIns2.getText().toString(),"", "Чеки за период", (byte)8);
+        			tvDataIns2.getText().toString(),"", "Чеки за период", 8);
         	}
       });
     // формируем столбцы сопоставления
@@ -224,10 +224,10 @@ public class CheckActivity extends FragmentActivity implements LoaderCallbacks<C
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelCheckKlient, R.id.btnUpdCheck_klient, (byte)6, this, R.layout.check_klient_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btnDelCheckKlient, R.id.btnUpdCheck_klient, 6, this, R.layout.check_klient_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				idd=id;
     				if (flag==1) {
     					DialogScreen getYes = new DialogScreen(CheckActivity.this,CheckActivity.this,-5).setDialogScreenListener(new DialogListener() {

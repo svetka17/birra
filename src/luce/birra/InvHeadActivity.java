@@ -138,14 +138,14 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
 //kol_izl, summa_izl, kol_nedo, summa_nedo, kol_skidka, summa_skidka, kol_k, summa_k, ed, price, price_vendor, id_post, prim, data_ins, ok        		
         		        		        	    
         		Cursor cOst = MainActivity.db.getRawData ("select TT.price as ttprice, T.name as tname, T.pgr as tpgr, TP.name as tpname, O.id_tmc as oid_tmc, O.keg as okeg, O.kol as okol, O.kol_nedo as okol_nedo, O.kol_izl as okol_izl, O.ed as oed, O.id_post as oid_post, ifnull(O.data_upd,O.data_ins) as odata_ins, O.data_ins as odata_upd, ifnull(O.ok,0) ok, "
-		+ "sum(I.kol_k) as ikol_n, sum(I.summa_k) as isum_n, sum(R.kol) as rkol, sum(R.kol*R.price) as rsum, sum(R.kol_brak) as rkol_brak, sum(R.kol_brak*R.price) as rsum_brak, sum(R.kol_move) as rkol_move, sum(R.kol_move*R.price) as rsum_move, sum(R.kol_nedo) as rkol_nedo, sum(R.kol_nedo*R.price) as rsum_nedo, sum(R.kol_izl) as rkol_izl, sum(R.kol_izl*R.price) as rsum_izl, count(CASE WHEN ifnull(skidka,0) > 0 THEN 1 ELSE 0 END) as rkol_skidka, sum(R.skidka) as rsum_skidka, sum(P.kol) as pkol, sum(P.price_vendor*P.kol) as psum "
+		+ "sum(I.kol_k) as ikol_n, sum(I.summa_k) as isum_n, sum(case R.ok when 0 then ifnull(R.kol,0) else 0 end) as rkol, sum(case R.ok when 0 then ifnull(R.kol,0) else 0 end*R.price) as rsum, sum(R.kol_brak) as rkol_brak, sum(R.kol_brak*R.price) as rsum_brak, sum(R.kol_move) as rkol_move, sum(R.kol_move*R.price) as rsum_move, sum(R.kol_nedo) as rkol_nedo, sum(R.kol_nedo*R.price) as rsum_nedo, sum(R.kol_izl) as rkol_izl, sum(R.kol_izl*R.price) as rsum_izl, count(CASE WHEN ifnull(skidka,0) > 0 THEN 1 ELSE 0 END) as rkol_skidka, sum(R.skidka) as rsum_skidka, sum(P.kol) as pkol, sum(P.price_vendor*P.kol) as psum "
 		+ "from ostat O left join rasxod as R on O.id_tmc=R.id_tmc and O.keg=R.keg and O.id_post=R.id_post and O.ed=R.ed "
 		+ "left join tmc_price as TT on O.id_tmc=TT.id_tmc and O.id_post=TT.id_post and O.ed=TT.ed left join tmc as T on T._id=O.id_tmc left join tmc_pgr as TP on TP._id=T.pgr "
 		+ "left join prixod as P on O.id_tmc=P.id_tmc and O.keg=P.keg and O.id_post=P.id_post and O.ed=P.ed "
 		+ "left join invent as I on O.id_tmc=I.id_tmc and O.keg=I.keg and O.id_post=I.id_post and O.ed=I.ed and I.id_inv="+MainActivity.invent
 		+ " group by TT.price, T.name, T.pgr, TP.name, O.id_tmc, O.keg, O.kol, O.kol_nedo, O.kol_izl, O.ed, O.id_post, O.data_ins, O.data_upd, ifnull(O.ok,0) ",/*order by T.tara*/null);
-        	    byte ib=0;
-        	    byte tmp=0;
+        	    int ib=0;
+        	    int tmp=0;
         	    
         	    if (cOst.moveToFirst()) { 
         	    	 
@@ -160,7 +160,7 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
                 	    if (cOst1.moveToFirst()) {
                 	    	do {
                 	    		//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
-                	    	tmp=(byte)MainActivity.db.updRecCount("invent", cOst1.getLong(cOst1.getColumnIndex("id")), 
+                	    	tmp=MainActivity.db.updRecCount("invent", cOst1.getLong(cOst1.getColumnIndex("id")), 
                 	    			new String[]{"kol_ostat",
                 	    					"kol_p",
                 	    					"summa_p",
@@ -225,7 +225,7 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
                 	    			cOst.getDouble(cOst.getColumnIndex("rkol")), cOst.getDouble(cOst.getColumnIndex("rsum")), cOst.getDouble(cOst.getColumnIndex("rkol_brak")), cOst.getDouble(cOst.getColumnIndex("rsum_brak")), 
                 	    			cOst.getDouble(cOst.getColumnIndex("rkol_move")), cOst.getDouble(cOst.getColumnIndex("rsum_move")), (double)0,(double)0,/*kol_cash sumcash*/cOst.getDouble(cOst.getColumnIndex("rkol_izl")), cOst.getDouble(cOst.getColumnIndex("rsum_izl")), 
                 	    			cOst.getDouble(cOst.getColumnIndex("rkol_nedo")), cOst.getDouble(cOst.getColumnIndex("rsum_nedo")), cOst.getDouble(cOst.getColumnIndex("rkol_skidka")), cOst.getDouble(cOst.getColumnIndex("rsum_skidka")), 
-                	    			(double)0, (double)0, cOst.getDouble(cOst.getColumnIndex("ttprice")), (double)0, "", cOst.getInt(cOst.getColumnIndex("odata_ins")), (byte)cOst.getInt(cOst.getColumnIndex("ok"))
+                	    			(double)0, (double)0, cOst.getDouble(cOst.getColumnIndex("ttprice")), (double)0, "", cOst.getInt(cOst.getColumnIndex("odata_ins")), cOst.getInt(cOst.getColumnIndex("ok"))
                 	    			);
                 	    }
                 	    
@@ -274,10 +274,10 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
     	    		R.id.tv_Summa_InvHead,R.id.atN_InvHead,R.id.atK_InvHead,R.id.tv_Prim_InvHead,R.id.ataIns_InvHead};
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
 
-    	    scAdapterO = new AdapterLV(R.id.btnDelInvHead, R.id.btnUpdInvHead, (byte)14, this, R.layout.inv_head_item, null, fromO, toO, 0)
+    	    scAdapterO = new AdapterLV(R.id.btnDelInvHead, R.id.btnUpdInvHead, 14, this, R.layout.inv_head_item, null, fromO, toO, 0)
     	    .setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				
     				if (flag==1 || flag==2) {
     					

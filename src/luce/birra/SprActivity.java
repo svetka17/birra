@@ -69,7 +69,7 @@ public class SprActivity extends FragmentActivity {
     btnExport.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	MainActivity.excel(SprActivity.this, SprActivity.this, "","", 
-        			"", "—œ–¿¬Œ◊Õ» »", (byte)6);
+        			"", "—œ–¿¬Œ◊Õ» »", 6);
 
         }
       });
@@ -77,7 +77,7 @@ public class SprActivity extends FragmentActivity {
     btnImport = (Button) findViewById(R.id.btnSprImport);
     btnImport.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	MainActivity.excel_import(SprActivity.this, SprActivity.this,(byte)1);
+        	MainActivity.excel_import(SprActivity.this, SprActivity.this,1);
 
         }
       });
@@ -85,7 +85,7 @@ public class SprActivity extends FragmentActivity {
     btnImportOst = (Button) findViewById(R.id.btnOstImport);
     btnImportOst.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	MainActivity.excel_import(SprActivity.this, SprActivity.this,(byte)2);
+        	MainActivity.excel_import(SprActivity.this, SprActivity.this,2);
 
         }
       });

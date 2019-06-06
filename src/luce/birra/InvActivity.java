@@ -13,13 +13,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 import luce.birra.AdapterLV.CambiareListener;
 import luce.birra.DialogScreen.DialogListener;
  
@@ -38,7 +38,7 @@ static TextView tvIdPgr;
 Spinner spPgr;
 //  Spinner spPgr;
   
-  void showMessage(String s, byte dur){
+  void showMessage(String s, int dur){
 	  LayoutInflater inflater = getLayoutInflater();
 	  View layout = inflater.inflate(R.layout.custom_message ,
 	  		(ViewGroup) findViewById(R.id.toast_layout));
@@ -120,7 +120,7 @@ Spinner spPgr;
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	MainActivity.excel(InvActivity.this, InvActivity.this, "","", 
-        		/*String.valueOf(MainActivity.invent)*/tvIdInv.getText().toString(), "Инвентаризация", (byte)10);
+        		/*String.valueOf(MainActivity.invent)*/tvIdInv.getText().toString(), "Инвентаризация", 10);
         }
       });
     
@@ -167,7 +167,7 @@ Spinner spPgr;
         	        	    if (cOst.moveToFirst()) { 
         	        	    	 
         	        	        do {
-        	        	        	MainActivity.db.addRecPRIXOD(cOst.getInt(cOst.getColumnIndex("oid_tmc")), cOst.getInt(cOst.getColumnIndex("okeg")), cOst.getDouble(cOst.getColumnIndex("kol_real")), (byte)cOst.getInt(cOst.getColumnIndex("oed")), cOst.getDouble(cOst.getColumnIndex("ttprice")), cOst.getDouble(cOst.getColumnIndex("ttprice")), cOst.getInt(cOst.getColumnIndex("oid_post")), "после инвентаризации "+cOst.getInt(cOst.getColumnIndex("id"))+MainActivity.usr, MainActivity.getIntDataTime(), (byte)0);
+        	        	        	MainActivity.db.addRecPRIXOD(cOst.getInt(cOst.getColumnIndex("oid_tmc")), cOst.getInt(cOst.getColumnIndex("okeg")), cOst.getDouble(cOst.getColumnIndex("kol_real")), cOst.getInt(cOst.getColumnIndex("oed")), cOst.getDouble(cOst.getColumnIndex("ttprice")), cOst.getDouble(cOst.getColumnIndex("ttprice")), cOst.getInt(cOst.getColumnIndex("oid_post")), "после инвентаризации "+cOst.getInt(cOst.getColumnIndex("id"))+MainActivity.usr, MainActivity.getIntDataTime(), 0);
         	        	        	MainActivity.db.updOstatKegInv(cOst.getInt(cOst.getColumnIndex("oid_tmc")), cOst.getInt(cOst.getColumnIndex("oid_post")), cOst.getInt(cOst.getColumnIndex("okeg")), cOst.getInt(cOst.getColumnIndex("oed")), cOst.getInt(cOst.getColumnIndex("data_ins")));
         	        	        	//////
         	        	        	if (cOst.getInt(cOst.getColumnIndex("oed"))==1) {
@@ -189,7 +189,7 @@ Spinner spPgr;
         	        	    MainActivity.invent=0;
         	        	    finish();
         	}
-        	else showMessage("количества факта указаны не по всем позициям", (byte)1);
+        	else showMessage("количества факта указаны не по всем позициям", 1);
         }
       });
     
@@ -202,10 +202,10 @@ Spinner spPgr;
     		};
     int[] to = new int[] {/*R.id.tvId_Inv,*/R.id.tvNamePgr_Inv, R.id.tvId_Tmc_Inv, R.id.tvNameTmc_Inv, R.id.tvNamePost_Inv, R.id.tvKeg_Inv, R.id.tvTed_Inv, /*R.id.tvPrice_Inv,*/ R.id.tvPriceVen_Inv,R.id.tvKol_Inv, R.id.tvKolReal_Inv,R.id.tvSumma_Inv,R.id.tvSummaFact_Inv,/*R.id.tvSummaIzlNedo_Inv,R.id.tvSummaIzlNedo_InvKol,*/R.id.tvSummaIzlNedo_InvSum,R.id.tvKol_Inv_Izl,R.id.tvKol_Inv_Nedo} ;
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelInv, R.id.btnUpdInv, (byte)15, this, R.layout.inv_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btnDelInv, R.id.btnUpdInv, 15, this, R.layout.inv_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				/*if (flag==11) {
 
     					final long idd=id;

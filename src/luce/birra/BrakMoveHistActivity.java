@@ -8,20 +8,16 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import luce.birra.AdapterLV.CambiareListener;
 import luce.birra.DialogScreen.DialogListener;
  
@@ -33,7 +29,7 @@ public class BrakMoveHistActivity extends FragmentActivity implements LoaderCall
   static TextView tvIdPgr; 
   //static RadioButton rbBrak;//, rbMove;
   static RadioGroup radioGroup;
-  static byte brak=1;
+  static int brak=1;
   static TextView itogKol;
   Spinner spPgr;
   //Cursor cKlient;
@@ -165,7 +161,7 @@ rbMove.setOnClickListener(new OnClickListener() {
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	MainActivity.excel(BrakMoveHistActivity.this, BrakMoveHistActivity.this, "","", 
-        			tvIdPgr.getText().toString(), "Перемещение и брак", (byte)11);
+        			tvIdPgr.getText().toString(), "Перемещение и брак", 11);
         	}
       });
     // формируем столбцы сопоставления
@@ -175,10 +171,10 @@ rbMove.setOnClickListener(new OnClickListener() {
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelBrakMoveHist, R.id.btnUpdBrakMoveHist, (byte)16, this, R.layout.brakmove_hist_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btnDelBrakMoveHist, R.id.btnUpdBrakMoveHist, 16, this, R.layout.brakmove_hist_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				idd=id;
     				if (flag==1) {
     					DialogScreen getYes = new DialogScreen(BrakMoveHistActivity.this,BrakMoveHistActivity.this,-5).setDialogScreenListener(new DialogListener() {

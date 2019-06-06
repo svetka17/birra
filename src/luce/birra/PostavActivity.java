@@ -53,10 +53,10 @@ public class PostavActivity extends FragmentActivity implements LoaderCallbacks<
     int[] to = new int[] {R.id.tvIdPostav, R.id.tvNamePostav,R.id.tvAdresPostav,R.id.tvTelefPostav,R.id.tvPrimPostav, R.id.tvDataInsPostav  };
     //int[] toH = new int[] {R.id.tvIdPostav,R.id.tvNamePostav,R.id.tvAdresPostav,R.id.tvTelefPostav,R.id.tvPrimPostav};
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelPostav, R.id.btnUpdPostav, (byte)7, this, R.layout.postav_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btnDelPostav, R.id.btnUpdPostav, 7, this, R.layout.postav_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				if (flag==1) {
     					MainActivity.db.delRec("postav",id);
     					getSupportLoaderManager().getLoader(0).forceLoad();}

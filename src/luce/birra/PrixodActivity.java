@@ -34,14 +34,14 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   Cursor// cProd, 
   cPost,  cPgr, cEd;
   static Cursor cursor;
-  static byte flagFocus=0, tmp_ed=-1, tmp_close=0;
+  static int flagFocus=0, tmp_ed=-1, tmp_close=0;
   static int tmp=0, tmp_post=0;
   SimpleCursorAdapter scaProd, scaPost, scaPgr, scaEd;
   String[] fromProd, fromPost, fromPgr, fromEd;
   int[] toProd, toPost, toPgr, toEd;
   String s;
   
-  void showMessage(String s, byte dur){
+  void showMessage(String s, int dur){
 	  LayoutInflater inflater = getLayoutInflater();
 	  View layout = inflater.inflate(R.layout.custom_message ,
 	  		(ViewGroup) findViewById(R.id.toast_layout));
@@ -284,7 +284,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         			&& tvPrice.getText().toString().toString().length()!=0 
         			&& tvPriceVendor.getText().toString().toString().length()!=0 
         			&& tvKol.getText().toString().length()!=0
-        			&& !(MainActivity.postlitr==1 && Integer.parseInt(tvIdPost.getText().toString())==0 && Byte.parseByte(tvEd.getText().toString())==1 )
+        			&& !(MainActivity.postlitr==1 && Integer.parseInt(tvIdPost.getText().toString())==0 && Integer.parseInt(tvEd.getText().toString())==1 )
         			)
   			 {if ((tvId.getText().toString().length()==0)) 
         		//MainActivity.db.addRecPRIXOD(id_tmc, kol, price, id_post, prim, data_del, data_ins, ok);
@@ -299,23 +299,23 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
 				      };
 				      
 				      if (countT!=0) showMessage("Îòðèöàòåëüíûé îñòàòîê îáíóëåí", (byte)1);*/
-				      if (Byte.parseByte(tvEd.getText().toString())!=1) tvKeg.setText("0");
+				      if (Integer.parseInt(tvEd.getText().toString())!=1) tvKeg.setText("0");
 				      else 
-				      {tvKeg.setText(String.valueOf(MainActivity.db.addRecKEGSCount("new keg", MainActivity.StrToFloat(tvKol.getText().toString()), MainActivity.getStringDataTime(MainActivity.getIntDataTime()), MainActivity.getIntDataTime(), (byte)0)) ); };
+				      {tvKeg.setText(String.valueOf(MainActivity.db.addRecKEGSCount("new keg", MainActivity.StrToFloat(tvKol.getText().toString()), MainActivity.getStringDataTime(MainActivity.getIntDataTime()), MainActivity.getIntDataTime(), 0)) ); };
 				      
 				      MainActivity.db.addRecPRIXOD(
         				Integer.parseInt(tvIdProd.getText().toString()), 
         				Integer.parseInt(tvKeg.getText().toString()),
         				MainActivity.StrToFloat(tvKol.getText().toString()), 
         				//0,0,
-        				Byte.parseByte(tvEd.getText().toString()),
+        				Integer.parseInt(tvEd.getText().toString()),
         				MainActivity.StrToFloat2(tvPrice.getText().toString() ), 
         				MainActivity.StrToFloat2(tvPriceVendor.getText().toString()), 
         				Integer.parseInt(tvIdPost.getText().toString()), 
         				MainActivity.usr+" "+tvPrim.getText().toString()+" ÑÓÌÌÀ:"+String.valueOf(MainActivity.StrToFloat(tvKol.getText().toString())*MainActivity.StrToFloat(tvPrice.getText().toString()) )+"ÃÐÍ", 
         				//0, 
         				(tvDataIns.getText().toString().length()==0)?MainActivity.getIntDataTime():MainActivity.getIntDataTime(tvDataIns.getText().toString()) , 
-        				(byte)0); 
+        				0); 
         		if ( MainActivity.StrToFloat(tvPos.getText().toString())!=0 ) 
         			MainActivity.db.updRec("tmc", Integer.parseInt(tvIdProd.getText().toString()), "pos", (int)MainActivity.StrToFloat(tvPos.getText().toString()) ); 
         				//(Cursor) lv.getItemAtPosition(position)).getString(((Cursor) lv.getItemAtPosition(position)).getColumnIndex("_id"))
@@ -323,7 +323,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
         		//Toast.makeText(PrixodActivity.this, "ÏÐÈÕÎÄ "+s+" ÊÎË-ÂÎ:"+tvKol.getText().toString()+" ÖÅÍÀ:"+tvPrice.getText().toString(), Toast.LENGTH_LONG).show();
         		tvOst.setText(String.valueOf(MainActivity.StrToFloat(tvOst.getText().toString())+MainActivity.StrToFloat(tvKol.getText().toString()) ));
         		
-        		if (Byte.parseByte(tvEd.getText().toString())==1) {
+        		if (Integer.parseInt(tvEd.getText().toString())==1) {
         			Cursor cOst = MainActivity.db.getRawData ("select count(*) c from ostat O where O.id_tmc="+Integer.parseInt(tvIdProd.getText().toString())+" and O.id_post="+Integer.parseInt(tvIdPost.getText().toString())+" and O.ed=1 ",null);
     	   int countkeg=-1;    	    
     	    if (cOst.moveToFirst()) { 
@@ -334,7 +334,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
     	      } else cOst.close();
         		}
         		
-        		showMessage("ÏÐÈÕÎÄ "+s+" ÊÎË-ÂÎ:"+tvKol.getText().toString()+" ÖÅÍÀ:"+tvPrice.getText().toString(), (byte)0);
+        		showMessage("ÏÐÈÕÎÄ "+s+" ÊÎË-ÂÎ:"+tvKol.getText().toString()+" ÖÅÍÀ:"+tvPrice.getText().toString(),0);
         		tvPrim.setText("");
         		if (tmp_close==1) {tmp_close=0;finish();}
         		}
@@ -354,7 +354,7 @@ public class PrixodActivity extends FragmentActivity implements LoaderCallbacks<
   	        	if ( MainActivity.StrToFloat(tvPos.getText().toString())!=0 ) 
         			MainActivity.db.updRec("tmc", Integer.parseInt(tvIdProd.getText().toString()), "pos", (int)MainActivity.StrToFloat(tvPos.getText().toString()) );
   	        	
-  	        	showMessage("ÏÐÈÕÎÄ ÈÇÌÅÍÅÍ "+s+" ÊÎË-ÂÎ:"+tvKol.getText().toString()+" ÖÅÍÀ:"+tvPrice.getText().toString(), (byte)0);
+  	        	showMessage("ÏÐÈÕÎÄ ÈÇÌÅÍÅÍ "+s+" ÊÎË-ÂÎ:"+tvKol.getText().toString()+" ÖÅÍÀ:"+tvPrice.getText().toString(), 0);
   				finish();
   			 }
         	
@@ -409,9 +409,9 @@ MainActivity.setSpinnerItemById(spPost, tmp_post);
 
 tmp=((int) MainActivity.StrToFloat(getIntent().getStringExtra("PrixodProd")));
 
-tmp_ed=(byte) (MainActivity.StrToFloat(getIntent().getStringExtra("PrixodEd")));
+tmp_ed=(int)MainActivity.StrToFloat(getIntent().getStringExtra("PrixodEd"));
 
-tmp_close=(byte) (MainActivity.StrToFloat(getIntent().getStringExtra("PrixodClose")));
+tmp_close=(int) (MainActivity.StrToFloat(getIntent().getStringExtra("PrixodClose")));
 
 tvPrice.setText(getIntent().getStringExtra("PrixodPrice"));
 
@@ -501,7 +501,7 @@ public void onLoaderReset(Loader<Cursor> arg0) {
 }
 
 void setPrice () {
-	byte tmp=0;
+	int tmp=0;
         	 Cursor cursor = MainActivity.db.getQueryData
 ("tmc_price as T",
          			new String[] {"T.price as price"}, 

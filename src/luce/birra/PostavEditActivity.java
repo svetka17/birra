@@ -30,7 +30,7 @@ public class PostavEditActivity extends FragmentActivity {
         	if  (!tvName.getText().toString().equals("") ) //(v.getId()==R.id.btnOkSpr)
   			 if (tvId.getText().toString().equals("")) 
         		MainActivity.db.addRecPOSTAV(tvName.getText().toString(), tvAdres.getText().toString(), tvTel.getText().toString(), tvPrim.getText().toString(),
-        				MainActivity.getIntData(), (byte)0);
+        				MainActivity.getIntData(), 0);
   			 else
   			 {
         	MainActivity.db.updRec("postav", Integer.parseInt(tvId.getText().toString()), 

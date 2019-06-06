@@ -250,7 +250,7 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
         public void onClick(View v) {
         	MainActivity.excel(RasxodHistActivity.this, RasxodHistActivity.this, tvDataIns.getText().toString(), 
         			tvDataIns2.getText().toString(), 
-        			tvIdPgr.getText().toString(), "Расход за период", (byte)2);
+        			tvIdPgr.getText().toString(), "Расход за период", 2);
         	}
       });
     // формируем столбцы сопоставления
@@ -259,10 +259,10 @@ public class RasxodHistActivity extends FragmentActivity implements LoaderCallba
     //int[] toH = new int[] {R.id.tv_Nnom_Rasxod_Hist,R.id.tv_Name_Rasxod_Hist,R.id.tv_Kol_Rasxod_Hist,R.id.tv_Price_Rasxod_Hist,R.id.tv_DataIns_Rasxod_Hist,R.id.tv_Prim_Rasxod_Hist,R.id.tv_CH_Rasxod_Hist,R.id.tv_Sumka_Rasxod_Hist};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelRasxodHist, R.id.btnUpdRasxodHist, (byte)4, this, R.layout.rasxod_hist_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btnDelRasxodHist, R.id.btnUpdRasxodHist, 4, this, R.layout.rasxod_hist_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				idd=id;
     				if (flag==1) {
     					DialogScreen getYes = new DialogScreen(RasxodHistActivity.this,RasxodHistActivity.this,-5).setDialogScreenListener(new DialogListener() {

@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.util.Log;
  
 public class DialogActivity extends android.support.v4.app.DialogFragment  implements OnClickListener {
  
@@ -33,16 +32,16 @@ public class DialogActivity extends android.support.v4.app.DialogFragment  imple
       break;
     }
     if (i > 0)
-      Log.d(LOG_TAG, "Dialog 2: " + getResources().getString(i));
+      //Log.d(LOG_TAG, "Dialog 2: " + getResources().getString(i));
   }
  
   public void onDismiss(DialogInterface dialog) {
     super.onDismiss(dialog);
-    Log.d(LOG_TAG, "Dialog 2: onDismiss");
+    //Log.d(LOG_TAG, "Dialog 2: onDismiss");
   }
  
   public void onCancel(DialogInterface dialog) {
     super.onCancel(dialog);
-    Log.d(LOG_TAG, "Dialog 2: onCancel");
+    //Log.d(LOG_TAG, "Dialog 2: onCancel");
   }
 }

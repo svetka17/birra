@@ -125,10 +125,10 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
     				R.id.tv_Kol_Ras_Oborotka,R.id.tv_Sum_Ras_Oborotka,R.id.tv_Price_Ras_Oborotka,
     				R.id.tv_Kol_Kon_Oborotka,R.id.tv_Sum_Kon_Oborotka,R.id.tv_Price_Kon_Oborotka};
 */
-    	    scAdapterO = new AdapterLV(R.id.btnDelOborotka, R.id.btnUpdOborotka, (byte)0, this, R.layout.oborotka_item, null, fromO, toO, 0)
+    	    scAdapterO = new AdapterLV(R.id.btnDelOborotka, R.id.btnUpdOborotka, 0, this, R.layout.oborotka_item, null, fromO, toO, 0)
     	    .setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				
     				if (flag==1 || flag==2) {
     					
@@ -174,9 +174,9 @@ public class OborotkaActivity extends FragmentActivity implements LoaderCallback
     btnAdd = (Button) findViewById(R.id.btnAddOborotka);
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
-        	MainActivity.excel(OborotkaActivity.this, OborotkaActivity.this, tvDataIns.getText().toString(), tvDataIns2.getText().toString(), 
+        	MainActivity.excel(OborotkaActivity.this, OborotkaActivity.this, /*tvDataIns.getText().toString()*/"0", /*tvDataIns2.getText().toString()*/"0", 
         			//Calendar.getInstance().get(Calendar.DATE)+"."+Calendar.getInstance().get(Calendar.MONTH)+"."+Calendar.getInstance().get(Calendar.YEAR), 
-        			tvIdPgr.getText().toString(), "Оборотная ведомость", (byte)1);
+        			tvIdPgr.getText().toString(), "Оборотная ведомость", 1);
         	}
       });
     

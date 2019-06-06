@@ -9,8 +9,8 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,7 +23,7 @@ public class KlientActivity extends FragmentActivity implements LoaderCallbacks<
   ListView lvData;
   Button btnExit, btnAdd;
   AdapterLV scAdapter;
-  void showMessage(String s, byte dur){
+  void showMessage(String s, int dur){
 	  LayoutInflater inflater = getLayoutInflater();
 	  View layout = inflater.inflate(R.layout.custom_message ,
 	  		(ViewGroup) findViewById(R.id.toast_layout));
@@ -66,10 +66,10 @@ public class KlientActivity extends FragmentActivity implements LoaderCallbacks<
     int[] to = new int[] {R.id.tvIdKlient, R.id.tvNameKlient,R.id.tvSconto_sumKlient,R.id.tvSconto_perKlient,R.id.tvAdresKlient,R.id.tvTelefKlient,R.id.tvPrimKlient, R.id.tvDataInsKlient  };
     //int[] toH = new int[] {R.id.tvIdPostav,R.id.tvNamePostav,R.id.tvAdresPostav,R.id.tvTelefPostav,R.id.tvPrimPostav};
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelKlient, R.id.btnUpdKlient, (byte)8, this, R.layout.klient_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btnDelKlient, R.id.btnUpdKlient, 8, this, R.layout.klient_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				if (flag==1) {
     					//MainActivity.db.delRec("karta_klient",id);
     					//getSupportLoaderManager().getLoader(0).forceLoad();
@@ -83,7 +83,7 @@ public class KlientActivity extends FragmentActivity implements LoaderCallbacks<
     					{MainActivity.db.delRec("klient_karta",id);
     					getSupportLoaderManager().getLoader(0).forceLoad();}
     					else 
-    						showMessage("Удалять запрещено, у клиента имеются чеки", (byte)1);
+    						showMessage("Удалять запрещено, у клиента имеются чеки", 1);
     					}
     			}
     		});

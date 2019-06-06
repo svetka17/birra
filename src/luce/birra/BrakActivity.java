@@ -15,9 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -38,7 +35,7 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
   //int tvDialogN=0;
   //LinearLayout ll;
   
-  void showMessage(String s, byte dur){
+  void showMessage(String s, int dur){
 	  LayoutInflater inflater = getLayoutInflater();
 	  View layout = inflater.inflate(R.layout.custom_message ,
 	  		(ViewGroup) findViewById(R.id.toast_layout));
@@ -103,7 +100,7 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	MainActivity.excel(BrakActivity.this, BrakActivity.this, "","", 
-        			tvIdPgr.getText().toString(), "Перемещение и брак", (byte)11);
+        			tvIdPgr.getText().toString(), "Перемещение и брак", 11);
         }
       });
     
@@ -128,11 +125,11 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
     //int[] toH = new int[] {R.id.tvId_Ostat,R.id.tvNameTmc_Ostat,R.id.tvNamePgr_Ostat,R.id.tvNamePost_Ostat,R.id.tvKol_Ostat,R.id.tvTed_Ostat,R.id.tvPrice_Ostat,R.id.tvDataIns_Ostat};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelBrak, R.id.btnUpdBrak, (byte)17, this, R.layout.brak_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btnDelBrak, R.id.btnUpdBrak, 17, this, R.layout.brak_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
-    				final byte fl=flag;
+    			public void OnCambiare(int flag, long id) {
+    				final int fl=flag;
     				/*if (flag==1) {
     					long countT=0;
     					Cursor cc = MainActivity.db.getRawData ("select id_tmc, keg, kol, ed, id_post from ostat where kol<>0 and _id="+id,null);
@@ -170,8 +167,8 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
     				    					        				//(k>0)&&(k<cc.getDouble(cc.getColumnIndex("kol")))?cc.getDouble(cc.getColumnIndex("kol"))-k:0,
     				    					        				//(k>0)&&(k>cc.getDouble(cc.getColumnIndex("kol")))?cc.getDouble(cc.getColumnIndex("kol"))-k:0,
     				    					        				0,0,(fl==1?0:k),(fl==1?k:0),//cc.getDouble(cc.getColumnIndex("kol"))-k,
-    				    					        				(byte)0,(byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, (fl==1?"ПЕРЕМЕЩЕНИЕ":"БРАК")+" ОСТАТКА РАСХОД ID="+idd, MainActivity.getIntDataTime(), (fl==1?2:1));
-    				    					        	else showMessage("Количество остатка не достаточно", (byte)1);
+    				    					        				0,cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, (fl==1?"ПЕРЕМЕЩЕНИЕ":"БРАК")+" ОСТАТКА РАСХОД ID="+idd, MainActivity.getIntDataTime(), (fl==1?2:1));
+    				    					        	else showMessage("Количество остатка не достаточно", 1);
     				    					        	//MainActivity.db.addRecRASXODcount(cc.getInt(cc.getColumnIndex("id_tmc")), cc.getInt(cc.getColumnIndex("keg")),-k,/*cc.getDouble(cc.getColumnIndex("kol")),(cc.getDouble(cc.getColumnIndex("kol"))<0?-cc.getDouble(cc.getColumnIndex("kol")):0),(cc.getDouble(cc.getColumnIndex("kol"))>0?cc.getDouble(cc.getColumnIndex("kol")):0)*/0,0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0,0, cc.getInt(cc.getColumnIndex("id_post")), 0, "ИЗМЕНЕНИЕ ОСТАТКА РАСХОД ID="+idd, MainActivity.getIntDataTime(), 1);		
     				    					        //MainActivity.db.addRecPRIXOD(cc.getInt(cc.getColumnIndex("id_tmc")),cc.getInt(cc.getColumnIndex("keg")), k,0, 0, (byte)cc.getInt(cc.getColumnIndex("ed")), 0, cc.getDouble(cc.getColumnIndex("price")), cc.getInt(cc.getColumnIndex("id_post")), "ИЗМЕНЕНИЕ ОСТАТКА ПРИХОД ID="+idd, MainActivity.getIntDataTime(), (byte)1);
     				    					        } while (cc.moveToNext());
@@ -179,7 +176,7 @@ public class BrakActivity extends FragmentActivity implements LoaderCallbacks<Cu
     				    					if (countT!=0)      
     				    					{
     				    					getSupportLoaderManager().getLoader(0).forceLoad();
-    				    						showMessage("Остаток изменен", (byte)1);
+    				    						showMessage("Остаток изменен", 1);
     				    					}
     									}
     									//else dialogNumCancel(R.id.cb_Kol_Ostat);					

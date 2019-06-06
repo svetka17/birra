@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.database.Cursor;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -74,8 +73,6 @@ public class DialogScreen extends AlertDialog.Builder {
 	        return this;
 	    }
 	   
-
-	
 	public DialogScreen(Context context, Activity activity, int titul) {
         super(context);
         switch(titul) {
@@ -113,7 +110,7 @@ public class DialogScreen extends AlertDialog.Builder {
                         do {
                         	//Log.d("MyLog", "cursor "+c.getInt(c.getColumnIndex("_id")));
                         	tmp=c.getInt(c.getColumnIndex("_id")); MainActivity.usr=c.getString(c.getColumnIndex("name"));
-                        MainActivity.access=(byte)c.getInt(c.getColumnIndex("c"));
+                        MainActivity.access=c.getInt(c.getColumnIndex("c"));
                         } while (c.moveToNext());
                       }; 
                     c.close();
@@ -149,6 +146,13 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(2);						
 				}
 			})*/
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					listener.OnSelectedKol(2);					
+				}
+			})
 			.setTitle("¬¬≈ƒ»“≈ »Ãﬂ œŒÀ‹«Œ¬¿“≈Àﬂ » œ¿–ŒÀ‹");
             break;
         case -3: 
@@ -220,6 +224,13 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(2);						
 				}
 			})*/
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					listener.OnSelectedKol(2);					
+				}
+			})
 			.setTitle("¬€¡»–¿…“≈ ÷¬≈“");
             break;
         case -4: 
@@ -257,11 +268,18 @@ public class DialogScreen extends AlertDialog.Builder {
 				}
 			})
             //.setCancelable(false)
-			.setOnDismissListener(new DialogInterface.OnDismissListener() {	
+            /*.setOnDismissListener(new DialogInterface.OnDismissListener() {	
 				@Override
 				public void onDismiss(DialogInterface arg0) {
 					//Log.d("MyLog", "dismiss");
 					listener.OnSelectedKol(0);						
+				}
+			})*/
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					listener.OnSelectedKol(0);					
 				}
 			})
 			.setTitle("¬€¡»–¿…“≈ ƒ¿“” » ¬–≈Ãﬂ");
@@ -281,10 +299,17 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(0);
 				}
 			})
-			.setOnDismissListener(new OnDismissListener() {	
+			/*.setOnDismissListener(new OnDismissListener() {	
 				@Override
 				public void onDismiss(DialogInterface arg0) {
 					listener.OnSelectedKol(0);						
+				}
+			})*/
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					listener.OnSelectedKol(0);					
 				}
 			})
 			.setTitle("”ƒ¿À»“‹?");
@@ -303,10 +328,17 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(0);
 				}
 			})
-			.setOnDismissListener(new OnDismissListener() {	
+			/*.setOnDismissListener(new OnDismissListener() {	
 				@Override
 				public void onDismiss(DialogInterface arg0) {
 					listener.OnSelectedKol(0);						
+				}
+			})*/
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					listener.OnSelectedKol(0);					
 				}
 			})
 			.setTitle("—ƒ≈À¿“‹ ÕŒ¬€… œ–»’Œƒ ›“Œ√Œ “Œ¬¿–¿?");
@@ -325,10 +357,17 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(0);
 				}
 			})
-			.setOnDismissListener(new OnDismissListener() {	
+			/*.setOnDismissListener(new OnDismissListener() {	
 				@Override
 				public void onDismiss(DialogInterface arg0) {
 					listener.OnSelectedKol(-1);						
+				}
+			})*/
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					listener.OnSelectedKol(-1);					
 				}
 			})
 			.setTitle("“Œ¬¿– ≈—“‹ ¬ Õ¿À»◊»»?");
@@ -347,10 +386,17 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(0);
 				}
 			})
-			.setOnDismissListener(new OnDismissListener() {	
+			/*.setOnDismissListener(new OnDismissListener() {	
 				@Override
 				public void onDismiss(DialogInterface arg0) {
 					listener.OnSelectedKol(-1);						
+				}
+			})*/
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					listener.OnSelectedKol(-1);					
 				}
 			})
 			.setTitle("œ≈–≈…“» Õ¿ ÕŒ¬”ﬁ  ≈√”?");
@@ -369,10 +415,17 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(0);
 				}
 			})
-			.setOnDismissListener(new OnDismissListener() {	
+			/*.setOnDismissListener(new OnDismissListener() {	
 				@Override
 				public void onDismiss(DialogInterface arg0) {
 					listener.OnSelectedKol(-1);						
+				}
+			})*/
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					listener.OnSelectedKol(-1);					
 				}
 			})
 			.setTitle("¬ Àﬁ◊»“‹ — œŒÃ≈“ Œ… ¡–¿ ?");
@@ -391,10 +444,17 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(0);
 				}
 			})
-			.setOnDismissListener(new OnDismissListener() {	
+			/*.setOnDismissListener(new OnDismissListener() {	
 				@Override
 				public void onDismiss(DialogInterface arg0) {
 					listener.OnSelectedKol(-1);						
+				}
+			})*/
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					listener.OnSelectedKol(-1);					
 				}
 			})
 			.setTitle("¬ Àﬁ◊»“‹ œ≈–≈Ã≈Ÿ≈Õ»≈ ¬ ƒ–”√Œ… Ã¿√¿«»Õ?");
@@ -430,10 +490,17 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(3);
 				}
 			})
-			.setOnDismissListener(new OnDismissListener() {	
+			/*.setOnDismissListener(new OnDismissListener() {	
 				@Override
 				public void onDismiss(DialogInterface arg0) {
 					listener.OnSelectedKol(0);						
+				}
+			})*/
+			.setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					listener.OnSelectedKol(0);					
 				}
 			})
 			.setTitle("‘¿…À ¬ EXCEL");
@@ -454,10 +521,17 @@ public class DialogScreen extends AlertDialog.Builder {
 					listener.OnSelectedKol(0);
 				}
 			})
-			.setOnDismissListener(new OnDismissListener() {	
+			/*.setOnDismissListener(new OnDismissListener() {	
 				@Override
 				public void onDismiss(DialogInterface arg0) {
 					listener.OnSelectedKol(0);						
+				}
+			})*/
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					listener.OnSelectedKol(0);					
 				}
 			})
 			.setTitle("«¿√–”« ¿ —œ–¿¬Œ◊Õ» ¿");
@@ -558,13 +632,20 @@ public class DialogScreen extends AlertDialog.Builder {
 						listener.OnSelectedKol(0);
 					}
 				})
-				.setOnDismissListener(new OnDismissListener() {
+				/*.setOnDismissListener(new OnDismissListener() {
 					
 					@Override
 					public void onDismiss(DialogInterface arg0) {
 						listener.OnSelectedKol(0);						
 					}
-				})
+				})*/
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+    				
+    				@Override
+    				public void onCancel(DialogInterface dialog) {
+    					listener.OnSelectedKol(0);					
+    				}
+    			})
 				.setTitle(dialogNumTitle(titul));
                 
         }

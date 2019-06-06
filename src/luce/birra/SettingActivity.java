@@ -40,6 +40,7 @@ public class SettingActivity extends FragmentActivity {
     btnB1.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	tvDialogN=R.id.btnBigB;
+        	
         	showDialog(1);
         }
       });

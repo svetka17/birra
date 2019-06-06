@@ -10,8 +10,8 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -30,7 +30,7 @@ public class PgrActivity extends FragmentActivity implements /*OnItemClickListen
   TextView tv;
   LinearLayout ll;
   
-  void showMessage(String s, byte dur){
+  void showMessage(String s, int dur){
 	  LayoutInflater inflater = getLayoutInflater();
 	  View layout = inflater.inflate(R.layout.custom_message ,
 	  		(ViewGroup) findViewById(R.id.toast_layout));
@@ -70,10 +70,10 @@ public class PgrActivity extends FragmentActivity implements /*OnItemClickListen
     //int[] toH = new int[] {R.id.tvIdPgr, R.id.tvNamePgr, R.id.tvDataInsPgr  };
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
     scAdapter = 
-    new AdapterLV(R.id.btnDelPgr, R.id.btnUpdPgr, (byte)2, this, R.layout.pgr_item, null, from, to, 0)
+    new AdapterLV(R.id.btnDelPgr, R.id.btnUpdPgr, 2, this, R.layout.pgr_item, null, from, to, 0)
     .setCamdiareListener(new CambiareListener() {
 		@Override
-		public void OnCambiare(byte flag, long id) {
+		public void OnCambiare(int flag, long id) {
 			if (flag==1) {
 				int countT=0;
 				Cursor cc = MainActivity.db.getRawData ("select count(*) c from tmc T where T.pgr="+id,null);
@@ -85,7 +85,7 @@ public class PgrActivity extends FragmentActivity implements /*OnItemClickListen
 				{MainActivity.db.delRec("tmc_pgr",id);
 				getSupportLoaderManager().getLoader(0).forceLoad();}
 				else 
-					showMessage("Удалять запрещено, имеются остатки", (byte)1);
+					showMessage("Удалять запрещено, имеются остатки", 1);
 				}
 			
 			//MainActivity.db.delRec("tmc_pgr",id);

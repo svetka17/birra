@@ -14,7 +14,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 public class AdapterLV extends SimpleCursorAdapter {
-	int bD; int bU; byte nT; String namT; Context contxt; 
+	int bD; int bU; int nT; String namT; Context contxt; 
 	TextView tv;
 	CheckBox cb;
 	//Dialog dialogg;
@@ -28,7 +28,7 @@ public class AdapterLV extends SimpleCursorAdapter {
 	//public enum Tables  {tmc, tmc_pgr, prixod, rasxod, ostat, klient, postav};
 	//public enum Tables  {tmc-1, tmc_pgr-2, prixod-3, rasxod-4, ostat-5, klient-6, postav-7};
 	//private static final String [] TableN = {"tmc","tmc_pgr","prixod","rasxod","ostat","klient","postav"};
-public AdapterLV(/*int[] r,*/ int bD, int bU, byte nT, Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
+public AdapterLV(/*int[] r,*/ int bD, int bU, int nT, Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
     super(context, layout, c, from, to, flags);
     //this.wH=new int[r.length];
     //this.r=r;
@@ -63,7 +63,7 @@ public AdapterLV(/*int[] r,*/ int bD, int bU, byte nT, Context context, int layo
 private CambiareListener listenerFlag;
 
 public interface CambiareListener {
-    public void OnCambiare(byte flag, long id);
+    public void OnCambiare(int flag, long id);
 }
 
 public AdapterLV setCamdiareListener(CambiareListener listener) {
@@ -465,7 +465,7 @@ tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("d
             	//{
             		
             	//MainActivity.db.delRec(namT,getItemId(position));
-            	listenerFlag.OnCambiare((byte)1, getItemId(position));
+            	listenerFlag.OnCambiare(1, getItemId(position));
             	//}
                 /*switch (nT) {
                 case 1:
@@ -583,24 +583,24 @@ tv.setText(MainActivity.getStringDataTime(cursor.getInt(cursor.getColumnIndex("d
                 case  6: //break;
                 //case  3:
                 case  4:
-                case  5: listenerFlag.OnCambiare((byte)2, getItemId(position));
+                case  5: listenerFlag.OnCambiare(2, getItemId(position));
                 		break;
                 case 10:
-                case 11:listenerFlag.OnCambiare((byte)2, getItemId(position));
+                case 11:listenerFlag.OnCambiare(2, getItemId(position));
         		break;
                 case 14: MainActivity.no_inv=0; break;
                 case 15:
                 	
-                	listenerFlag.OnCambiare((byte)3, getItemId(position));
+                	listenerFlag.OnCambiare(3, getItemId(position));
                     break;
                 case 0:
-                	listenerFlag.OnCambiare((byte)2, getItemId(position));
+                	listenerFlag.OnCambiare(2, getItemId(position));
                     break;
                 case 16:
-                	listenerFlag.OnCambiare((byte)2, getItemId(position));
+                	listenerFlag.OnCambiare(2, getItemId(position));
                     break;
                 case 17:
-                	listenerFlag.OnCambiare((byte)2, getItemId(position));
+                	listenerFlag.OnCambiare(2, getItemId(position));
                     break;
                 }
                 }

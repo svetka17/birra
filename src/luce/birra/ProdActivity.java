@@ -59,7 +59,7 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
 	  }
   }
  */
-  void showMessage(String s, byte dur){
+  void showMessage(String s, int dur){
 	  LayoutInflater inflater = getLayoutInflater();
 	  View layout = inflater.inflate(R.layout.custom_message ,
 	  		(ViewGroup) findViewById(R.id.toast_layout));
@@ -179,10 +179,10 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
     int[] to = new int[] {R.id.tvId_Prod_, R.id.tvName_Prod_,  /*R.id.tvName_Pgr_Prod_,*/ R.id.tvPriceProd_,R.id.tvEdProd_, R.id.tvPos_Prod_};
     //int[] toH = new int[] {0,0,0,0,R.id.tvId_Prod_, R.id.tvName_Prod_,  /*R.id.tvName_Pgr_Prod_,*/ R.id.tvPriceProd_/*, R.id.tvVisProd_*/};
     // создаем адаптер и настраиваем список
-    scAdapter = new AdapterLV(R.id.btn_Del_Prod,R.id.btn_Upd_Prod,(byte)1,this, R.layout.prod_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btn_Del_Prod,R.id.btn_Upd_Prod,1,this, R.layout.prod_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				if (flag==1) {
     					int countT=0;
     					Cursor cc = MainActivity.db.getRawData ("select count(*) c from ostat T where T.kol<>0 and T.id_tmc="+id,null);
@@ -194,7 +194,7 @@ public class ProdActivity extends FragmentActivity implements LoaderCallbacks<Cu
     					{MainActivity.db.delRec("tmc",id);
     					getSupportLoaderManager().getLoader(0).forceLoad();}
     					else 
-    						showMessage("Удалять запрещено, имеются остатки", (byte)1);
+    						showMessage("Удалять запрещено, имеются остатки", 1);
     					}
     			}
     		});

@@ -146,10 +146,10 @@ public class DvigActivity extends FragmentActivity implements LoaderCallbacks<Cu
     int[] to = new int[] {R.id.tv_IdDvig, R.id.tv_dvig_itemDvig, R.id.tv_kol_Dvig,R.id.tv_Price_Dvig,R.id.tv_Summa_Dvig,R.id.tv_Prim_Dvig};
 
     // создаем адаптер и настраиваем список сначала кнопка Дел, Апд, имя таблицы
-    scAdapter = new AdapterLV(R.id.btnDelDvig, R.id.btnUpdDvig, (byte)12, this, R.layout.dvig_item, null, from, to, 0)
+    scAdapter = new AdapterLV(R.id.btnDelDvig, R.id.btnUpdDvig, 12, this, R.layout.dvig_item, null, from, to, 0)
     		.setCamdiareListener(new CambiareListener() {
     			@Override
-    			public void OnCambiare(byte flag, long id) {
+    			public void OnCambiare(int flag, long id) {
     				if (flag==1) {
     					/*
     					Cursor cc = MainActivity.db.getRawData ("select R.id_klient as id_klient, ifnull(R.kol*R.price,0) as sumka, ifnull(R.skidka,0) as skidka, ifnull(K.skidka,0) as kskidka, ifnull(K.sumka,0) as ksumka from rasxod R left join klient as K on R.id_klient=K._id where R._id="+id,null);
