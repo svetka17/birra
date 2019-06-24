@@ -692,7 +692,16 @@ void makeDialog() {
 				+ " left join rasxod as R on R.id_tmc=O.id_tmc and R.id_post=O.id_post and R.ed=O.ed and R.keg=O.keg where O.kol!=0 " +
 				" group by G._id, G.countkeg, G.name, G.namep, G.price, G.id_post, G.minkol, G.ed, G.ted, G.pos order by G.pos, G._id",null);
 
-
+/*
+	   ("select _id, keg, data_ins,count_rasxod, countkeg, name, namep, price, id_post, kol, kol2, kol3, ed, ted, pos from "
+	   		+ "(select 1 as _id, 1 as keg, 1 data_ins, 0 as count_rasxod, 1 as countkeg, 'name1' as name, 'pgr1' as namep, 1.1 as price, 0 as id_post, 1.1 as kol, 1.1 as kol2, 1.1 as kol3, 1 as ed, 'l' as ted, 1 as pos  union all "
+	   		+ "select 2 as _id, 2 as keg, 2 data_ins, 0 as count_rasxod, 1 as countkeg, 'name2' as name, 'pgr2' as namep, 1.2 as price, 0 as id_post, 1.2 as kol, 1.2 as kol2, 1.2 as kol3, 1 as ed, 'l' as ted, 1 as pos  union all "
+	   		+ "select 3 as _id, 3 as keg, 3 data_ins, 0 as count_rasxod, 1 as countkeg, 'name3' as name, 'pgr3' as namep, 1.3 as price, 0 as id_post, 1.3 as kol, 1.3 as kol2, 1.3 as kol3, 1 as ed, 'l' as ted, 1 as pos  union all "
+	   		+ "select 4 as _id, 4 as keg, 4 data_ins, 0 as count_rasxod, 1 as countkeg, 'name4' as name, 'pgr4' as namep, 1.4 as price, 0 as id_post, 1.4 as kol, 1.4 as kol2, 1.4 as kol3, 1 as ed, 'l' as ted, 1 as pos  union all "
+	   		+ "select 5 as _id, 5 as keg, 5 data_ins, 0 as count_rasxod, 1 as countkeg, 'name5' as name, 'pgr5' as namep, 1.5 as price, 0 as id_post, 1.5 as kol, 1.5 as kol2, 1.5 as kol3, 1 as ed, 'l' as ted, 1 as pos  union all "
+	   		+ "select 6 as _id, 6 as keg, 6 data_ins, 0 as count_rasxod, 1 as countkeg, 'name6' as name, 'pgr6' as namep, 1.6 as price, 0 as id_post, 1.6 as kol, 1.6 as kol2, 1.6 as kol3, 1 as ed, 'l' as ted, 1 as pos  union all "
+	   		+ "select 7 as _id, 7 as keg, 7 data_ins, 0 as count_rasxod, 1 as countkeg, 'name7' as name, 'pgr7' as namep, 1.7 as price, 0 as id_post, 1.7 as kol, 1.7 as kol2, 1.7 as kol3, 1 as ed, 'l' as ted, 1 as pos  ) order by pos, _id",null);
+*/	   
 	    llR.removeView(llbut);
 	    llR.removeView(svBut);
 	    if (cc.moveToFirst()) { 
@@ -754,7 +763,7 @@ void makeDialog() {
 	                		new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, /*TableLayout.LayoutParams.MATCH_PARENT*/0,1));
 	                //row.addView(llbut, params);
 	        	}
-	        	
+	        	//	Log.d("MyLog", "start while " );
 	        		        	but.add(new chB(
 	        			ib, 							//indBT
 	        			cc.getInt(cc.getColumnIndex("_id")), //id_tmc
@@ -779,6 +788,7 @@ void makeDialog() {
 	        			));
 	        	
 	        	but.get(ib).tb.setMinimumWidth((int)(MainActivity.w /6));
+	        	
 	        	/*
 	        	String[] n = (but.get(ib).tmc_name).split(" ");
 	        	
@@ -827,14 +837,14 @@ void makeDialog() {
 	        			buttonView.setTextColor(clrCheck); buttonView.setBackground(getResources().getDrawable(R.drawable.btn_chek));
 	        			//Btovar=Byte.parseByte(buttonView.getTag().toString());
 	        			///!!!!
-	        			/*
+	        			
 	        			for (int i=CountTara; i<but.size(); i++) {
 	        		    	if ((i)!= Integer.parseInt(buttonView.getTag().toString())) 
 	        		    	{but.get(i).tb.setChecked(false); but.get(i).tb.setTextColor(clrNoCheck); but.get(i).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
 	        		    	else tmp=but.get(i).ed ;
 	        				}
-	        			*/
-	        			tmp=but.get(Btovar).ed;
+	        			
+	        			//tmp=but.get(Btovar).ed;
 	        			//06.04!! if (Btara!=-1) fixV();// buttonView.setChecked(false);}
 	        			//проверка остатка по кнопке на 0 или <0
 	        			//tmp_minus=0 - ost>0; tmp_minus=2 - ost<0 && yes; tmp_minus=1 - ost<0 && no
@@ -977,7 +987,7 @@ void makeDialog() {
 		        		    	{but.get(i).tb.setChecked(false); but.get(i).tb.setTextColor(clrNoCheck) ; but.get(i).tb.setBackground(getResources().getDrawable(R.drawable.edittexth_style));}
 		        		    	else tmp=but.get(i).ed ;
 		        				}
-		        				*/
+		        			*/	
 	        				tmp=but.get(Btovar).ed;
 	        				//Log.d("MyLog", "tmp= "+tmp+" btara="+Btara );
 	        				//if (tmp!=1) tara(-2);
@@ -1011,6 +1021,7 @@ void makeDialog() {
 	        	} );
 	        	
 	        	//llbut.addView(but.get(ib).tb/*,PB*/);
+	        	
 	        	row.addView(but.get(ib).tb,
 	        			new TableRow/*LinearLayout*/.LayoutParams(0,TableRow/*LinearLayout*/.LayoutParams.MATCH_PARENT,1) );
 	        	
