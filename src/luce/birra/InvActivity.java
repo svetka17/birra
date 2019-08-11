@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import luce.birra.AdapterLV.CambiareListener;
 import luce.birra.DialogScreen.DialogListener;
+import luce.birra.OpenFileDialog.OpenDialogListenerDir;
  
 public class InvActivity extends FragmentActivity implements LoaderCallbacks<Cursor> {
 
@@ -120,7 +121,7 @@ Spinner spPgr;
     btnAdd.setOnClickListener(new OnClickListener() {
         public void onClick(View v) {
         	MainActivity.excel(InvActivity.this, InvActivity.this, "","", 
-        		/*String.valueOf(MainActivity.invent)*/tvIdInv.getText().toString(), "Инвентаризация", 10);
+        		/*String.valueOf(MainActivity.invent)*/tvIdInv.getText().toString(), "Инвентаризация", 13);
         }
       });
     
@@ -156,6 +157,19 @@ Spinner spPgr;
         	
         	
         	if (nan==0) {
+//////////////
+        		//MainActivity.excel(InvActivity.this, InvActivity.this, "","", 
+                	//	/*String.valueOf(MainActivity.invent)*/tvIdInv.getText().toString(), "Инвентаризация", 13);
+        		/*OpenFileDialog fileDialog = new OpenFileDialog(InvActivity.this)
+        	        	.setOpenDialogListenerDir(new OpenDialogListenerDir() {
+        					@Override
+        					public void OnSelectedDir(String dirName) {
+        							Export2Excel.inv_extend((int) MainActivity.invent, ""); 
+        					}
+        				}) ;
+        	        	fileDialog.show();*/
+//////////////        		
+        		
         	MainActivity.db.delAll("prixod");
         	MainActivity.db.delAll("rasxod");
         	MainActivity.db.delAll("ostat");
@@ -187,6 +201,7 @@ Spinner spPgr;
         	        	      } else cOst.close();
         	        	    MainActivity.inv_dat_n=MainActivity.getIntDataTime();
         	        	    MainActivity.invent=0;
+        	        	    
         	        	    finish();
         	}
         	else showMessage("количества факта указаны не по всем позициям", 1);

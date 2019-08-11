@@ -31,7 +31,7 @@ public final class R {
         public static final int thumba=0x7f020006;
     }
     public static final class id {
-        public static final int action_settings=0x7f08027c;
+        public static final int action_settings=0x7f08027b;
         public static final int all_spr_ll=0x7f080009;
         public static final int atK_InvHead=0x7f0800c6;
         public static final int atN_InvHead=0x7f0800c5;
@@ -63,7 +63,7 @@ public final class R {
         public static final int btnAddPrice=0x7f08016f;
         public static final int btnAddPrixodHist=0x7f0801b0;
         public static final int btnAddProd_=0x7f0801c3;
-        public static final int btnAddUser=0x7f08026a;
+        public static final int btnAddUser=0x7f080269;
         public static final int btnBackPgr_=0x7f0801f5;
         public static final int btnBigB=0x7f08017d;
         public static final int btnBigT=0x7f080186;
@@ -87,7 +87,7 @@ public final class R {
         public static final int btnDelPrixodHist=0x7f0801bc;
         public static final int btnDelRasxodHist=0x7f080218;
         public static final int btnDelRasxodOst=0x7f08023c;
-        public static final int btnDelUser=0x7f08027b;
+        public static final int btnDelUser=0x7f08027a;
         public static final int btnDeleteButton=0x7f0801f4;
         public static final int btnDeleteOtchet=0x7f080130;
         public static final int btnDetailBrak_Move=0x7f080017;
@@ -109,7 +109,7 @@ public final class R {
         public static final int btnExitDelHist=0x7f080083;
         public static final int btnExitDvig=0x7f0800a1;
         public static final int btnExitEditProd=0x7f0801d4;
-        public static final int btnExitEditUser=0x7f080273;
+        public static final int btnExitEditUser=0x7f080272;
         public static final int btnExitInvHead=0x7f0800bf;
         public static final int btnExitKlient=0x7f0800e0;
         public static final int btnExitOborotka=0x7f080102;
@@ -125,7 +125,7 @@ public final class R {
         public static final int btnExitRasxodOst=0x7f08022a;
         public static final int btnExitSetting=0x7f08018e;
         public static final int btnExitSpr=0x7f080012;
-        public static final int btnExitUser=0x7f08026b;
+        public static final int btnExitUser=0x7f08026a;
         public static final int btnGoPGR_=0x7f0801c4;
         public static final int btnHistPri=0x7f0801a4;
         public static final int btnKassa=0x7f080005;
@@ -137,7 +137,7 @@ public final class R {
         public static final int btnObO=0x7f080131;
         public static final int btnOborotkaOtchet=0x7f08012e;
         public static final int btnOkEditProd=0x7f0801d3;
-        public static final int btnOkEditUser=0x7f080272;
+        public static final int btnOkEditUser=0x7f080271;
         public static final int btnOkRasxod_ok=0x7f0801eb;
         public static final int btnOkRasxod_okok=0x7f0801ea;
         public static final int btnOkSpr=0x7f08014e;
@@ -156,8 +156,8 @@ public final class R {
         public static final int btnSettingColor1=0x7f080251;
         public static final int btnSettingColor2=0x7f080252;
         public static final int btnSettingSpr=0x7f080006;
-        public static final int btnSettingTab1=0x7f08025d;
-        public static final int btnSettingTab2=0x7f08025e;
+        public static final int btnSettingTab1=0x7f08025c;
+        public static final int btnSettingTab2=0x7f08025d;
         public static final int btnSmallB=0x7f080183;
         public static final int btnSmallT=0x7f08018c;
         public static final int btnSprExport=0x7f08000f;
@@ -186,14 +186,14 @@ public final class R {
         public static final int btnUpdPrixodHist=0x7f0801bb;
         public static final int btnUpdRasxodHist=0x7f080217;
         public static final int btnUpdRasxodOst=0x7f08023b;
-        public static final int btnUpdUser=0x7f08027a;
+        public static final int btnUpdUser=0x7f080279;
         public static final int btnXRasxod_x=0x7f0801ed;
         public static final int btnXXX=0x7f08013b;
         public static final int btn_Del_Prod=0x7f0801e0;
         public static final int btn_Upd_Prod=0x7f0801df;
-        public static final int cbEditAdminUser=0x7f08026f;
+        public static final int cbEditAdminUser=0x7f08026e;
         public static final int cbEditOkProd=0x7f0801c9;
-        public static final int cbEditOkUser=0x7f08026e;
+        public static final int cbEditOkUser=0x7f08026d;
         public static final int cbEditVisProd=0x7f0801c8;
         public static final int cbSettingLitr=0x7f08023e;
         public static final int cb_Kol_Ostat=0x7f080119;
@@ -232,7 +232,7 @@ public final class R {
         public static final int etEditIdPgrProd=0x7f0801cc;
         public static final int etEditIdProd=0x7f0801c7;
         public static final int etEditIdSpr=0x7f08014c;
-        public static final int etEditIdUser=0x7f08026d;
+        public static final int etEditIdUser=0x7f08026c;
         public static final int etEditPos=0x7f0801ce;
         public static final int etEditTaraProd=0x7f0801ca;
         public static final int etItogSummaD=0x7f08005f;
@@ -305,9 +305,9 @@ public final class R {
         public static final int lvProd_=0x7f0801c2;
         public static final int lvRasxodHist=0x7f080203;
         public static final int lvRasxodOst=0x7f080220;
-        public static final int lvUser=0x7f080269;
+        public static final int lvUser=0x7f080268;
         public static final int main_ll=0x7f080000;
-        public static final int numberPicker=0x7f080261;
+        public static final int numberPicker=0x7f080260;
         public static final int oborotka_item_tr=0x7f080103;
         public static final int oborotka_ll=0x7f0800f9;
         public static final int ostat_item_tr=0x7f08011f;
@@ -343,7 +343,7 @@ public final class R {
         public static final int seekBar=0x7f0801e7;
         public static final int seekBarSetting=0x7f080246;
         public static final int setting_ll=0x7f08023d;
-        public static final int size_text_ll=0x7f08025f;
+        public static final int size_text_ll=0x7f08025e;
         public static final int spEdPri=0x7f08019a;
         public static final int spEd_Prod=0x7f0801d1;
         public static final int spEditPgr_Prod=0x7f0801cd;
@@ -363,19 +363,19 @@ public final class R {
         public static final int sp_Pgr_RasOst=0x7f08021a;
         public static final int sp_Prod_RasHist=0x7f0801fb;
         public static final int sp_check_klient=0x7f080054;
-        public static final int spt1=0x7f080262;
-        public static final int spt2=0x7f080263;
-        public static final int spt_1=0x7f080264;
-        public static final int spt_2=0x7f080265;
-        public static final int spt_3=0x7f080266;
-        public static final int spt_4=0x7f080267;
+        public static final int spt1=0x7f080261;
+        public static final int spt2=0x7f080262;
+        public static final int spt_1=0x7f080263;
+        public static final int spt_2=0x7f080264;
+        public static final int spt_3=0x7f080265;
+        public static final int spt_4=0x7f080266;
         public static final int svPgr=0x7f0801f7;
         public static final int te_Data_Ras1Dvig=0x7f08009c;
         public static final int te_Data_Ras2Dvig=0x7f08009e;
         public static final int textView=0x7f080074;
         public static final int timePickerD=0x7f080077;
         public static final int toast_layout=0x7f080073;
-        public static final int tvAdminUser=0x7f080278;
+        public static final int tvAdminUser=0x7f080277;
         public static final int tvAdresKlient=0x7f0800f0;
         public static final int tvAdresPostav=0x7f080164;
         public static final int tvBigB=0x7f08017c;
@@ -385,13 +385,12 @@ public final class R {
         public static final int tvCheckNal=0x7f08005a;
         public static final int tvCheckSdacha=0x7f08005e;
         public static final int tvCheckSkidka=0x7f080056;
-        public static final int tvCountBut=0x7f080256;
         public static final int tvDatInsPri=0x7f0801a0;
         public static final int tvDataInsKlient=0x7f0800f3;
         public static final int tvDataInsPgr=0x7f080152;
         public static final int tvDataInsPostav=0x7f080167;
         public static final int tvDataInsPrixod_=0x7f0801ba;
-        public static final int tvDataInsUser=0x7f080279;
+        public static final int tvDataInsUser=0x7f080278;
         public static final int tvDataIns_Brak=0x7f080020;
         public static final int tvDataIns_BrakMoveHist=0x7f080036;
         public static final int tvDataIns_Inv=0x7f0800d1;
@@ -408,8 +407,8 @@ public final class R {
         public static final int tvEditNamePgrSpr=0x7f08014d;
         public static final int tvEditNamePostav=0x7f08015b;
         public static final int tvEditNameProd=0x7f0801cb;
-        public static final int tvEditNameUser=0x7f080270;
-        public static final int tvEditPasswordUser=0x7f080271;
+        public static final int tvEditNameUser=0x7f08026f;
+        public static final int tvEditPasswordUser=0x7f080270;
         public static final int tvEditPriceProd=0x7f0801cf;
         public static final int tvEditPrimKlient=0x7f0800e8;
         public static final int tvEditPrimPostav=0x7f08015e;
@@ -427,7 +426,7 @@ public final class R {
         public static final int tvIdPostav=0x7f080162;
         public static final int tvIdPri=0x7f080190;
         public static final int tvIdProdPri=0x7f080193;
-        public static final int tvIdUser=0x7f080275;
+        public static final int tvIdUser=0x7f080274;
         public static final int tvId_BrakMoveHist=0x7f080031;
         public static final int tvId_Ostat=0x7f080120;
         public static final int tvId_Price=0x7f080172;
@@ -475,7 +474,7 @@ public final class R {
         public static final int tvNameTmc_Inv=0x7f0800ce;
         public static final int tvNameTmc_Ostat=0x7f080122;
         public static final int tvNameTmc_Price=0x7f080173;
-        public static final int tvNameUser=0x7f080276;
+        public static final int tvNameUser=0x7f080275;
         public static final int tvName_Pgr_Prod_=0x7f0801da;
         public static final int tvName_Prod_=0x7f0801d9;
         public static final int tvNnomPrixod_=0x7f0801b3;
@@ -485,7 +484,7 @@ public final class R {
         public static final int tvOtherKolD=0x7f080139;
         public static final int tvOtherKolDTitle=0x7f080138;
         public static final int tvOtherKol_=0x7f0801e5;
-        public static final int tvPasswordUser=0x7f080277;
+        public static final int tvPasswordUser=0x7f080276;
         public static final int tvPosPri=0x7f08019d;
         public static final int tvPos_Prod_=0x7f0801d7;
         public static final int tvPricePri=0x7f08019c;
@@ -501,12 +500,12 @@ public final class R {
         public static final int tvPrim_BrakMoveHist=0x7f080037;
         public static final int tvSconto_perKlient=0x7f0800ee;
         public static final int tvSconto_sumKlient=0x7f0800ef;
-        public static final int tvSettingButName1=0x7f080258;
-        public static final int tvSettingButName2=0x7f080259;
-        public static final int tvSettingButName3=0x7f08025a;
+        public static final int tvSettingButName1=0x7f080257;
+        public static final int tvSettingButName2=0x7f080258;
+        public static final int tvSettingButName3=0x7f080259;
         public static final int tvSettingButPgr1=0x7f080254;
         public static final int tvSettingButPgr2=0x7f080255;
-        public static final int tvSettingButPgr3=0x7f080257;
+        public static final int tvSettingButPgr3=0x7f080256;
         public static final int tvSettingButTara1=0x7f08023f;
         public static final int tvSettingButTara2=0x7f080240;
         public static final int tvSettingButTara3=0x7f080241;
@@ -514,8 +513,8 @@ public final class R {
         public static final int tvSettingButTara5=0x7f080243;
         public static final int tvSettingButTara6=0x7f080244;
         public static final int tvSettingButTara7=0x7f080245;
-        public static final int tvSettingET=0x7f08025c;
-        public static final int tvSettingTV=0x7f08025b;
+        public static final int tvSettingET=0x7f08025b;
+        public static final int tvSettingTV=0x7f08025a;
         public static final int tvSettingTab1=0x7f08024b;
         public static final int tvSettingTab2=0x7f08024c;
         public static final int tvSettingTab3=0x7f08024d;
@@ -664,10 +663,10 @@ public final class R {
         public static final int tv_skidka_check_klient=0x7f08004b;
         public static final int tv_summa_check_klient=0x7f08004a;
         public static final int tv_summa_skidka_check_klient=0x7f08004c;
-        public static final int tvsize=0x7f080260;
-        public static final int user_edit_ll=0x7f08026c;
-        public static final int user_item_tr=0x7f080274;
-        public static final int user_ll=0x7f080268;
+        public static final int tvsize=0x7f08025f;
+        public static final int user_edit_ll=0x7f08026b;
+        public static final int user_item_tr=0x7f080273;
+        public static final int user_ll=0x7f080267;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

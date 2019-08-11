@@ -52,62 +52,62 @@ public class /*ExportDatabaseCSVTask*/ Export2Excel //extends AsyncTask<String, 
 //////////////////////////////////////
 
 Cursor cc = MainActivity.db.getQueryData( 
-		"invent as O left join tmc as T on O.id_tmc=T._id "
-    			+ "left join postav as P on O.id_post=P._id "
-    			+ "left join tmc_ed as E on O.ed=E._id "
-    			+ "left join tmc_pgr as TP on O.pgr=TP._id ",
-    			
+"invent as O left join tmc as T on O.id_tmc=T._id "
++ "left join postav as P on O.id_post=P._id "
++ "left join tmc_ed as E on O.ed=E._id "
++ "left join tmc_pgr as TP on O.pgr=TP._id ",
+
 new String[] { "O._id as _id", 
-		"O.id_tmc id_tmc", 
-		"O.name_tmc name_tmc", 
-		"T.name nametmc", 
-		"O.pgr pgr", 
-		"O.name_pgr name_pgr", 
-		"O.keg keg", 
-		"O.kol_ostat kol_ostat", 
-		"O.kol_real kol_real",
-		"O.kol_n kol_n",
-		"O.summa_n summa_n",
-		"O.kol_p kol_p",
-		"O.summa_p summa_p",
-		"O.kol_r kol_r",
-		"O.summa_r summa_r",
-		"O.kol_brak kol_brak",
-		"O.summa_brak summa_brak",
-		"O.kol_move kol_move",
-		"O.summa_move summa_move",
-		" case when round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3)>0 then round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3) else 0 end"
-		+ "  kol_izl",
-		"O.summa_izl summa_izl",
-		" case when round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3)<0 then round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3) else 0 end"
-		+ " kol_nedo",
-		"O.summa_nedo summa_nedo",
-		"O.kol_skidka kol_skidka",
-		"O.summa_skidka summa_skidka",
-		"O.kol_k kol_k",
-		"O.summa_k summa_k",
-		"O.ed ed",
-		"E.name edname",
-		"O.price price",
-		"O.price_vendor price_vendor",
-		"O.id_post id_post",
-		"P.name postname",
-		"O.prim prim",
-		"O.data_ins data_ins",
-		"round((case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0))*O.price_vendor,2) raz ",
-		"O.ok ok"}, "O.id_inv="+id, null,null,null,"O.pgr, O.name_tmc, O.id_post, O.keg");
+"O.id_tmc id_tmc", 
+"O.name_tmc name_tmc", 
+"T.name nametmc", 
+"O.pgr pgr", 
+"O.name_pgr name_pgr", 
+"O.keg keg", 
+"O.kol_ostat kol_ostat", 
+"O.kol_real kol_real",
+"O.kol_n kol_n",
+"O.summa_n summa_n",
+"O.kol_p kol_p",
+"O.summa_p summa_p",
+"O.kol_r kol_r",
+"O.summa_r summa_r",
+"O.kol_brak kol_brak",
+"O.summa_brak summa_brak",
+"O.kol_move kol_move",
+"O.summa_move summa_move",
+" case when round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3)>0 then round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3) else 0 end"
++ "  kol_izl",
+"O.summa_izl summa_izl",
+" case when round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3)<0 then round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3) else 0 end"
++ " kol_nedo",
+"O.summa_nedo summa_nedo",
+"O.kol_skidka kol_skidka",
+"O.summa_skidka summa_skidka",
+"O.kol_k kol_k",
+"O.summa_k summa_k",
+"O.ed ed",
+"E.name edname",
+"O.price price",
+"O.price_vendor price_vendor",
+"O.id_post id_post",
+"P.name postname",
+"O.prim prim",
+"O.data_ins data_ins",
+"round((case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0))*O.price_vendor,2) raz ",
+"O.ok ok"}, "O.id_inv="+id, null,null,null,"O.pgr, O.name_tmc, O.id_post, O.keg");
 
 String d1="", d2="", u="", d3="", dd="";
 Cursor cOst1 = MainActivity.db.getRawData ("select id_user, user, name, summa, dat_n, dat_k, prim, data_ins from invent_head where _id="+id,null);
 if (cOst1.moveToFirst()) {
-	do {
-		//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
-	u=cOst1.getString(cOst1.getColumnIndex("user"));
-	d1=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("dat_n")) );
-	d2=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("dat_k")) );
-	d3=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("data_ins")));
-		//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
-	} while (cOst1.moveToNext());
+do {
+//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
+u=cOst1.getString(cOst1.getColumnIndex("user"));
+d1=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("dat_n")) );
+d2=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("dat_k")) );
+d3=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("data_ins")));
+//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
+} while (cOst1.moveToNext());
 }
 else cOst1.close();
 
@@ -120,11 +120,11 @@ dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
 }
 dd=" "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR);
 file   =   new File(dir, u+" Инв ведомость №"+id+dd
-		+".xls");
-	//Log.d("MyLog", "d3="+d3+" d2="+d2+" d1="+d1+" u="+u);
-	//06-06 17:56:51.541: D/MyLog(23413): d3=05.06.19 14:31 d2=05.06.19 14:31 d1= u=САША
++".xls");
+//Log.d("MyLog", "d3="+d3+" d2="+d2+" d1="+d1+" u="+u);
+//06-06 17:56:51.541: D/MyLog(23413): d3=05.06.19 14:31 d2=05.06.19 14:31 d1= u=САША
 try {
-	
+
 FileOutputStream out   =   null;
 
 out = new FileOutputStream(file);
@@ -282,6 +282,313 @@ row.createCell(21).setCellValue(cc.getDouble(cc.getColumnIndex("summa_skidka")))
 row.createCell(22).setCellValue(cc.getDouble(cc.getColumnIndex("price_vendor")));row.getCell(22).setCellStyle(styleN2);
 
 row.createCell(23).setCellValue(cc.getString(cc.getColumnIndex("prim")));
+
+} while (cc.moveToNext());
+
+cc.close();
+
+rowNum++;
+//
+
+row = sheet.createRow(rowNum);
+FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+//row.createCell(8).setCellFormula("SUM(I2:I"+rowNum+")"); evaluator.evaluateFormulaCell(row.getCell(8));
+row.createCell(9).setCellFormula("SUM(J2:J"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(9));
+row.createCell(10).setCellFormula("SUM(K2:K"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(10));
+row.createCell(11).setCellFormula("SUM(L2:L"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(11));
+
+row.createCell(14).setCellFormula("SUM(O2:O"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(14));
+row.createCell(15).setCellFormula("SUM(P2:P"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(15));
+row.createCell(16).setCellFormula("SUM(Q2:Q"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(16));
+row.createCell(18).setCellFormula("SUM(S2:S"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(18));
+row.createCell(20).setCellFormula("SUM(U2:U"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(20));
+//row.createCell(12).setCellFormula("SUM(M2:M"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(12));
+//row.createCell(14).setCellFormula("SUM(O2:O"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(14));
+//row.createCell(16).setCellFormula("SUM(Q2:Q"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(16));
+//!!
+row.createCell(21).setCellFormula("SUM(V2:V"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(21));
+
+//row.createCell(20).setCellFormula("SUM(U2:U"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(20));
+//row.createCell(22).setCellFormula("SUM(W2:W"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(22));
+//row.createCell(24).setCellFormula("SUM(Y2:Y"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(24));
+//row.createCell(26).setCellFormula("SUM(AA2:AA"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(26));
+//row.createCell(28).setCellFormula("SUM(AC2:AC"+rowNum+")");evaluator.evaluateFormulaCell(row.getCell(28));
+
+sheet.setAutoFilter(CellRangeAddress.valueOf("A1:X"+rowNum));
+
+workbook.write(out);
+
+out.close();
+} catch (FileNotFoundException ef) {
+ef.printStackTrace();// out.close();
+}
+catch (IOException e) {
+e.printStackTrace();// out.close();
+}
+
+return file;
+}	
+
+	
+	static File inv_extend (int id, String dirN) {
+//////////////////////////////////////
+
+Cursor cc = MainActivity.db.getQueryData( 
+		"invent as O left join tmc as T on O.id_tmc=T._id "
+    			+ "left join postav as P on O.id_post=P._id "
+    			+ "left join tmc_ed as E on O.ed=E._id "
+    			+ "left join tmc_pgr as TP on O.pgr=TP._id ",
+    			
+new String[] { "O._id as _id", 
+		"O.id_tmc id_tmc", 
+		"O.name_tmc name_tmc", 
+		"T.name nametmc", 
+		"O.pgr pgr", 
+		"O.name_pgr name_pgr", 
+		"O.keg keg", 
+		"O.kol_ostat kol_ostat", 
+		"O.kol_real kol_real",
+		"O.kol_n kol_n",
+		"O.summa_n summa_n",
+		"O.kol_p kol_p",
+		"O.summa_p summa_p",
+		"O.kol_r kol_r",
+		"O.summa_r summa_r",
+		"O.kol_brak kol_brak",
+		"O.summa_brak summa_brak",
+		"O.kol_move kol_move",
+		"O.summa_move summa_move",
+		" case when round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3)>0 then round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3) else 0 end"
+		+ "  kol_izl",
+		"O.summa_izl summa_izl",
+		" case when round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3)<0 then round(case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0),3) else 0 end"
+		+ " kol_nedo",
+		"O.summa_nedo summa_nedo",
+		"O.kol_skidka kol_skidka",
+		"O.summa_skidka summa_skidka",
+		"O.kol_k kol_k",
+		"O.summa_k summa_k",
+		"O.ed ed",
+		"E.name edname",
+		"O.price price",
+		"O.price_vendor price_vendor",
+		"O.id_post id_post",
+		"P.name postname",
+		"O.prim prim",
+		"O.data_ins data_ins",
+		"round((case when ifnull(O.kol_ostat,0)<0 then ifnull(O.kol_real,0) else ifnull(O.kol_real,0)-ifnull(O.kol_ostat,0) end + ifnull(O.kol_izl,0)-ifnull(O.kol_nedo,0))*O.price_vendor,2) raz ",
+		"O.ok ok"}, "O.id_inv="+id, null,null,null,"O.pgr, O.name_tmc, O.id_post, O.keg");
+
+String d1="", d2="", u="", d3="", dd="";
+Cursor cOst1 = MainActivity.db.getRawData ("select id_user, user, name, summa, dat_n, dat_k, prim, data_ins from invent_head where _id="+id,null);
+if (cOst1.moveToFirst()) {
+	do {
+		//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
+	u=cOst1.getString(cOst1.getColumnIndex("user"));
+	d1=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("dat_n")) );
+	d2=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("dat_k")) );
+	d3=MainActivity.getStringDataTime( cOst1.getInt(cOst1.getColumnIndex("data_ins")));
+		//Log.d("MyLog", cOst1.getLong(cOst1.getColumnIndex("id_inv"))+" "+cOst1.getLong(cOst1.getColumnIndex("id"))+" tmp="+tmp+" "+cOst.getInt(cOst.getColumnIndex("oid_tmc"))+" "+cOst.getInt(cOst.getColumnIndex("oid_post"))+" "+cOst.getInt(cOst.getColumnIndex("okeg"))+" "+cOst.getInt(cOst.getColumnIndex("oed"))+" ib="+ib);
+	} while (cOst1.moveToNext());
+}
+else cOst1.close();
+
+File file   = null, dir = null;
+File root   = Environment.getExternalStorageDirectory();
+if (dirN.length()!=0) {dir=new File(dirN); }
+else //{dir  =   new File (root.getAbsolutePath() + "/Oborotka"); dir.mkdirs();}
+if (root.canWrite()){
+dir  =   new File (root.getAbsolutePath() + "/birra"); dir.mkdirs();
+}
+//Log.d("MyLog", "dd=");
+dd=" "+Calendar.getInstance().get(Calendar.DATE)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR)+" "+Calendar.getInstance().get(Calendar.HOUR_OF_DAY)+"-"+Calendar.getInstance().get(Calendar.MINUTE);
+//Log.d("MyLog", "dd="+dd);
+file   =   new File(dir, u+" ИВ №"+id+dd
+		+".xls");
+	//Log.d("MyLog", "d3="+d3+" d2="+d2+" d1="+d1+" u="+u);
+	//06-06 17:56:51.541: D/MyLog(23413): d3=05.06.19 14:31 d2=05.06.19 14:31 d1= u=САША
+try {
+	
+FileOutputStream out   =   null;
+
+out = new FileOutputStream(file);
+//создание самого excel файла в памяти
+HSSFWorkbook workbook = new HSSFWorkbook();
+//HSSFDataFormat df = workbook.createDataFormat();
+HSSFDataFormat df2 = workbook.createDataFormat();
+HSSFDataFormat df3 = workbook.createDataFormat();
+HSSFCellStyle styleN2 = workbook.createCellStyle();
+//styleN2.setFillForegroundColor(HSSFColor.LIME.index);
+//styleN2.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+styleN2.setDataFormat(df2.getFormat("0.00"));
+HSSFCellStyle styleN3 = workbook.createCellStyle();
+styleN3.setDataFormat(df3.getFormat("0.000"));
+//создание листа с названием "Просто лист"
+HSSFSheet sheet = workbook.createSheet("Лист1");
+//и применяем к этому стилю жирный шрифт
+//style.setFont(font);
+//style.setAlignment(HorizontalAlignment.CENTER_SELECTION);
+//заполняем список какими-то данными
+//List<DataModel> dataList = fillData();
+//счетчик для строк
+int rowNum = 0;
+//создаем подписи к столбцам (это будет первая строчка в листе Excel файла)
+HSSFRow row = sheet.createRow(rowNum);
+
+//создаем шрифт
+HSSFFont font = workbook.createFont();
+//указываем, что хотим его видеть жирным
+font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+//font.setBold(true);
+//создаем стиль для ячейки
+HSSFCellStyle style = workbook.createCellStyle();
+//и применяем к этому стилю жирный шрифт
+style.setFont(font);
+//style.setWrapText(true);// setShrinkToFit(true);// setAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
+//style.setAlignment(HSSFCellStyle.ALIGN_FILL );
+//style.setVerticalAlignment(HSSFCellStyle.ALIGN_FILL);
+//style.setAlignment(HorizontalAlignment.FILL);
+//style.setVerticalAlignment(VerticalAlignment.CENTER);
+
+//id_tmc,name_tmc,nametmc,pgr,name_pgr,keg,kol_ostat,kol_real,kol_n,summa_n,kol_p,summa_p,kol_r,summa_r,kol_brak,summa_brak,
+//kol_move,summa_move,kol_izl,summa_izl,kol_nedo,summa_nedo,kol_skidka,summa_skidka,kol_k,summa_k,ed,edname,price,price_vendor,id_post,postname,prim,data_ins
+
+row.createCell(0).setCellValue("НОМЕНКЛАТУРА"); //row.getCell(0).setCellStyle(style2);
+row.createCell(1).setCellValue("ГРУППА");
+row.createCell(2).setCellValue("НАЗВАНИЕ");
+row.createCell(3).setCellValue("ПОСТАВЩИК");
+row.createCell(4).setCellValue("ДАТА 1й ПРОДАЖИ");
+row.createCell(5).setCellValue("КЕГА");
+row.createCell(6).setCellValue("ЕД.ИЗМ");
+row.createCell(7).setCellValue("КОЛ-ВО В СИСТЕМЕ НА "+dd);
+//row.createCell(8).setCellValue("СУММА В СИСТЕМЕ НА "+d1);
+row.createCell(8).setCellValue("КОЛ-ВО ФАКТ НА "+dd);
+
+row.createCell(9).setCellValue("СУММА В СИСТЕМЕ");
+row.createCell(10).setCellValue("СУММА ФАКТ");
+row.createCell(11).setCellValue("РАЗНИЦА");
+
+row.createCell(12).setCellValue("КОЛ-ВО ПРИХОД ");
+//row.createCell(14).setCellValue("СУММА ПРИХОД");
+row.createCell(13).setCellValue("КОЛ-ВО РАСХОД");
+row.createCell(14).setCellValue("СУММА РАСХОД");
+row.createCell(15).setCellValue("КОЛ-ВО БРАК");
+//row.createCell(18).setCellValue("СУММА БРАК");
+row.createCell(16).setCellValue("КОЛ-ВО ПЕРЕМЕЩЕНО");
+//row.createCell(20).setCellValue("СУММА ПЕРЕМЕЩЕНО");
+row.createCell(17).setCellValue("КОЛ-ВО ИЗЛИШКИ");
+row.createCell(18).setCellValue("СУММА ИЗЛИШКИ");
+row.createCell(19).setCellValue("КОЛ-ВО НЕДОСТАЧА");
+row.createCell(20).setCellValue("СУММА НЕДОСТАЧА");
+//row.createCell(25).setCellValue("КОЛ-ВО ПРОДАЖ");
+row.createCell(21).setCellValue("СУММА СКИДКА");
+//row.createCell(27).setCellValue("КОЛ-ВО НА КОНЕЦ "+d2);
+//row.createCell(28).setCellValue("СУММА НА КОНЕЦ "+d2);
+row.createCell(22).setCellValue("ЦЕНА ПРОДАЖИ");
+row.createCell(23).setCellValue("ПРИМЕЧАНИЕ");
+
+//row.createCell(15).setCellValue("ЦЕНА ПРОДАЖИ НА "+Calendar.getInstance().get(Calendar.DATE)+"."+(Calendar.getInstance().get(Calendar.MONTH)+1)+"."+Calendar.getInstance().get(Calendar.YEAR));
+
+for (int i=0; i<24; i++) row.getCell(i).setCellStyle(style);
+row.setHeight((short)1000);
+sheet.createFreezePane(0, 1);
+
+if (cc.moveToFirst())  
+do {
+
+rowNum++;
+row = sheet.createRow(rowNum);
+
+row.createCell(0).setCellValue(cc.getInt(cc.getColumnIndex("id_tmc")));
+
+row.createCell(1).setCellValue(cc.getString(cc.getColumnIndex("name_pgr")));
+
+row.createCell(2).setCellValue(cc.getString(cc.getColumnIndex("nametmc")));
+
+row.createCell(3).setCellValue(cc.getString(cc.getColumnIndex("postname")));
+
+row.createCell(4).setCellValue(MainActivity.getStringDataTime( cc.getInt(cc.getColumnIndex("data_ins")) ));
+
+row.createCell(5).setCellValue(cc.getInt(cc.getColumnIndex("keg")));
+
+row.createCell(6).setCellValue(cc.getString(cc.getColumnIndex("edname")));
+
+row.createCell(7).setCellValue(cc.getDouble(cc.getColumnIndex("kol_ostat"))); row.getCell(7).setCellStyle(styleN3);
+
+//row.createCell(8).setCellValue(cc.getDouble(cc.getColumnIndex("kol_ostat"))*cc.getDouble(cc.getColumnIndex("price_vendor")));row.getCell(8).setCellStyle(styleN2);
+
+row.createCell(8).setCellValue(cc.getDouble(cc.getColumnIndex("kol_real"))); row.getCell(8).setCellStyle(styleN3);
+
+row.createCell(9).setCellValue(cc.getDouble(cc.getColumnIndex("kol_ostat"))*cc.getDouble(cc.getColumnIndex("price_vendor"))); row.getCell(9).setCellStyle(styleN2);
+row.createCell(10).setCellValue(cc.getDouble(cc.getColumnIndex("kol_real"))*cc.getDouble(cc.getColumnIndex("price_vendor"))); row.getCell(10).setCellStyle(styleN2);
+//row.createCell(11).setCellValue(cc.getDouble(cc.getColumnIndex("kol_real"))*cc.getDouble(cc.getColumnIndex("price_vendor"))-cc.getDouble(cc.getColumnIndex("kol_ostat"))*cc.getDouble(cc.getColumnIndex("price_vendor"))); row.getCell(11).setCellStyle(styleN2);
+row.createCell(11).setCellValue(cc.getDouble(cc.getColumnIndex("raz"))); row.getCell(11).setCellStyle(styleN2);
+
+//row.createCell(8).setCellValue(cc.getDouble(cc.getColumnIndex("kol_real"))*cc.getDouble(cc.getColumnIndex("price_vendor")));row.getCell(8).setCellStyle(styleN2);
+
+//row.createCell(11).setCellValue(cc.getDouble(cc.getColumnIndex("kol_n"))); row.getCell(11).setCellStyle(styleN3);
+
+//row.createCell(12).setCellValue(cc.getDouble(cc.getColumnIndex("summa_n")));row.getCell(12).setCellStyle(styleN2);
+
+row.createCell(12).setCellValue(cc.getDouble(cc.getColumnIndex("kol_p"))); row.getCell(12).setCellStyle(styleN3); row.getCell(12).setCellStyle(style);
+
+//row.createCell(14).setCellValue(cc.getDouble(cc.getColumnIndex("summa_p")));row.getCell(14).setCellStyle(styleN2);
+
+row.createCell(13).setCellValue(cc.getDouble(cc.getColumnIndex("kol_r"))); row.getCell(13).setCellStyle(styleN3); row.getCell(13).setCellStyle(style);
+
+row.createCell(14).setCellValue(cc.getDouble(cc.getColumnIndex("summa_r")));row.getCell(14).setCellStyle(styleN2);
+
+row.createCell(15).setCellValue(cc.getDouble(cc.getColumnIndex("kol_brak"))); row.getCell(15).setCellStyle(styleN3);
+
+//row.createCell(18).setCellValue(cc.getDouble(cc.getColumnIndex("summa_brak")));row.getCell(18).setCellStyle(styleN2);
+
+row.createCell(16).setCellValue(cc.getDouble(cc.getColumnIndex("kol_move"))); row.getCell(16).setCellStyle(styleN3);
+
+//row.createCell(20).setCellValue(cc.getDouble(cc.getColumnIndex("summa_move")));row.getCell(20).setCellStyle(styleN2);
+
+row.createCell(17).setCellValue(cc.getDouble(cc.getColumnIndex("kol_izl"))); row.getCell(17).setCellStyle(styleN3);
+
+row.createCell(18).setCellValue(cc.getDouble(cc.getColumnIndex("kol_izl"))*cc.getDouble(cc.getColumnIndex("price_vendor")));row.getCell(18).setCellStyle(styleN2);
+
+row.createCell(19).setCellValue(cc.getDouble(cc.getColumnIndex("kol_nedo"))); row.getCell(19).setCellStyle(styleN3);
+
+row.createCell(20).setCellValue(cc.getDouble(cc.getColumnIndex("kol_nedo"))*cc.getDouble(cc.getColumnIndex("price_vendor")));row.getCell(20).setCellStyle(styleN2);
+
+//row.createCell(25).setCellValue(cc.getDouble(cc.getColumnIndex("kol_skidka"))); row.getCell(25).setCellStyle(styleN3);
+
+row.createCell(21).setCellValue(cc.getDouble(cc.getColumnIndex("summa_skidka")));row.getCell(21).setCellStyle(styleN2);
+
+//row.createCell(27).setCellValue(cc.getDouble(cc.getColumnIndex("kol_k"))); row.getCell(27).setCellStyle(styleN3);
+
+//row.createCell(28).setCellValue(cc.getDouble(cc.getColumnIndex("summa_k")));row.getCell(28).setCellStyle(styleN2);
+
+row.createCell(22).setCellValue(cc.getDouble(cc.getColumnIndex("price_vendor")));row.getCell(22).setCellStyle(styleN2);
+
+row.createCell(23).setCellValue(cc.getString(cc.getColumnIndex("prim")));
+
+//////////////////
+String where=" where R.id_tmc="+cc.getInt(cc.getColumnIndex("id_tmc"))+" and R.id_post="+cc.getInt(cc.getColumnIndex("id_post"))+" and R.ed="+cc.getInt(cc.getColumnIndex("ed"))+" and R.keg="+cc.getInt(cc.getColumnIndex("keg"));
+//Log.d("MyLog", "dt="+String.valueOf(MainActivity.getIntDataTime(tvDataIns.getText().toString())));
+
+    	 Cursor cursor = MainActivity.db.getRawData
+    			 (" select _id, dvig, id_tmc, id_post, ed, kol_pri, kol_ras, price, sumka, prim, data_ins from ( "+
+       			" select R._id as _id, 'расход' as dvig, R.id_tmc as id_tmc, R.id_post as id_post, R.ed as ed, 0 kol_pri, round(R.kol,3) as kol_ras, round(R.price,2) as price, round(R.kol,3)*round(R.price,2)-round(R.skidka,2) as sumka, R.prim||' скидка по позиции '||round(R.skidka,2)||' №'||K.num_id||' '||K.prim||' общая сумма чека '||round(K.sumka,2) as prim, R.data_ins as data_ins from rasxod as R left join klient as K on R.id_klient = K._id" + where + 
+      			" union all select R._id as _id, 'приход' as dvig, R.id_tmc as id_tmc, R.id_post id_post, R.ed as ed, round(R.kol,3) as kol_pri, 0 kol_ras, round(R.price,2) as price, round(R.kol,3)*round(R.price,2) as sumka, R.prim as prim, R.data_ins as data_ins from prixod as R " + where +
+        			" ) order by data_ins", null);
+
+    	if (cursor.moveToFirst())  
+    	do {
+    	rowNum++;
+    	row = sheet.createRow(rowNum);
+    	row.createCell(4).setCellValue(MainActivity.getStringDataTime( cursor.getInt(cursor.getColumnIndex("data_ins"))) );
+    	row.createCell(12).setCellValue(cursor.getDouble(cursor.getColumnIndex("kol_pri"))); row.getCell(12).setCellStyle(styleN3);
+    	row.createCell(13).setCellValue(cursor.getDouble(cursor.getColumnIndex("kol_ras"))); row.getCell(13).setCellStyle(styleN3);
+    	row.createCell(22).setCellValue(cursor.getDouble(cursor.getColumnIndex("price")));
+    	row.createCell(23).setCellValue(cursor.getString(cursor.getColumnIndex("prim")));
+    	} while (cursor.moveToNext());
+    	cursor.close();
+//////////////////
 
 } while (cc.moveToNext());
 
@@ -944,14 +1251,14 @@ static File rasxod_ostat (int dat1, int dat2, int pgr, String dirN) {
 					 MainActivity.db.getRawData 
 			         ("select kkeg,keg,_id,pgr,name,post,kol,ed,sumka,price,skidka,ostat,sumkanonal,sumkanal,brak,move from "+
 			                 "("+
-			                 "select sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END else 0 end) as sumkanonal, sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END else 0 end) as sumkanal, K.keg as kkeg, K.ok||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(ifnull(T.kol,0)) as kol,E.name as ed,sum(T.price* case T.ok when 0 then ifnull(T.kol,0) else 0 end ) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat, "+ 
+			                 "select sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END else 0 end) as sumkanonal, sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END else 0 end) as sumkanal, K.keg as kkeg, K.ok||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(ifnull(T.kol,0)) as kol,E.name as ed,sum(T.price*T.kol) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat, "+ 
 			                 "sum(ifnull(case T.ok when 1 then T.kol_brak else 0 end,0)) as brak, sum(ifnull(case T.ok when 2 then T.kol_move else 0 end,0)) as move "+ 
 			                 "from ostat as K left join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and "+str[1]+" and "+str[2]+ 
 			                 " left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on K.ed = E._id left join postav as KK on K.id_post=KK._id "+
 			                 "where K.kol<>0 and "+str[0]+
 			                 " group by K.keg, K.ok||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')', TP._id,TT.name,TP.name,KK.name,E.name,round(K.kol,3) "+ 
 			                 " union all "+
-			                 "select sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END else 0 end) as sumkanonal, sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END else 0 end) as sumkanal, K.keg as kkeg, K.ok||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(ifnull(T.kol,0)) as kol,E.name as ed,sum(T.price* case T.ok when 0 then ifnull(T.kol,0) else 0 end ) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat, "+ 
+			                 "select sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN 0 ELSE round(ifnull(T.price*T.kol,0),2) END else 0 end) as sumkanonal, sum(case T.ok when 0 then CASE ifnull(T.cash,0) WHEN 0 THEN round(ifnull(T.price*T.kol,0),2) ELSE 0 END else 0 end) as sumkanal, K.keg as kkeg, K.ok||' ('||substr(ifnull(K.data_upd,K.data_ins),5,2)||'.'||substr(ifnull(K.data_upd,K.data_ins),3,2)||')' as keg, TP._id as _id,TT.name as pgr,TP.name as name,KK.name as post,sum(ifnull(T.kol,0)) as kol,E.name as ed,sum(T.price*T.kol) as sumka,CASE ifnull(sum(T.kol),0) WHEN 0 THEN 0 ELSE round(sum(T.price*T.kol)/sum(T.kol),2) END as price,round(sum(ifnull(T.skidka,0)),2) as skidka, round(K.kol,3) as ostat, "+ 
 			                 "sum(ifnull(case T.ok when 1 then T.kol_brak else 0 end,0)) as brak, sum(ifnull(case T.ok when 2 then T.kol_move else 0 end,0)) as move "+ 
 			                 "from ostat as K left join rasxod as T on T.id_post = K.id_post and T.id_tmc=K.id_tmc and T.ed=K.ed and T.keg=K.keg and "+str[1]+" and "+str[2]+ 
 			                 " left join tmc as TP on K.id_tmc = TP._id left join tmc_pgr as TT on TP.pgr=TT._id left join tmc_ed as E on K.ed = E._id left join postav as KK on K.id_post=KK._id "+

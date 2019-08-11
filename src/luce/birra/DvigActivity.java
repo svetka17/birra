@@ -269,7 +269,8 @@ public class DvigActivity extends FragmentActivity implements LoaderCallbacks<Cu
      
         if (str[1].length()!=0) where=where+" and "+str[1].toString();
         //Log.d("MyLog", "where="+where);
-            	 Cursor cursor = db.getRawData(" select _id, dvig, id_tmc, id_post, ed, kol, price, sumka, prim, data_ins from ( "+
+            	 Cursor cursor = db.getRawData
+            			 (" select _id, dvig, id_tmc, id_post, ed, kol, price, sumka, prim, data_ins from ( "+
                			" select R._id as _id, 'расход' as dvig, R.id_tmc as id_tmc, R.id_post as id_post, R.ed as ed, round(R.kol,3) as kol, round(R.price,2) as price, round(R.kol,3)*round(R.price,2)-round(R.skidka,2) as sumka, R.prim||' скидка по позиции '||round(R.skidka,2)||' №'||K.num_id||' '||K.prim||' общая сумма чека '||round(K.sumka,2) as prim, R.data_ins as data_ins from rasxod as R left join klient as K on R.id_klient = K._id" + where + 
               			" union all select R._id as _id, 'приход' as dvig, R.id_tmc as id_tmc, R.id_post id_post, R.ed as ed, round(R.kol,3) as kol, round(R.price,2) as price, round(R.kol,3)*round(R.price,2) as sumka, R.prim as prim, R.data_ins as data_ins from prixod as R " + where +
                 			" ) order by data_ins", null);

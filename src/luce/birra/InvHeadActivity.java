@@ -147,7 +147,6 @@ public class InvHeadActivity extends FragmentActivity implements LoaderCallbacks
         	    int ib=0;
         	    int tmp=0;
         	    
-        	    
         	    if (cOst.moveToFirst()) { 
         	    	 
         	        do {

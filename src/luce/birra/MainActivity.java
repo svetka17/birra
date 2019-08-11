@@ -75,7 +75,6 @@ static int access=0;
 static int postlitr=0;
 static int num_id=1;
 static int day=1;
-static int countBut=3;
 int but_menu=0;
 static String my_pass="svetka";
 /*
@@ -189,6 +188,8 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 					file=Export2Excel.inv((int) StrToFloat(pgrr), ""); break;
 				case 11:
 					file=Export2Excel.brakmove((int) StrToFloat(pgrr), ""); break;
+				case 13:
+					file=Export2Excel.inv_extend((int) StrToFloat(pgrr), ""); break;
 				}
 				//u1  =  Uri.fromFile(file);
 				//intent = new Intent(Intent.);
@@ -227,6 +228,8 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 							Export2Excel.inv((int) StrToFloat(pgrr), ""); break;
 						case 11:
 							Export2Excel.brakmove((int) StrToFloat(pgrr), ""); break;
+						case 13:
+							Export2Excel.inv_extend((int) StrToFloat(pgrr), ""); break;
 						}
 					}
 				}) ;
@@ -257,6 +260,8 @@ static void excel(Context cntx, Activity act, String dat1, String dat2, String p
 					file=Export2Excel.inv((int) StrToFloat(pgrr), ""); break;
 				case 11:
 					file=Export2Excel.brakmove((int) StrToFloat(pgrr), ""); break;
+				case 13:
+					file=Export2Excel.inv_extend((int) StrToFloat(pgrr), ""); break;
 				}
 				//u1  =  Uri.fromFile(file);
 				sendIntent = new Intent(Intent.ACTION_SEND);
@@ -595,7 +600,6 @@ void saveSetting() {
 	    ed.putInt("num_id", num_id );
 	    day=Calendar.getInstance().get(Calendar.DATE);
 	    ed.putInt("day", day );
-	    ed.putInt("countBut", countBut);
 	    ed.commit();
 	    //Toast.makeText(this, "настройки сохранены", Toast.LENGTH_SHORT).show();
 	  }
@@ -626,7 +630,6 @@ void saveSetting() {
     postlitr = sPref.getInt("postlitr", 0);
     num_id = sPref.getInt("num_id", num_id);
     day = sPref.getInt("day", day);
-    countBut = sPref.getInt("countBut", countBut);
     if (day!=Calendar.getInstance().get(Calendar.DATE))
     {
     	num_id=1;

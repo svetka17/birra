@@ -30,7 +30,7 @@ import luce.birra.DialogScreen.DialogListener;
  
 public class SettingAllActivity extends FragmentActivity implements OnClickListener {
 
-  Button countBut, btnExit, btnColor1, btnColor2, butTara1, butTara2, butTara3, butTara4, butTara5, butTara6,butTara7, butPgr1, butPgr2, butPgr3, butName1, butName2, butName3, tabBut1, tabBut2, butMenu1, butMenu2, butMenu3;//btnB1, btnB2, btnB3, btnT1, btnT2, btnT3;
+  Button btnExit, btnColor1, btnColor2, butTara1, butTara2, butTara3, butTara4, butTara5, butTara6,butTara7, butPgr1, butPgr2, butPgr3, butName1, butName2, butName3, tabBut1, tabBut2, butMenu1, butMenu2, butMenu3;//btnB1, btnB2, btnB3, btnT1, btnT2, btnT3;
   TextView tvDKol, tabH1, tabH2, tabH3, tab1, tab2, tab3,tv,et ;//tvB1, tvB2, tvB3, tvB1V, tvB2V,tvB3V,tvT1,tvT2,tvT3,tvT1V,tvT2V,tvT3V;
   //SeekBar sbDKol;
   NumberPicker np;
@@ -129,8 +129,6 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
         	finish();
         }
       });
-    
-    
     butTara1=(Button) findViewById(R.id.tvSettingButTara1);
     butTara1.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butTara);
     butTara2=(Button) findViewById(R.id.tvSettingButTara2); 
@@ -153,9 +151,6 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
     butPgr2.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butPgr);
     butPgr3=(Button) findViewById(R.id.tvSettingButPgr3); 
     butPgr3.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butKalk);
-    countBut=(Button) findViewById(R.id.tvCountBut);
-    countBut.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butKalk);
-    countBut.setText(String.valueOf(MainActivity.countBut));
     int l1=("Õ¿»Ã≈ÕŒ¬¿Õ»≈"+"\n").length(), l2=("Õ¿»Ã≈ÕŒ¬¿Õ»≈"+"\n"+"Œ—“¿“Œ  » ÷≈Õ¿").length();
 	
 	final SpannableStringBuilder text = new SpannableStringBuilder("Õ¿»Ã≈ÕŒ¬¿Õ»≈"+"\n"+"Œ—“¿“Œ  » ÷≈Õ¿"); 
@@ -204,7 +199,6 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
     butMenu1.setOnClickListener(this); 
     butMenu2.setOnClickListener(this); 
     butMenu3.setOnClickListener(this);
-    countBut.setOnClickListener(this);
     
     tabH1=(TextView) findViewById(R.id.tvSettingTabH1); 
     tabH1.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.tabH);
@@ -251,12 +245,7 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
 	   
 	  switch (tvI) 
 	  {
-	  case R.id.tvCountBut:
-		   	 MainActivity.countBut = np.getValue();//sbDKol.getProgress();
-	       	 countBut.setText(String.valueOf(MainActivity.countBut));
-	       	 tvDialogN=0;
-		     break; 
-	  case R.id.tvSettingButTara1:
+	   case R.id.tvSettingButTara1:
 		     //butTara1.setText(tvDKol.getText());
 	       	 MainActivity.butTara = np.getValue();//sbDKol.getProgress();
 	       	 btnExit.setTextSize(TypedValue.COMPLEX_UNIT_PX,MainActivity.butTara);
@@ -360,9 +349,7 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
   String dialogNum(int tvI) {
 	  switch (tvI)
 	  {
-	  case R.id.tvCountBut:
-		   return String.valueOf( MainActivity.countBut ); 
-	  case R.id.tvSettingButTara1:
+	   case R.id.tvSettingButTara1:
 		   return String.valueOf( MainActivity.butTara );
 	   case R.id.tvSettingButPgr1:
 		   return String.valueOf( MainActivity.butPgr );
@@ -392,9 +379,7 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
   int dialogNumI(int tvI) {
 	  switch (tvI)
 	  {
-	  case R.id.tvCountBut:
-		   return  MainActivity.countBut ; 
-	  case R.id.tvSettingButTara1:
+	   case R.id.tvSettingButTara1:
 		   return  MainActivity.butTara ;
 	   case R.id.tvSettingButPgr1:
 		   return  MainActivity.butPgr ;
@@ -428,9 +413,7 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
   String dialogNumTitle(int tvI) {
 	  switch (tvI)
 	  {
-	  case R.id.tvCountBut:
-		   return " ÓÎË˜ÂÒÚ‚Ó ÍÓÎÓÌÓÍ Ò ÍÌÓÔÍ‡ÏË"; 
-	  case R.id.tvSettingButTara1:
+	   case R.id.tvSettingButTara1:
 		   return " ÌÓÔÍ‡ Ò Ì‡Á‚‡ÌËÂÏ Ú‡˚";
 	   case R.id.tvSettingButPgr1:
 		   return " ÌÓÔÍ‡ Ì‡Á‚‡ÌËˇ ÔÓ„‰ÛÔÔ˚";
@@ -511,8 +494,8 @@ public class SettingAllActivity extends FragmentActivity implements OnClickListe
     {tvDKol.setText(dialogNum(tvDialogN));
     tvDKol.setTextSize(TypedValue.COMPLEX_UNIT_PX,dialogNumI(tvDialogN));
     np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-    np.setMaxValue(100);
-    np.setMinValue(1);
+    np.setMaxValue(150);
+    np.setMinValue(5);
     np.setWrapSelectorWheel(true);
     np.setValue(dialogNumI(tvDialogN));
     np.setOnValueChangedListener(new OnValueChangeListener() {
@@ -565,9 +548,6 @@ public void onClick(View v) {
 	   case R.id.tvSettingButTara6:
 	   case R.id.tvSettingButTara7:
 		   tvDialogN=R.id.tvSettingButTara1;
-	     break;
-	   case R.id.tvCountBut:
-		   tvDialogN=R.id.tvCountBut;
 	     break;
 	   case R.id.tvSettingButPgr1:
 	   case R.id.tvSettingButPgr2:
